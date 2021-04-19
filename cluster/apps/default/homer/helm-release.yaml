@@ -34,6 +34,14 @@ spec:
         - "homer.${SECRET_DOMAIN}"
     persistence:
       config:
-        enabled: true
+        enabled: false
         existingClaim: homer-config
+        mountPath: /www/assets
+    additionalVolumes:
+      - name: homer
+        nfs:
+          server: 192.168.1.147
+          path: /mnt/user/appdata/homer
+    additionalVolumeMount:
+      - name: homer
         mountPath: /www/assets
