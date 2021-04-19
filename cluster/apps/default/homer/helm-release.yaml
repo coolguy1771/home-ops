@@ -42,6 +42,6 @@ spec:
         nfs:
           server: 192.168.1.147
           path: /mnt/user/appdata/homer
-    additionalVolumeMount:
+    additionalVolumeMounts:
       - name: homer
         mountPath: /www/assets
