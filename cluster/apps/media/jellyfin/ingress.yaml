@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: nameOfClusterIssuer
+  name: jellyfin-ingress
+  namespace: networking
+spec:
+  rules:
+  - host: jellyfin.witlinserver.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: jellyfin
+            port: 
+              number: 80
+  tls: # < placing a host in the TLS config will indicate a certificate should be created
+  - hosts:
+    - jellyfin.witlinserver.com
+    secretName: jellyfin-cert # < cert-manager will store the created certificate in this secret.
