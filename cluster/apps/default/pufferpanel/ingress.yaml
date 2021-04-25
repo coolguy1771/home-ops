@@ -7,7 +7,7 @@ metadata:
     forecastle.stakater.com/icon: https://avatars.githubusercontent.com/u/45698031
 
   name: pufferpanel
-  namespace: media
+  namespace: default
 spec:
   rules:
   - host: panel.witlinserver.com
