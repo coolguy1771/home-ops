@@ -27,6 +27,7 @@ spec:
         ssl-protocols: "TLSv1.3 TLSv1.2"
         proxy-body-size: "100m"
         use-forwarded-headers: "true"
+        force-ssl-redirect: "true"
       metrics:
         enabled: false
         serviceMonitor:
