@@ -5,4 +5,6 @@ metadata:
   namespace: media
 spec:
   type: ExternalName
-  externalName: 192.168.1.147:8096
+  externalName: 192.168.1.147
+  ports:
+    - port: 8096
