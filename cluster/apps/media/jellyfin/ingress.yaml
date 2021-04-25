@@ -17,7 +17,7 @@ spec:
           service:
             name: jellyfin
             port: 
-              number: 80
+              number: 8096
   tls: # < placing a host in the TLS config will indicate a certificate should be created
   - hosts:
     - jellyfin.witlinserver.com
