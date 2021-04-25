@@ -4,5 +4,3 @@ resources:
 - default
 - networking
 - system-upgrade
-- bitwarden
-- forecastle
