@@ -24,6 +24,7 @@ spec:
           matchNames:
           - media
           - default
+          - external
       ingress:
         enabled: true
         annotations:
