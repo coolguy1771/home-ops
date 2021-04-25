@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   annotations:
     # add an annotation indicating the issuer to use.
-    cert-manager.io/cluster-issuer: nameOfClusterIssuer
-  name: jellyfin-ingress
-  namespace: networking
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: jellyfin
+  namespace: media
 spec:
   rules:
   - host: jellyfin.witlinserver.com
