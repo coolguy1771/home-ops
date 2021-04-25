@@ -6,3 +6,4 @@ resources:
 - networking.yaml
 - apps.yaml
 - media.yaml
+- external.yaml
