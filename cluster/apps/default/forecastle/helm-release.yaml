@@ -23,15 +23,15 @@ spec:
         namespaceSelector:
           matchNames:
           - media
-          - apps
+          - default
       ingress:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
         hosts:
-        - host: "home.${SECRET_CLUSTER_DOMAIN}"
+        - host: "home.${SECRET_DOMAIN}"
           paths:
           - /
         tls:
         - hosts:
-          - "home.${SECRET_CLUSTER_DOMAIN}"
+          - "home.${SECRET_DOMAIN}"
