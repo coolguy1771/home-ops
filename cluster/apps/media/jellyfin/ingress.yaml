@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    forecastle.stakater.com/expose: true
+    forecastle.stakater.com/expose: "true"
     forecastle.stakater.com/icon: https://avatars.githubusercontent.com/u/45698031
 
   name: jellyfin
