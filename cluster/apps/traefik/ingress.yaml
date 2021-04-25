@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: jellyfin
+  namespace: media
+spec:
+  rules:
+  - host: jellyfin.witlinserver.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: jellyfin
+            port: 
+              number: 8096
+  tls: 
+  - hosts:
+    - jellyfin.witlinserver.com
+    secretName: jellyfin-cert 
