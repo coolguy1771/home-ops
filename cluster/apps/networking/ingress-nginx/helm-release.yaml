@@ -28,6 +28,7 @@ spec:
         proxy-body-size: "100m"
         use-forwarded-headers: "true"
         force-ssl-redirect: "true"
+        enable-brotli: "true"
       metrics:
         enabled: false
         serviceMonitor:

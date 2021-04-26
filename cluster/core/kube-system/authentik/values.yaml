@@ -1,0 +1,6 @@
+postgresql:
+  postgresqlPassword: "<password you generated>"
+redis:
+  password: "<another password you generated>"
+config:
+  secretKey: "<another password you generated>"
