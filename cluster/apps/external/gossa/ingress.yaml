@@ -4,7 +4,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     forecastle.stakater.com/expose: "true"
-    forecastle.stakater.com/icon: https://avatars.githubusercontent.com/u/9778794
+  #  forecastle.stakater.com/icon: 
   name: gossa
   namespace: external
 spec:
