@@ -37,22 +37,22 @@ spec:
         - unifi.witlinserver.com
     guiService:
       type: LoadBalancer
-      loadBalancerIP: "${INGRESS_NGINX_LB}"
+      loadBalancerIP: 10.10.10.6
       annotations:
         metallb.universe.tf/allow-shared-ip: unifi
     controllerService:
       type: LoadBalancer
-      loadBalancerIP: "${INGRESS_NGINX_LB}"
+      loadBalancerIP: 10.10.10.6
       annotations:
         metallb.universe.tf/allow-shared-ip: unifi
     stunService:
       type: LoadBalancer
-      loadBalancerIP: "${INGRESS_NGINX_LB}"
+      loadBalancerIP: 10.10.10.6
       annotations:
         metallb.universe.tf/allow-shared-ip: unifi
     discoveryService:
       type: LoadBalancer
-      loadBalancerIP: "${INGRESS_NGINX_LB}"
+      loadBalancerIP: 10.10.10.6
       annotations:
         metallb.universe.tf/allow-shared-ip: unifi
     podAnnotations:
