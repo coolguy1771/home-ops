@@ -7,3 +7,4 @@ resources:
 - k8s-at-home-charts.yaml
 - stakater-charts.yaml
 - nfs-subdir-external-provisioner-charts.yaml
+- authentik-charts.yaml
