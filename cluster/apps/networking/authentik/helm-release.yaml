@@ -81,7 +81,7 @@ spec:
         # kubernetes.io/tls-acme: "true"
       hosts:
         - auth.witlinserver.com
-      tls: 
+      tls:
         - secretName: auth.witlinserver.com
           hosts:
             - auth.witlinserver.com
