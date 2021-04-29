@@ -94,6 +94,7 @@ spec:
     # These values influence the bundled postgresql and redis charts, but are also used by authentik to connect
     postgresql:
       postgresqlDatabase: authentik
+      postgressqlUser: postgres
       postgresqlPassword: "gGPbx8CVNxGKWI75m77l3tOLKBzRIhLw8r83Vzvfanolaroq"
     redis:
       cluster:
