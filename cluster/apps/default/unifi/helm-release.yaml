@@ -23,7 +23,7 @@ spec:
     persistence:
       enabled: true
       size: 20Gi
-      storageClass: nfs-client
+      storageClass: local-path
     timezone: "America/New_York"
     runAsRoot: false
     ingress:
