@@ -56,9 +56,9 @@ spec:
         username: "apikey"
         password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
         # Use StartTLS
-        useTls: "true"
+        useTls: true
         # Use SSL
-        useSsl: "true"
+        useSsl: true
         timeout: 10
         # Email address authentik will send from, should have a correct @domain
         from: auth@witlinserver.com
