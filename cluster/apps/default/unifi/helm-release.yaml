@@ -20,9 +20,9 @@ spec:
     image:
       repository: jacobalberty/unifi
       tag: "6.0"
-    #persistence:
-    #  enabled: true
-    #  size: 20Gi
+    persistence:
+      enabled: true
+      size: 20Gi
     #  storageClass: local-path
     timezone: "America/New_York"
     runAsRoot: false
