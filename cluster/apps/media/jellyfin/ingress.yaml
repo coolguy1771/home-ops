@@ -18,9 +18,9 @@ spec:
         backend:
           service:
             name: jellyfin
-            port: 
+            port:
               number: 8096
-  tls: 
+  tls:
   - hosts:
     - jellyfin.witlinserver.com
-    secretName: jellyfin-cert 
+    secretName: jellyfin-cert
