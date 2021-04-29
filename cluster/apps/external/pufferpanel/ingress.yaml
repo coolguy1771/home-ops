@@ -17,9 +17,9 @@ spec:
         backend:
           service:
             name: pufferpanel
-            port: 
+            port:
               number: 8080
-  tls: 
+  tls:
   - hosts:
     - panel.witlinserver.com
-    secretName: pufferpanel-cert 
+    secretName: pufferpanel-cert
