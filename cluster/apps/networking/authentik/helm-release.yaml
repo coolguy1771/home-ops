@@ -64,9 +64,9 @@ spec:
         from: auth@witlinserver.com
     # Enable MaxMind GeoIP
     geoip:
-      enabled: false
-      accountId: ""
-      licenseKey: ""
+      enabled: true
+      accountId: "418977"
+      licenseKey: "${SECRET_GEOIP_KEY}"
       image: maxmindinc/geoipupdate:latest
     # Enable Database Backups to S3
     # backup:
