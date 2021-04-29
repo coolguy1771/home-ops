@@ -4,7 +4,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     forecastle.stakater.com/expose: "true"
-  #  forecastle.stakater.com/icon: 
+  #  forecastle.stakater.com/icon:
   name: gossa
   namespace: external
 spec:
@@ -17,9 +17,9 @@ spec:
         backend:
           service:
             name: gossa
-            port: 
+            port:
               number: 8005
-  tls: 
+  tls:
   - hosts:
     - cdn.witlinserver.com
-    secretName: gossa-cert 
+    secretName: gossa-cert
