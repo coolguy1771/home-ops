@@ -48,9 +48,9 @@ spec:
       image:
         repository: ghcr.io/181192/custom-error-pages
         tag: latest
-      extraEnv:
-        - name: ERROR_FILES_PATH
-          value: ghost
+      extraEnvs:
+      - name: ERROR_FILES_PATH
+        value: ./themes/ghost
       resources:
         requests:
           memory: 250Mi
