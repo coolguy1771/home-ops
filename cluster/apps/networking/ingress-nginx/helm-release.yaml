@@ -50,7 +50,7 @@ spec:
         tag: latest
       extraEnvs:
       - name: ERROR_FILES_PATH
-        value: ./themes/knockout
+        value: ./themes/ghost
       resources:
         requests:
           memory: 250Mi
