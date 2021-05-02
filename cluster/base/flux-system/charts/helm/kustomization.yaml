@@ -8,3 +8,4 @@ resources:
 - stakater-charts.yaml
 - nfs-subdir-external-provisioner-charts.yaml
 - authentik-charts.yaml
+- grafana-charts.yaml
