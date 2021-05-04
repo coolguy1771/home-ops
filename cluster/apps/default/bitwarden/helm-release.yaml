@@ -22,7 +22,7 @@ spec:
     image:
       repository: vaultwarden/server
       pullPolicy: IfNotPresent
-      tag: "latest  "
+      tag: "1.21.0"
     imagePullSecrets: []
     nameOverride: ""
     fullnameOverride: ""
