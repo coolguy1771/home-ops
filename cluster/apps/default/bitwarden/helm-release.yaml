@@ -147,7 +147,7 @@ spec:
         labels: {}
         additionalSpec: {}
       ingress:
-        enabled: nginx
+        enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
             # kubernetes.io/tls-acme: "true"
