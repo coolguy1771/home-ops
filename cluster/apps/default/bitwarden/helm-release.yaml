@@ -28,10 +28,10 @@ spec:
     fullnameOverride: ""
     bitwardenrs:
       domain: "https://vault.witlinserver.com"
-      signupsAllowed: false
+      signupsAllowed: true
       gui:
         # If you set a different port here, you must also provide it under env
-       port: 80
+        port: 80
       websockets:
         enabled: true
         port: 3012
@@ -146,18 +146,18 @@ spec:
         annotations: {}
         labels: {}
         additionalSpec: {}
-    ingress:
-      enabled: nginx
-      annotations:
+      ingress:
+        enabled: nginx
+        annotations:
           kubernetes.io/ingress.class: nginx
-          # kubernetes.io/tls-acme: "true"
-      hosts:
-        - host: vault.witlinserver.com
-          paths: []
-      tls:
-        - secretName: vault.witlinserver.com
-          hosts:
-            - vault.witlinserver.com
+            # kubernetes.io/tls-acme: "true"
+        hosts:
+          - host: vault.witlinserver.com
+            paths: []
+        tls:
+          - secretName: vault.witlinserver.com
+            hosts:
+              - vault.witlinserver.com
 
       resources: {}
         # We usually recommend not to specify default resources and to leave this as a conscious
