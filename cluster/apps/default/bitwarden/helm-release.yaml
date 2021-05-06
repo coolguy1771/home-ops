@@ -86,8 +86,9 @@ spec:
       hosts:
         - host: vault.witlinserver.com
           paths: |
-            - path:
-            - path:
+            - path: /
+            - path: /notifications/hub
+            - path: /notifications/hub/negotiate
         - secretName: vault.witlinserver.com
           hosts:
             - vault.witlinserver.com
