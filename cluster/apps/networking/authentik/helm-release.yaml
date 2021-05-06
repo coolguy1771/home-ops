@@ -8,7 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://github.com/goauthentik/authentik
+      # renovate: registryUrl=https://docker.beryju.org/chartrepo/authentik
       chart: authentik
       version: "2021.4.5"
       sourceRef:
