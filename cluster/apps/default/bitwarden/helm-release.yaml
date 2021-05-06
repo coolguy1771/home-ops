@@ -90,7 +90,7 @@ spec:
       hosts:
         - host: vault.witlinserver.com
           paths:
-            - path: /
+            - path:
               pathType: Prefix
             - path: /notifications/hub
               pathType: Prefix
