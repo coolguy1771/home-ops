@@ -90,7 +90,9 @@ spec:
       hosts:
         - host: vault.witlinserver.com
           http:
-            paths: []
+            paths:
+              - path: /
+                pathType: Prefix
       tls:
         - secretName: vault.witlinserver.com
           hosts:
