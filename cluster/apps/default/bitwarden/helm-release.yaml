@@ -87,6 +87,7 @@ spec:
         - host: vault.witlinserver.com
           paths:
             - /
+      tls:
         - secretName: vault.witlinserver.com
           hosts:
             - vault.witlinserver.com
