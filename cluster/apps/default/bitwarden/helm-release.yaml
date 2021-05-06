@@ -85,7 +85,7 @@ spec:
       #  kubernetes.io/tls-acme: "true"
       hosts:
         - host: vault.witlinserver.com
-          paths: |
+          paths:
             - path: /
             - path: /notifications/hub
             - path: /notifications/hub/negotiate
