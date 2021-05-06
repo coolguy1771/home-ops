@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-# Default values for bitwardenrs.
     replicaCount: 1
     image:
       repository: vaultwarden/server
@@ -42,10 +41,6 @@ spec:
           enabled: false
           name: ""
           tokenKey: ""
-      # External database configuration.
-      # Requires bitwardenrs/server >= 1.17.0 or bitwardenrs/server-{mysql,postgres} images
-      # ref: https://github.com/dani-garcia/bitwarden_rs/wiki/Using-the-MySQL-Backend
-      #      https://github.com/dani-garcia/bitwarden_rs/wiki/Using-the-PostgreSQL-Backend
       externalDatabase:
         enabled: false
         # Supported values: 'mysql', 'postgresql'.
@@ -150,10 +145,12 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
-            # kubernetes.io/tls-acme: "true"
+          kubernetes.io/tls-acme: "true"
         hosts:
           - host: vault.witlinserver.com
-            paths: []
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
           - secretName: vault.witlinserver.com
             hosts:
