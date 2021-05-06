@@ -89,9 +89,8 @@ spec:
       #  kubernetes.io/tls-acme: "true"
       hosts:
         - host: vault.witlinserver.com
-          paths: []
-          #  - path:
-          #    pathType: Prefix
+          paths:
+            - path: /
       tls:
         - secretName: vault.witlinserver.com
           hosts:
