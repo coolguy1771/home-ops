@@ -93,6 +93,10 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+              - path: /notifications/hub
+                pathType: Prefix
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
       tls:
         - secretName: vault.witlinserver.com
           hosts:
