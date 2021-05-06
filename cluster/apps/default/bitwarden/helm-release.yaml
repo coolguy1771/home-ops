@@ -89,14 +89,13 @@ spec:
       #  kubernetes.io/tls-acme: "true"
       hosts:
         - host: vault.witlinserver.com
-          http:
-            paths:
-              - path: /
-                pathType: Prefix
-              - path: /notifications/hub
-                pathType: Prefix
-              - path: /notifications/hub/negotiate
-                pathType: Prefix
+          paths:
+            - path: /
+              pathType: Prefix
+            - path: /notifications/hub
+              pathType: Prefix
+            - path: /notifications/hub/negotiate
+              pathType: Prefix
       tls:
         - secretName: vault.witlinserver.com
           hosts:
