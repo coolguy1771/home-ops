@@ -59,16 +59,7 @@ spec:
         # SMTP password. Required is user is specified, ignored if no user provided
         password: "${SECRET_BITWARDEN_EMAIL_PASSWORD}"
         # Use existing secret for SMTP authentication
-        existingSecret:
-          enabled: false
-          name: ""
-        userKey: ""
-        passwordKey: ""
-       # Enable Yubikey 2FA: https://github.com/dani-garcia/bitwarden_rs/wiki/Enabling-Yubikey-OTP-authentication
     env: {}
-    # If you plan to run the WebUI on a port other than port 80, specify that here:
-    # For example, if running the container as a non-root user.
-    #  ROCKET_PORT: "80"
     persistence:
       type: statefulset
       enabled: true
@@ -81,21 +72,6 @@ spec:
     serviceAccount:
         # Specifies whether a service account should be created
       create: true
-       # Annotations to add to the service account
-      annotations: {}
-        # The name of the service account to use.
-        # If not set and create is true, a name is generated using the fullname template
-      name: ""
-    podAnnotations: {}
-    podSecurityContext: {}
-        # fsGroup: 2000
-    securityContext: {}
-        # capabilities:
-        #   drop:
-        #   - ALL
-        # readOnlyRootFilesystem: true
-        # runAsNonRoot: true
-        # runAsUser: 1000
     service:
       type: ClusterIP
       port: 80
@@ -120,71 +96,3 @@ spec:
         - secretName: vault.witlinserver.com
           hosts:
             - vault.witlinserver.com
-
-    resources: {}
-        # We usually recommend not to specify default resources and to leave this as a conscious
-        # choice for the user. This also increases chances charts run on environments with little
-        # resources, such as Minikube. If you do want to specify resources, uncomment the following
-        # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-        # limits:
-        #   cpu: 100m
-        #   memory: 128Mi
-        # requests:
-        #   cpu: 100m
-        #   memory: 128Mi
-
-    autoscaling:
-      enabled: false
-      minReplicas: 1
-      maxReplicas: 100
-      targetCPUUtilizationPercentage: 80
-        # targetMemoryUtilizationPercentage: 80
-
-    nodeSelector: {}
-
-    tolerations: []
-
-    affinity: {}
-
-    ldapSync:
-      enabled: false
-        # Configuration file for ldap server connection
-      configToml: |-
-        bitwarden_url = "http://bitwarden:80"
-        bitwarden_admin_token = "admin"
-        ldap_host = "ldap"
-        ldap_bind_dn = "cn=admin,dc=example,dc=org"
-        ldap_bind_password = "admin"
-        ldap_search_base_dn = "dc=example,dc=org"
-        ldap_search_filter = "(&(objectClass=*)(uid=*))"
-        ldap_sync_interval_seconds = 10
-      # Use existing secret for config.toml
-      existingSecret: ""
-        # Add extra containers
-      extraContainers: []
-          # - name: vpn
-          #   image: dperson/openvpn-client
-          #   command: ["/bin/sh","-c"]
-          #   args: ["openvpn --config 'vpn/client.ovpn' --script-security 3;"]
-          #   stdin: true
-          #   tty: true
-          #   securityContext:
-          #     privileged: true
-          #     capabilities:
-          #       add:
-          #         - NET_ADMIN
-          #   env:
-          #     - name: DE
-          #       value: "Berlin"
-          #   volumeMounts:
-          #     - name: bitwardenrs-vpn
-          #       mountPath: /vpn/client.ovpn
-          #       subPath: client.ovpn
-        # Add extra volumes
-      extraVolumes: []
-          # - name: bitwarden-vpn
-          #   secret:
-          #     secretName: bitwardenrs-vpn
-          #     items:
-          #       - key: client.ovpn
-          #         path: client.ovpn
