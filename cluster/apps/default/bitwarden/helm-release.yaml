@@ -114,8 +114,8 @@ spec:
       hosts:
         - host: vault.witlinserver.com
           paths:
-            - path: /
-            #  pathType: Prefix
+            - path:
+              pathType: Prefix
       tls:
         - secretName: vault.witlinserver.com
           hosts:
