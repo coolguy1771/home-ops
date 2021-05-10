@@ -43,11 +43,15 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
+        accessModes:
+        - ReadWriteOnce
       media:
         enabled: true
         emptyDir:
           enabled: false
         mountPath: /mnt/user/Media/content/movies
+        accessModes:
+          - ReadWriteOnce
     additionalVolumes:
     - name: movies
       nfs:
