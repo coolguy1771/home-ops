@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: sonarr
+  name: radarr
   namespace: media
   annotations:
     forecastle.stakater.com/expose: "true"
@@ -13,7 +13,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: sonarr
+      chart: radarr
       version: 11.1.0
       sourceRef:
         kind: HelmRepository
@@ -21,9 +21,9 @@ spec:
         namespace: flux-system
   values:
     image:
-      repository: ghcr.io/k8s-at-home/sonarr
+      repository: ghcr.io/k8s-at-home/radarr
       pullPolicy: IfNotPresent
-      tag: v3.0.6.1196
+      tag: v3.0.2.4552
     strategy:
       type: Recreate
     ingress:
@@ -31,13 +31,13 @@ spec:
       annotations:
         kubernetes.io/ingress.class: "nginx"
       hosts:
-      - host: "sonarr.${SECRET_DOMAIN}"
+      - host: "radarr.${SECRET_DOMAIN}"
         paths:
         - path: /
           pathType: Prefix
       tls:
       - hosts:
-        - "sonarr.${SECRET_DOMAIN}"
+        - "radarr.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
@@ -47,13 +47,13 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
-        mountPath: /mnt/user/Media/content/tv
+        mountPath: /mnt/user/Media/content/movies
     additionalVolumes:
-    - name: tv
+    - name: movies
       nfs:
         server: 192.168.1.147
-        path: /mnt/user/Media/content/tv
+        path: /mnt/user/Media/content/movies
     additionalVolumeMounts:
-      - mountPath: /mnt/user/Media/content/tv
-        name: tv
+      - mountPath: /mnt/user/Media/content/movies
+        name: movies
         readOnly: true
