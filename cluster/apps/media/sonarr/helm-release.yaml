@@ -44,12 +44,14 @@ spec:
         emptyDir:
           enabled: false
         accessMode: ReadWriteMany
+        size: 1Gi
       media:
         enabled: true
         emptyDir:
           enabled: false
         mountPath: /mnt/user/Media/content/tv
         accessMode: ReadWriteMany
+        size: 15Gi
     additionalVolumes:
     - name: tv
       nfs:
