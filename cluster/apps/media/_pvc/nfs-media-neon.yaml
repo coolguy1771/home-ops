@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-media-neon-pv
+spec:
+  storageClassName: media-neon
+  capacity:
+    storage: 1Mi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.1.147
+    path: /mnt/user/Media
+  mountOptions:
+  - nfsvers=3
+  - tcp
+  - intr
+  - hard
+  - noatime
+  - nodiratime
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-media-neon-pvc
+  namespace: media
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: media-neon
+  resources:
+    requests:
+      storage: 1Mi
