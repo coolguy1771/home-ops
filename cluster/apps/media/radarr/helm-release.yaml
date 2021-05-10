@@ -51,7 +51,7 @@ spec:
           enabled: false
         mountPath: /mnt/user/Media/content/movies
         accessMode: ReadWriteMany
-        size: 15Gi
+        size: 5Gi
     additionalVolumes:
     - name: movies
       nfs:
