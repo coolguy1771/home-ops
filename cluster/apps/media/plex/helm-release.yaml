@@ -81,7 +81,7 @@ spec:
           enabled: true
           medium: "Memory"
       transcode:
-        enabled: true
+        enabled: false
         emptyDir:
           enabled: false
         mountPath: /transcode
