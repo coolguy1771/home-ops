@@ -23,39 +23,40 @@ spec:
     image:
       repository: ghcr.io/k8s-at-home/plex
       pullPolicy: IfNotPresent
-      tag: v1.22.0.4163-d8c4875dd
+      tag: v1.22.3.4392-d7c624def
     strategy:
       type: Recreate
     env:
       TZ: America/New_York
-      PLEX_CLAIM: "claim-MECvhAvwobzM-sg2vxkD"
-    podSecurityContext:
-      supplementalGroups:
-      - 44
-      - 109
-      - 100
+      PLEX_PREFERENCE_0: "MetricsEpoch=1"
+      PLEX_PREFERENCE_1: "TranscoderTempDirectory=/tmp/transcode"
+      PLEX_PREFERENCE_2: "DlnaEnabled=0"
+      PLEX_PREFERENCE_3: "DvrIncrementalEpgLoader=0"
+      PLEX_PREFERENCE_4: "LanguageInCloud=1"
+      PLEX_PREFERENCE_5: "AcceptedEULA=1"
+      PLEX_PREFERENCE_6: "PublishServerOnPlexOnlineKey=1"
+      PLEX_PREFERENCE_7: "LastAutomaticMappedPort=12821"
+      PLEX_PREFERENCE_8: "logDebug=0"
+      PLEX_PREFERENCE_9: "sendCrashReports=0"
+      PLEX_PREFERENCE_10: "OnDeckLimit=8"
+      PLEX_PREFERENCE_11: "OnDeckWindow=3"
+      PLEX_PREFERENCE_12: "ScannerLowPriority=0"
+      PLEX_PREFERENCE_13: "SmartShuffleMusic=0"
+      PLEX_PREFERENCE_14: "allowMediaDeletion=0"
+      PLEX_PREFERENCE_15: "DisableTLSv1_0=1"
+      PLEX_PREFERENCE_16: "EnableIPv6=0"
+      PLEX_PREFERENCE_17: "GdmEnabled=0"
+      PLEX_PREFERENCE_18: "RelayEnabled=0"
+      PLEX_PREFERENCE_19: "allowedNetworks=192.168.0.0/16,10.0.0.0/8,172.16.0.0/12"
+      PLEX_PREFERENCE_20: "customConnections=https://plex.witlinserver.com"
+      PLEX_PREFERENCE_21: "secureConnections=0"
+      PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
+      PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
+      PLEX_PREFERENCE_24: "CinemaTrailersType=0"
     service:
       port:
-        port: 32400
-      additionalServices:
-      - enabled: true
-        nameSuffix: dnla-tcp
         type: NodePort
-        port:
-          port: 32469
-          name: dnla-tcp
-          protocol: TCP
-          targetPort: 32469
-        externalTrafficPolicy: Local
-      - enabled: true
-        nameSuffix: dnla-udp
-        type: NodePort
-        port:
-          port: 1900
-          name: dnla-udp
-          protocol: UDP
-          targetPort: 1900
-        externalTrafficPolicy: Local
+        nodePort: 32400
     ingress:
       enabled: true
       annotations:
@@ -68,23 +69,21 @@ spec:
       tls:
       - hosts:
         - "plex.${SECRET_DOMAIN}"
-    hostNetwork: true
     persistence:
       config:
         enabled: true
         emptyDir:
           enabled: false
         mountPath: /config
-        #existingClaim: plex-config-v1
       tmp:
         enabled: true
         emptyDir:
           enabled: true
           medium: "Memory"
       transcode:
-        enabled: false
+        enabled: true
         emptyDir:
-          enabled: false
+          enabled: true
         mountPath: /transcode
     additionalVolumes:
     - name: tv
