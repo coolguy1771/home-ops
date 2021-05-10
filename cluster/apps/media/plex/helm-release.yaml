@@ -1,0 +1,143 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: plex
+  namespace: media
+  annotations:
+    forecastle.stakater.com/expose: "true"
+    forecastle.stakater.com/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: plex
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/plex
+      pullPolicy: IfNotPresent
+      tag: v1.22.0.4163-d8c4875dd
+    strategy:
+      type: Recreate
+    env:
+      TZ: America/New_York
+      # ADVERTISE_IP:
+      # ALLOWED_NETWORKS:
+      # PLEX_CLAIM:
+      # # NOTE: Plex preference options are camelCase and CASE SENSITIVE!
+      # # You can do horrible things to your Plex configuration if you are not careful
+      # # See a full list at https://support.plex.tv/articles/201105343-advanced-hidden-server-settings/
+      # PLEX_PREFERENCE_1: "FriendlyName=plex-kubernetes"
+      # PLEX_PREFERENCE_2: "EnableIPv6=0"
+      # PLEX_PREFERENCE_3: "logDebug=0"
+      # PLEX_PREFERENCE_4: "DisableTLSv1_0=1"
+      # PLEX_PREFERENCE_5: "LanNetworksBandwidth=xxx.xxx.xxx.0/18\,xxx.xxx.xxx.0/24\,xxx.xxx.xxx.0/24"
+      # PLEX_PREFERENCE_6: "TranscoderQuality=2"
+      # PLEX_PREFERENCE_7: "TreatWanIpAsLocal=0"
+      # PLEX_PREFERENCE_8: "TranscoderH264BackgroundPreset=fast"
+    service:
+      port:
+        port: 32400
+      additionalServices:
+      - enabled: true
+        nameSuffix: dnla-tcp
+        type: NodePort
+        port:
+          port: 32469
+          name: dnla-tcp
+          protocol: TCP
+          targetPort: 32469
+        externalTrafficPolicy: Local
+      - enabled: true
+        nameSuffix: dnla-udp
+        type: NodePort
+        port:
+          port: 1900
+          name: dnla-udp
+          protocol: UDP
+          targetPort: 1900
+        externalTrafficPolicy: Local
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+      hosts:
+      - host: "plex.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "plex.${SECRET_DOMAIN}"
+
+    # -- Enable devices to be discoverable
+    hostNetwork: true
+    persistence:
+      config:
+        enabled: true
+        emptyDir:
+          enabled: false
+        mountPath: /config
+        existingClaim: plex-config-v1
+        tmp:
+          enabled: true
+          emptyDir:
+            enabled: true
+            medium: "Memory"
+      transcode:
+        enabled: false
+        emptyDir:
+          enabled: false
+        mountPath: /transcode
+        ## Persistent Volume Storage Class
+        ## If defined, storageClassName: <storageClass>
+        ## If set to "-", storageClassName: "", which disables dynamic provisioning
+        ## If undefined (the default) or set to null, no storageClassName spec is
+        ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+        ##   GKE, AWS & OpenStack)
+        # storageClass: "-"
+        # accessMode: ReadWriteOnce
+        # size: 1Gi
+        ## Do not delete the pvc upon helm uninstall
+        # skipuninstall: false
+        # existingClaim: ""
+      additionalVolumeMounts:
+      - name: media-neon
+        mountPath: "/media-neon"
+        readOnly: true
+      additionalVolumes:
+      - name: media-neon
+        persistentVolumeClaim:
+          claimName: nfs-media-neon-pvc
+    podSecurityContext:
+    #   runAsUser: 568
+    #   runAsGroup: 568
+    #   fsGroup: 568
+    #   # Hardware acceleration using an Intel iGPU w/ QuickSync
+    #   # These IDs below should be matched to your `video` and `render` group on the host
+    #   # To obtain those IDs run the following grep statement on the host:
+    #   # $ cat /etc/group | grep "video\|render"
+    #   # video:x:44:
+    #   # render:x:109:
+      supplementalGroups:
+      - 44
+      - 109
+    # resources:
+    #   requests:
+    #     # Hardware acceleration using an Intel iGPU w/ QuickSync and
+    #     # using intel-gpu-plugin (https://github.com/intel/intel-device-plugins-for-kubernetes)
+    #    gpu.intel.com/i915: 1
+    #     cpu: 200m
+    #     memory: 256Mi
+    #   limits:
+    #     # Hardware acceleration using an Intel iGPU w/ QuickSync and
+    #     # using intel-gpu-plugin (https://github.com/intel/intel-device-plugins-for-kubernetes)
+    #     gpu.intel.com/i915: 1
+    #     memory: 4096Mi
