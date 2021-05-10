@@ -28,6 +28,7 @@ spec:
       type: Recreate
     env:
       TZ: America/New_York
+      PLEX_CLAIM: "claim-MECvhAvwobzM-sg2vxkD"
     podSecurityContext:
       supplementalGroups:
       - 44
