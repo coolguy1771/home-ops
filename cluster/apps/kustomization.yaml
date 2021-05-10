@@ -4,4 +4,5 @@ resources:
 - default
 - networking
 - system-upgrade
-- external
+- external 
+- media
