@@ -34,8 +34,8 @@ spec:
       mode: ReadWriteMany
       uploadsSize: 5Gi
       uploadsStorageClass: nfs-client
-      geoIpSize: 1Gi
-      geoIpStorageClass: nfs-client
+    #  geoIpSize: 1Gi
+    #  geoIpStorageClass: nfs-client
     config:
       # Optionally specify fixed secret_key, otherwise generated automatically
       # secretKey: _k*@6h2u2@q-dku57hhgzb7tnx*ba9wodcb^s9g0j59@=y(@_o
@@ -64,10 +64,10 @@ spec:
         from: auth@witlinserver.com
     # Enable MaxMind GeoIP
     geoip:
-      enabled: "true"
-      accountId: "418977"
-      licenseKey: "${SECRET_GEOIP_KEY}"
-      image: maxmindinc/geoipupdate:latest
+      enabled: "false"
+    #  accountId: "418977"
+    #  licenseKey: "${SECRET_GEOIP_KEY}"
+     # image: maxmindinc/geoipupdate:latest
     # Enable Database Backups to S3
     # backup:
     #   accessKey: access-key
