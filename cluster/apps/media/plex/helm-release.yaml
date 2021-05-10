@@ -74,14 +74,14 @@ spec:
         emptyDir:
           enabled: false
         mountPath: /config
-        existingClaim: plex-config-v1
+        #existingClaim: plex-config-v1
       tmp:
         enabled: true
         emptyDir:
           enabled: true
           medium: "Memory"
       transcode:
-        enabled: false
+        enabled: true
         emptyDir:
           enabled: false
         mountPath: /transcode
