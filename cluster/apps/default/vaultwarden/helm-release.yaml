@@ -33,6 +33,7 @@ spec:
       DATA_FOLDER: "config"
       DOMAIN: "https://vault.witlinserver.com"
       SIGNUPS_ALLOWED: true
+      ADMIN_TOKEN: "${SECRET_VAULTWARDEN_ADMIN_TOKEN}"
       SMTP_HOST: "smtp.sendgrid.net"
       SMTP_FROM: "no-reply@witlinserver.com"
       SMTP_FROM_NAME: "Vaultwarden"
@@ -80,4 +81,3 @@ spec:
         storageClass:
         accessModes:
           - ReadWriteOnce
-  
