@@ -1,67 +1,71 @@
-#
-# IMPORTANT NOTE
-#
-# This chart inherits from our common library chart. You can check the default values/options here:
-# https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml
-#
-image:
-  repository: vaultwarden/server
-  pullPolicy: IfNotPresent
-  tag: 1.21.0
-strategy:
-  type: Recreate
-# See more environment variables in the Vaultwarden documentation
-# https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
-env:
-  # TZ:
-  DATA_FOLDER: "config"
-  DOMAIN: "https://vault.witlinserver.com"
-  SIGNUPS_ALLOWED: true
-  SMTP_HOST: "smtp.sendgrid.net"
-  SMTP_FROM: "no-reply@witlinserver.com"
-  SMTP_FROM_NAME: "Vaultwarden"
-  SMTP_SSL: true
-  SMTP_PORT: 587
-  SMTP_USERNAME: "apikey"
-  SMTP_PASSWORD: "${SECRET_BITWARDEN_EMAIL_PASSWORD}"
-service:
-  port:
-    port: 80
-    name: www
-  additionalPorts:
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: default
+  annotations:
+    forecastle.stakater.com/expose: "true"
+    forecastle.stakater.com/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  image:
+    repository: vaultwarden/server
+    pullPolicy: IfNotPresent
+    tag: 1.21.0
+  strategy:
+    type: Recreate
+  # See more environment variables in the Vaultwarden documentation
+  # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
+  env:
+    # TZ:
+    DATA_FOLDER: "config"
+    DOMAIN: "https://vault.witlinserver.com"
+    SIGNUPS_ALLOWED: true
+    SMTP_HOST: "smtp.sendgrid.net"
+    SMTP_FROM: "no-reply@witlinserver.com"
+    SMTP_FROM_NAME: "Vaultwarden"
+    SMTP_SSL: true
+    SMTP_PORT: 587
+    SMTP_USERNAME: "apikey"
+    SMTP_PASSWORD: "${SECRET_BITWARDEN_EMAIL_PASSWORD}"
+  service:
     port:
-      port: 3012
-      name: websocket
-
-ingress:
-  enabled: true
-  hosts:
-    - host: vault.witlinserver.com
-      paths:
-        - path: /
-          pathType: Prefix
-        - path: /notifications/hub/negotiate
-          pathType: Prefix
-        - path: /notifications/hub
-          pathType: Prefix
-          servicePort: 3012
-  tls:
-    - secretName: vault.witlinserver.com
-      hosts:
-        - vault.witlinserver.com
-persistence:
-  config:
+      port: 80
+      name: www
+    additionalPorts:
+      port:
+        port: 3012
+        name: websocket
+  ingress:
     enabled: true
-    emptydir:
-      enabled: false
-# https://github.com/bitnami/charts/tree/master/bitnami/postgresql/#installing-the-chart
-postgresql:
-  enabled: true
-  postgresqlUsername: "vaultwarden"
-  postgresqlPassword: "${SECRET_VAULTWARDEN_DATABASE_PASSWORD}"
-  postgresqlDatabase: "vaultwarden"
+    hosts:
+      - host: vault.witlinserver.com
+        paths:
+          - path: /
+            pathType: Prefix
+          - path: /notifications/hub/negotiate
+            pathType: Prefix
+          - path: /notifications/hub
+            pathType: Prefix
+            servicePort: 3012
+    tls:
+      - secretName: vault.witlinserver.com
+        hosts:
+          - vault.witlinserver.com
   persistence:
+    config:
+      enabled: true
+      emptydir:
+        enabled: false
+  # https://github.com/bitnami/charts/tree/master/bitnami/postgresql/#installing-the-chart
+  postgresql:
     enabled: true
-    storageClass:
-    accessModes:
-      - ReadWriteOnce
+    postgresqlUsername: "vaultwarden"
+    postgresqlPassword: "${SECRET_VAULTWARDEN_DATABASE_PASSWORD}"
+    postgresqlDatabase: "vaultwarden"
+    persistence:
+      enabled: true
+      storageClass:
+      accessModes:
+        - ReadWriteOnce
