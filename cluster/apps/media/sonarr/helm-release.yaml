@@ -43,13 +43,13 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
-        accessModes: ReadWriteMany
+        accessMode: ReadWriteMany
       media:
         enabled: true
         emptyDir:
           enabled: false
         mountPath: /mnt/user/Media/content/tv
-        accessModes: ReadWriteMany
+        accessMode: ReadWriteMany
     additionalVolumes:
     - name: tv
       nfs:
