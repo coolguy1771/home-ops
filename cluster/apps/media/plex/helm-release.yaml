@@ -53,10 +53,7 @@ spec:
       PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
       PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
       PLEX_PREFERENCE_24: "CinemaTrailersType=0"
-    service:
-      port:
-        type: NodePort
-        nodePort: 32400
+    hostNetwork: true
     ingress:
       enabled: true
       annotations:
