@@ -85,11 +85,19 @@ spec:
         emptyDir:
           enabled: false
         mountPath: /transcode
-    additionalVolumeMounts:
-    - name: media-neon
-      mountPath: "/media-neon"
-      readOnly: true
     additionalVolumes:
-    - name: media-neon
-      persistentVolumeClaim:
-        claimName: nfs-media-neon-pvc
+    - name: tv
+      nfs:
+        server: 192.168.1.147
+        path: /mnt/user/Media/content/tv
+    - name: movies
+      nfs:
+        server: 192.168.1.147
+        path: /mnt/user/Media/content/movies
+    additionalVolumeMounts:
+      - mountPath: /mnt/user/Media/content/tv
+        name: tv
+        readOnly: true
+      - mountPath: /mnt/user/Media/content/movies
+        name: movies
+        readOnly: true
