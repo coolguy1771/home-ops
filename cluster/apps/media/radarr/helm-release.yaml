@@ -45,19 +45,12 @@ spec:
           enabled: false
         accessMode: ReadWriteMany
         size: 1Gi
-      media:
-        enabled: true
-        emptyDir:
-          enabled: false
-        mountPath: /mnt/user/Media/content/movies
-        accessMode: ReadWriteMany
-        size: 5Gi
     additionalVolumes:
-    - name: movies
+    - name: media
       nfs:
         server: 192.168.1.147
         path: /mnt/user/Media/content/movies
     additionalVolumeMounts:
       - mountPath: /mnt/user/Media/content/movies
-        name: movies
+        name: media
         readOnly: true
