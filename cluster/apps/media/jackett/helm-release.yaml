@@ -4,10 +4,7 @@ kind: HelmRelease
 metadata:
   name: jackett
   namespace: media
-  annotations:
-    forecastle.stakater.com/expose: "true"
-    forecastle.stakater.com/icon: ""
-    cert-manager.io/cluster-issuer: letsencrypt-production
+  
 spec:
   interval: 5m
   chart:
@@ -29,6 +26,9 @@ spec:
     ingress:
       enabled: true
       annotations:
+        forecastle.stakater.com/expose: "true"
+        forecastle.stakater.com/icon: ""
+        cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "nginx"
       hosts:
       - host: "jackett.${SECRET_DOMAIN}"
