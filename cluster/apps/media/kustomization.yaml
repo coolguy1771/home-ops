@@ -5,3 +5,4 @@ resources:
 - radarr
 - sonarr
 - tautulli
+- jackett
