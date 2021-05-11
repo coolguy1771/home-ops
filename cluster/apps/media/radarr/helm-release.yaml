@@ -53,4 +53,7 @@ spec:
     additionalVolumeMounts:
       - mountPath: /mnt/user/Media/content/movies
         name: movies
-        readOnly: true
+        readOnly: false
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
