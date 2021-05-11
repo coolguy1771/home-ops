@@ -44,6 +44,7 @@ spec:
         emptyDir:
           enabled: false
         accessMode: ReadWriteOnce
+        size: 1Gi
     additionalVolumes:
     - name: tv
       nfs:
