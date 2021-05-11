@@ -23,7 +23,7 @@ spec:
     persistence:
       enabled: true
       size: 20Gi
-    #  storageClass: local-path
+      storageClass: longhorn
     timezone: "America/New_York"
     runAsRoot: false
     ingress:
