@@ -43,7 +43,7 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
         size: 1Gi
     additionalVolumes:
     - name: tv
@@ -51,6 +51,6 @@ spec:
         server: 192.168.1.147
         path: /mnt/user/Media/content/tv
     additionalVolumeMounts:
-      - mountPath: /mnt/user/Media/content/tv
-        name: tv
-        readOnly: true
+    - mountPath: /mnt/user/Media/content/tv
+      name: tv
+      readOnly: true
