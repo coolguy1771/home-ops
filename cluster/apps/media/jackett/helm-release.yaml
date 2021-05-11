@@ -4,7 +4,6 @@ kind: HelmRelease
 metadata:
   name: jackett
   namespace: media
-  
 spec:
   interval: 5m
   chart:
