@@ -78,7 +78,9 @@ spec:
     ingress:
       annotations:
         kubernetes.io/ingress.class: nginx
-        # kubernetes.io/tls-acme: "true"
+        forecastle.stakater.com/expose: "true"
+        forecastle.stakater.com/icon: ""
+        cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
         - auth.witlinserver.com
       tls:
