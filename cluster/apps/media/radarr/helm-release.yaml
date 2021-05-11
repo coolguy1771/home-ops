@@ -43,7 +43,7 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
-        accessMode: ReadWriteOnce
+        accessMode: ReadWriteMany
         size: 1Gi
     additionalVolumes:
     - name: movies
