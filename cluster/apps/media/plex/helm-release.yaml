@@ -4,10 +4,6 @@ kind: HelmRelease
 metadata:
   name: plex
   namespace: media
-  annotations:
-    forecastle.stakater.com/expose: "true"
-    forecastle.stakater.com/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
-    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   interval: 5m
   chart:
@@ -57,6 +53,9 @@ spec:
     ingress:
       enabled: true
       annotations:
+        forecastle.stakater.com/expose: "true"
+        forecastle.stakater.com/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
+        cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "nginx"
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       hosts:
