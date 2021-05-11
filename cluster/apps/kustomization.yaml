@@ -7,4 +7,4 @@ resources:
 - system-upgrade
 - external
 - media
-- storage
+- longhorn-system
