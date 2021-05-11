@@ -4,10 +4,6 @@ kind: HelmRelease
 metadata:
   name: tautulli
   namespace: media
-  annotations:
-    forecastle.stakater.com/expose: "true"
-    forecastle.stakater.com/icon: ""
-    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   interval: 5m
   chart:
@@ -20,28 +16,21 @@ spec:
         name: k8s-at-home-charts
         namespace: flux-system
   values:
-    #
-# IMPORTANT NOTE
-#
-# This chart inherits from our common library chart. You can check the default values/options here:
-# https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml
-#
-
     image:
       repository: ghcr.io/k8s-at-home/tautulli
       pullPolicy: IfNotPresent
       tag: v2.7.0
-    
     strategy:
       type: Recreate
-    
     env: {}
       # TZ: UTC
-    
     ingress:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: "nginx"
+            forecastle.stakater.com/expose: "true"
+            forecastle.stakater.com/icon: ""
+            cert-manager.io/cluster-issuer: letsencrypt-production
           hosts:
           - host: "tautulli.${SECRET_DOMAIN}"
             paths:
