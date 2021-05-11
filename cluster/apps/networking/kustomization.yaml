@@ -5,4 +5,4 @@ resources:
 - wildcard-certificate
 - authentik
 - unifi
-
+- cloudflare-ddns
