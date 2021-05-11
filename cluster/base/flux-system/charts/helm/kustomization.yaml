@@ -9,3 +9,4 @@ resources:
 - nfs-subdir-external-provisioner-charts.yaml
 - authentik-charts.yaml
 - grafana-charts.yaml
+- longhorn-charts.yaml
