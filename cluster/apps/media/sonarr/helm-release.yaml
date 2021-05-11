@@ -43,8 +43,7 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
-        accessMode: ReadWriteMany
-        size: 1Gi
+        accessMode: ReadWriteOnce
     additionalVolumes:
     - name: tv
       nfs:
