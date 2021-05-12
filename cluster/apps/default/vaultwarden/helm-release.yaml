@@ -79,6 +79,6 @@ spec:
       postgresqlDatabase: "vaultwarden"
       persistence:
         enabled: true
-        storageClass:
+        storageClass: 
         accessModes:
           - ReadWriteOnce
