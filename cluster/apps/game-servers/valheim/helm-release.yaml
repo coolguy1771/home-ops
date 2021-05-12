@@ -30,7 +30,7 @@ spec:
       SERVER_NAME: ICB
       SERVER_PORT: 2456
       WORLD_NAME: forestsfort
-      SERVER_PASS: "${SECRET_VALHEIM_SERVER_PASSWORD}"
+      SERVER_PASS: pleasechangeme
       SERVER_PUBLIC: true
       UPDATE_INTERVAL: 10800 # every 3 hours
       BACKUPS: true
