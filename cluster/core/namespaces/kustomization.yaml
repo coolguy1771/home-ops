@@ -10,3 +10,4 @@ resources:
 - external.yaml
 - monitoring.yaml
 - longhorn-system.yaml
+- game-servers.yaml
