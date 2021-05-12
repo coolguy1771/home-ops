@@ -24,7 +24,8 @@ spec:
                     name: cloudflare-ddns
               command: ["/bin/sh", "-c"]
               args: 
-                - echo "starting script" && \
+                - |
+                  echo "starting script" && \
                   export ip4=$(curl https://ipv4.icanhazip.com/) && \
                   echo "my ipv4 is $ip4" && \
                   export cfUrl="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONEID/dns_records?name=$CLOUDFLARE_RECORD_NAME&type=A" && \
