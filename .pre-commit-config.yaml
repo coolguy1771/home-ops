@@ -14,7 +14,7 @@ repos:
   - id: end-of-file-fixer
   - id: mixed-line-ending
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.1.9
+  rev: v1.1.10
   hooks:
   - id: remove-crlf
   - id: remove-tabs
@@ -23,6 +23,6 @@ repos:
   hooks:
   - id: fix-smartquotes
 - repo: https://github.com/k8s-at-home/sops-pre-commit
-  rev: v2.0.2
+  rev: v2.0.3
   hooks:
   - id: forbid-secrets
