@@ -24,7 +24,7 @@ spec:
                     name: cloudflare-ddns
               command: ["/bin/sh", "-c"]
               args: 
-                - ( echo "starting script" && \
+                - echo "starting script" && \
                   export ip4=$(curl https://ipv4.icanhazip.com/) && \
                   echo "my ipv4 is $ip4" && \
                   export cfUrl="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONEID/dns_records?name=$CLOUDFLARE_RECORD_NAME&type=A" && \
@@ -39,4 +39,4 @@ spec:
                   export record4_identifier=$(echo "$record4" | sed -n 's/.*"id":"\([^"]*\).*/\1/p') && \
                   echo "my record 4 identifier is $record4_identifier" && \
                   export cfUrl2="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONEID/dns_records/$record4_identifier" && \
-                  export update4=$(curl -s -X PUT -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $CLOUDFLARE_APIKEY" -H "Content-Type: application/json" "$cfUrl2"))
+                  export update4=$(curl -s -X PUT -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $CLOUDFLARE_APIKEY" -H "Content-Type: application/json" "$cfUrl2")
