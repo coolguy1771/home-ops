@@ -29,7 +29,7 @@ spec:
     env:
       SERVER_NAME: ICB
       SERVER_PORT: 2456
-      WORLD_NAME: forestsfort
+      WORLD_NAME: Forestsfort
       SERVER_PASS: pleasechangeme
       SERVER_PUBLIC: true
       UPDATE_INTERVAL: 10800 # every 3 hours
