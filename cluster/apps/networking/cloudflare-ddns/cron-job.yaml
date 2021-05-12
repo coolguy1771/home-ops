@@ -14,6 +14,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          hostNetwork: true
           containers:
           - name: cloudflare-ddns
             image: curlimages/curl:7.76.1
