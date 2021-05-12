@@ -43,4 +43,13 @@ spec:
   - kind: HelmRelease
     namespace: 'networking'
     name: '*'
+  - kind: HelmRelease
+    namespace: 'external'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'game-servers'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'longhorn-system'
+    name: '*'
   suspend: false
