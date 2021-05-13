@@ -9,7 +9,7 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.longhorn.io
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: valheim
       version: 2.4.0
       sourceRef:
