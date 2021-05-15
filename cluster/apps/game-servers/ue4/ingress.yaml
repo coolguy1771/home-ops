@@ -6,7 +6,7 @@ metadata:
     forecastle.stakater.com/expose: "true"
     forecastle.stakater.com/icon: ""
   name: ue4
-  namespace: external
+  namespace: game-servers
 spec:
   rules:
   - host: ue4.witlinserver.com
