@@ -23,4 +23,4 @@ spec:
   tls:
   - hosts:
     - torrnet.witlinserver.com
-    secretName: qBittorrent-cert
+    secretName: qbittorrent-cert
