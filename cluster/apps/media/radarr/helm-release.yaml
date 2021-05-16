@@ -19,7 +19,7 @@ spec:
     image:
       repository: ghcr.io/k8s-at-home/radarr
       pullPolicy: IfNotPresent
-      tag: v3.0.2.4552
+      tag: v3.1.1.4954
     strategy:
       type: Recreate
     ingress:
@@ -50,9 +50,9 @@ spec:
         server: 192.168.1.147
         path: /mnt/user/Media/content/movies
     additionalVolumeMounts:
-      - mountPath: /mnt/user/Media/content/movies
-        name: movies
-        readOnly: false
+    - mountPath: /mnt/user/Media/content/movies
+      name: movies
+      readOnly: false
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
