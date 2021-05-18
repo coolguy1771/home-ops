@@ -49,9 +49,16 @@ spec:
       nfs:
         server: 192.168.1.147
         path: /mnt/user/Media/content/movies
+    - name: downloads
+      nfs:
+        server: 192.168.1.147
+        path: /mnt/user/downloads/complete/radarr/
     additionalVolumeMounts:
     - mountPath: /mnt/user/Media/content/movies
       name: movies
+      readOnly: false
+    - mountPath: /mnt/downloads
+      name: downloads
       readOnly: false
     podSecurityContext:
       runAsUser: 1000
