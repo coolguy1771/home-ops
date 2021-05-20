@@ -8,6 +8,8 @@ spec:
   interval: 5m
   chart:
     spec:
+      chart: arma-3-server
+      version: 1.0.0
       git: https://github.com/coolguy1771/k3s.git
       ref: main
       path: cluster/apps/game-servers/arma/
