@@ -9,9 +9,10 @@ spec:
   chart:
     spec:
       chart: arma-3-server
-      version: 1.0.0
+      version: 1.0.1
       sourceRef:
         kind: GitRepository
+        name: arma-3-server
         git: https://github.com/coolguy1771/k3s.git
         ref: main
         path: cluster/apps/game-servers/arma/
