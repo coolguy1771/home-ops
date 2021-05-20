@@ -5,3 +5,7 @@ dependencies:
   - name: common
     repository: https://library-charts.k8s-at-home.com
     version: 2.5.0
+spec:
+  git: https://github.com/coolguy1771/k3s.git
+  ref: main
+  path: cluster/apps/game-servers/arma/
