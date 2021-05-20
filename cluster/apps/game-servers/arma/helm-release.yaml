@@ -7,7 +7,7 @@ metadata:
 spec:
   chart:
     git: https://github.com/coolguy1771/k3s.git
-    ref: master
+    ref: main
     path: cluster/apps/game-servers/arma/
   values:
     image:
