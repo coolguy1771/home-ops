@@ -20,7 +20,7 @@ spec:
     replicas: 1
     image:
       name: docker.beryju.org/authentik/server
-      tag: gh-next
+      tag: 2021.5.3
       pullPolicy: IfNotPresent
     ingress:
       annotations:
