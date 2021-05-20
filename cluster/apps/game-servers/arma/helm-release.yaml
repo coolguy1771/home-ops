@@ -1,0 +1,56 @@
+---
+spec:
+  chart:
+    git: https://github.com/coolguy1771/k3s.git
+    ref: master
+    path: cluster/apps/game-servers/arma/
+  values:
+    image:
+      repository: synixebrett/arma3server@sha-256
+      pullPolicy: Always
+      tag: 9e328efec629ecaae2d130d36406cc5ce07129f2e819ab79ec1f52137b7f5987
+    strategy:
+      type: Recreate
+    env:
+      ARMA_BINARY: ./arma3server_x64
+      ARMA_CONFIG: main.cfg
+      ARMA_PROFILE: main
+      STEAM_USER: "${SECRET_ARMA_STEAM_USERNAME}"
+      STEAM_PASSWORD: "${SECRET_ARMA_STEAM_PASSWORD}"
+    service:
+      port:
+        port: 2302
+        protocol: UDP
+      additionalPorts:
+        port:
+          - port: 2303
+            name: steamquery
+            protocol: UDP
+          - port: 2304
+            name: steammaster
+            protocol: UDP
+          - port: 2305
+            name: von
+            protocol: UDP
+          - port: 2306
+            name: battleye
+            protocol: UDP
+    ingress:
+      enabled: true
+      domainName: "arma.witlinserver.com"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+      hosts:
+        - hostTpl: '{{ .Values.ingress.domainName }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hostsTpl: ['{{ .Values.ingress.domainName }}']
+          secretNameTpl: '{{ .Values.ingress.domainName | replace "." "-" }}'
+
+    persistence:
+      config:
+        enabled: true
+        storageClass: longhorn
+        mountPath: /arma3
