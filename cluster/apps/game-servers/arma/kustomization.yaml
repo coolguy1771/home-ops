@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - Chart.yaml
 - values.yaml
+- templates
