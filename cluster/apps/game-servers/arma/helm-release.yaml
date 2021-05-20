@@ -13,9 +13,10 @@ spec:
       sourceRef:
         kind: GitRepository
         name: arma-3-server
-        git: https://github.com/coolguy1771/k3s.git
-        ref: main
-        path: cluster/apps/game-servers/arma/
+        #git: https://github.com/coolguy1771/k3s.git
+        #ref: main
+        #path: cluster/apps/game-servers/arma/
+        namespace: game-servers
   values:
     image:
       repository: synixebrett/arma3server@sha-256
