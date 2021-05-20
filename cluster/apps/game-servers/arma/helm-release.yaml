@@ -6,9 +6,9 @@ metadata:
   namespace: game-servers
 spec:
   chart:
-    git: https://github.com/coolguy1771/k3s.git
-    ref: main
-    path: cluster/apps/game-servers/arma/
+    #git: https://github.com/coolguy1771/k3s.git
+    #ref: main
+    #path: cluster/apps/game-servers/arma/
     interval: 5m
   values:
     image:
