@@ -8,7 +8,7 @@ spec:
   chart:
     git: https://github.com/coolguy1771/k3s.git
     ref: main
-    path: cluster/apps/game-servers/arma/
+    path: cluster/apps/game-servers/arma
     interval: 5m
   values:
     image:
@@ -54,7 +54,6 @@ spec:
       tls:
         - hostsTpl: ['{{ .Values.ingress.domainName }}']
           secretNameTpl: '{{ .Values.ingress.domainName | replace "." "-" }}'
-
     persistence:
       config:
         enabled: true
