@@ -1,14 +1,14 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: arma
   namespace: game-servers
 spec:
   chart:
-    #git: https://github.com/coolguy1771/k3s.git
-    #ref: main
-    #path: cluster/apps/game-servers/arma/
+    git: https://github.com/coolguy1771/k3s.git
+    ref: main
+    path: cluster/apps/game-servers/arma/
     interval: 5m
   values:
     image:
