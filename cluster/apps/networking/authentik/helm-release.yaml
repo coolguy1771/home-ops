@@ -54,6 +54,8 @@ spec:
         environment: "k8s"
         send_pii: true
       postgresql:
+        name: "authentik"
+        user: "authentik"
         password: "gGPbx8CVNxGKWI75m77l3tOLKBzRIhLw8r83Vzvfanolaroq"
         s3_backup:
           access_key: "${SECRET_S3_KEY}"
@@ -68,7 +70,9 @@ spec:
   #  editionIds: "GeoLite2-City"
     postgresql:
       enabled: true
+      postgresqlUsername: "authentik"
       postgresqlPassword: "gGPbx8CVNxGKWI75m77l3tOLKBzRIhLw8r83Vzvfanolaroq"
+      postgresqlDatabase: "authentik"
       persistence:
         enabled: true
         storageClass: longhorn
