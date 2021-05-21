@@ -36,7 +36,6 @@ spec:
             - auth.witlinserver.com
     authentik:
       log_level: info
-      secret_key: ""
       email:
         host: "smtp.sendgrid.net"
         port: 587
