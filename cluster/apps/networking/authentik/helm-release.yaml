@@ -70,10 +70,10 @@ spec:
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       postgresqlDatabase: "authentik"
       persistence:
-        enabled: false
-     #   storageClass: longhorn
-      #  accessModes:
-      #    - ReadWriteMany
+        enabled: true
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteMany
     redis:
       enabled: true
       auth:
