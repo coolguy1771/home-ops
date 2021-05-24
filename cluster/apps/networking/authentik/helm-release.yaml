@@ -35,6 +35,7 @@ spec:
           hosts:
             - auth.witlinserver.com
     authentik:
+      secret_key: "${SECRET_AUTHENTIK_KEY}"
       log_level: info
       email:
         host: "smtp.sendgrid.net"
