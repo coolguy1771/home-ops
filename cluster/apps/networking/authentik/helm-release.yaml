@@ -57,11 +57,6 @@ spec:
         name: "authentik"
         user: "authentik"
         password: "gGPbx8CVNxGKWI75m77l3tOLKBzRIhLw8r83Vzvfanolaroq"
-        s3_backup:
-          access_key: "${SECRET_S3_KEY}"
-          bucket: "authentik"
-          region: "us-east-1"
-          host: "http://192.168.1.147:9768"
     geoip:
       enabled: true
       schedule: "0 */8 * * *"
