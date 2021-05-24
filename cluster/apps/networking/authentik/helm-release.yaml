@@ -57,12 +57,12 @@ spec:
         name: "authentik"
         user: "authentik"
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
-    geoip:
-      enabled: true
-      schedule: "0 */8 * * *"
-      accountId: "418977"
-      licenseKey: "${SECRET_GEOIP_KEY}"
-      editionIds: "GeoLite2-City"
+    #geoip:
+    #  enabled: true
+    #  schedule: "0 */8 * * *"
+    #  accountId: "418977"
+    #  licenseKey: "${SECRET_GEOIP_KEY}"
+    #  editionIds: "GeoLite2-City"
     postgresql:
       enabled: true
       postgresqlUsername: "authentik"
