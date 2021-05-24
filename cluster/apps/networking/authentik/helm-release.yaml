@@ -72,7 +72,7 @@ spec:
         enabled: false
         storageClass: longhorn
         accessModes:
-          - ReadWriteOnce
+          - ReadWriteMany
     redis:
       enabled: true
       auth:
