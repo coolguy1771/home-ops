@@ -69,7 +69,7 @@ spec:
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       postgresqlDatabase: "authentik"
       persistence:
-        enabled: true
+        enabled: false
         storageClass: longhorn
         accessModes:
           - ReadWriteOnce
