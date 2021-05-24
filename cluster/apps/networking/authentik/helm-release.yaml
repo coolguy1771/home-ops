@@ -71,9 +71,9 @@ spec:
       postgresqlDatabase: "authentik"
       persistence:
         enabled: false
-        storageClass: longhorn
-        accessModes:
-          - ReadWriteMany
+     #   storageClass: longhorn
+      #  accessModes:
+      #    - ReadWriteMany
     redis:
       enabled: true
       auth:
