@@ -79,7 +79,7 @@ spec:
     # -- postgresql Username
     # @default -- `authentik`
         user: "authentik"
-        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+        #password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
         port: 5432
       redis:
     # -- set the redis hostname to talk to
@@ -116,7 +116,7 @@ spec:
   # -- enable the bundled bitnami postgresql chart
       enabled: true
       postgresqlUsername: "authentik"
-      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+      #postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       postgresqlDatabase: "authentik"
     persistence:
       enabled: true
