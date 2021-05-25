@@ -23,18 +23,25 @@ spec:
       pullPolicy: IfNotPresent
 
     ingress:
-      enabled: false
-      ingressClassName: ""
-      annotations: {}
+      enabled: true
+      ingressClassName: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        forecastle.stakater.com/expose: "true"
+        #forecastle.stakater.com/icon:
+        cert-manager.io/cluster-issuer: letsencrypt-production
       labels: {}
       hosts:
-        - host: authentik.domain.tld
+        - host: auth.witlinserver.com
           paths:
             - path: "/"
               pathType: Prefix
+          tls:
+        - hosts:
+            - "auth.${SECRET_DOMAIN}"
     authentik:
       # -- Log level for server and worker
-      log_level: info
+      log_level: debug
       # -- Secret key used for cookie singing and unique user IDs,
       # don't change this after the first install
       secret_key: "${SECRET_AUTHENTIK_KEY}"
@@ -119,7 +126,7 @@ spec:
       #postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       postgresqlDatabase: "authentik"
     persistence:
-      enabled: true
+      enabled: false
       storageClass: longhorn
   #   accessModes:
   #     - ReadWriteOnce
