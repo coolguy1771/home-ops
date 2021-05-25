@@ -89,7 +89,7 @@ spec:
       postgresqlDatabase: "authentik"
     persistence:
       enabled: false
-      storageClass: local-path
+      storageClass: longhorn
   #   accessModes:
   #     - ReadWriteOnce
     redis:
