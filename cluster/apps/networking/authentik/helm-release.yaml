@@ -58,7 +58,7 @@ spec:
         host: '{{ .Release.Name }}-postgresql'
         name: "authentik"
         user: "authentik"
-        #password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+        password: "J55mTEyHneRU66uhjQ3Gj3tbTpF4678ASX8iJqBuX6f9f2Y6fi"
         port: 5432
       redis:
         host: '{{ .Release.Name }}-redis-master'
@@ -85,7 +85,7 @@ spec:
     postgresql:
       enabled: true
       postgresqlUsername: "authentik"
-      #postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+      postgresqlPassword: "J55mTEyHneRU66uhjQ3Gj3tbTpF4678ASX8iJqBuX6f9f2Y6fi"
       postgresqlDatabase: "authentik"
     persistence:
       enabled: false
