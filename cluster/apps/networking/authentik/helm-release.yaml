@@ -28,13 +28,12 @@ spec:
         forecastle.stakater.com/expose: "true"
         #forecastle.stakater.com/icon:
         cert-manager.io/cluster-issuer: letsencrypt-production
-      labels: {}
       hosts:
         - host: auth.witlinserver.com
           paths:
             - path: "/"
               pathType: Prefix
-          tls:
+      tls:
         - hosts:
             - "auth.${SECRET_DOMAIN}"
     authentik:
