@@ -17,64 +17,114 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    replicas: 1
     image:
       name: ghcr.io/goauthentik/server
       tag: 2021.5.3
       pullPolicy: IfNotPresent
+
     ingress:
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        forecastle.stakater.com/expose: "true"
-        forecastle.stakater.com/icon: "https://avatars.githubusercontent.com/u/82976448"
-        cert-manager.io/cluster-issuer: letsencrypt-production
+      enabled: false
+      ingressClassName: ""
+      annotations: {}
+      labels: {}
       hosts:
-        - auth.witlinserver.com
-      tls:
-        - secretName: auth.witlinserver.com
-          hosts:
-            - auth.witlinserver.com
+        - host: authentik.domain.tld
+          paths:
+            - path: "/"
+              pathType: Prefix
     authentik:
-      secret_key: "${SECRET_AUTHENTIK_KEY}"
+      # -- Log level for server and worker
       log_level: info
+      # -- Secret key used for cookie singing and unique user IDs,
+      # don't change this after the first install
+      secret_key: "${SECRET_AUTHENTIK_KEY}"
       email:
+    # -- SMTP Server emails are sent from, fully optional
         host: "smtp.sendgrid.net"
         port: 587
+    # -- SMTP credentials, when left empty, not authentication will be done
         username: "apikey"
+    # -- SMTP credentials, when left empty, not authentication will be done
         password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
+    # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
         use_tls: true
-        use_ssl: true
+    # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
+        use_ssl: false
+    # -- Connection timeout
         timeout: 30
-        from: "auth@witlinserver.com"
+    # -- Email from address, can either be in the format "foo@bar.baz" or "Authentik <foo@bar.baz>"
+        from: "Authentik <auth@witlinserver.com>"
       outposts:
+    # -- Template used for managed outposts. The following placeholders can be used
+    # %(type)s - the type of the outpost
+    # %(version)s - version of your authentik install
+    # %(build_hash)s - only for beta versions, the build hash of the image
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       error_reporting:
-        # This sends anonymous usage-data, stack traces on errors and
-        # performance data to sentry.beryju.org, and is fully opt-in
+    # -- This sends anonymous usage-data, stack traces on errors and
+    # performance data to sentry.beryju.org, and is fully opt-in
         enabled: true
+    # -- This is a string that is sent to sentry with your error reports
         environment: "k8s"
-        send_pii: true
+    # -- Send PII (Personally identifiable information) data to sentry
+        send_pii: false
       postgresql:
+    # -- set the postgresql hostname to talk to
+    # if unset and .Values.postgresql.enabled == true, will generate the default
+    # @default -- `{{ .Release.Name }}-postgresql`
+        host: '{{ .Release.Name }}-postgresql'
+    # -- postgresql Database name
+    # @default -- `authentik`
         name: "authentik"
+    # -- postgresql Username
+    # @default -- `authentik`
         user: "authentik"
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
-    #geoip:
-    #  enabled: true
-    #  schedule: "0 */8 * * *"
-    #  accountId: "418977"
-    #  licenseKey: "${SECRET_GEOIP_KEY}"
-    #  editionIds: "GeoLite2-City"
+        port: 5432
+      redis:
+    # -- set the redis hostname to talk to
+    # @default -- `{{ .Release.Name }}-redis-master`
+        host: '{{ .Release.Name }}-redis-master'
+        password: ""
+
+# -- see configuration options at https://goauthentik.io/docs/installation/configuration/
+    env: {}
+# AUTHENTIK_VAR_NAME: VALUE
+
+    service:
+  # -- Service that is created to access authentik
+      enabled: true
+      type: ClusterIP
+      port: 80
+      name: http
+      protocol: TCP
+      labels: {}
+      annotations: {}
+
+
+    geoip:
+  # -- optional GeoIP, deploys a cronjob to download the maxmind database
+      enabled: false
+      schedule: "0 */8 * * *"
+  # -- sign up under https://www.maxmind.com/en/geolite2/signup
+      accountId: ""
+  # -- sign up under https://www.maxmind.com/en/geolite2/signup
+      licenseKey: ""
+      editionIds: "GeoLite2-City"
+
     postgresql:
+  # -- enable the bundled bitnami postgresql chart
       enabled: true
       postgresqlUsername: "authentik"
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       postgresqlDatabase: "authentik"
-      persistence:
-        enabled: true
-        storageClass: longhorn
-        accessModes:
-          - ReadWriteMany
+    persistence:
+      enabled: true
+      storageClass: longhorn
+  #   accessModes:
+  #     - ReadWriteOnce
     redis:
+      # -- enable the bundled bitnami redis chart
       enabled: true
       auth:
         enabled: false
