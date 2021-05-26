@@ -35,5 +35,6 @@ spec:
     postgresql:
       enabled: true
       postgresqlPassword: "ThisIsNotASecurePassword"
+      storageClass: longhorn
     redis:
       enabled: true
