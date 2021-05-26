@@ -29,7 +29,7 @@ spec:
         #forecastle.stakater.com/icon:
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - host: auth.witlinserver.com
+        - host: "auth.${SECRET_DOMAIN}"
           paths:
             - path: "/"
               pathType: Prefix
