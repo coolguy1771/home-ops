@@ -17,82 +17,25 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    image:
-      name: ghcr.io/goauthentik/server
-      tag: 2021.5.3
-      pullPolicy: IfNotPresent
+    authentik:
+      secret_key: "PleaseGenerateA50CharKey"
+      # This sends anonymous usage-data, stack traces on errors and
+      # performance data to sentry.beryju.org, and is fully opt-in
+      error_reporting:
+        enabled: true
+      postgresql:
+        password: "ThisIsNotASecurePassword"
+
     ingress:
       enabled: true
-      ingressClassName: "nginx"
-      annotations:
-        forecastle.stakater.com/expose: "true"
-        #forecastle.stakater.com/icon:
-        cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - host: "auth.${SECRET_DOMAIN}"
+        - host: authentik.domain.tld
           paths:
             - path: "/"
               pathType: Prefix
-      tls:
-        - hosts:
-            - "auth.${SECRET_DOMAIN}"
-    authentik:
-      log_level: debug
-      secret_key: "${SECRET_AUTHENTIK_KEY}"
-      email:
-        host: "smtp.sendgrid.net"
-        port: 587
-        username: "apikey"
-        password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
-        use_tls: true
-        use_ssl: false
-        timeout: 30
-        from: "Authentik <auth@witlinserver.com>"
-      outposts:
-        docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
-      error_reporting:
-        enabled: true
-        environment: "k8s"
-        send_pii: false
-      postgresql:
-        host: '{{ .Release.Name }}-postgresql'
-        name: "authentik"
-        user: "authentik"
-        password: "2QMMwB41Qo"
-        port: 5432
-      redis:
-        host: '{{ .Release.Name }}-redis-master'
-        password: ""
-# -- see configuration options at https://goauthentik.io/docs/installation/configuration/
-    env: {}
-    service:
-      enabled: true
-      type: ClusterIP
-      port: 80
-      name: http
-      protocol: TCP
-      labels: {}
-      annotations: {}
-    geoip:
-  # -- optional GeoIP, deploys a cronjob to download the maxmind database
-      enabled: false
-      schedule: "0 */8 * * *"
-  # -- sign up under https://www.maxmind.com/en/geolite2/signup
-      accountId: ""
-  # -- sign up under https://www.maxmind.com/en/geolite2/signup
-      licenseKey: ""
-      editionIds: "GeoLite2-City"
+
     postgresql:
       enabled: true
-      postgresqlUsername: "authentik"
-      postgresqlPassword: "2QMMwB41Qo"
-      postgresqlDatabase: "authentik"
-    persistence:
-      enabled: false
-      storageClass: longhorn
-  #   accessModes:
-  #     - ReadWriteOnce
+      postgresqlPassword: "ThisIsNotASecurePassword"
     redis:
       enabled: true
-      auth:
-        enabled: false
