@@ -18,7 +18,7 @@ spec:
       interval: 5m
   values:
     authentik:
-      secret_key: "PleaseGenerateA50CharKey"
+      secret_key: "${SECRET_AUTHENTIK_KEY}"
       # This sends anonymous usage-data, stack traces on errors and
       # performance data to sentry.beryju.org, and is fully opt-in
       error_reporting:
