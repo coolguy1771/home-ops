@@ -25,6 +25,7 @@ spec:
           - media
           - default
           - external
+          - networking
       ingress:
         enabled: true
         annotations:
