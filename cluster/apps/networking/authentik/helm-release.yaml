@@ -37,3 +37,6 @@ spec:
       postgresqlPassword: "ThisIsNotASecurePassword"
     redis:
       enabled: true
+    podSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
