@@ -11,3 +11,4 @@ resources:
 - monitoring.yaml
 - longhorn-system.yaml
 - game-servers.yaml
+- auth.yaml
