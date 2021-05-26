@@ -28,7 +28,7 @@ spec:
     ingress:
       enabled: true
       hosts:
-        - host: authentik.domain.tld
+        - host: auth.witlinserver.com
           paths:
             - path: "/"
               pathType: Prefix
