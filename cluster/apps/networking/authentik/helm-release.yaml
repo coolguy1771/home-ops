@@ -17,14 +17,33 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    image:
+      name: ghcr.io/goauthentik/server
+      tag: 2021.5.4
+      pullPolicy: IfNotPresent
     authentik:
       secret_key: "${SECRET_AUTHENTIK_KEY}"
-      # This sends anonymous usage-data, stack traces on errors and
-      # performance data to sentry.beryju.org, and is fully opt-in
       error_reporting:
         enabled: true
+        environment: "k8s"
+      email:
+      # -- SMTP Server emails are sent from, fully optional
+        host: "smtp.sendgrid.net"
+        port: 587
+    # -- SMTP credentials, when left empty, not authentication will be done
+        username: "apikey"
+    # -- SMTP credentials, when left empty, not authentication will be done
+        password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
+    # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
+        use_tls: true
+    # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
+        use_ssl: false
+    # -- Connection timeout
+        timeout: 30
+    # -- Email from address, can either be in the format "foo@bar.baz" or "Authentik <foo@bar.baz>"
+        from: "Authentik <auth@witlinserver.com>"
       postgresql:
-        password: "ThisIsNotASecurePassword"
+        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     ingress:
       enabled: true
       hosts:
@@ -37,7 +56,7 @@ spec:
             - "auth.${SECRET_DOMAIN}"
     postgresql:
       enabled: true
-      postgresqlPassword: "ThisIsNotASecurePassword"
+      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       storageClass: longhorn
     redis:
       enabled: true
