@@ -22,8 +22,6 @@ spec:
       tag: v2.7.0
     strategy:
       type: Recreate
-    env: {}
-    # TZ: UTC
     ingress:
       enabled: true
       annotations:
