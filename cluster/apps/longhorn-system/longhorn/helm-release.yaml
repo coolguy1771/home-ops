@@ -20,6 +20,7 @@ spec:
   values:
     persistence:
       defaultClassReplicaCount: 2
+      defaultClass: false
     defaultSettings:
       defaultReplicaCount: 2
       storageMinimalAvailablePercentage: "10"
