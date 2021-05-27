@@ -46,3 +46,4 @@ spec:
         emptyDir:
           enabled: false
         mountPath: /config
+        accessMode: ReadWriteMany
