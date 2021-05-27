@@ -32,6 +32,9 @@ spec:
           paths:
             - path: "/"
               pathType: Prefix
+      tls:
+        - hosts:
+            - "auth.${SECRET_DOMAIN}"
     postgresql:
       enabled: true
       postgresqlPassword: "ThisIsNotASecurePassword"
