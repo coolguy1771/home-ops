@@ -45,3 +45,4 @@ spec:
         storageClass: longhorn
         emptyDir:
           enabled: false
+        mountPath: /config
