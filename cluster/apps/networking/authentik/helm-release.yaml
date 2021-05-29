@@ -36,6 +36,20 @@ spec:
         from: "Authentik <auth@witlinserver.com>"
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+      s3_backup:
+      # -- optional S3 backup, access key
+        access_key: "wMpsrBLNW4zRKT9CTM9CZsk5e3gTx86g"
+      # -- optional S3 backup, secret key
+        secret_key: "SECRET_S3_KEY"
+      # -- optional S3 backup, bucket
+        bucket: "authentik"
+      # -- optional S3 backup, region
+        region: ""
+      # -- optional S3 backup, host, including protocol (https://minio.domain.tld)
+        host: "http://192.168.1.147:9768"
+      # -- optional S3 backup, location in the bucket
+      # @default -- `"/"`
+        location: ""
     ingress:
       enabled: true
       hosts:
