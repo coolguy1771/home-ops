@@ -37,14 +37,14 @@ spec:
         - "wiki.${SECRET_DOMAIN}"
     persistence:
       config:
-        enabled: false
+        enabled: true
         emptyDir:
           enabled: false
         accessMode: "ReadWriteOnce"
         size: "1Gi"
         storageClass: longhorn
     data:
-      enabled: false
+      enabled: true
       emptyDir:
         enabled: false
       accessMode: "ReadWriteOnce"
