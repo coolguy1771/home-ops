@@ -27,20 +27,12 @@ spec:
         enabled: true
         environment: "k8s"
       email:
-      # -- SMTP Server emails are sent from, fully optional
         host: "smtp.sendgrid.net"
         port: 587
-    # -- SMTP credentials, when left empty, not authentication will be done
         username: "apikey"
-    # -- SMTP credentials, when left empty, not authentication will be done
         password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
-    # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
         use_tls: true
-    # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
-        use_ssl: false
-    # -- Connection timeout
         timeout: 30
-    # -- Email from address, can either be in the format "foo@bar.baz" or "Authentik <foo@bar.baz>"
         from: "Authentik <auth@witlinserver.com>"
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
