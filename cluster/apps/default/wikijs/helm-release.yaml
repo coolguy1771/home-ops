@@ -40,14 +40,14 @@ spec:
         enabled: true
         emptyDir:
           enabled: false
-        accessMode: "ReadWriteOnce"
+        accessMode: "ReadWriteMany"
         size: "1Gi"
         storageClass: longhorn
-    data:
-      enabled: true
-      emptyDir:
-        enabled: false
-      accessMode: "ReadWriteOnce"
-      mountPath: /app/wiki/data
-      size: "1Gi"
-      storageClass: longhorn
+      data:
+        enabled: true
+        emptyDir:
+          enabled: false
+        accessMode: "ReadWriteMany"
+        mountPath: /app/wiki/data
+        size: "1Gi"
+        storageClass: longhorn
