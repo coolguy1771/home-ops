@@ -38,4 +38,4 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
