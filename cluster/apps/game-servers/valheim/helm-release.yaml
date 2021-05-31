@@ -49,7 +49,7 @@ spec:
     service:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
-      loadBalancerIP:
+      loadBalancerIP: 10.10.10.6
       port:
         port: 2456
         protocol: UDP
