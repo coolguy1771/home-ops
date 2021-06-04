@@ -66,7 +66,7 @@ spec:
         targetPort: 2458
       - name: valheim-4
         port: 9001
-        protocol: tcp
+        protocol: TCP
         targetPort: 9001
     persistence:
       config:
