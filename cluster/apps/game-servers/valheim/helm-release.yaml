@@ -64,10 +64,6 @@ spec:
         port: 2458
         protocol: UDP
         targetPort: 2458
-      - name: valheim-4
-        port: 9001
-        protocol: TCP
-        targetPort: 9001
     persistence:
       config:
         enabled: true
