@@ -73,6 +73,7 @@ spec:
         enabled: true
         mountPath: /config
         storageClass: longhorn
+        size: 20Gi
     resources:
       requests:
         memory: 2048Mi
