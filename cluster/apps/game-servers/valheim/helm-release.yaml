@@ -69,6 +69,7 @@ spec:
         mountPath: /config
         storageClass: longhorn
         size: 20Gi
+        accessMode: ReadWriteMany
     resources:
       requests:
         memory: 2048Mi
