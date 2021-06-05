@@ -46,8 +46,7 @@ spec:
       UPDATE_IF_IDLE: true
       DNS_1: 1.1.1.1
       DNS_2: 8.8.8.8
-      SUPERVISOR_HTTP: true
-      SUPERVISOR_HTTP_PASS: admin
+      SUPERVISOR_HTTP: false
     service:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
