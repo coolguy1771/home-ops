@@ -70,7 +70,7 @@ spec:
         enabled: true
         mountPath: /config
         storageClass: longhorn
-        size: 20Gi
+        size: 50Gi
         accessMode: ReadWriteMany
     resources:
       requests:
