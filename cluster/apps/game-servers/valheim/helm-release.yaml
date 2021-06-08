@@ -36,7 +36,7 @@ spec:
       BACKUPS: true
       BACKUPS_INTERVAL: 900 # every 15 minutes
       BACKUPS_DIRECTORY: /config/backups
-      BACKUPS_MAX_AGE: 3
+      BACKUPS_MAX_AGE: 1
       BACKUPS_DIRECTORY_PERMISSIONS: 755
       BACKUPS_FILE_PERMISSIONS: 644
       CONFIG_DIRECTORY_PERMISSIONS: 755
@@ -44,6 +44,8 @@ spec:
       WORLDS_FILE_PERMISSIONS: 644
       STEAMCMD_ARGS: validate
       UPDATE_IF_IDLE: true
+      RESTART_IF_IDLE: true
+      BACKUPS_IF_IDLE: false
       DNS_1: 1.1.1.1
       DNS_2: 8.8.8.8
       SUPERVISOR_HTTP: false
