@@ -42,7 +42,7 @@ spec:
       CONFIG_DIRECTORY_PERMISSIONS: 755
       WORLDS_DIRECTORY_PERMISSIONS: 755
       WORLDS_FILE_PERMISSIONS: 644
-      STEAMCMD_ARGS: validate
+      STEAMCMD_ARGS: force_install_dir /config/steamapps
       UPDATE_IF_IDLE: true
       RESTART_IF_IDLE: true
       BACKUPS_IF_IDLE: false
