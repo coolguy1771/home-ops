@@ -1,0 +1,44 @@
+image:
+  repository: synixebrett/arma3server
+  pullPolicy: Always
+  tag: latest
+strategy:
+  type: Recreate
+env:
+  ARMA_BINARY: ./arma3server_x64
+  ARMA_CONFIG: main.cfg
+  ARMA_PROFILE: main
+  STEAM_USER: "${SECRET_ARMA_STEAM_USERNAME}"
+  STEAM_PASSWORD: "${SECRET_ARMA_STEAM_PASSWORD}"
+
+service:
+  main:
+    externalIP: 10.10.10.80
+    type: LoadBalancer
+    ports:
+      arma:
+        port: 2302
+        enabled: true
+        protocol: UDP
+      steamquery:
+        port: 2303
+        enabled: true
+        protocol: UDP
+      steammaster:
+        port: 2304
+        enabled: ture
+        protocol: UDP
+      von:
+        port: 2304
+        enabled: ture
+        protocol: UDP
+      battleye:
+        port: 2304
+        enabled: ture
+        protocol: UDP
+
+persistence:
+  config:
+    enabled: true
+    storageClass: longhorn
+    mountPath: /arma3
