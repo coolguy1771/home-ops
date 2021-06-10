@@ -21,7 +21,7 @@ spec:
     image:
       repository: synixebrett/arma3server@sha-256
       pullPolicy: Always
-      tag: 9e328efec629ecaae2d130d36406cc5ce07129f2e819ab79ec1f52137b7f5987
+      tag: latest
     strategy:
       type: Recreate
     env:
