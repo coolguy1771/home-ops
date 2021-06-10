@@ -10,7 +10,6 @@ env:
   ARMA_PROFILE: main
   STEAM_USER: "${SECRET_ARMA_STEAM_USERNAME}"
   STEAM_PASSWORD: "${SECRET_ARMA_STEAM_PASSWORD}"
-
 service:
   main:
     externalIP: 10.10.10.80
@@ -36,9 +35,16 @@ service:
         port: 2304
         enabled: ture
         protocol: UDP
-
 persistence:
   config:
     enabled: true
     storageClass: longhorn
+    size: 100Gi
     mountPath: /arma3
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: false
+  startup:
+    enabled: false
