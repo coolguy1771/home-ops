@@ -47,7 +47,7 @@ spec:
     additionalVolumes:
     - name: downloads
       nfs:
-        server: 192.168.1.147
+        server: 192.168.1.152
         path: /mnt/user/downloads/complete
     additionalVolumeMounts:
     - mountPath: /mnt/user/downloads/complete

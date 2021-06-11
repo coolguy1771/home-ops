@@ -47,11 +47,11 @@ spec:
     additionalVolumes:
     - name: tv
       nfs:
-        server: 192.168.1.147
+        server: 192.168.1.152
         path: /mnt/user/Media/content/tv
     - name: downloads
       nfs:
-        server: 192.168.1.147
+        server: 192.168.1.152
         path: /mnt/user/downloads/complete/tv-sonarr/
     additionalVolumeMounts:
     - mountPath: /mnt/user/Media/content/tv
