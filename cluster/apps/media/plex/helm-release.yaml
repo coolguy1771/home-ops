@@ -85,11 +85,11 @@ spec:
     additionalVolumes:
     - name: tv
       nfs:
-        server: 192.168.1.152
+        server: 192.168.1.147
         path: /mnt/user/Media/content/tv
     - name: movies
       nfs:
-        server: 192.168.1.152
+        server: 192.168.1.147
         path: /mnt/user/Media/content/movies
     additionalVolumeMounts:
     - mountPath: /mnt/user/Media/content/tv

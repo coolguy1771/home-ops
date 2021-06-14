@@ -46,7 +46,7 @@ spec:
       # -- optional S3 backup, region
         region: ""
       # -- optional S3 backup, host, including protocol (https://minio.domain.tld)
-        host: "http://192.168.1.152:9768"
+        host: "http://192.168.1.147:9768"
       # -- optional S3 backup, location in the bucket
       # @default -- `"/"`
         location: ""
