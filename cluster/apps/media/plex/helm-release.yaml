@@ -72,16 +72,19 @@ spec:
         emptyDir:
           enabled: false
         mountPath: /config
+        accessMode: ReadWriteOnce
       tmp:
         enabled: true
         emptyDir:
           enabled: true
           medium: "Memory"
+        accessMode: ReadWriteMany
       transcode:
         enabled: true
         emptyDir:
           enabled: true
         mountPath: /transcode
+        accessMode: ReadWriteMany
     additionalVolumes:
     - name: tv
       nfs:
