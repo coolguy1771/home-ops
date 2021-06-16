@@ -1,7 +1,0 @@
-name: arma-3-server
-apiVersion: v2
-version: 1.0.1
-dependencies:
-  - name: common
-    repository: https://library-charts.k8s-at-home.com
-    version: 3.0.1
