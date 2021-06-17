@@ -35,11 +35,11 @@ spec:
         forecastle.stakater.com/icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/unifi-banner.png
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - ui.witlinserver.com
+        - "ui.${SECRET_DOMAIN}"
       path: /
       tls:
         - hosts:
-            - ui.witlinserver.com
+            - "ui.${SECRET_DOMAIN}"
     guiService:
       type: LoadBalancer
       loadBalancerIP: 10.10.10.252
