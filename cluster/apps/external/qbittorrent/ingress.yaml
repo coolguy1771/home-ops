@@ -10,7 +10,7 @@ metadata:
   namespace: external
 spec:
   rules:
-  - host: torrent.witlinserver.com
+  - host: "torrent.${SECRET_DOMAIN}"
     http:
       paths:
       - pathType: Prefix
@@ -22,5 +22,5 @@ spec:
               number: 8080
   tls:
   - hosts:
-    - torrnet.witlinserver.com
+    - "torrnet.${SECRET_DOMAIN}"
     secretName: qbittorrent-cert
