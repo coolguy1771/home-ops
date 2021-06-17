@@ -41,7 +41,7 @@ spec:
     persistence:
       config:
         enabled: true
-        accessMode: ReadWriteOnce
+        accessMode: ReadWriteMany
         storageClass: longhorn
         size: 1Gi
         #existingClaim: jackett-config
