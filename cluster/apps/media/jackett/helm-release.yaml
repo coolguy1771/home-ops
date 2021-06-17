@@ -44,6 +44,7 @@ spec:
         accessMode: ReadWriteOnce
         storageClass: longhorn
         size: 1Gi
+        mountPath: /config/jackett
         #existingClaim: jackett-config
     resources:
       requests:
