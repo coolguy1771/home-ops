@@ -51,21 +51,22 @@ spec:
       PLEX_PREFERENCE_24: "CinemaTrailersType=0"
     hostNetwork: true
     ingress:
-      enabled: true
-      annotations:
-        forecastle.stakater.com/expose: "true"
-        forecastle.stakater.com/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: "nginx"
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-      hosts:
-      - host: "plex.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "plex.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          forecastle.stakater.com/expose: "true"
+          forecastle.stakater.com/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "nginx"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        hosts:
+        - host: "plex.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "plex.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
@@ -73,31 +74,33 @@ spec:
           enabled: false
         mountPath: /config
         accessMode: ReadWriteOnce
+        storageClass: longhorn
       tmp:
         enabled: true
-        emptyDir:
-          enabled: true
-          medium: "Memory"
+        type: emptyDir
         accessMode: ReadWriteMany
+        size: 1Gi
+        storageClass: nfs-client
       transcode:
-        enabled: true
+        enabled: false
         emptyDir:
           enabled: true
         mountPath: /transcode
         accessMode: ReadWriteMany
-    additionalVolumes:
-    - name: tv
-      nfs:
-        server: 192.168.1.147
-        path: /mnt/user/Media/content/tv
-    - name: movies
-      nfs:
-        server: 192.168.1.147
-        path: /mnt/user/Media/content/movies
-    additionalVolumeMounts:
-    - mountPath: /mnt/user/Media/content/tv
-      name: tv
-      readOnly: true
-    - mountPath: /mnt/user/Media/content/movies
-      name: movies
-      readOnly: true
+        size: 10Gi
+      movies:
+        type: custom
+        mountPath: /movies
+        readOnly: true
+        volumeSpec:
+        nfs:
+          server: 192.168.1.147
+          path: /mnt/user/Media/content/movies
+      tv:
+        type: custom
+        mountPath: /tv
+        readOnly: true
+        volumeSpec:
+        nfs:
+          server: 192.168.1.147
+          path: /mnt/user/Media/content/tv
