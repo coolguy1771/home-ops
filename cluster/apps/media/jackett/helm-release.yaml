@@ -45,3 +45,9 @@ spec:
         storageClass: longhorn
         size: 1Gi
         #existingClaim: jackett-config
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 1000Mi
