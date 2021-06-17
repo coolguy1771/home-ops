@@ -53,7 +53,7 @@ spec:
     ingress:
       enabled: true
       hosts:
-        - host: auth.witlinserver.com
+        - host: "auth.${SECRET_DOMAIN}"
           paths:
             - path: "/"
               pathType: Prefix
