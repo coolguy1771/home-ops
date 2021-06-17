@@ -41,7 +41,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: plex-config
         emptyDir:
           enabled: false
         accessMode: ReadWriteOnce
