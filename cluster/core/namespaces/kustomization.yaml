@@ -12,3 +12,4 @@ resources:
 - longhorn-system.yaml
 - game-servers.yaml
 - auth.yaml
+- git.yaml
