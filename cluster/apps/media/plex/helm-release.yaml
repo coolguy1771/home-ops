@@ -105,3 +105,7 @@ spec:
         nfs:
           server: 192.168.1.147
           path: /mnt/user/Media/content/tv
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
