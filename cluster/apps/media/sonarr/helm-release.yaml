@@ -48,9 +48,9 @@ spec:
         mountPath: /tv
         readOnly: false
         volumeSpec:
-        nfs:
-          server: 192.168.1.147
-          path: /mnt/user/Media/content/tv
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/Media/content/tv
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
