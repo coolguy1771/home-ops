@@ -76,12 +76,6 @@ spec:
         mountPath: /config
         accessMode: ReadWriteMany
         storageClass: longhorn
-      tmp:
-        enabled: true
-        type: emptyDir
-        accessMode: ReadWriteMany
-        size: 1Gi
-        storageClass: nfs-client
       transcode:
         enabled: false
         emptyDir:
@@ -94,17 +88,17 @@ spec:
         mountPath: /movies
         readOnly: true
         volumeSpec:
-        nfs:
-          server: 192.168.1.147
-          path: /mnt/user/Media/content/movies
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/Media/content/movies
       tv:
         type: custom
         mountPath: /tv
         readOnly: true
         volumeSpec:
-        nfs:
-          server: 192.168.1.147
-          path: /mnt/user/Media/content/tv
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/Media/content/tv
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
