@@ -48,14 +48,14 @@ spec:
         storageClass: longhorn
         mountPath: /config
         size: 1Gi
-    movies:
-      type: custom
-      mountPath: /movies
-      readOnly: false
-      volumeSpec:
-        nfs:
-          server: 192.168.1.147
-          path: /mnt/user/Media/content/movies
+      movies:
+        type: custom
+        mountPath: /movies
+        readOnly: false
+        volumeSpec:
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/Media/content/movies
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
