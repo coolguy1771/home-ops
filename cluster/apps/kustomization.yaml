@@ -7,7 +7,6 @@ resources:
 - system-upgrade
 - external
 - media
-- longhorn-system
 - game-servers
 - git
 - storage
