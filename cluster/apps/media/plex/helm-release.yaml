@@ -70,11 +70,11 @@ spec:
     persistence:
       config:
         enabled: true
-        #existingClaim: plex-config
+        existingClaim: plex-config
         emptyDir:
           enabled: false
         mountPath: /config
-        accessMode: ReadWriteOnce
+        accessMode: ReadWriteMany
         storageClass: longhorn
       tmp:
         enabled: true
