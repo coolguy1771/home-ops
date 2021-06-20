@@ -44,6 +44,7 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         existingClaim: sonarr-config
+        storageClass: longhorn
       tv:
         enabled: true
         type: custom
