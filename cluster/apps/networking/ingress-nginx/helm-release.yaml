@@ -29,6 +29,12 @@ spec:
         use-forwarded-headers: "true"
         force-ssl-redirect: "true"
         enable-brotli: "true"
+        hsts: "true"
+        hsts-include-subdomains: "true"
+        hsts-max-age: "15724800"
+        hsts-preload: "true"
+        use-gzip: "true"
+        enable-real-ip: "true"
         custom-http-errors: 404,500,501,502,503
       metrics:
         enabled: false
