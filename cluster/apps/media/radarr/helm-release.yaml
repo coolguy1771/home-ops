@@ -49,6 +49,7 @@ spec:
         mountPath: /config
         size: 1Gi
       movies:
+        enabled: true
         type: custom
         mountPath: /movies
         readOnly: false
