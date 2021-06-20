@@ -65,7 +65,7 @@ spec:
         volumeSpec:
           nfs:
             server: 192.168.1.147
-            path: /mnt/user/downloads/complete/tv-radarr
+            path: /mnt/user/downloads/complete/tv-sonarr
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
