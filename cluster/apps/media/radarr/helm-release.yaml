@@ -46,7 +46,7 @@ spec:
           enabled: false
         accessMode: ReadWriteOnce
         storageClass: longhorn
-        mountPath: /config
+        mountPath: /app/config
         size: 1Gi
       movies:
         enabled: true
