@@ -44,6 +44,7 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
       tv:
+        enabled: true
         type: custom
         mountPath: /tv
         readOnly: false
