@@ -57,6 +57,15 @@ spec:
           nfs:
             server: 192.168.1.147
             path: /mnt/user/Media/content/movies
+      downloads:
+        enabled: true
+        type: custom
+        mountPath: /downloads
+        readOnly: false
+        volumeSpec:
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/downloads/complete/tv-radarr
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
