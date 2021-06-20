@@ -84,6 +84,7 @@ spec:
         accessMode: ReadWriteMany
         size: 10Gi
       movies:
+        enabled: true
         type: custom
         mountPath: /movies
         readOnly: true
@@ -92,6 +93,7 @@ spec:
             server: 192.168.1.147
             path: /mnt/user/Media/content/movies
       tv:
+        enabled: true
         type: custom
         mountPath: /tv
         readOnly: true
