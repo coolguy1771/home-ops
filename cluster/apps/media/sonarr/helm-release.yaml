@@ -45,6 +45,7 @@ spec:
         size: 1Gi
         existingClaim: sonarr-config
         storageClass: longhorn
+        mountPath: /app/config
       tv:
         enabled: true
         type: custom
@@ -64,5 +65,5 @@ spec:
             server: 192.168.1.147
             path: /mnt/user/downloads/complete/radarr
     podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
+      runAsUser: 568
+      runAsGroup: 568
