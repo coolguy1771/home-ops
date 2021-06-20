@@ -41,7 +41,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: radarr-config
+      #  existingClaim: radarr-config
         emptyDir:
           enabled: false
         accessMode: ReadWriteOnce
