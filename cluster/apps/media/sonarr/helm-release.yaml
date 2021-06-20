@@ -43,6 +43,7 @@ spec:
         enabled: true
         accessMode: ReadWriteOnce
         size: 1Gi
+        existingClaim: sonarr-config
       tv:
         enabled: true
         type: custom
@@ -61,6 +62,6 @@ spec:
           nfs:
             server: 192.168.1.147
             path: /mnt/user/downloads/complete/radarr
-    #podSecurityContext:
-    #  runAsUser: 1000
-    #  runAsGroup: 1000
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
