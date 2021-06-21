@@ -43,9 +43,9 @@ spec:
         enabled: true
         accessMode: ReadWriteOnce
         size: 1Gi
-      #  existingClaim: sonarr-config
+        existingClaim: sonarr-config
         storageClass: longhorn
-        mountPath: /app/config
+      #  mountPath: /app/config
       tv:
         enabled: true
         type: custom
