@@ -28,13 +28,13 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "nginx"
       hosts:
-      - host: "wiki.${SECRET_DOMAIN}"
+      - host: "wiki.blackelement.studio"
         paths:
         - path: /
           pathType: Prefix
       tls:
       - hosts:
-        - "wiki.${SECRET_DOMAIN}"
+        - "wiki.blackelement.studio"
     persistence:
       config:
         enabled: true
