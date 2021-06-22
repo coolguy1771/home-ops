@@ -1,0 +1,175 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gitea
+  namespace: git
+spec:
+  releaseName: gitea
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://dl.gitea.io/charts/
+      chart: gitea
+      version: 1.4.1
+      sourceRef:
+        kind: HelmRepository
+        name: gitea-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: gitea/gitea
+      tag: 1.14.2
+      pullPolicy: IfNotPresent
+      rootless: false # only possible when running 1.14 or later
+# only usable with rootless image due to image design
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+    service:
+      http:
+        type: ClusterIP
+        port: 3000
+        clusterIP: None
+        #loadBalancerIP:
+        #nodePort:
+        #externalTrafficPolicy:
+        #externalIPs:
+        loadBalancerSourceRanges: []
+        annotations:
+      ssh:
+        type: ClusterIP
+        port: 22
+        clusterIP: None
+        #loadBalancerIP:
+        #nodePort:
+        #externalTrafficPolicy:
+        #externalIPs:
+        loadBalancerSourceRanges: []
+        annotations:
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: letsencrypt-production
+      hosts:
+        - git.blackelement.studio
+      tls:
+        - secretName: gitea-tls
+          hosts:
+            - git.blackelement.studio
+    persistence:
+      enabled: true
+      # existingClaim:
+      size: 800Gi
+      accessModes:
+        - ReadWriteOnce
+      labels: {}
+      annotations: {}
+      storageClass: nfs-client
+# additional volumes to add to the Gitea statefulset.
+    extraVolumes:
+      - name: postgres-ssl-vol
+        secret:
+          secretName: gitea-postgres-ssl
+# additional volumes to mount, both to the init container and to the main
+# container. As an example, can be used to mount a client cert when connecting
+# to an external Postgres server.
+    extraVolumeMounts:
+      - name: postgres-ssl-vol
+        readOnly: true
+        mountPath: "/pg-ssl"
+# bash shell script copied verbatim to the start of the init-container.
+    initPreScript: |
+        mkdir -p /data/git/.postgresql
+        cp /pg-ssl/* /data/git/.postgresql/
+        chown -R git:git /data/git/.postgresql/
+        chmod 400 /data/git/.postgresql/postgresql.key
+    gitea:
+      admin:
+    #existingSecret: gitea-admin-secret
+        username: admin
+        password: "${GITEA_ADMIN_PASSWORD}"
+        email: "gitea@blackelement.studio"
+    oauth:
+      enabled: false
+        #name:
+        #provider:
+        #key:
+        #secret:
+        #autoDiscoverUrl:
+        #useCustomUrls:
+        #customAuthUrl:
+        #customTokenUrl:
+        #customProfileUrl:
+        #customEmailUrl:
+
+    config:
+      APP_NAME: "Black Element Studio"
+      RUN_MODE: prod
+      SCRIPT_TYPE: bash
+      repository:
+        DEFAULT_PRIVATE: last
+      server:
+        DOMAIN: git.blackelement.studio
+        PROTOCOL: https
+        LFS_START_SERVER: true
+        REDIRECT_OTHER_PORT: true
+        ENABLE_LETSENCRYPT: true
+        LETSENCRYPT_ACCEPTTOS: true
+      security:
+        PASSWORD_COMPLEXITY: spec,lower,upper,digit
+        PASSWORD_CHECK_PWN: true
+      database:
+        DB_TYPE: postgres
+        HOST: postgres:5432
+        NAME: gitea
+
+  #
+
+  #  server:
+  #    SSH_PORT: 22
+  #
+  #  security:
+  #    PASSWORD_COMPLEXITY: spec
+    customLivenessProbe:
+      httpGet:
+        path: /user/login
+        port: http
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 10
+    customReadinessProbe:
+      httpGet:
+        path: /user/login
+        port: http
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 3
+    customStartupProbe:
+      httpGet:
+        path: /user/login
+        port: http
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 10
+    postgresql:
+      global:
+        postgresql:
+          postgresqlDatabase: gitea
+          postgresqlUsername: gitea
+          postgresqlPassword: gitea
+          servicePort: 5432
+      persistence:
+        size: 10Gi
