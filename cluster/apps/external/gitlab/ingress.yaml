@@ -22,4 +22,4 @@ spec:
   tls:
   - hosts:
     - git.blackelement.studio
-    secretName: gitlab-cert
+    secretName: external-gitlab-cert
