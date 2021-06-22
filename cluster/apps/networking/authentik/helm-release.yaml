@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.goauthentik.io
       chart: authentik
-      version: "1.0.0"
+      version: "1.1.0"
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -19,7 +19,7 @@ spec:
   values:
     image:
       name: ghcr.io/goauthentik/server
-      tag: 2021.6.1
+      tag: 2021.5.4
       pullPolicy: IfNotPresent
     authentik:
       secret_key: "${SECRET_AUTHENTIK_KEY}"
@@ -33,36 +33,32 @@ spec:
         password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
         use_tls: true
         timeout: 30
-        from: "Authentik <auth@witlinserver.com>"
+        from: "Authentik <auth@blackelement.studio>"
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
-      s3_backup:
-      # -- optional S3 backup, access key
-        access_key: "wMpsrBLNW4zRKT9CTM9CZsk5e3gTx86g"
-      # -- optional S3 backup, secret key
-        secret_key: "SECRET_S3_KEY"
-      # -- optional S3 backup, bucket
-        bucket: "authentik"
-      # -- optional S3 backup, region
-        region: ""
-      # -- optional S3 backup, host, including protocol (https://minio.domain.tld)
-        host: "http://192.168.1.147:9768"
-      # -- optional S3 backup, location in the bucket
-      # @default -- `"/"`
-        location: ""
     ingress:
       enabled: true
       hosts:
-        - host: "auth.${SECRET_DOMAIN}"
+        - host: "auth.blackelement.studio"
           paths:
             - path: "/"
               pathType: Prefix
       tls:
         - hosts:
-            - "auth.${SECRET_DOMAIN}"
+            - "auth.blackelement.studio"
+    geoip:
+  # -- optional GeoIP, deploys a cronjob to download the maxmind database
+      enabled: true
+  # -- sign up under https://www.maxmind.com/en/geolite2/signup
+      accountId: "418977"
+      licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
       enabled: true
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
-      storageClass: longhorn
+      persistence:
+        enabled: true
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteOnce
     redis:
       enabled: true
