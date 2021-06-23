@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    forecastle.stakater.com/expose: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100000m
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 10000M
+  #  forecastle.stakater.com/icon:
+  name: perforce
+  namespace: external
+spec:
+  rules:
+  - host: perforce.blackelement.studio
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: perforce
+            port:
+              number: 1666
+  tls:
+  - hosts:
+    - perforce.blackelement.studio
+    secretName: perforce-cert

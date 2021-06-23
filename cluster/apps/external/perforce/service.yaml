@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: perforce
+  namespace: external
+spec:
+  type: ExternalName
+  externalName: 10.10.10.127
+  ports:
+    - port: 1666
