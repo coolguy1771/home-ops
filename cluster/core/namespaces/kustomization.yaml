@@ -13,3 +13,4 @@ resources:
 - game-servers.yaml
 - auth.yaml
 - git.yaml
+- k10.yaml
