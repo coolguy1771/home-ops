@@ -19,7 +19,7 @@ spec:
   values:
     image:
       name: ghcr.io/goauthentik/server
-      tag: 2021.5.4
+      tag: 2021.6.2
       pullPolicy: IfNotPresent
     authentik:
       secret_key: "${SECRET_AUTHENTIK_KEY}"
