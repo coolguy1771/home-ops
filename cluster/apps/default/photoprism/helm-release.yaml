@@ -1,0 +1,80 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: photoprism
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: photoprism
+      version: 5.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  values:
+    image:
+      # -- image repository
+      repository: photoprism/photoprism
+      # -- image tag
+      tag: "20210523"
+      # -- image pull policy
+      pullPolicy: IfNotPresent
+    # -- environment variables. See [image docs](https://docs.photoprism.org/getting-started/config-options/) for more details.
+    # @default -- See below
+    env:
+      # -- Set the container timezone
+      TZ: UTC
+      # -- Photoprism storage path
+      PHOTOPRISM_STORAGE_PATH: /photoprism/storage
+      # -- Photoprism originals path
+      PHOTOPRISM_ORIGINALS_PATH: /photoprism/originals
+      # -- Initial admin password. **BE SURE TO CHANGE THIS!**
+      PHOTOPRISM_ADMIN_PASSWORD: "${SECRET_PHOTOPRISM_ADMIN_PASSWORD}"
+      # -- Disable authentication / password protection
+      PHOTOPRISM_PUBLIC: "false"
+      PHOTOPRISM_DETECT_NSFW: true
+      PHOTOPRISM_SITE_URL: "photos.{SECRET_DOMAIN}"
+      # -- Sets UID Photoprism runs under.
+      UID: 1000
+      # -- Sets GID Photoprism runs under.
+      GID: 1000
+      # -- Sets UMASK.
+      UMASK:  # 0000
+
+    ingress:
+      # -- Enable and configure ingress settings for the chart under this key.
+      # @default -- See values.yaml
+      main:
+        enabled: true
+        annotations:
+          forecastle.stakater.com/expose: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+        - host: "photos.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "photos.${SECRET_DOMAIN}"
+    # -- Configure persistence settings for the chart under this key.
+    # @default -- See values.yaml
+    persistence:
+      config:
+        enabled: true
+        mountPath: /photoprism/storage
+        storageClass: longhorn
+      originals:
+        enabled: true
+        type: custom
+        mountPath: "/photoprism/originals"
+        readOnly: false
+        volumeSpec:
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/Media/photos
