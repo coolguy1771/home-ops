@@ -19,7 +19,7 @@ spec:
     image:
       repository: benbusby/whoogle-search
       pullPolicy: IfNotPresent
-      tag: 0.4.0
+      tag: 0.5.4
     strategy:
       type: Recreate
     ingress:
