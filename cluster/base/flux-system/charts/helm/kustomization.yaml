@@ -10,5 +10,4 @@ resources:
 - authentik-charts.yaml
 - grafana-charts.yaml
 - longhorn-charts.yaml
-- gitlab-charts.yaml
 - minio-charts.yaml
