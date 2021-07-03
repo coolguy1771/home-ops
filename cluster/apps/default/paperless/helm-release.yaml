@@ -94,6 +94,7 @@ spec:
         mountPath: /usr/src/paperless/export
         accessMode: ReadWriteOnce
         storageClass: nfs-client
+        size: 10Gi
         emptyDir:
           enabled: false
     # -- Deploy local redis instance.
