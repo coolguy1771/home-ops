@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: vaultwarden
-      version: 1.0.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -37,38 +37,38 @@ spec:
       SMTP_PORT: 587
       SMTP_USERNAME: "apikey"
       SMTP_PASSWORD: "${SECRET_BITWARDEN_EMAIL_PASSWORD}"
-    service:
-      port:
-        port: 80
-        name: www
-      additionalPorts:
-        port:
-          port: 3012
-          name: websocket
     ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: "nginx"
-        forecastle.stakater.com/expose: "true"
-        forecastle.stakater.com/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
-      hosts:
-        - host: vault.witlinserver.com
-          paths:
-            - path: /
-              pathType: Prefix
-            - path: /notifications/hub/negotiate
-              pathType: Prefix
-            - path: /notifications/hub
-              pathType: Prefix
-              servicePort: 3012
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "nginx"
+          forecastle.stakater.com/expose: "true"
+          forecastle.stakater.com/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
+        hosts:
+          - host: vault.witlinserver.com
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  port: 80
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
+                service:
+                  port: 80
+              - path: /notifications/hub
+                pathType: Prefix
+                service:
+                  port: 3012
       tls:
-        - secretName: vault.witlinserver.com
+        - secretName: vaultwarden-tls
           hosts:
             - vault.witlinserver.com
     persistence:
       config:
         enabled: true
+        storageClass: nfs-client
+        existingClaim: vaultwarden-config
         emptydir:
           enabled: false
     # https://github.com/bitnami/charts/tree/master/bitnami/postgresql/#installing-the-chart
@@ -79,6 +79,7 @@ spec:
       postgresqlDatabase: "vaultwarden"
       persistence:
         enabled: true
-        storageClass: 
+        storageClass: longhorn
+        existingClaim: data-vaultwarden-postgresql-0
         accessModes:
           - ReadWriteOnce
