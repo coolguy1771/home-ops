@@ -64,6 +64,7 @@ spec:
         mountPath: /usr/src/paperless/data
         accessMode: ReadWriteOnce
         storageClass: nfs-client
+        size: 100Gi
         emptyDir:
           enabled: false
       # -- Configure persistence for media.
@@ -73,6 +74,7 @@ spec:
         mountPath: /usr/src/paperless/media
         storageClass: nfs-client
         accessMode: ReadWriteOnce
+        size: 50Gi
         emptyDir:
           enabled: false
       # -- Configure volume to monitor for new documents.
