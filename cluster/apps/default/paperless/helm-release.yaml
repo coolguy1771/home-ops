@@ -53,6 +53,9 @@ spec:
           forecastle.stakater.com/expose: "true"
         hosts:
           - host: paper.witlinserver.com
+            paths:
+              - path: "/"
+                pathType: Prefix
         tls:
           - secretName: paperless-tls
             hosts:
