@@ -82,6 +82,7 @@ spec:
         mountPath: /usr/src/paperless/consume
         accessMode: ReadWriteOnce
         storageClass: nfs-client
+        size: 10Gi
         emptyDir:
           enabled: false
       # -- Configure export volume.
