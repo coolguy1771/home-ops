@@ -51,10 +51,12 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: "nginx"
           forecastle.stakater.com/expose: "true"
+        hosts:
+          - host: paper.witlinserver.com
         tls:
-        - secretName: paperless-tls
-          hosts:
-          - paper.witlinserver.com
+          - secretName: paperless-tls
+            hosts:
+              - paper.witlinserver.com
 
     persistence:
       # -- Configure persistence for data.
@@ -97,9 +99,3 @@ spec:
         size: 10Gi
         emptyDir:
           enabled: false
-    # -- Deploy local redis instance.
-    # @default -- See values.yaml
-    additionalContainers:
-    - name: broker
-      image: redis:6.0
-      imagePullPolicy: IfNotPresent
