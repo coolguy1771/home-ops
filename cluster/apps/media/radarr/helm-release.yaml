@@ -41,12 +41,12 @@ spec:
     persistence:
       config:
         enabled: true
-      #  existingClaim: radarr-config
+        existingClaim: radarr-config
         emptyDir:
           enabled: false
         accessMode: ReadWriteOnce
         storageClass: longhorn
-        mountPath: /app/config
+        mountPath: /config
         size: 1Gi
       movies:
         enabled: true
