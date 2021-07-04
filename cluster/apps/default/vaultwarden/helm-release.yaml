@@ -68,10 +68,10 @@ spec:
               pathType: Prefix
               service:
                 port: 3012
-      tls:
-      - secretName: vaultwarden-tls
-        hosts:
-          - vault.witlinserver.com
+        tls:
+        - secretName: vaultwarden-tls
+          hosts:
+            - vault.witlinserver.com
     persistence:
       config:
         enabled: true
