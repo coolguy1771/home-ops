@@ -45,3 +45,4 @@ spec:
           enabled: false
         mountPath: /config
         accessMode: ReadWriteMany
+        size: 1Gi
