@@ -9,7 +9,7 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "blackelement.studio"
+  commonName: "${SECRET_DOMAIN_STUDIO}"
   dnsNames:
   - "blackelemenmt.studio"
   - "*.blackelemenmt.studio"
