@@ -11,7 +11,9 @@ spec:
   - host: discord.blackelement.studio
     http:
       paths:
-        path: /
+      - backend:
+          serviceName: ingress-nginx-backend
+          servicePort: 80
   tls:
   - hosts:
     - discord.blackelement.studio
