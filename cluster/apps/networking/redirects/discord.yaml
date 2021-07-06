@@ -11,7 +11,7 @@ spec:
   - host: discord.blackelement.studio
     http:
       paths:
-        path: /
+      - path: /
         pathType: Prefix
   tls:
   - hosts:
