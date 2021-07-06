@@ -33,19 +33,19 @@ spec:
         password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
         use_tls: true
         timeout: 30
-        from: "Authentik <auth@blackelement.studio>"
+        from: "Authentik <auth@${SECRET_DOMAIN_STUDIO}>"
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     ingress:
       enabled: true
       hosts:
-        - host: "auth.blackelement.studio"
+        - host: "auth.${SECRET_DOMAIN_STUDIO}"
           paths:
             - path: "/"
               pathType: Prefix
       tls:
         - hosts:
-            - "auth.blackelement.studio"
+            - "auth.${SECRET_DOMAIN_STUDIO}"
     geoip:
   # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
