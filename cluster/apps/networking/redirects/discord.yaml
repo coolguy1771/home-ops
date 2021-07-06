@@ -11,9 +11,6 @@ spec:
   - host: discord.blackelement.studio
     http:
       paths:
-      - backend:
-          serviceName: default-backend
-          servicePort: 80
         path: /
   tls:
   - hosts:
