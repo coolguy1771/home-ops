@@ -6,3 +6,4 @@ resources:
 - authentik
 - unifi
 - cloudflare-ddns
+- redirects
