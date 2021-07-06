@@ -13,6 +13,11 @@ spec:
       paths:
       - path: /
         pathType: Prefix
+        backend:
+          service:
+            name: ingress-nginx-defaultbackend
+            port:
+              number: 80
   tls:
   - hosts:
     - discord.blackelement.studio
