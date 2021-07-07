@@ -52,4 +52,22 @@ spec:
   - kind: HelmRelease
     namespace: 'longhorn-system'
     name: '*'
+  - kind: HelmRelease
+    namespace: 'auth'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'apps'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'git'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'k10'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'storage'
+    name: '*'
+  - kind: HelmRelease
+    namespace: 'metallb-system'
+    name: '*'
   suspend: false
