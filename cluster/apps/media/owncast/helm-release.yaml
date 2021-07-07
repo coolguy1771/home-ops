@@ -43,13 +43,13 @@ spec:
       #  forecastle.stakater.com/icon: "https://avatars.githubusercontent.com/u/34385001"
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - host: "stream.icbplays.net"
+        - host: "stream.${SECRET_DOMAIN_GAMES}"
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - "stream.icbplays.net"
+            - "stream.${SECRET_DOMAIN_GAMES}"
     persistence:
       config:
         enabled: true
