@@ -2,14 +2,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "blackelement-studio"
+  name: "${SECRET_DOMAIN_STUDIO/./-}"
   namespace: networking
 spec:
-  secretName: "blackelement-studio-tls"
+  secretName: "${SECRET_DOMAIN_STUDIO/./-}-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${SECRET_DOMAIN_STUDIO}"
   dnsNames:
-  - "blackelemenmt.studio"
-  - "*.blackelemenmt.studio"
+  - "${SECRET_DOMAIN_STUDIO}"
+  - "*.${SECRET_DOMAIN_STUDIO}"
