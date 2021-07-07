@@ -2,14 +2,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "icb"
+  name: "${SECRET_DOMAIN_GAMES/./-}"
   namespace: networking
 spec:
-  secretName: "blackelement-studio-tls"
+  secretName: "${SECRET_DOMAIN_GAMES/./-}-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "icbplays.net"
+  commonName: "${SECRET_DOMAIN_GAMES}"
   dnsNames:
-  - "icbplays.net"
-  - "*.icbplays.net"
+  - "${SECRET_DOMAIN_GAMES}"
+  - "*.${SECRET_DOMAIN_GAMES}"
