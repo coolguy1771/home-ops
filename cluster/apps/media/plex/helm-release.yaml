@@ -77,12 +77,13 @@ spec:
         accessMode: ReadWriteMany
         storageClass: longhorn
       transcode:
-        enabled: false
+        enabled: true
         emptyDir:
           enabled: true
         mountPath: /transcode
         accessMode: ReadWriteMany
-        size: 10Gi
+        storageClass: nfs-client
+        size: 300Gi
       movies:
         enabled: true
         type: custom
