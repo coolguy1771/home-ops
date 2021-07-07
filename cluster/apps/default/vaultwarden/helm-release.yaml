@@ -54,24 +54,24 @@ spec:
           forecastle.stakater.com/expose: "true"
           forecastle.stakater.com/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
         hosts:
-        - host: vault.witlinserver.com
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                port: 80
-            - path: /notifications/hub/negotiate
-              pathType: Prefix
-              service:
-                port: 80
-            - path: /notifications/hub
-              pathType: Prefix
-              service:
-                port: 3012
+          - host: vault.witlinserver.com
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  port: 80
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
+                service:
+                  port: 80
+              - path: /notifications/hub
+                pathType: Prefix
+                service:
+                  port: 3012
         tls:
-        - secretName: vaultwarden-tls
-          hosts:
-            - vault.witlinserver.com
+          - secretName: vaultwarden-tls
+            hosts:
+              - vault.witlinserver.com
     persistence:
       config:
         enabled: true
