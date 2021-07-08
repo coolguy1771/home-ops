@@ -75,7 +75,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
+        storageClass: nfs-client
         existingClaim: vaultwarden-config
         emptydir:
           enabled: false
