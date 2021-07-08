@@ -85,6 +85,8 @@ spec:
       postgresqlUsername: "vaultwarden"
       postgresqlPassword: "${SECRET_VAULTWARDEN_DATABASE_PASSWORD}"
       postgresqlDatabase: "vaultwarden"
+      updateStrategy:
+        type: RollingUpdate
       persistence:
         enabled: true
         storageClass: longhorn
