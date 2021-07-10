@@ -38,6 +38,10 @@ spec:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     ingress:
       enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: "nginx"
+        forecastle.stakater.com/expose: "true"
       hosts:
         - host: "auth.${SECRET_DOMAIN_STUDIO}"
           paths:
