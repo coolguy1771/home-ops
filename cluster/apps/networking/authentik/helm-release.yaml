@@ -50,6 +50,7 @@ spec:
       tls:
         - hosts:
             - "auth.${SECRET_DOMAIN_STUDIO}"
+          secretName: authentik-tls
     geoip:
   # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
