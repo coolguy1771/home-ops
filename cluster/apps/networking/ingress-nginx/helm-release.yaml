@@ -16,6 +16,7 @@ spec:
         name: ingress-nginx-charts
         namespace: flux-system
   values:
+    maxmindLicenseKey: "${SECRET_GEOIP_KEY}"
     controller:
       ingressClass: nginx
       replicaCount: 1
