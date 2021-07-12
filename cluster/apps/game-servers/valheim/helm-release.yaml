@@ -74,10 +74,10 @@ spec:
       config:
         enabled: true
         mountPath: /config
-        storageClass: longhorn
+        storageClass: nfs-client
         size: 50Gi
         accessMode: ReadWriteMany
-      #  existingClaim: valheim-config
+        existingClaim: valheim-config
     resources:
       requests:
         memory: 2048Mi
