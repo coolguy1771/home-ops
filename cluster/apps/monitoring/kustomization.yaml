@@ -6,3 +6,4 @@ resources:
 - loki
 - speedtest-exporter
 - unifi-poller
+- kube-prometheus-stack
