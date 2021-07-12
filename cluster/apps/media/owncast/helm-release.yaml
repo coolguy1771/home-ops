@@ -50,6 +50,7 @@ spec:
       tls:
         - hosts:
             - "stream.${SECRET_DOMAIN_GAMES}"
+          secretName: owncast-tls
     persistence:
       config:
         enabled: true
