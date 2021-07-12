@@ -77,7 +77,7 @@ spec:
         storageClass: longhorn
         size: 50Gi
         accessMode: ReadWriteMany
-        existingClaim: valheim-config
+      #  existingClaim: valheim-config
     resources:
       requests:
         memory: 2048Mi
