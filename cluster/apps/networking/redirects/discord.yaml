@@ -21,4 +21,4 @@ spec:
   tls:
   - hosts:
     - discord.${SECRET_DOMAIN_STUDIO}
-    secretName: discord-redirect-tls
+    secretName: discord-external-redirect-tls
