@@ -1,6 +1,7 @@
 ignore: |
   .github/
   crds.yaml
+  cluster-secrets.yaml
 extends: default
 rules:
   truthy:
