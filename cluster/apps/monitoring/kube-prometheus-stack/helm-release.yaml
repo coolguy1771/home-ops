@@ -57,10 +57,6 @@ spec:
               # severity: critical|warning
               severity: critical
             continue: true
-          - receiver: 'webhook'
-            match:
-              alertname: UPS15MinutesRemaining
-            continue: true
         inhibit_rules:
         - source_match:
             severity: 'critical'
