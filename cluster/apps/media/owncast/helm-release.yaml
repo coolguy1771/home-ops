@@ -23,18 +23,20 @@ spec:
     strategy:
       type: Recreate
     service:
-      port:
-        port: 8080
-      additionalServices:
-        - enabled: true
-          nameSuffix: rtmp
-          type: NodePort
-          port:
+      main:
+        ports:
+          http:
+            port: 8080
+      rtmp:
+        enabled: true
+        type: NodePort
+        externalTrafficPolicy: Local
+        ports:
+          rtmp:
+            enabled: true
             port: 1935
-            name: rtmp
             protocol: TCP
             targetPort: 1935
-          externalTrafficPolicy: Local
     ingress:
       enabled: true
       annotations:
