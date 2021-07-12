@@ -9,7 +9,7 @@ metadata:
   namespace: external
 spec:
   rules:
-  - host: panel.witlinserver.com
+  - host: panel.icbplays.net
     http:
       paths:
       - pathType: Prefix
@@ -21,5 +21,5 @@ spec:
               number: 8080
   tls:
   - hosts:
-    - panel.witlinserver.com
-    secretName: pufferpanel-cert
+    - panel.icbplays.net
+    secretName: pufferpanel-external-cert
