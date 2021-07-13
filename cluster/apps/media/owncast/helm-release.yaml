@@ -57,7 +57,8 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
+        storageClass: nfs-client
+        existingClaim: owncast-config
         emptyDir:
           enabled: false
         mountPath: /app/data
