@@ -58,7 +58,6 @@ spec:
       config:
         enabled: true
         storageClass: nfs-client
-        existingClaim: owncast-config
         emptyDir:
           enabled: false
         mountPath: /app/data
