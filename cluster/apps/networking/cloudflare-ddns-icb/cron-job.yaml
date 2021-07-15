@@ -21,7 +21,7 @@ spec:
               imagePullPolicy: IfNotPresent
               envFrom:
                 - secretRef:
-                    name: cloudflare-ddns
+                    name: cloudflare-ddns-icb
               command: ["/bin/sh", "-c"]
               args:
                 - |
