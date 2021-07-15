@@ -15,3 +15,4 @@ resources:
 - git.yaml
 - k10.yaml
 - security.yaml
+- rancher-system.yaml
