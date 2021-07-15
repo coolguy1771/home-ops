@@ -10,3 +10,4 @@ resources:
 - game-servers
 - storage
 - monitoring
+- cattle-system
