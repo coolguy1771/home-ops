@@ -1,0 +1,40 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cloudflare-ddns
+  namespace: networking
+spec:
+  schedule: "*/5 * * * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          hostNetwork: true
+          containers:
+            - name: cloudflare-ddns
+              image: curlimages/curl:7.77.0
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - secretRef:
+                    name: cloudflare-ddns
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  export ip4=$(curl -s https://ipv4.icanhazip.com/) && \
+                  export cfUrl="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONEID/dns_records?name=$CLOUDFLARE_RECORD_NAME&type=A" && \
+                  export record4=$(curl -s -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $CLOUDFLARE_APIKEY" -H "Content-Type: application/json" "$cfUrl") && \
+                  export old_ip4=$(echo "$record4" | sed -n 's/.*"content":"\([^"]*\).*/\1/p') && \
+                  if [ "$ip4" == "$old_ip4" ]; then
+                    echo "$(date -u) - Success - IP Address $ip4 has not changed" && \
+                    exit 0
+                  else
+                    export record4_identifier=$(echo "$record4" | sed -n 's/.*"id":"\([^"]*\).*/\1/p') && \
+                    export cfUrl2="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONEID/dns_records/$record4_identifier" && \
+                    export update4=$(curl -s -X PUT -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $CLOUDFLARE_APIKEY" -H "Content-Type: application/json" "$cfUrl2") && \
+                    echo "$(date -u) - Success - IP Address was changed to $ip4"
+                  fi

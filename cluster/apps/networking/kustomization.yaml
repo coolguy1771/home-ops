@@ -7,4 +7,6 @@ resources:
 - authentik
 - unifi
 - cloudflare-ddns
+- cloudflare-ddns-icb
+- cloudflare-ddns-studio
 - redirects
