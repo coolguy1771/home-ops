@@ -11,3 +11,4 @@ resources:
 - grafana-charts.yaml
 - longhorn-charts.yaml
 - minio-charts.yaml
+- rancher-charts.yaml
