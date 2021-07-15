@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: cloudflare-ddns
+  name: cloudflare-ddns-icb
   namespace: networking
 spec:
   schedule: "*/5 * * * *"
