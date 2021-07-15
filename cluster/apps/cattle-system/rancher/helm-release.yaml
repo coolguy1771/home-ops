@@ -68,7 +68,7 @@ spec:
         forecastle.stakater.com/expose: "true"
       tls:
         # options: rancher, letsEncrypt, secret
-        source: secret
+        source: rancher
         secretName: tls-rancher-ingress
 
     ### LetsEncrypt config ###
