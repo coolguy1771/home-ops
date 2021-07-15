@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: cloudflare-ddns
+  name: cloudflare-ddns-home
   namespace: networking
 spec:
   schedule: "*/5 * * * *"
@@ -23,7 +23,7 @@ spec:
                 - secretRef:
                     name: cloudflare-ddns
               command: ["/bin/sh", "-c"]
-              args: 
+              args:
                 - |
                   export ip4=$(curl -s https://ipv4.icanhazip.com/) && \
                   export cfUrl="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONEID/dns_records?name=$CLOUDFLARE_RECORD_NAME&type=A" && \
