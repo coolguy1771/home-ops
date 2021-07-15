@@ -14,3 +14,4 @@ resources:
 - auth.yaml
 - git.yaml
 - k10.yaml
+- security.yaml
