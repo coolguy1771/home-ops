@@ -16,3 +16,4 @@ resources:
 - k10.yaml
 - security.yaml
 - cattle-system.yaml
+- storage.yaml
