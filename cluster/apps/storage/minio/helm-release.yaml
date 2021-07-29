@@ -1,0 +1,67 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minio
+  namespace: storage
+spec:
+  interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  chart:
+    spec:
+      chart: minio
+      version: 8.0.9
+      sourceRef:
+        kind: HelmRepository
+        name: minio-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    accessKey: ""
+    secretKey: ${SECRET_S3_KEY}
+    image:
+      repository: jessestuart/minio
+      tag: RELEASE.2020-08-08T04-50-06Z
+    mcImage:
+      repository: jessestuart/mc
+      tag: RELEASE.2020-08-08T02-33-58Z
+    helmKubectlJqImage:
+      repository: drnic/kubectl
+      tag: 1.16
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts: minio.$SECRET_DOMAIN
+      tls:
+      - hosts:
+        - minio.$SECRET_DOMAIN
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 25m
+      limits:
+        memory: 1000Mi
+    securityContext:
+      enabled: false
+    #metrics:
+    #  serviceMonitor:
+    #    enabled: true
+    nasgateway:
+      enabled: true
+      # Number of parallel instances
+      replicas: 1
+    persistence:
+      enabled: true
+      storageClass: "nfs-client"
+      accessMode: ReadWriteOnce
+      size: 500Gi
+  valuesFrom:
+  - kind: Secret
+    name: "minio-helm-values"
+    optional: false
