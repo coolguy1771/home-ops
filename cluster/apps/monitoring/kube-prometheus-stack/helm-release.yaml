@@ -6,127 +6,107 @@ metadata:
   namespace: monitoring
 spec:
   interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   chart:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
-      version: 16.15.0
+      version: 17.0.3
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
+  timeout: 20m
   values:
+    server:
+      resources:
+        requests:
+          memory: 1500Mi
+          cpu: 25m
+        limits:
+          memory: 2000Mi
+    prometheusOperator:
+      createCustomResource: true
+      configReloaderCpu: 200m
     alertmanager:
-      config:
-        global:
-          slack_api_url: "${SECRET_ALERT_MANAGER_WEBHOOK}"
-          resolve_timeout: 5m
-        receivers:
-        - name: 'null'
-        - name: 'discord'
-          slack_configs:
-          - channel: '#prometheus'
-            icon_url: https://avatars3.githubusercontent.com/u/3380462
-            username: 'Prometheus'
-            send_resolved: true
-            title: |-
-              [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}
-            text: >-
-              {{ range .Alerts -}}
-                *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
-
-              {{ if ne .Annotations.summary ""}}*Summary:* {{ .Annotations.summary }} {{ else if ne .Annotations.message ""}}*Message:* {{ .Annotations.message }} {{ else if ne .Annotations.description ""}}*Description:* {{ .Annotations.description }}{{ end }}
-
-              *Details:*
-                {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-                {{ end }}
-              {{ end }}
-        route:
-          group_by: ['alertname', 'job']
-          group_wait: 30s
-          group_interval: 5m
-          repeat_interval: 6h
-          receiver: 'discord'
-          routes:
-          - receiver: 'null'
-            match:
-              alertname: Watchdog
-          - receiver: 'discord'
-            match_re:
-              # severity: critical|warning
-              severity: critical
-            continue: true
-        inhibit_rules:
-        - source_match:
-            severity: 'critical'
-          target_match:
-            severity: 'warning'
-          equal: ['alertname', 'namespace']
-      ingress:
-        enabled: true
-        pathType: Prefix
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-          forecastle.stakater.com/expose: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hosts:
-        - "alert-manager.${SECRET_DOMAIN}"
-        tls:
-        - hosts:
-          - "alert-manager.${SECRET_DOMAIN}"
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: "nfs-client"
+              storageClassName: nfs-client
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 10Gi
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts: prom-alert.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+              - prom-alert.${SECRET_DOMAIN}
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          receiver: "slack-notifications"
+          routes:
+            - match:
+                alertname: Watchdog
+              receiver: "null"
+            - receiver: "slack-notifications"
+              match:
+                severity: critical
+              continue: true
+            - receiver: "slack-notifications"
+        inhibit_rules:
+          - source_match:
+              severity: "critical"
+            target_match:
+              severity: "warning"
+            # Apply inhibition if the alertname is the same.
+            equal: ["alertname", "namespace"]
+        templates: ["*.tmpl"]
     nodeExporter:
       serviceMonitor:
         relabelings:
-        - action: replace
-          regex: (.*)
-          replacement: $1
-          sourceLabels:
-          - __meta_kubernetes_pod_node_name
-          targetLabel: kubernetes_node
+          - sourceLabels: [__meta_kubernetes_pod_node_name]
+            targetLabel: nodename
+            action: replace
     grafana:
       enabled: false
-      forceDeployDashboards: true
-    kubelet:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-        - action: replace
-          sourceLabels:
-          - node
-          targetLabel: instance
-    kubeApiServer:
-      enabled: true
+    kubeEtcd:
+      enabled: false
     kubeControllerManager:
       enabled: false
     kubeScheduler:
       enabled: false
     kubeProxy:
       enabled: false
-    kubeEtcd:
-      enabled: false
+    prometheus-node-exporter:
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
     prometheus:
       ingress:
         enabled: true
-        pathType: Prefix
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          forecastle.stakater.com/expose: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hosts:
-        - "prometheus.${SECRET_DOMAIN}"
+        hosts: prom-server.${SECRET_DOMAIN}
         tls:
-        - hosts:
-          - "prometheus.${SECRET_DOMAIN}"
+          - hosts:
+              - prom-server.${SECRET_DOMAIN}
       prometheusSpec:
+        externalLabels:
+          cluster: "default"
+        replicas: 1
+        replicaExternalLabelName: "replica"
         ruleSelector: {}
         ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
@@ -136,13 +116,13 @@ spec:
         podMonitorSelector: {}
         podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        retention: 14d
+        retention: 6h
         enableAdminAPI: true
         walCompression: true
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: "longhorn"
+              storageClassName: nfs-client
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 10Gi
