@@ -37,10 +37,10 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: nginx
-      hosts: minio.$SECRET_DOMAIN
+      hosts: minio.${SECRET_DOMAIN}
       tls:
       - hosts:
-        - minio.$SECRET_DOMAIN
+        - minio.${SECRET_DOMAIN}
     resources:
       requests:
         memory: 350Mi
