@@ -23,7 +23,7 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    accessKey: "${SECRET_S3_ACCESS_KEY}"
+    accessKey: ${SECRET_S3_ACCESS_KEY}
     secretKey: ${SECRET_S3_KEY}
     image:
       repository: jessestuart/minio
