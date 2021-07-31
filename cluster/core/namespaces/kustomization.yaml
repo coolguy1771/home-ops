@@ -17,3 +17,4 @@ resources:
 - security.yaml
 - cattle-system.yaml
 - storage.yaml
+- docs.yaml
