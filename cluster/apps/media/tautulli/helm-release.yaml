@@ -41,7 +41,8 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
+        storageClass: nfs-client
+        existingClaim: tautulli-config
         emptyDir:
           enabled: false
         mountPath: /config
