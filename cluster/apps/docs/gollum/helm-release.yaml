@@ -52,7 +52,7 @@ spec:
       gitBranch: master
       # -- Repository URL to pull (accepts access tokens)
       # Example: https://user:access-token@git.example.com/user/repo.git
-      gitUrl: https://github.com/k8s-at-home/charts.git
+      gitUrl: https://github.com/coolguy1771/wiki.git
       # -- Additional arguments for starting gollum
       additionalArgs:
       - --h1-title
