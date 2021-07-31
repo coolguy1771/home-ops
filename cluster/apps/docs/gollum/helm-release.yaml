@@ -44,7 +44,9 @@ spec:
       wiki:
         enabled: true
         mountPath: /wiki
-
+        storageClass: nfs-client
+        size: 10Gi
+        accessMode: ReadWriteMany
     gollum:
       # -- Branch to pull
       gitBranch: master
