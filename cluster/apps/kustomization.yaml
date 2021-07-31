@@ -11,3 +11,4 @@ resources:
 - storage
 - monitoring
 - cattle-system
+- docs
