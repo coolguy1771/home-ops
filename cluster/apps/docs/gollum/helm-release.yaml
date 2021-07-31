@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: wikijs
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: wikijs
+      version: 5.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  values:
+    image:
+      # -- image repository
+      repository: gollumorg/gollum
+      # -- image tag
+      tag: latest
+      # -- image pull policy
+      pullPolicy: IfNotPresent
+    ingress:
+      # -- Enable and configure ingress settings for the chart under this key.
+      # @default -- See values.yaml
+      main:
+        enabled: true
+        annotations:
+          forecastle.stakater.com/expose: "true"
+          forecastle.stakater.com/icon: https://avatars.githubusercontent.com/u/3840027
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+        - host: "gollum.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+    # -- Configure persistence settings for the chart under this key.
+    # @default -- See values.yaml
+    persistence:
+      wiki:
+        enabled: true
+        mountPath: /wiki
+
+    gollum:
+      # -- Branch to pull
+      gitBranch: master
+      # -- Repository URL to pull (accepts access tokens)
+      # Example: https://user:access-token@git.example.com/user/repo.git
+      gitUrl: https://github.com/coolguy1771/wiki.git
+      # -- Additional arguments for starting gollum
+      additionalArgs:
+      - --h1-title
+      # -- Command run during the sync cron
+      syncCommand: git pull && git push
+      # -- Gollum config.rb customizations
+      # [[ref]](https://github.com/gollum/gollum#config-file)
+      config: |
+        # Push and pull on commit
+        Gollum::Hook.register(:post_commit, :hook_id) do |committer, sha1|
+             committer.wiki.repo.git.pull('origin', committer.wiki.ref)
+             committer.wiki.repo.git.push('origin', committer.wiki.ref)
+        end
