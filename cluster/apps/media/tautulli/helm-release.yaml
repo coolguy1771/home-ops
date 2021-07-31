@@ -42,7 +42,6 @@ spec:
       config:
         enabled: true
         storageClass: nfs-client
-        existingClaim: tautulli-config
         emptyDir:
           enabled: false
         mountPath: /config
