@@ -24,7 +24,7 @@ spec:
     defaultSettings:
       defaultReplicaCount: 4
       storageMinimalAvailablePercentage: "10"
-      backupTarget: nfs://192.168.1.147:/mnt/user/k3s
+      backupTarget: nfs://10.10.10.118:/mnt/user/k3s
     ingress:
       enabled: true
       host: "longhorn.${SECRET_DOMAIN}"
