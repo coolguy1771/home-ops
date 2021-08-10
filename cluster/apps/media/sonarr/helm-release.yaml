@@ -53,7 +53,7 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: 10.10.10.118
+            server: 192.168.1.47
             path: /mnt/user/Media/content/tv
       downloads:
         enabled: true
@@ -62,7 +62,7 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: 10.10.10.118
+            server: 192.168.1.47
             path: /mnt/user/downloads/complete/radarr
     podSecurityContext:
       runAsUser: 0
