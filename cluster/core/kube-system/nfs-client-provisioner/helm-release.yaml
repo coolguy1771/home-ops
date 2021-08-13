@@ -25,3 +25,4 @@ spec:
       path: "/mnt/user/k3s"
     storageClass:
       defaultClass: false
+      allowVolumeExpansion: true
