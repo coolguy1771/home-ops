@@ -91,7 +91,7 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: 192.168.1.47
+            server: 192.168.1.147
             path: /mnt/user/Media/content/movies
       tv:
         enabled: true
@@ -100,7 +100,7 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: 192.168.1.47
+            server: 192.168.1.147
             path: /mnt/user/Media/content/tv
     podSecurityContext:
       runAsUser: 568
