@@ -35,9 +35,9 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: "nginx"
-          hosts: ["thanos.hacksm.net"]
+          hosts: "thanos.${SECRET_DOAMIN}"
           tls:
-            - hosts: ["thanos.hacksm.net"]
+            - hosts: "thanos.${SECRET_DOAMIN}"
     compact:
       retentionResolution1h: 5y
     objstore:
