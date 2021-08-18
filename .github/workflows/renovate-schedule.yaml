@@ -29,9 +29,10 @@ jobs:
         branch: renovate-annotations
         delete-branch: true
         title: "chore(deps): update renovate annotations"
-        signoff: false
+        signoff: true
         committer: GitHub <noreply@github.com>
         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        assignees: "coolguy1771"
         commit-message: "chore(deps): update renovate annotations"
         body: |
           Update HelmReleases inorder for Renovate to pick up new versions of Helm charts
