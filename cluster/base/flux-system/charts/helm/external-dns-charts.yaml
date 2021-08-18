@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: grafana-charts
+  name: external-dns-charts
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://grafana.github.io/helm-charts
+  url: https://kubernetes-sigs.github.io/external-dns
   timeout: 3m

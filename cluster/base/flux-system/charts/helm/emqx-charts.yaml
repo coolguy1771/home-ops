@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: grafana-charts
+  name: emqx-charts
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://grafana.github.io/helm-charts
+  url: https://repos.emqx.io/charts
   timeout: 3m
