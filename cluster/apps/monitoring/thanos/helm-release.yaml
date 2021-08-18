@@ -6,55 +6,53 @@ metadata:
   namespace: monitoring
 spec:
   interval: 5m
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    remediation:
-      retries: 3
   chart:
     spec:
-      # renovate: registryUrl=https://kubernetes-charts.banzaicloud.com
+      # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: thanos
-      version: 0.4.5
+      version: 5.3.1
       sourceRef:
         kind: HelmRepository
-        name: banzaicloud-charts
+        name: bitnami-charts
         namespace: flux-system
       interval: 5m
   values:
     image:
-      repository: quay.io/thanos/thanos
-      tag: v0.22.0
+      registry: public.ecr.aws
+      repository: bitnami/thanos
     query:
-      replicaCount: 2
+      enabled: true
       replicaLabels:
         - replica
-      http:
-        ingress:
-          enabled: true
-          annotations:
-            kubernetes.io/ingress.class: "nginx"
-          hosts: "thanos.${SECRET_DOAMIN}"
-          tls:
-            - hosts: "thanos.${SECRET_DOAMIN}"
-    compact:
-      retentionResolution1h: 5y
-    objstore:
-      type: S3
-      config:
-        bucket: "thanos"
-        access_key: ${SECRET_S3_ACCESS_KEY}
-        secret_key: ${SECRET_S3_KEY}
-        endpoint: "minio.default.svc:9000"
-        region: ""
-        insecure: true
-        signature_version2: false
-        put_user_metadata: {}
-        http_config:
-          idle_conn_timeout: 0s
-          response_header_timeout: 0s
-          insecure_skip_verify: false
-        trace:
-          enable: false
-        part_size: 0
+      dnsDiscovery:
+        sidecarsService: prometheus-thanos-discovery
+        sidecarsNamespace: monitoring
+      ingress:
+        enabled: true
+        hostname: "thanos.${SECRET_DOMAIN}"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "nginx"
+          forecastle.stakater.com/expose: "true"
+        tls: true
+    existingObjstoreSecret: thanos-objstore
+    queryFrontend:
+      enabled: false
+    bucketweb:
+      enabled: true
+    compactor:
+      enabled: true
+      persistence:
+        enabled: false
+    storegateway:
+      enabled: true
+      persistence:
+        enabled: true
+        size: 5Gi
+        storageClass: longhorn
+    ruler:
+      enabled: false
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
