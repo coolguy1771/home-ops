@@ -1,0 +1,30 @@
+---
+version: "3"
+
+vars:
+  K3S_PRIMARY_MASTER_NODE_USERNAME: "ubuntu"
+  K3S_PRIMARY_MASTER_NODE_ADDRESS: "10.10.10.96"
+  K3S_KUBEVIP_ADDRESS: "192.168.42.5"
+
+tasks:
+  kubeconfig:
+    desc: Remotely fetch kubeconfig from k3s
+    cmds:
+      - rsync --verbose --progress --partial --rsync-path="sudo rsync" {{.K3S_PRIMARY_MASTER_NODE_USERNAME}}@{{.K3S_PRIMARY_MASTER_NODE_ADDRESS}}:/etc/rancher/k3s/k3s.yaml ./kubeconfig
+      - sed -i '' 's/127.0.0.1/{{.K3S_KUBEVIP_ADDRESS}}/g' ./kubeconfig
+      - chmod go-r kubeconfig
+    silent: true
+
+  maintenance:
+    desc: Stop all Pods and Pause all Helm Releases that rely on the NAS
+    cmds:
+      - flux suspend hr -n media plex
+      - flux suspend hr -n media sonarr
+      - flux suspend hr -n media radarr
+      - flux suspend hr -n media owncast
+      - flux suspend hr -n media tautulli
+      - flux suspend hr -n monitoring kube-prometheus-stack
+      - flux suspend hr -n default photoprism
+      - flux suspend hr -n gameservers valheim
+      - flux suspend hr -n default vaultwarden
+      - flux suspend hr -n docs gollum
