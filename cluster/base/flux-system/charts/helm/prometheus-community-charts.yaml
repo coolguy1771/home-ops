@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: minio-charts
+  name: prometheus-community-charts
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 1h
   url: https://prometheus-community.github.io/helm-charts
-  timeout: 2m
+  timeout: 3m
