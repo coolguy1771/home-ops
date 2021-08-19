@@ -153,3 +153,9 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
+        thanos:
+          image: quay.io/thanos/thanos:v0.9.0
+          version: v0.9.0
+          objectStorageConfig:
+            name: thanos
+            key: object-store.yaml
