@@ -14,7 +14,7 @@ spec:
       retries: 3
   chart:
     spec:
-      # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+      # renovate: registryUrl=https://helm.min.io/
       chart: minio
       version: 8.0.9
       sourceRef:
