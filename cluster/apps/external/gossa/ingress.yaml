@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    forecastle.stakater.com/expose: "true"
-  #  forecastle.stakater.com/icon:
+    hajimari.io/enable: "true"
+  #  hajimari.io/icon:
   name: gossa
   namespace: external
 spec:

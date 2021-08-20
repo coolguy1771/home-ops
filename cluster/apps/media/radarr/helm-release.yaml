@@ -27,8 +27,8 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          forecastle.stakater.com/expose: "true"
-          forecastle.stakater.com/icon: ""
+          hajimari.io/enable: "true"
+          hajimari.io/icon: ""
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
         - host: "radarr.${SECRET_DOMAIN}"

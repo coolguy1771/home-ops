@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    forecastle.stakater.com/expose: "true"
-    forecastle.stakater.com/icon: https://js.wiki/img/wikijs-full-2021.b840e376.svg
+    hajimari.io/enable: "true"
+    hajimari.io/icon: https://js.wiki/img/wikijs-full-2021.b840e376.svg
   name: wiki
   namespace: external
 spec:

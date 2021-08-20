@@ -65,7 +65,7 @@ spec:
       extraAnnotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "nginx"
-        forecastle.stakater.com/expose: "true"
+        hajimari.io/enable: "true"
       tls:
         # options: rancher, letsEncrypt, secret
         source: rancher

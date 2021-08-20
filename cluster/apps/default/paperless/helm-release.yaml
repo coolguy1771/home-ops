@@ -50,7 +50,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: "nginx"
-          forecastle.stakater.com/expose: "true"
+          hajimari.io/enable: "true"
         hosts:
           - host: paper.witlinserver.com
             paths:

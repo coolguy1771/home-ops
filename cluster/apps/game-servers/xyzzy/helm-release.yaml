@@ -30,8 +30,8 @@ spec:
     ingress:
       enabled: true
       annotations:
-        forecastle.stakater.com/expose: "true"
-      #  forecastle.stakater.com/icon: https://twitter.com/hastebin/photo
+        hajimari.io/enable: "true"
+      #  hajimari.io/icon: https://twitter.com/hastebin/photo
         cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "nginx"
       hosts:

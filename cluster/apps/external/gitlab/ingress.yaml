@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    forecastle.stakater.com/expose: "true"
+    hajimari.io/enable: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 100000m
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/client-body-buffer-size: 10000M
-  #  forecastle.stakater.com/icon:
+  #  hajimari.io/icon:
   name: gitlab
   namespace: external
 spec:

@@ -51,8 +51,8 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: "nginx"
-          forecastle.stakater.com/expose: "true"
-          forecastle.stakater.com/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
+          hajimari.io/enable: "true"
+          hajimari.io/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
         hosts:
           - host: vault.witlinserver.com
             paths:
