@@ -52,7 +52,6 @@ spec:
       #     url: 'http://gmail.com'
       #   - name: Slack
       #     url: 'https://slack.com/signin'
-
     ingress:
       main:
         enabled: true
@@ -71,3 +70,9 @@ spec:
         accessMode: ReadWriteOnce
         size: 2Gi
         storageClass: longhorn
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "hajimari-settings"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128M
