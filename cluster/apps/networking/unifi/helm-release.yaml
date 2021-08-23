@@ -147,7 +147,7 @@ spec:
                   ## Overrides the service name reference for this path
                   name: main
                   ## Overrides the service port reference for this path
-                  port: portal-https
+                  port: 8843
         tls:
           - secretName: unifi-web-tls
             hosts:
