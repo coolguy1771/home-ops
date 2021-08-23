@@ -18,11 +18,8 @@ spec:
       interval: 5m
   values:
     image:
-      # -- image repository
       repository: jacobalberty/unifi
-      # -- image tag
       tag: v6.2.26
-      # -- image pull policy
       pullPolicy: IfNotPresent
     env:
       # -- Set the container timezone
@@ -161,13 +158,12 @@ spec:
       data:
         enabled: true
         mountPath: /unifi
-      #  existingClaim: unifi
         size: 20Gi
         storageClass: "longhorn"
-    podAnnotations:
-      resources:
-        requests:
-          memory: 500Mi
-          cpu: 15m
-        limits:
-          memory: 750Mi
+  podAnnotations:
+    resources:
+      requests:
+        memory: 500Mi
+        cpu: 15m
+      limits:
+        memory: 750Mi
