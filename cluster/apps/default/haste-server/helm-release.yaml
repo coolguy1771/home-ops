@@ -41,6 +41,7 @@ spec:
         tls:
         - hosts:
           - "paste.${SECRET_DOMAIN}"
+          secretName: haste-server-tls
     persistence:
       config:
         enabled: true
