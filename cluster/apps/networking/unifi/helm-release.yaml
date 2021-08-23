@@ -165,7 +165,7 @@ spec:
       data:
         enabled: true
         mountPath: /unifi
-        existingClaim: unifi
+      #  existingClaim: unifi
         size: 20Gi
         storageClass: "longhorn"
 
