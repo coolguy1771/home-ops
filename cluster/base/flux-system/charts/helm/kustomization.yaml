@@ -28,3 +28,4 @@ resources:
   - vernemq-charts.yaml
   - victoriametrics-charts.yaml
   - weaveworks-kured-charts.yaml
+  - minio-charts.yaml
