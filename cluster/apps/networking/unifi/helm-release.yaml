@@ -18,12 +18,12 @@ spec:
       interval: 5m
   values:
     image:
-    # -- image repository
-    repository: jacobalberty/unifi
-    # -- image tag
-    tag: v6.2.26
-    # -- image pull policy
-    pullPolicy: IfNotPresent
+      # -- image repository
+      repository: jacobalberty/unifi
+      # -- image tag
+      tag: v6.2.26
+      # -- image pull policy
+      pullPolicy: IfNotPresent
     env:
       # -- Set the container timezone
       TZ: UTC
