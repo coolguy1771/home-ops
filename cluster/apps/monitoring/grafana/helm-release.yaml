@@ -143,7 +143,7 @@ spec:
       tls:
         - hosts:
             - "grafana.${SECRET_DOMAIN}"
-          secretName: owncast-tls
+          secretName: grafana-tls
     serviceAccount:
       create: true
       autoMount: true
