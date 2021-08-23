@@ -35,6 +35,7 @@ spec:
           kubernetes.io/ingress.class: "nginx"
           hajimari.io/enable: "true"
         tls: true
+    existingObjstoreSecret: thanos-objstore
     queryFrontend:
       enabled: false
     bucketweb:
