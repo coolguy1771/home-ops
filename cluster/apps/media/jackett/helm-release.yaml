@@ -38,6 +38,7 @@ spec:
         tls:
         - hosts:
           - "jackett.${SECRET_DOMAIN}"
+          secretName: jackett-tls
     persistence:
       config:
         enabled: true
