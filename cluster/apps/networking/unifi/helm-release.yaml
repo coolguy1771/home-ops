@@ -139,6 +139,16 @@ spec:
         hosts:
           -  ## Host address. Helm template can be passed.
             host: "ui.${SECRET_DOMAIN}"
+            paths:
+              -  ## Path. Helm template can be passed.
+                path: /
+                ## Ignored if not kubeVersion >= 1.14-0
+                pathType: Prefix
+                service:
+                  ## Overrides the service name reference for this path
+                  name: main
+                  ## Overrides the service port reference for this path
+                  port: portal-https
         tls:
           - secretName: unifi-web-tls
             hosts:
