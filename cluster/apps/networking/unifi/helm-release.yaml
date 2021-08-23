@@ -24,29 +24,26 @@ spec:
     tag: v6.2.26
     # -- image pull policy
     pullPolicy: IfNotPresent
-
-    # -- environment variables. See more environment variables in the [image documentation](https://github.com/jacobalberty/unifi-docker#environment-variables).
-    # @default -- See below
     env:
-    # -- Set the container timezone
-    TZ: UTC
-    # -- Run UniFi as root
-    RUNAS_UID0: "false"
-    # -- Specify the user ID the application will run as
-    UNIFI_UID: "999"
-    # -- Specify the group ID the application will run as
-    UNIFI_GID: "999"
-    # -- Java Virtual Machine (JVM) initial, and minimum, heap size
-    # Unset value means there is no lower limit
-    JVM_INIT_HEAP_SIZE:
-    # -- Java Virtual Machine (JVM) maximum heap size
-    # For larger installations a larger value is recommended.
-    # For memory constrained system this value can be lowered.
-    JVM_MAX_HEAP_SIZE: 1024M
-    # # -- External MongoDB URI
-    # DB_URI:  # mongodb://unifi-mongodb:27017/unifi
-    # STATDB_URI:  # mongodb://unifi-mongodb:27017/unifi_stat
-    # DB_NAME:  # unifi
+      # -- Set the container timezone
+      TZ: UTC
+      # -- Run UniFi as root
+      RUNAS_UID0: "false"
+      # -- Specify the user ID the application will run as
+      UNIFI_UID: "999"
+      # -- Specify the group ID the application will run as
+      UNIFI_GID: "999"
+      # -- Java Virtual Machine (JVM) initial, and minimum, heap size
+      # Unset value means there is no lower limit
+      JVM_INIT_HEAP_SIZE:
+      # -- Java Virtual Machine (JVM) maximum heap size
+      # For larger installations a larger value is recommended.
+      # For memory constrained system this value can be lowered.
+      JVM_MAX_HEAP_SIZE: 1024M
+      # # -- External MongoDB URI
+      # DB_URI:  # mongodb://unifi-mongodb:27017/unifi
+      # STATDB_URI:  # mongodb://unifi-mongodb:27017/unifi_stat
+      # DB_NAME:  # unifi
 
     # -- Configures service settings for the chart.
     # @default -- See values.yaml
@@ -168,19 +165,6 @@ spec:
       #  existingClaim: unifi
         size: 20Gi
         storageClass: "longhorn"
-
-      # -- Enable and configure mongodb database subchart under this key.
-      #    For more options see [mongodb chart documentation](https://github.com/bitnami/charts/tree/master/bitnami/mongodb)
-      # @default -- See values.yaml
-      mongodb:
-        enabled: false
-        # architecture: standalone
-        # auth:
-        #   enabled: false
-        # persistence:
-        #     enabled: false
-        #    storageClass: "longhorn"
-        #    size: 8Gi
     podAnnotations:
       resources:
         requests:
