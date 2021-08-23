@@ -160,10 +160,3 @@ spec:
         mountPath: /unifi
         size: 20Gi
         storageClass: "longhorn"
-  podAnnotations:
-    resources:
-      requests:
-        memory: 500Mi
-        cpu: 15m
-      limits:
-        memory: 750Mi
