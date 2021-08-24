@@ -21,29 +21,6 @@ spec:
       repository: jacobalberty/unifi
       tag: v6.2.26
       pullPolicy: IfNotPresent
-    env:
-      # -- Set the container timezone
-      TZ: UTC
-      # -- Run UniFi as root
-      RUNAS_UID0: "false"
-      # -- Specify the user ID the application will run as
-      UNIFI_UID: "999"
-      # -- Specify the group ID the application will run as
-      UNIFI_GID: "999"
-      # -- Java Virtual Machine (JVM) initial, and minimum, heap size
-      # Unset value means there is no lower limit
-      JVM_INIT_HEAP_SIZE:
-      # -- Java Virtual Machine (JVM) maximum heap size
-      # For larger installations a larger value is recommended.
-      # For memory constrained system this value can be lowered.
-      JVM_MAX_HEAP_SIZE: 1024M
-      # # -- External MongoDB URI
-      # DB_URI:  # mongodb://unifi-mongodb:27017/unifi
-      # STATDB_URI:  # mongodb://unifi-mongodb:27017/unifi_stat
-      # DB_NAME:  # unifi
-
-    # -- Configures service settings for the chart.
-    # @default -- See values.yaml
     service:
       main:
         type: LoadBalancer
@@ -91,7 +68,7 @@ spec:
                     pathType: Prefix
             tls:
               - hosts:
-                  - "ui.${SECRET_DOMAIN)"
+                  - "ui.${SECRET_DOMAIN}"
           # -- Configure persistence settings for the chart under this key.
       # @default -- See values.yaml
       persistence:
