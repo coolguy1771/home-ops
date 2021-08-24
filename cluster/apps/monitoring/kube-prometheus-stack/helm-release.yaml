@@ -101,24 +101,69 @@ spec:
     nodeExporter:
       serviceMonitor:
         relabelings:
-        - sourceLabels: [__meta_kubernetes_pod_node_name]
-          targetLabel: nodename
-          action: replace
+        - action: replace
+          regex: (.*)
+          replacement: $1
+          sourceLabels:
+          - __meta_kubernetes_pod_node_name
+          targetLabel: kubernetes_node
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
     grafana:
       enabled: false
-    kubeEtcd:
-      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+        - action: replace
+          sourceLabels:
+          - node
+          targetLabel: instance
+    kubeApiServer:
+      enabled: true
     kubeControllerManager:
-      enabled: false
+      enabled: true
+      endpoints:
+      - 10.10.10.96
+      - 10.10.10.138
+      - 10.10.10.139
+      - 10.10.10.136
     kubeScheduler:
-      enabled: false
+      enabled: true
+      endpoints:
+      - 10.10.10.96
+      - 10.10.10.138
+      - 10.10.10.139
+      - 10.10.10.136
     kubeProxy:
-      enabled: false
-    prometheus-node-exporter:
-      tolerations:
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
+      enabled: true
+      endpoints:
+      - 10.10.10.96
+      - 10.10.10.138
+      - 10.10.10.139
+      - 10.10.10.136
+    kubeEtcd:
+      enabled: true
+      endpoints:
+      - 10.10.10.96
+      - 10.10.10.138
+      - 10.10.10.139
+      - 10.10.10.136
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
     prometheus:
+      thanosService:
+        enabled: true
       ingress:
         enabled: true
         pathType: Prefix
@@ -132,19 +177,12 @@ spec:
           - "prom-server.${SECRET_DOMAIN}"
           secretName: prom-server-tls
       prometheusSpec:
-        externalLabels:
-          cluster: "default"
         replicas: 1
         replicaExternalLabelName: "replica"
-        ruleSelector: {}
-        ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector: {}
-        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
         retention: 6h
         enableAdminAPI: true
         walCompression: true
@@ -161,9 +199,3 @@ spec:
           objectStorageConfig:
             name: thanos-objstore
             key: objstore.yml
-      thanosService:
-        enabled: true
-        portName: grpc
-        port: 10901
-        targetPort: "grpc"
-        clusterIP: "None"
