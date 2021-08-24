@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://operator.min.io/
-      chart: minio
+      chart: minio-operator
       version: 4.1.8
       sourceRef:
         kind: HelmRepository
