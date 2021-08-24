@@ -65,6 +65,37 @@ spec:
           nfs:
             server: 192.168.1.147
             path: /mnt/user/downloads/complete/radarr
-    podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 500m
+      limits:
+        memory: 1500Mi
+    prometheus:
+      podMonitor:
+        enabled: true
+        interval: 10m
+        scrapeTimeout: 2m
+    additionalContainers:
+    - name: exportarr
+      image: ghcr.io/onedr0p/exportarr:v0.6.1
+      imagePullPolicy: IfNotPresent
+      args: ["exportarr", "sonarr"]
+      env:
+      - name: PORT
+        value: "32123"
+      - name: URL
+        value: "http://localhost"
+      - name: CONFIG
+        value: "/config/config.xml"
+      - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+        value: "true"
+      - name: ENABLE_ADDITIONAL_METRICS
+        value: "true"
+      ports:
+      - name: exportarr
+        containerPort: 32123
+      volumeMounts:
+      - name: config
+        mountPath: /config
+        readOnly: true
