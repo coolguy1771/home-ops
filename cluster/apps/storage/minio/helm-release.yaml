@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: minio
-  namespace: storage
+  namespace: minio
 spec:
   interval: 5m
   chart:
@@ -27,10 +27,8 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: letsencrypt-prod
-        tls:
-          minio.${SECRET_DOMAIN}
-        host:
-          minio.${SECRET_DOMAIN}
+        tls: minio.${SECRET_DOMAIN}
+        host: minio.${SECRET_DOMAIN}
         path: /
     tenants:
       # Tenant name
@@ -41,7 +39,7 @@ spec:
           tag: RELEASE.2021-08-17T20-53-08Z
           pullPolicy: IfNotPresent
         ## Customize namespace for tenant deployment
-        namespace: storage
+        namespace: minio
         pools:
           ## Servers specifies the number of MinIO Tenant Pods / Servers in this pool.
           ## For standalone mode, supply 1. For distributed mode, supply 4 or more.
