@@ -23,7 +23,7 @@ spec:
     env:
       TZ: "UTC"
       UP_UNIFI_DEFAULT_ROLE: "homelab-controller"
-      UP_UNIFI_DEFAULT_URL: "https://unifi"
+      UP_UNIFI_DEFAULT_URL: "https://unifi.networking.svc.cluster.local"
       UP_UNIFI_DEFAULT_VERIFY_SSL: false
       UP_UNIFI_DEFAULT_USER: "unifipoller"
       UP_UNIFI_DEFAULT_PASS: "${SECRET_UNIFI_POLLER_PASSWORD}"
