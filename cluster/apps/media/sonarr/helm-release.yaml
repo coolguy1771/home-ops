@@ -38,6 +38,7 @@ spec:
         tls:
         - hosts:
           - "sonarr.${SECRET_DOMAIN}"
+          secretName: sonarr-tls
     persistence:
       config:
         enabled: true
