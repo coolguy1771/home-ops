@@ -40,7 +40,7 @@ spec:
         type: LoadBalancer
         annotations:
           metallb.universe.tf/allow-shared-ip: unifi
-        loadBalancerIP: 10.10.10.10.252
+        loadBalancerIP: 10.10.10.252
         externalTrafficPolicy: Local
         ports:
           stun:
