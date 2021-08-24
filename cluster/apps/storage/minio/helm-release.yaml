@@ -36,7 +36,7 @@ spec:
         ## Registry location and Tag to download MinIO Server image
         image:
           repository: minio/minio
-          tag: RELEASE.2021-08-17T20-53-08Z
+          tag: RELEASE.2021-08-20T18-32-01Z
           pullPolicy: IfNotPresent
         ## Customize namespace for tenant deployment
         namespace: minio
