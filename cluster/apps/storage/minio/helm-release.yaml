@@ -46,7 +46,7 @@ spec:
           tag: RELEASE.2021-08-20T18-32-01Z
           pullPolicy: IfNotPresent
         ## Customize namespace for tenant deployment
-        namespace: minio
+        namespace: storage
         pools:
           ## Servers specifies the number of MinIO Tenant Pods / Servers in this pool.
           ## For standalone mode, supply 1. For distributed mode, supply 4 or more.
