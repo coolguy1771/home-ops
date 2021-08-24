@@ -67,6 +67,8 @@ spec:
             server: 192.168.1.147
             path: /mnt/user/downloads/complete/tv-sonarr
     podSecurityContext:
+      runAsUser: 0
+      runAsGroup: 0
       supplementalGroups:
       - 100
     prometheus:
