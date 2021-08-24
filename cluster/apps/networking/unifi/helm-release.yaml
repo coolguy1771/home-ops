@@ -77,3 +77,9 @@ spec:
         size: 20Gi
         storageClass: "longhorn"
         accessMode: ReadWriteOnce
+  probes:
+  # -- Liveness probe configuration
+  # @default -- See below
+    liveness:
+    # -- Enable the liveness probe
+      enabled: false
