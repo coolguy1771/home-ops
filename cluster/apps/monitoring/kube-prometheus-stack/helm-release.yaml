@@ -130,7 +130,7 @@ spec:
         tls:
         - hosts:
           - "prom-server.${SECRET_DOMAIN}"
-          secretname: prom-server-tls
+          secretName: prom-server-tls
       prometheusSpec:
         externalLabels:
           cluster: "default"
