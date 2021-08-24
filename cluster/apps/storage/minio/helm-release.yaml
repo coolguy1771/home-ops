@@ -19,8 +19,10 @@ spec:
   values:
     operator:
       env:
-        MINIO_ROOT_USER: ${SECRET_MINIO_USER}
-        MINIO_ROOT_PASSWORD: ${SECRET_MINIO_PASSWORD}
+        - name: MINIO_ROOT_USER
+          value: ${SECRET_MINIO_USER}
+        - name: MINIO_ROOT_PASSWORD
+          value: ${SECRET_MINIO_PASSWORD}
     console:
       image:
         repository: minio/console
