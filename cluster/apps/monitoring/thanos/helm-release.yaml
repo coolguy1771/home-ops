@@ -37,7 +37,7 @@ spec:
         tls: true
     existingObjstoreSecret: thanos-objstore
     queryFrontend:
-      enabled: false
+      enabled: true
     bucketweb:
       enabled: true
     compactor:
