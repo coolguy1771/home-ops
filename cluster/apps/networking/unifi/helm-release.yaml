@@ -83,3 +83,6 @@ spec:
     liveness:
     # -- Enable the liveness probe
       enabled: false
+    readiness:
+    # -- Enable the readiness probe
+      enabled: false
