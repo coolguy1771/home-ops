@@ -6,60 +6,74 @@ metadata:
   namespace: storage
 spec:
   interval: 5m
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    remediation:
-      retries: 3
   chart:
     spec:
-      # renovate: registryUrl=https://helm.min.io/
+      # renovate: registryUrl=https://operator.min.io/
       chart: minio
-      version: 8.0.10
+      version: 4.1.8
       sourceRef:
         kind: HelmRepository
         name: minio-charts
         namespace: flux-system
       interval: 5m
   values:
-    accessKey: ${SECRET_S3_ACCESS_KEY}
-    secretKey: ${SECRET_S3_KEY}
-    image:
-      repository: jessestuart/minio
-      tag: RELEASE.2020-08-08T04-50-06Z
-    mcImage:
-      repository: jessestuart/mc
-      tag: RELEASE.2020-08-08T02-33-58Z
-    helmKubectlJqImage:
-      repository: drnic/kubectl
-      tag: 1.16
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-      hosts: [minio.witlinserver.com]
-      tls:
-      - hosts:
-        - minio.${SECRET_DOMAIN}
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 25m
-      limits:
-        memory: 1000Mi
-    securityContext:
-      enabled: false
-    metrics:
-      serviceMonitor:
+    console:
+      image:
+        repository: minio/console
+        tag: v0.9.2
+        pullPolicy: IfNotPresent
+      ingress:
         enabled: true
-    nasgateway:
-      enabled: true
-      # Number of parallel instances
-      replicas: 1
-    persistence:
-      enabled: true
-      storageClass: "nfs-client"
-      accessMode: ReadWriteOnce
-      size: 500Gi
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+        tls:
+          minio.${SECRET_DOMAIN}
+        host:
+          minio.${SECRET_DOMAIN}
+        path: /
+    tenants:
+      # Tenant name
+      - name: minio
+        ## Registry location and Tag to download MinIO Server image
+        image:
+          repository: minio/minio
+          tag: RELEASE.2021-08-17T20-53-08Z
+          pullPolicy: IfNotPresent
+        ## Customize namespace for tenant deployment
+        namespace: storage
+        pools:
+          ## Servers specifies the number of MinIO Tenant Pods / Servers in this pool.
+          ## For standalone mode, supply 1. For distributed mode, supply 4 or more.
+          ## Note that the operator does not support upgrading from standalone to distributed mode.
+          - servers: 4
+            ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
+            volumesPerServer: 4
+            ## size specifies the capacity per volume
+            size: 100Gi
+            ## storageClass specifies the storage class name to be used for this pool
+            storageClassName: "nfs-client"
+        ## Mount path where PV will be mounted inside container(s).
+        mountPath: /export
+        ## Sub path inside Mount path where MinIO stores data.
+        subPath: /data
+        # pool secrets
+        secrets:
+          # create a kubernetes secret object with the accessKey and secretKey as defined here.
+          enabled: true
+          name: minio-secret
+          accessKey: ${SECRET_S3_ACCESS_KEY}
+          secretKey: ${SECRET_S3_SECRET_KEY}
+        # pool metrics to be read by Prometheus
+        metrics:
+          enabled: true
+          port: 9000
+        certificate:
+          ## Enable automatic Kubernetes based certificate generation and signing as explained in
+          ## https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster
+          requestAutoCert: true
+        ## Enable S3 specific features such as Bucket DNS which would allow `buckets` to be
+        ## accessible as DNS entries of form `<bucketname>.minio.default.svc.cluster.local`
+        s3:
+          ## This feature is turned off by default
+          bucketDNS: true
