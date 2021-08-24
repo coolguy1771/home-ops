@@ -29,3 +29,6 @@ resources:
   - victoriametrics-charts.yaml
   - weaveworks-kured-charts.yaml
   - minio-charts.yaml
+  - rancher-charts.yaml
+  - hajimari-charts.yaml
+  - longhorn-charts.yaml
