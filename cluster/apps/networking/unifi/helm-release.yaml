@@ -48,42 +48,51 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          coredns.io/hostname: unifi
-        externalIPs:
-          - 10.10.10.252
+          metallb.universe.tf/allow-shared-ip: unifi
+        loadBalancerIP: 10.10.10.252
         externalTrafficPolicy: Local
-    ingress:
-    # -- Enable and configure ingress settings for the chart under this key.
-    # @default -- See values.yaml
-      main:
+        ports:
+          stun:
+            enabled: false
+          syslog:
+            enabled: false
+          discovery:
+            enabled: false
+      udp:
         enabled: true
+        type: LoadBalancer
         annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: "nginx"
-          hajimari.io/enable: "true"
-      # -- Enable and configure settings for the captive portal ingress under this key.
-      # @default -- See values.yaml
-      portal:
-        enabled: true
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        ingressClassName: nginx
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        hajimari.io/enable: "true"
-        hosts:
-          -  ## Host address. Helm template can be passed.
-            host: "ui.${SECRET_DOMAIN}"
-            paths:
-              -  ## Path. Helm template can be passed.
-                path: /
-                ## Ignored if not kubeVersion >= 1.14-0
-                pathType: Prefix
-        tls:
-          - secretName: unifi-web-tls
+          metallb.universe.tf/allow-shared-ip: unifi
+        loadBalancerIP: 10.10.10.10.252
+        externalTrafficPolicy: Local
+        ports:
+          stun:
+            enabled: true
+            port: 3478
+            protocol: UDP
+          syslog:
+            enabled: true
+            port: 5514
+            protocol: UDP
+          discovery:
+            enabled: true
+            port: 10001
+            protocol: UDP
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: "nginx"
+              nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
             hosts:
-              - "ui.${SECRET_DOMAIN}"
-      # -- Configure persistence settings for the chart under this key.
+              - host: "ui.${SECRET_DOMAIN}"
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - hosts:
+                  - "ui.${SECRET_DOMAIN)"
+          # -- Configure persistence settings for the chart under this key.
       # @default -- See values.yaml
       persistence:
       data:
