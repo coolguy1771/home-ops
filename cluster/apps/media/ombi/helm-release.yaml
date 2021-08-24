@@ -42,6 +42,7 @@ spec:
         tls:
           - hosts:
               - "ombi.${SECRET_DOMAIN}"
+            secretName: ombi-tls
     persistence:
       config:
         enabled: true
