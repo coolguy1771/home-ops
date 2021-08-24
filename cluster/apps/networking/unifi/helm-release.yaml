@@ -71,18 +71,9 @@ spec:
               - "ui.${SECRET_DOMAIN}"
       # -- Configure persistence settings for the chart under this key.
       #@default -- See values.yaml
-      persistence:
+    persistence:
       data:
         enabled: true
         size: 20Gi
         storageClass: "longhorn"
         accessMode: ReadWriteOnce
-  probes:
-  # -- Liveness probe configuration
-  # @default -- See below
-    liveness:
-    # -- Enable the liveness probe
-      enabled: false
-    readiness:
-    # -- Enable the readiness probe
-      enabled: false
