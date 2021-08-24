@@ -17,6 +17,10 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    operator:
+      env:
+        MINIO_ROOT_USER: ${SECRET_MINIO_USER}
+        MINIO_ROOT_PASSWORD: ${SECRET_MINIO_PASSWORD}
     console:
       image:
         repository: minio/console
