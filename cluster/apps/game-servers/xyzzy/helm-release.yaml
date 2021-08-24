@@ -41,4 +41,5 @@ spec:
           pathType: Prefix
       tls:
       - hosts:
-        - "cars.${SECRET_DOMAIN}"
+        - "cards.${SECRET_DOMAIN}"
+        secretName: cards-tls
