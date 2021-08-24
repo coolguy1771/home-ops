@@ -97,6 +97,7 @@ spec:
         tls:
         - hosts:
           - "prom-alert.${SECRET_DOMAIN}"
+          secretName: prom-alert-tls
     nodeExporter:
       serviceMonitor:
         relabelings:
@@ -129,6 +130,7 @@ spec:
         tls:
         - hosts:
           - "prom-server.${SECRET_DOMAIN}"
+          secretname: prom-server-tls
       prometheusSpec:
         externalLabels:
           cluster: "default"
