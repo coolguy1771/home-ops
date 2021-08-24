@@ -37,12 +37,11 @@ spec:
           - hosts:
               - minio.${SECRET_DOMAIN}
             secretName: minio-tls
-        rules:
+        hosts:
           - host:
               - minio.${SECRET_DOMAIN}
-            http:
-              paths:
-                - path: /
+            paths:
+              - path: /
     tenants:
       # Tenant name
       - name: minio
