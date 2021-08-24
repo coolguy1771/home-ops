@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: ombi
-      version: 9.4.0
+      version: 11.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -19,37 +19,30 @@ spec:
     image:
       repository: linuxserver/ombi
       pullPolicy: IfNotPresent
-      tag: version-v4.0.681
+      tag: version-v4.0.1430
     strategy:
       type: Recreate
-
-    env: {}
-      # TZ: UTC
-      # PUID: 1001
-      # PGID: 1001
-
-    service:
-      port:
-        port: 3579
-
+    env:
+      TZ: UTC
+      PUID: 1001
+      PGID: 1001
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-        hajimari.io/enable: "true"
-      #  hajimari.io/icon: "https://avatars.githubusercontent.com/u/34385001"
-        cert-manager.io/cluster-issuer: letsencrypt-production
-      hosts:
-        - host: "ombi.${SECRET_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - "ombi.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          hajimari.io/enable: "true"
+        #  hajimari.io/icon: "https://avatars.githubusercontent.com/u/34385001"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        hosts:
+          - host: "ombi.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "ombi.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
-        emptyDir:
-          enabled: false
         storageClass: longhorn
