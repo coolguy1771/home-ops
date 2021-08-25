@@ -16,6 +16,7 @@ _... managed with Flux and Renovate_ :robot:
 [![k3s](https://img.shields.io/badge/k3s-v1.21.2-brightgreen?style=for-the-badge&logo=kubernetes&logoColor=white)](https://k3s.io/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
 [![renovate](https://img.shields.io/badge/renovate-enabled-brightgreen?style=for-the-badge&logo=renovatebot&logoColor=white)](https://github.com/renovatebot/renovate)
+[![Lines of code](https://img.shields.io/tokei/lines/github/coolguy1771/k3s?style=for-the-badge&color=brightgreen&label=lines&logo=codefactor&logoColor=white)](https://github.com/coolguy1771/k3s/graphs/contributors)
 
 </div>
 
@@ -23,7 +24,6 @@ _... managed with Flux and Renovate_ :robot:
 
 [![Home-Internet](https://img.shields.io/uptimerobot/status/m784591389-ddbc4c84041a70eb6f6a3fb4?color=important&label=home%20internet&style=flat-square&logo=opnSense&logoColor=white)](https://uptimerobot.com)
 [![My-Plex](https://img.shields.io/uptimerobot/status/m784591338-cbf3205bc18109108eb0ea8e?logo=plex&logoColor=white&color=important&label=my%20plex&style=flat-square)](https://plex.tv)
-[![My-Home-Assistant](https://img.shields.io/uptimerobot/status/m786203807-32ce99612d7b2d01b89c4315?logo=homeassistant&logoColor=white&color=important&label=my%20home%20assistant&style=flat-square)](https://www.home-assistant.io/)
 
 </div>
 
@@ -37,4 +37,4 @@ For more information, head on over to my [docs](https://coolguy1771.github.io/k3
 
 ## :handshake:&nbsp; Community
 
-Thanks to all the people who donate their time to the [Kubernetes @Home](https://github.com/k8s-at-home/) community.
+Thanks to all the people who donate their time to the [Kubernetes@Home](https://github.com/k8s-at-home/) community.
