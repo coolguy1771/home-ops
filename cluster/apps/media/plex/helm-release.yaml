@@ -76,7 +76,7 @@ spec:
         mountPath: /config
         accessMode: ReadWriteMany
         storageClass: longhorn
-        size: 4Gi
+        size: 5Gi
       transcode:
         enabled: true
         emptyDir:
