@@ -66,5 +66,12 @@ spec:
         storageClass: longhorn
         accessModes:
           - ReadWriteOnce
+      s3_backup:
+        bucket: "authentik"
+        access_key: ${SECRET_S3_KEY}
+        secret_key: ${SECRET_S3_ACCESS_KEY}
+        region:
+        # Optional S3 host
+        host: "https://minio.storage.svc.cluster.local"
     redis:
       enabled: true
