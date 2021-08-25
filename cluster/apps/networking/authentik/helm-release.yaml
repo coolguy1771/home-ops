@@ -26,6 +26,7 @@ spec:
       error_reporting:
         enabled: true
         environment: "k8s"
+        sendpii: true
       email:
         host: "smtp.sendgrid.net"
         port: 587
