@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: stash
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: stash
+      version: 3.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  values:
+    image:
+      # -- image repository
+      repository: stashapp/stash
+      # -- image tag
+      tag: latest@sha256:24dbd76071745be0c4e75f730aa7ac2b37cb2b2918eabf8559643196b3b7a64a
+      # -- image pull policy
+      pullPolicy: IfNotPresent
+
+    # -- environment variables. See more environment variables in the [stashapp documentation](https://raw.githubusercontent.com/stashapp/stash/master/docker/production/docker-compose.yml)
+    # @default -- See below
+    env:
+      # -- Set the container port
+      STASH_PORT: 9999
+      STASH_STASH: /data/
+      STASH_GENERATED: /generated/
+      STASH_METADATA: /generated/
+      STASH_CACHE: /cache/
+
+    ingress:
+      # -- Enable and configure ingress settings for the chart under this key.
+      # @default -- See values.yaml
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        hosts:
+          - host: "stash.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "stash.${SECRET_DOMAIN}"
+            secretName: stash-tls
+
+    # -- Configure persistence settings for the chart under this key.
+    # @default -- See values.yaml
+    persistence:
+      config:
+        enabled: true
+        mountPath: /root/.stash
+        storageClass: nfs-client
+        size: 15Gi
+      media:
+        enabled: true
+        mountPath: /media
+        volumeSpec:
+          nfs:
+            server: 192.168.1.147
+            path: /mnt/user/appdata/stash/data
