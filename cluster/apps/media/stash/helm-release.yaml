@@ -64,8 +64,15 @@ spec:
       media:
         enabled: true
         mountPath: /media
+        accessMode: ReadWriteMany
+        size: 50Gi
+        storageClass: nfs-client
+      external:
+        enabled: true
+        type: custom
+        mountPath: /external
+        readOnly: false
         volumeSpec:
           nfs:
             server: 192.168.1.147
             path: /mnt/user/appdata/stash/data
-        accessMode: ReadWriteMany
