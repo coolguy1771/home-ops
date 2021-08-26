@@ -23,7 +23,7 @@ spec:
     strategy:
       type: Recreate
     env:
-      TZ: America/New_York
+      TZ: America/UTC
       PLEX_PREFERENCE_0: "MetricsEpoch=1"
       PLEX_PREFERENCE_1: "TranscoderTempDirectory=/tmp/transcode"
       PLEX_PREFERENCE_2: "DlnaEnabled=0"
