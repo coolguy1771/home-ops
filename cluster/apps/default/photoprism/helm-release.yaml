@@ -55,13 +55,13 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: "nginx"
         hosts:
-        - host: "photos.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "photos.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "photos.${SECRET_DOMAIN}"
+          - hosts:
+              - "photos.${SECRET_DOMAIN}"
     # -- Configure persistence settings for the chart under this key.
     # @default -- See values.yaml
     persistence:
