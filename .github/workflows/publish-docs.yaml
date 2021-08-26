@@ -11,27 +11,26 @@ on: # yamllint disable-line rule:truthy
       - "mkdocs.yaml"
       - "docs/**"
 
-env:
-  MKDOCS_MATERIAL_INSIDER_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDER_TOKEN }}
-
 jobs:
-  deploy:
+  publish-docs:
     runs-on: ubuntu-20.04
     if: github.event.pull_request.head.repo.fork == false
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - run: git config --global user.name "${GITHUB_ACTOR}"
-      - run: git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - run: pip install git+https://${MKDOCS_MATERIAL_INSIDER_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: |
           pip install \
+            mkdocs>=1.1 \
             mkdocs-macros-plugin >=0.5 \
+            mkdocs-material >=1.0 \
             mkdocs-minify-plugin>=0.3 \
             mkdocs-redirects>=1.0
       - run: mkdocs gh-deploy --config-file ./mkdocs.yaml --force
-      - run: mkdocs --version
