@@ -25,13 +25,13 @@ spec:
       defaultEnable: true
       namespaceSelector:
         matchNames:
-        - media
-        - default
-        - docs
-        - external
-        - monitoring
-        - storage
-        - networking
+          - media
+          - default
+          - docs
+          - external
+          - monitoring
+          - storage
+          - networking
       # -- Override the title of the Hajimari pages
       title: null
       # -- Default name for welcome message
@@ -56,14 +56,14 @@ spec:
       main:
         enabled: true
         hosts:
-        - host: "home.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "home.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "home.${SECRET_DOMAIN}"
-          secretName: hajimari-tls
+          - hosts:
+              - "home.${SECRET_DOMAIN}"
+            secretName: hajimari-tls
     persistence:
       data:
         enabled: true
