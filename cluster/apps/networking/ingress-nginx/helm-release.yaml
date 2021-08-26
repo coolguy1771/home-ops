@@ -38,9 +38,9 @@ spec:
         enable-real-ip: "true"
         custom-http-errors: 404,500,501,502,503
       metrics:
-        enabled: false
+        enabled: true
         serviceMonitor:
-          enabled: false
+          enabled: true
       extraArgs:
         default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-tls"
       resources:
