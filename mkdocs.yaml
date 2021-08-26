@@ -1,13 +1,13 @@
 ---
 # Project information
-site_name: onedr0p | Home Cluster
+site_name: coolguy1771 | Home Cluster
 site_description: My home Kubernetes (k3s) cluster managed by GitOps (Flux2)
-site_author: Devin Buhl
-site_url: https://onedr0p.github.io/home-cluster/
+site_author: Tyler Witlin
+site_url: https://coolguy1771.github.io/k3s/
 
 # Repository
-repo_name: onedr0p/home-cluster
-repo_url: https://github.com/onedr0p/home-cluster
+repo_name: coolguy1771/k3s
+repo_url: https://github.com/coolguy1771/k3s
 edit_uri: "edit/main/docs/"
 
 theme:
