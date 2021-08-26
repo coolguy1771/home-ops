@@ -47,11 +47,11 @@ extra_css:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/onedr0p
+      link: https://github.com/coolguy1771
     - icon: fontawesome/brands/discord
       link: https://discord.gg/sTMX7Vh
     - icon: fontawesome/brands/twitter
-      link: https://twitter.com/devinbuhl
+      link: https://twitter.com/coolguy1771
 
 # Plugins
 plugins:
