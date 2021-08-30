@@ -49,8 +49,10 @@ spec:
       main:
         enabled: true
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: "nginx"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
         hosts:
@@ -77,8 +79,6 @@ spec:
         enabled: true
         storageClass: nfs-client
       #  existingClaim: vaultwarden-config
-        emptydir:
-          enabled: false
     # https://github.com/bitnami/charts/tree/master/bitnami/postgresql/#installing-the-chart
     postgresql:
       enabled: true

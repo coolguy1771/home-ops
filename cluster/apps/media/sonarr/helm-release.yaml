@@ -30,6 +30,8 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "https://avatars.githubusercontent.com/u/1082903"
           cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
         hosts:
           - host: "sonarr.${SECRET_DOMAIN}"
             paths:

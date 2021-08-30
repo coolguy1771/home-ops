@@ -34,6 +34,8 @@ spec:
         kubernetes.io/ingress.class: nginx
         kubernetes.io/tls-acme: "true"
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        external-dns/is-public: "true"
       #  nginx.ingress.kubernetes.io/auth-url: https://longhorn.witlinserver.com/akprox/auth?nginx
       #  nginx.ingress.kubernetes.io/auth-signin: https://longhorn.witlinserver.com/akprox/start?rd=$escaped_request_uri
       #  nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Username,X-Forwarded-Email,X-Forwarded-Preferred-Username,X-Forwarded-User

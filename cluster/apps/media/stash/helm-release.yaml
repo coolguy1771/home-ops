@@ -42,15 +42,17 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
           cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
         hosts:
-        - host: "stash.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "stash.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "stash.${SECRET_DOMAIN}"
-          secretName: stash-tls
+          - hosts:
+              - "stash.${SECRET_DOMAIN}"
+            secretName: stash-tls
 
     # -- Configure persistence settings for the chart under this key.
     # @default -- See values.yaml

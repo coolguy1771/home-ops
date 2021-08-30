@@ -45,15 +45,17 @@ spec:
           hajimari.io/enable: "true"
         #  hajimari.io/icon: "https://avatars.githubusercontent.com/u/34385001"
           cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_GAMES}"
+          external-dns/is-public: "true"
         hosts:
-          - host: "stream.${SECRET_DOMAIN_GAMES}"
-            paths:
-              - path: /
-                pathType: Prefix
+        - host: "stream.${SECRET_DOMAIN_GAMES}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
-          - hosts:
-              - "stream.${SECRET_DOMAIN_GAMES}"
-            secretName: owncast-tls
+        - hosts:
+          - "stream.${SECRET_DOMAIN_GAMES}"
+          secretName: owncast-tls
     persistence:
       config:
         enabled: true

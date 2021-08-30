@@ -31,8 +31,10 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: https://twitter.com/hastebin/photo
-          cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: "nginx"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
         hosts:
         - host: "paste.${SECRET_DOMAIN}"
           paths:

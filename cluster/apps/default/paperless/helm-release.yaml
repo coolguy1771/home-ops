@@ -100,5 +100,3 @@ spec:
         accessMode: ReadWriteOnce
         storageClass: nfs-client
         size: 10Gi
-        emptyDir:
-          enabled: false
