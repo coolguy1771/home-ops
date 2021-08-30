@@ -72,7 +72,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: plex-config
         emptyDir:
           enabled: false
         mountPath: /config
