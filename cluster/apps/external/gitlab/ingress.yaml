@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 100000m
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/client-body-buffer-size: 10000M
-    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
+    external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
     external-dns/is-public: "true"
   #  hajimari.io/icon:
   name: gitlab
