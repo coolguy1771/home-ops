@@ -36,8 +36,8 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         external-dns/is-public: "true"
-      #  nginx.ingress.kubernetes.io/auth-url: https://longhorn.witlinserver.com/akprox/auth?nginx
-      #  nginx.ingress.kubernetes.io/auth-signin: https://longhorn.witlinserver.com/akprox/start?rd=$escaped_request_uri
-      #  nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Username,X-Forwarded-Email,X-Forwarded-Preferred-Username,X-Forwarded-User
-      #  nginx.ingress.kubernetes.io/auth-snippet: |
-      #    proxy_set_header X-Forwarded-Host $http_host;
+        nginx.ingress.kubernetes.io/auth-url: https://longhorn.${SECRET_DOMAIN}
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN_STUDIO}
+        nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Username,X-Forwarded-Email,X-Forwarded-Preferred-Username,X-Forwarded-User,X-Auth-Groups
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
