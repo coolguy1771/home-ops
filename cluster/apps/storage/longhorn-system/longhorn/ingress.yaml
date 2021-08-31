@@ -15,6 +15,8 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: ak-outpost-longhorn-outpost
-          servicePort: 4180
+          service:
+            name: ak-outpost-longhorn-outpost
+            port:
+              number: 4180
         path: /akprox
