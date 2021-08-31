@@ -17,12 +17,6 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    operator:
-      env:
-        - name: MINIO_ROOT_USER
-          value: ${SECRET_MINIO_USER}
-        - name: MINIO_ROOT_PASSWORD
-          value: ${SECRET_MINIO_PASSWORD}
     console:
       image:
         repository: minio/console
@@ -42,6 +36,7 @@ spec:
               - minio.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
     tenants:
       # Tenant name
       - name: minio
