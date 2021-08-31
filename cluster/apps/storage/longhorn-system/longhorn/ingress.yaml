@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: authentik-outpost
+  name: authentik-longhorn-outpost
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-url: https://longhorn.${SECRET_DOMAIN}/akprox/auth?nginx
