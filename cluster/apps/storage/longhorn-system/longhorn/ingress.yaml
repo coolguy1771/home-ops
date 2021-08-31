@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: authentik-longhorn-outpost
@@ -11,7 +11,7 @@ metadata:
        proxy_set_header X-Forwarded-Host $http_host;
 spec:
   rules:
-  - host: https://longhorn.${SECRET_DOMAIN}
+  - host: longhorn.${SECRET_DOMAIN}
     http:
       paths:
       - backend:
