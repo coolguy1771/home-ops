@@ -47,10 +47,9 @@ The Git repository contains the following directories under `cluster` and are or
 
 | Device                 | Count | OS Disk Size | Data Disk Size       | Ram  | Purpose                     |
 | ---------------------- | ----- | ------------ | -------------------- | ---- | --------------------------- |
-| Intel NUC8i3BEK        | 3     | 256GB NVMe   | N/A                  | 16GB | k3s Masters (embedded etcd) |
-| Intel NUC8i5BEH        | 1     | 240GB SSD    | 1TB NVMe (rook-ceph) | 32GB | k3s Workers                 |
-| Intel NUC8i7BEH        | 2     | 240GB SSD    | 1TB NVMe (rook-ceph) | 32GB | k3s Workers                 |
-| TrueNAS SCALE (custom) | 1     | 120GB SSD    | 8x12TB RAIDz2        | 64GB | Shared file storage         |
+| VM       | 1     | 500GB vDisk   | N/A                  | 8GB | k3s Masters |
+| VM       | 3     | 500GB vDisk  | N/A | 8GB | k3s Workers                 |              |
+| Unraid (custom) | 1     | 4GB Flash Drive    | 4x4TB        | 64GB | Shared file storage         |
 
 ## Tools
 

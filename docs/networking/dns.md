@@ -1,14 +1,13 @@
 # DNS
 
-{% import 'links.jinja2' as links %}
 
 My DNS setup may seem a bit complicated at first, but it allows for completely automatic management of DNS entries for Services and Ingress objects.
 
 ## Components
 
-### Traefik
+### Ingress NGINX
 
-{{ links.external('traefik') }} is my cluster Ingress controller. It is set to a `externalIPs` so that I can forward a port on my router directly to the Service.
+{{ links.external('nginx') }} is my cluster Ingress controller. It is set to a `externalIPs` so that I can forward a port on my router directly to the Service.
 
 ### CoreDNS with k8s_gateway
 
@@ -20,7 +19,7 @@ My DNS setup may seem a bit complicated at first, but it allows for completely a
 
 ### Dynamic DNS
 
-In order to keep my WAN IP address up to date on my DNS provider I have deployed a CronJob ({{ links.repoUrl('link', 'blob/main/cluster/apps/networking/cloudflare-ddns/cron-job.yaml') }}) in my cluster that periodically checks and updates those records.
+In order to keep my WAN IP address up to date on my DNS provider I have deployed a CronJob ({{ links.repoUrl('link', 'blob/main/cluster/apps/networking/cloudflare-ddns-home/cron-job.yaml') }}) in my cluster that periodically checks and updates those records.
 
 ## How it all works together
 
