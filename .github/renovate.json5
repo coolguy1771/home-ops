@@ -188,13 +188,6 @@
     },
     // group packages
     {
-      "matchDatasources": ["helm", "docker"],
-      "matchPackagePatterns": ["^rook.ceph"],
-      "groupName": "rook-ceph-suite",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
-    },
-    {
       "matchDatasources": ["github-releases", "docker"],
       "matchPackagePatterns": ["external-dns"],
       "groupName": "external-dns-suite",
