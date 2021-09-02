@@ -32,3 +32,4 @@ resources:
   - rancher-charts.yaml
   - hajimari-charts.yaml
   - longhorn-charts.yaml
+  - metallb-charts.yaml
