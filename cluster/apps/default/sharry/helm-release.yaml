@@ -1,0 +1,87 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sharry
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: sharry
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  values:
+    image:
+    # -- image repository
+    repository: eikek0/sharry
+    # -- image tag
+    tag: 1.8.0
+    # -- image pull policy
+    pullPolicy: IfNotPresent
+
+  # -- Override the command line arguments for the default container
+  args:
+  - "/opt/sharry.conf"
+
+  ingress:
+    # -- Enable and configure ingress settings for the chart under this key.
+    # @default -- See values.yaml
+    main:
+      enabled: true
+      # -- Enable large file support with those annotations for nginx
+      annotations:
+        nginx.ingress.kubernetes.io/client-body-buffer-size: "2048m"
+        nginx.ingress.kubernetes.io/proxy-body-size: "2048m"
+        nginx.ingress.kubernetes.io/proxy-buffering: "off"
+        kubernetes.io/ingress.class: "nginx"
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+        external-dns/is-public: "true"
+        hajimari.io/enable: "true"
+      hosts:
+      - host: share.${SECRET_DOMIAN}
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - secretName: sharry-tls
+        hosts:
+        - share.${SECRET_DOMIAN}
+
+  # -- Sharry configuration. Supports Helm templates.
+  # See [application docs](https://eikek.github.io/sharry/doc/configure) for more details.
+  # @default -- See values.yaml
+  config: |
+    sharry.restserver {
+      # base-url = "https://sharry.${SECRET_DOMAIN}"
+      bind {
+        address = "0.0.0.0"
+        port = {{ .Values.service.main.ports.http.port }}
+      }
+      backend {
+        auth {
+          oauth = [
+            {
+              enabled = true
+              id = "authentik"
+              name = "Authentik"
+              icon = "fab fa-github"
+              authorize-url = "https://auth.${SECRET_DOMAIN_STUDIO}/login/oauth/authorize"
+              token-url = "https://auth.${SECRET_DOMAIN_STUDIO}/login/oauth/access_token"
+              user-url = "https://auth.${SECRET_DOMAIN_STUDIO}/user"
+              user-id-key = "login"
+              client-id = "${SECRET_SHARRY_CLIENT_ID}
+              client-secret = "${SECRET_SHARRY_CLIENT_SECRET}
+            }
+          ]
+        }
+        share {
+           max-size = "10G"
+        }
+      }
+    }
