@@ -75,8 +75,8 @@ spec:
                 token-url = "https://auth.${SECRET_DOMAIN_STUDIO}/login/oauth/access_token"
                 user-url = "https://auth.${SECRET_DOMAIN_STUDIO}/user"
                 user-id-key = "login"
-                client-id = "${SECRET_SHARRY_CLIENT_ID}
-                client-secret = "${SECRET_SHARRY_CLIENT_SECRET}
+                client-id = "${SECRET_SHARRY_CLIENT_ID}"
+                client-secret = "${SECRET_SHARRY_CLIENT_SECRET}"
               }
             ]
           }
