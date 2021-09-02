@@ -18,11 +18,11 @@ spec:
   values:
     image:
     # -- image repository
-    repository: eikek/sharry
-    # -- image tag
-    tag: 1.9.0
-    # -- image pull policy
-    pullPolicy: IfNotPresent
+      repository: eikek0/sharry
+      # -- image tag
+      tag: v1.9.0
+      # -- image pull policy
+      pullPolicy: IfNotPresent
 
     # -- Override the command line arguments for the default container
     args:
