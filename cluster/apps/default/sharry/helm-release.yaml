@@ -44,14 +44,14 @@ spec:
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
         hosts:
-        - host: "share.${SECRET_DOMIAN}"
+        - host: "share.${SECRET_DOMAIN}"
           paths:
           - path: /
             pathType: Prefix
         tls:
         - secretName: sharry-tls
           hosts:
-          - "share.${SECRET_DOMIAN}"
+          - "share.${SECRET_DOMAIN}"
 
     # -- Sharry configuration. Supports Helm templates.
     # See [application docs](https://eikek.github.io/sharry/doc/configure) for more details.
