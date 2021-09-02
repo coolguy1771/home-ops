@@ -10,5 +10,4 @@ resources:
 - cloudflare-ddns-icb
 - cloudflare-ddns-studio
 - redirects
-- secret-reflector
 - external-dns
