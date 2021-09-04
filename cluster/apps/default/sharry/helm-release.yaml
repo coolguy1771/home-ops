@@ -26,7 +26,7 @@ spec:
 
     # -- Override the command line arguments for the default container
     args:
-    - "/opt/sharry.conf"
+      - "/opt/sharry.conf"
 
     ingress:
       # -- Enable and configure ingress settings for the chart under this key.
@@ -44,14 +44,14 @@ spec:
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
         hosts:
-        - host: "share.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "share.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - secretName: sharry-tls
-          hosts:
-          - "share.${SECRET_DOMAIN}"
+          - secretName: sharry-tls
+            hosts:
+              - "share.${SECRET_DOMAIN}"
 
     # -- Sharry configuration. Supports Helm templates.
     # See [application docs](https://eikek.github.io/sharry/doc/configure) for more details.
