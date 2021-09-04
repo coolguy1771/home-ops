@@ -11,7 +11,7 @@ metadata:
   namespace: external
 spec:
   rules:
-    - host: cdn.witlinserver.com
+    - host: cdn.${SECRET_DOMAIN}
       http:
         paths:
           - pathType: Prefix
@@ -23,5 +23,5 @@ spec:
                   number: 8005
   tls:
     - hosts:
-        - cdn.witlinserver.com
+        - cdn.${SECRET_DOMAIN}
       secretName: gossa-cert
