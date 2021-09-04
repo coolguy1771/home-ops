@@ -12,17 +12,17 @@ metadata:
   namespace: external
 spec:
   rules:
-  - host: "torrent.${SECRET_DOMAIN}"
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: qbittorrent
-            port:
-              number: 8080
+    - host: "torrent.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: qbittorrent
+                port:
+                  number: 8080
   tls:
-  - hosts:
-    - "torrnet.${SECRET_DOMAIN}"
-    secretName: qbittorrent-cert
+    - hosts:
+        - "torrnet.${SECRET_DOMAIN}"
+      secretName: qbittorrent-cert
