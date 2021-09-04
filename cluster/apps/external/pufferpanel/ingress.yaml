@@ -11,17 +11,17 @@ metadata:
   namespace: external
 spec:
   rules:
-  - host: panel.icbplays.net
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: pufferpanel
-            port:
-              number: 8080
+    - host: panel.${SECRET_DOMAIN_GAMES}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: pufferpanel
+                port:
+                  number: 8080
   tls:
-  - hosts:
-    - panel.icbplays.net
-    secretName: pufferpanel-external-cert
+    - hosts:
+        - panel.${SECRET_DOMAIN_GAMES}
+      secretName: pufferpanel-external-cert
