@@ -11,17 +11,17 @@ metadata:
   namespace: external
 spec:
   rules:
-  - host: cdn.witlinserver.com
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: gossa
-            port:
-              number: 8005
+    - host: cdn.witlinserver.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: gossa
+                port:
+                  number: 8005
   tls:
-  - hosts:
-    - cdn.witlinserver.com
-    secretName: gossa-cert
+    - hosts:
+        - cdn.witlinserver.com
+      secretName: gossa-cert
