@@ -60,15 +60,15 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
-          hosts:
-            - host: "home.${SECRET_DOMAIN}"
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - hosts:
-                - "home.${SECRET_DOMAIN}"
-              secretName: hajimari-tls
+        hosts:
+          - host: "home.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "home.${SECRET_DOMAIN}"
+            secretName: hajimari-tls
     persistence:
       data:
         enabled: true
