@@ -53,22 +53,24 @@ spec:
       #   - name: Slack
       #     url: 'https://slack.com/signin'
     ingress:
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
-        external-dns/is-public: "true"
       main:
         enabled: true
-        hosts:
-          - host: "home.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - "home.${SECRET_DOMAIN}"
-            secretName: hajimari-tls
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
+        main:
+          enabled: true
+          hosts:
+            - host: "home.${SECRET_DOMAIN}"
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - "home.${SECRET_DOMAIN}"
+              secretName: hajimari-tls
     persistence:
       data:
         enabled: true
