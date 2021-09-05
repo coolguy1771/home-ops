@@ -53,10 +53,6 @@ spec:
             size: 25Gi
             ## storageClass specifies the storage class name to be used for this pool
             storageClassName: "nfs-client"
-        ## Mount path where PV will be mounted inside container(s).
-        mountPath: /export
-        ## Sub path inside Mount path where MinIO stores data.
-        subPath: /data
         # pool secrets
         secrets:
           # create a kubernetes secret object with the accessKey and secretKey as defined here.
