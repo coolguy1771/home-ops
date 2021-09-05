@@ -53,6 +53,8 @@ spec:
             size: 20Gi
             ## storageClass specifies the storage class name to be used for this pool
             storageClassName: "nfs-client"
+            accessModes:
+              - ReadWriteMany
         # pool secrets
         secrets:
           # create a kubernetes secret object with the accessKey and secretKey as defined here.
