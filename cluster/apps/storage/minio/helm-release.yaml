@@ -27,16 +27,9 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: letsencrypt-prod
-        tls:
-          - hosts:
-              - minio.${SECRET_DOMAIN}
-            secretName: minio-tls
-        hosts:
-          - host:
-              - minio.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
+        tls: minio.${SECRET_DOMAIN}
+        host: minio.${SECRET_DOMAIN}
+        path: /
     tenants:
       # Tenant name
       - name: minio
