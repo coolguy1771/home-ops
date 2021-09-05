@@ -53,9 +53,9 @@ spec:
           ## Note that the operator does not support upgrading from standalone to distributed mode.
           - servers: 4
             ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
-            volumesPerServer: 4
+            volumesPerServer: 2
             ## size specifies the capacity per volume
-            size: 100Gi
+            size: 50Gi
             ## storageClass specifies the storage class name to be used for this pool
             storageClassName: "nfs-client"
         ## Mount path where PV will be mounted inside container(s).
