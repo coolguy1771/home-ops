@@ -55,9 +55,9 @@ spec:
             ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
             volumesPerServer: 2
             ## size specifies the capacity per volume
-            size: 50Gi
+            size: 25Gi
             ## storageClass specifies the storage class name to be used for this pool
-            storageClassName: "nfs-client"
+            storageClassName: "longhorn"
         ## Mount path where PV will be mounted inside container(s).
         mountPath: /export
         ## Sub path inside Mount path where MinIO stores data.
