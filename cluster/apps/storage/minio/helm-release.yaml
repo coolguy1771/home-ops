@@ -27,9 +27,11 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: letsencrypt-prod
-        tls: minio.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+              - minio.${SECRET_DOMAIN}
+            secretName: minio-tls
         host: minio.${SECRET_DOMAIN}
-        path: /
     tenants:
       # Tenant name
       - name: minio
@@ -46,7 +48,7 @@ spec:
           ## Note that the operator does not support upgrading from standalone to distributed mode.
           - servers: 4
             ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
-            volumesPerServer: 2
+            volumesPerServer: 1
             ## size specifies the capacity per volume
             size: 25Gi
             ## storageClass specifies the storage class name to be used for this pool
