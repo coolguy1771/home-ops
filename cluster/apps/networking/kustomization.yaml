@@ -11,3 +11,5 @@ resources:
 - cloudflare-ddns-studio
 - redirects
 - external-dns
+- traefik
+- error-pages
