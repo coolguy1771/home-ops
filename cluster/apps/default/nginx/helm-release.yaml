@@ -170,7 +170,7 @@ spec:
       serviceMonitor:
         ## @param metrics.serviceMonitor.enabled Creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)
         ##
-        enabled: trye
+        enabled: true
         ## @param metrics.serviceMonitor.namespace Namespace in which Prometheus is running
         ##
         namespace: "monitoring"
