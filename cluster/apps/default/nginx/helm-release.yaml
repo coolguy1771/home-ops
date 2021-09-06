@@ -1,0 +1,187 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: nginx
+      version: 9.5.3
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+  values:
+    image:
+      registry: docker.io
+      repository: bitnami/nginx
+      tag: 1.21.2-debian-10-r0
+      pullPolicy: IfNotPresent
+    ## NGINX pods' Security Context.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+    ## @param podSecurityContext.enabled Enabled NGINX pods' Security Context
+    ## @param podSecurityContext.fsGroup Set NGINX pod's Security Context fsGroup
+    ## @param podSecurityContext.sysctls sysctl settings of the NGINX pods
+    ##
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+      ## sysctl settings
+      ## Example:
+      ## sysctls:
+      ## - name: net.core.somaxconn
+      ##   value: "10000"
+      ##
+      sysctls: []
+    ## NGINX Core containers' Security Context (only main container).
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+    ## @param containerSecurityContext.enabled Enabled NGINX Core containers' Security Context
+    ## @param containerSecurityContext.runAsUser Set NGINX Core container's Security Context runAsUser
+    ## @param containerSecurityContext.runAsNonRoot Set NGINX Core container's Security Context runAsNonRoot
+    ##
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsNonRoot: true
+    ## Configures the ports NGINX listens on
+    ## @param containerPorts.http Sets http port inside NGINX container
+    ## @param containerPorts.https Sets https port inside NGINX container
+    ##
+    containerPorts:
+      http: 8080
+      https: "8443"
+    ## @section Custom NGINX application parameters
+
+    ## Get the server static content from a git repository
+    ## NOTE: This will override staticSiteConfigmap and staticSitePVC
+    ##
+    cloneStaticSiteFromGit:
+      ## @param cloneStaticSiteFromGit.enabled Get the server static content from a Git repository
+      ##
+      enabled: true
+      ## Bitnami Git image version
+      ## ref: https://hub.docker.com/r/bitnami/git/tags/
+      ## @param cloneStaticSiteFromGit.image.registry Git image registry
+      ## @param cloneStaticSiteFromGit.image.repository Git image repository
+      ## @param cloneStaticSiteFromGit.image.tag Git image tag (immutable tags are recommended)
+      ## @param cloneStaticSiteFromGit.image.pullPolicy Git image pull policy
+      ## @param cloneStaticSiteFromGit.image.pullSecrets Specify docker-registry secret names as an array
+      ##
+      image:
+        registry: docker.io
+        repository: bitnami/git
+        tag: 2.33.0-debian-10-r14
+
+        pullPolicy: IfNotPresent
+
+        pullSecrets: []
+      ## @param cloneStaticSiteFromGit.repository Git Repository to clone static content from
+      ##
+      repository: "https://github.com/coolguy1771/website.git"
+      ## @param cloneStaticSiteFromGit.branch Git branch to checkout
+      ##
+      branch: "master"
+      ## @param cloneStaticSiteFromGit.interval Interval for sidecar container pull from the Git repository
+      ##
+      interval: 60
+    ingress:
+      ## @param ingress.enabled Set to true to enable ingress record generation
+      ##
+      enabled: true
+      ## @param ingress.certManager Set this to true in order to add the corresponding annotations for cert-manager
+      ##
+      certManager: true
+      ## @param ingress.pathType Ingress path type
+      ##
+      pathType: ImplementationSpecific
+      ## @param ingress.apiVersion Force Ingress API version (automatically detected if not set)
+      ##
+      ## @param ingress.hostname Default host for the ingress resource
+      ##
+      hostname: ${SECRET_DOMAIN_STUDIO}
+      ## @param ingress.path The Path to Nginx. You may need to set this to '/*' in order to use this with ALB ingress controllers.
+      ##
+      path: /
+      ## @param ingress.annotations Ingress annotations
+      ## For a full list of possible ingress annotations, please see
+      ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+      ##
+      ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
+      ##
+      annotations:
+        kubernetes.io/tls-acme: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: "nginx"
+      tls: true
+
+    ## @section Metrics parameters
+
+    ## Prometheus Exporter / Metrics
+    ##
+    metrics:
+      ## @param metrics.enabled Start a Prometheus exporter sidecar container
+      ##
+      enabled: true
+      ## @param metrics.port NGINX Container Status Port scraped by Prometheus Exporter
+      ## Defaults to specified http port
+      image:
+        registry: docker.io
+        repository: bitnami/nginx-exporter
+        tag: 0.9.0-debian-10-r146
+        pullPolicy: IfNotPresent
+        ## Optionally specify an array of imagePullSecrets.
+        ## Secrets must be manually created in the namespace.
+        ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+        ## e.g:
+        ## pullSecrets:
+        ##   - myRegistryKeySecretName
+        ##
+        pullSecrets: []
+      ## @param metrics.podAnnotations Additional annotations for NGINX Prometheus exporter pod(s)
+      ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+      ##
+      podAnnotations: {}
+      ## Container Security Context
+      ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+      ## @param metrics.securityContext.enabled Enabled NGINX Exporter containers' Security Context
+      ## @param metrics.securityContext.runAsUser Set NGINX Exporter container's Security Context runAsUser
+      ##
+      securityContext:
+        enabled: true
+        runAsUser: 1001
+      ## Prometheus exporter service parameters
+      ##
+      service:
+        ## @param metrics.service.port NGINX Prometheus exporter service port
+        ##
+        port: 9113
+        ## @param metrics.service.annotations [object] Annotations for the Prometheus exporter service
+        ##
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "{{ .Values.metrics.service.port }}"
+        requests: {}
+      ## Prometheus Operator ServiceMonitor configuration
+      ##
+      serviceMonitor:
+        ## @param metrics.serviceMonitor.enabled Creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)
+        ##
+        enabled: trye
+        ## @param metrics.serviceMonitor.namespace Namespace in which Prometheus is running
+        ##
+        namespace: "monitoring"
+        ## @param metrics.serviceMonitor.interval Interval at which metrics should be scraped.
+        ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+        ## e.g:
+        ## interval: 10s
+        ##
+        interval: "10"
+        ## @param metrics.serviceMonitor.scrapeTimeout Timeout after which the scrape is ended
+        ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+        ## e.g:
+        ## scrapeTimeout: 10s
+        ##
