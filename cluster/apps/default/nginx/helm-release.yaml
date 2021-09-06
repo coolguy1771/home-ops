@@ -124,7 +124,7 @@ spec:
     metrics:
       ## @param metrics.enabled Start a Prometheus exporter sidecar container
       ##
-      enabled: true
+      enabled: false
       ## @param metrics.port NGINX Container Status Port scraped by Prometheus Exporter
       ## Defaults to specified http port
       image:
