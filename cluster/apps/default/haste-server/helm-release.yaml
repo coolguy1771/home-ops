@@ -32,7 +32,6 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: https://twitter.com/hastebin/photo
           kubernetes.io/ingress.class: "traefik"
-
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
@@ -48,4 +47,5 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteOnce
+        accessMode: ReadWriteMany
+        size: 4Gi
