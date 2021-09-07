@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
+
     hajimari.io/enable: "true"
     hajimari.io/icon: https://avatars.githubusercontent.com/u/9778794
     external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"

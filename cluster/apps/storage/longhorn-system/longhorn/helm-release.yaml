@@ -31,7 +31,7 @@ spec:
       tlsSecret: longhorn-cert
       tls: true
       annotations:
-        kubernetes.io/ingress.class: nginx
+        kubernetes.io/ingress.class: traefik
         kubernetes.io/tls-acme: "true"
         cert-manager.io/cluster-issuer: letsencrypt-prod
         external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"

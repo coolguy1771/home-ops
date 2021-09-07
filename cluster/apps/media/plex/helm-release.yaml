@@ -56,9 +56,9 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: "nginx"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+
+          kubernetes.io/ingress.class: "traefik"
+          traefik.ingress.kubernetes.io/service.serversscheme: https
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:

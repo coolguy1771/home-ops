@@ -41,10 +41,10 @@ spec:
       main:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          kubernetes.io/ingress.class: "traefik"
           hajimari.io/enable: "true"
         #  hajimari.io/icon: "https://avatars.githubusercontent.com/u/34385001"
-          cert-manager.io/cluster-issuer: letsencrypt-production
+
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_GAMES}"
           external-dns/is-public: "true"
         hosts:

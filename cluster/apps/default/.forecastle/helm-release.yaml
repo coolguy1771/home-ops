@@ -29,7 +29,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          kubernetes.io/ingress.class: "traefik"
         hosts:
         - host: "home.${SECRET_DOMAIN}"
           paths:

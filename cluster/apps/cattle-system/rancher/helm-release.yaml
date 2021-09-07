@@ -63,8 +63,8 @@ spec:
       enabled: true
       includeDefaultExtraAnnotations: true
       extraAnnotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: "nginx"
+
+        kubernetes.io/ingress.class: "traefik"
         hajimari.io/enable: "true"
       tls:
         # options: rancher, letsEncrypt, secret
@@ -79,7 +79,7 @@ spec:
       environment: production
       ingress:
         # options: traefik, nginx
-        class: "nginx"
+        class: "traefik"
     # If you are using certs signed by a private CA set to 'true' and set the 'tls-ca'
     # in the 'rancher-system' namespace. See the README.md for details
     privateCA: false

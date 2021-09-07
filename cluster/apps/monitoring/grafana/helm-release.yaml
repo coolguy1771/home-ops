@@ -135,8 +135,8 @@ spec:
     ingress:
       enabled: true
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: "nginx"
+
+        kubernetes.io/ingress.class: "traefik"
         hajimari.io/enable: "true"
       hosts:
         - "grafana.${SECRET_DOMAIN}"

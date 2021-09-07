@@ -90,8 +90,8 @@ spec:
         enabled: true
         pathType: Prefix
         annotations:
-          kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "traefik"
+
         hosts:
           - "prom-alert.${SECRET_DOMAIN}"
         tls:
@@ -168,8 +168,8 @@ spec:
         enabled: true
         pathType: Prefix
         annotations:
-          kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: "traefik"
+
         hosts:
           - "prom-server.${SECRET_DOMAIN}"
         tls:
