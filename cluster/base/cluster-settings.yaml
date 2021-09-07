@@ -6,4 +6,4 @@ metadata:
   namespace: flux-system
 data:
   METALLB_LB_RANGE: 10.10.10.6-10.10.10.254
-  INGRESS_NGINX_LB: 10.10.10.240
+  SVC_TRAEFIK_ADDR: 10.10.10.240
