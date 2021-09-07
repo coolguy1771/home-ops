@@ -73,7 +73,8 @@ spec:
         maxVersion: VersionTLS13
         sniStrict: true
     pilot:
-      enabled: false
+      enabled: true
+      token: "${SECRET_TRAEFIK_PILOT_TOEKEN}"
     experimental:
       plugins:
         enabled: true
