@@ -3,27 +3,25 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    hajimari.io/enable: "true"
-    hajimari.io/icon: https://avatars.githubusercontent.com/u/9778794
     external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
     external-dns/is-public: "true"
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-  name: s3-console
+  name: s3
   namespace: external
 spec:
   rules:
-    - host: console.s3.${SECRET_DOMAIN}
+    - host: s3.${SECRET_DOMAIN}
       http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: s3-console
+                name: s3
                 port:
-                  number: 9769
+                  number: 9768
   tls:
     - hosts:
-        - console.s3.${SECRET_DOMAIN}
-      secretName: s3-console-external-cert
+        - s3.${SECRET_DOMAIN}
+      secretName: s3-nio-external-cert

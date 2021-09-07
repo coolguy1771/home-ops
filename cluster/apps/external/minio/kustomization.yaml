@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
 - ingress.yaml
 - service.yaml
+- ingress-s3.yaml
+- service-s3.yaml
