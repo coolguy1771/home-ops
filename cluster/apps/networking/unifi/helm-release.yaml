@@ -58,9 +58,13 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: "traefik"
         annotations:
           kubernetes.io/ingress.class: "traefik"
           traefik.ingress.kubernetes.io/service.serversscheme: https
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/tls-acme: "true"
         hosts:
           - host: "ui.${SECRET_DOMAIN}"
             paths:
@@ -69,6 +73,7 @@ spec:
         tls:
           - hosts:
               - "ui.${SECRET_DOMAIN}"
+            secretName: unifi-cert
       # -- Configure persistence settings for the chart under this key.
       #@default -- See values.yaml
     persistence:
