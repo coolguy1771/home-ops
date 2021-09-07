@@ -84,7 +84,7 @@ spec:
       repository: "https://github.com/coolguy1771/website.git"
       ## @param cloneStaticSiteFromGit.branch Git branch to checkout
       ##
-      branch: "master"
+      branch: "main"
       ## @param cloneStaticSiteFromGit.interval Interval for sidecar container pull from the Git repository
       ##
       interval: 60
@@ -113,8 +113,8 @@ spec:
       ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
       ##
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: "nginx"
+
+        kubernetes.io/ingress.class: "traefik"
       tls: true
 
     ## @section Metrics parameters
