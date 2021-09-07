@@ -22,6 +22,9 @@ spec:
       tag: 2021.8.4
       pullPolicy: IfNotPresent
     authentik:
+      authentik:
+        geoip: /geoip/GeoLite2-City.mmdb
+      geoip: /geoip/GeoLite2-City.mmdb
       secret_key: "${SECRET_AUTHENTIK_KEY}"
       error_reporting:
         enabled: true
@@ -34,7 +37,7 @@ spec:
         password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
         use_tls: true
         timeout: 30
-        from: "Authentik <auth@${SECRET_DOMAIN_STUDIO}>"
+        from: "No-Reply <no-reply@${SECRET_DOMAIN_STUDIO}>"
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     ingress:
