@@ -47,8 +47,16 @@ spec:
         mode: console
       grafana_net:
         url: https://grafana.net
-      auth.basic:
-        disable_login_form: false
+      auth.generic_oauth:
+        name: authentik
+        enabled: true
+        client_id: ${SECRET_GRAFANA_CLIENT_ID}
+        client_secret: ${SECRET_GRAFANA_CLIENT_SECRET}
+        scopes: openid email profile
+        auth_url: https://auth.${SECRET_DOMAIN_STUDIO}/application/o/authorize/
+        token_url: https://auth.${SECRET_DOMAIN_STUDIO}/application/o/token/
+        api_url: https://auth.${SECRET_DOMAIN_STUDIO}/application/o/userinfo/
+        role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
