@@ -50,7 +50,7 @@ spec:
         limits:
           memory: 500Mi
     defaultBackend:
-      enabled: true
+      enabled: false
       readOnlyRootFilesystem: false
       image:
         repository: ghcr.io/181192/custom-error-pages
