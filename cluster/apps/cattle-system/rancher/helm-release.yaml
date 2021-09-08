@@ -63,7 +63,9 @@ spec:
       enabled: true
       includeDefaultExtraAnnotations: true
       extraAnnotations:
-
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        kubernetes.io/tls-acme: "true"
         kubernetes.io/ingress.class: "traefik"
         hajimari.io/enable: "true"
       tls:
@@ -95,15 +97,13 @@ spec:
     # Set pod resource requests/limits for Rancher.
     resources: {}
     tls: ingress
-    systemDefaultRegistry: ""
     # Set to use the packaged system charts
-    useBundledSystemChart: false
     # Certmanager version compatibility
     certmanager:
-      version: "v1.4.0"
+      version: "v1.5.3"
     # Rancher custom logos persistence
     customLogos:
-      enabled: false
+      enabled: true
       volumeSubpaths:
         emberUi: "ember"
         vueUi: "vue"
