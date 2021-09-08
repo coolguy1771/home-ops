@@ -24,4 +24,4 @@ spec:
   tls:
     - hosts:
         - s3.${SECRET_DOMAIN}
-      secretName: s3-nio-external-cert
+      secretName: s3-external-cert
