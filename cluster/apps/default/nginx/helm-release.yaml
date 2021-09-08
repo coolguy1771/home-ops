@@ -113,7 +113,7 @@ spec:
       ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
       ##
       annotations:
-
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         kubernetes.io/ingress.class: "traefik"
       tls: true
 
