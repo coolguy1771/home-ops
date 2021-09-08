@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: nginx
-      version: 9.5.3
+      version: 9.5.4
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
@@ -19,7 +19,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/nginx
-      tag: 1.21.2-debian-10-r0
+      tag: 1.21.3-debian-10-r0
       pullPolicy: IfNotPresent
     ## NGINX pods' Security Context.
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
