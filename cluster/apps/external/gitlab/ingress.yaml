@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     cert-manager.io/cluster-issuer: letsencrypt-production
     hajimari.io/enable: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 100000m
