@@ -31,7 +31,7 @@ spec:
         enabled: true
         hostname: "thanos.${SECRET_DOMAIN}"
         annotations:
-
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           kubernetes.io/ingress.class: "traefik"
           hajimari.io/enable: "true"
         tls: true
