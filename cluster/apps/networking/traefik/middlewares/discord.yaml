@@ -1,0 +1,9 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: discord
+spec:
+  redirectRegex:
+    regex: "^https?://discord.${SECRET_DOMAIN_STUDIO}"
+    replacement: "https://discord.com/invite/99kHgMHXA6"
+    permanent: true
