@@ -33,6 +33,7 @@ spec:
             key: api-key
     extraArgs:
       - --annotation-filter=external-dns/is-public in (true)
+      - --cloudflare-proxied
     policy: sync
     sources:
       - ingress
