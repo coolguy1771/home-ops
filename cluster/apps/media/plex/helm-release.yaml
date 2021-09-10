@@ -49,14 +49,20 @@ spec:
       PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
       PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
       PLEX_PREFERENCE_24: "CinemaTrailersType=0"
-    hostNetwork: true
+    service:
+      main:
+        type: LoadBalancer
+        externalIPs:
+          - "${SVC_PLEX_ADDR}"
+        externalTrafficPolicy: Local
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true
         annotations:
           hajimari.io/enable: "true"
-          hajimari.io/icon: https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg
-
+          hajimari.io/icon: "plex"
           kubernetes.io/ingress.class: "traefik"
           traefik.ingress.kubernetes.io/service.serversscheme: https
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
