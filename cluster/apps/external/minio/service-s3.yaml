@@ -4,6 +4,9 @@ kind: Service
 metadata:
   name: s3
   namespace: external
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
 spec:
   type: ExternalName
   externalName: 192.168.1.147
