@@ -3,8 +3,8 @@ kind: Service
 metadata:
   name: gitlab
   namespace: external
-  annotations:
-    traefik.ingress.kubernetes.io/service.serversscheme: https
+  annotations: {}
+  #  traefik.ingress.kubernetes.io/service.serversscheme: https
 spec:
   type: ExternalName
   externalName: 192.168.1.147
