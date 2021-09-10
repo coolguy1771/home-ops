@@ -26,6 +26,7 @@ spec:
         type: LoadBalancer
         annotations:
           metallb.universe.tf/allow-shared-ip: unifi
+          traefik.ingress.kubernetes.io/service.serversscheme: https
         loadBalancerIP: 10.10.10.252
         externalTrafficPolicy: Local
         ports:
