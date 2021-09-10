@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: gossa
   namespace: external
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
 spec:
   type: ExternalName
   externalName: 192.168.1.147
