@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: sonarr
-      version: 13.0.0
+      version: 14.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -25,13 +25,13 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingress.class: "traefik"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "https://avatars.githubusercontent.com/u/1082903"
-
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "television-box"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
           - host: "sonarr.${SECRET_DOMAIN}"
             paths:
@@ -40,7 +40,16 @@ spec:
         tls:
           - hosts:
               - "sonarr.${SECRET_DOMAIN}"
-            secretName: sonarr-tls
+      api:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+          - host: "sonarr.${SECRET_DOMAIN}"
+            paths:
+              - path: /api
+                pathType: Prefix
     persistence:
       config:
         enabled: true
@@ -76,31 +85,15 @@ spec:
         cpu: 500m
       limits:
         memory: 1500Mi
-    prometheus:
+    exporter:
+      enabled: true
+      image:
+        repository: ghcr.io/onedr0p/exportarr
+        tag: v0.6.1
+      env:
+        port: 32123
+        additionalMetrics: true
+        unknownQueueItems: false
       podMonitor:
-        enabled: true
-        interval: 10m
-        scrapeTimeout: 2m
-    additionalContainers:
-      - name: exportarr
-        image: ghcr.io/onedr0p/exportarr:v0.6.1
-        imagePullPolicy: IfNotPresent
-        args: ["exportarr", "sonarr"]
-        env:
-          - name: PORT
-            value: "32123"
-          - name: URL
-            value: "http://localhost"
-          - name: CONFIG
-            value: "/config/config.xml"
-          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-            value: "true"
-          - name: ENABLE_ADDITIONAL_METRICS
-            value: "true"
-        ports:
-          - name: exportarr
-            containerPort: 32123
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
+        interval: 3m
+        scrapeTimeout: 1m
