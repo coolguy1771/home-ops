@@ -60,7 +60,6 @@ spec:
         enabled: true
         ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingress.class: "traefik"
           traefik.ingress.kubernetes.io/service.serversscheme: https
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           cert-manager.io/cluster-issuer: letsencrypt-production
