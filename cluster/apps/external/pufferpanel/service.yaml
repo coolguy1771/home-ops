@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: pufferpanel
   namespace: external
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
 spec:
   type: ExternalName
   externalName: 10.10.10.92
