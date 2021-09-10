@@ -6,3 +6,4 @@ resources:
 - gossa
 - qbittorrent
 - minio
+- gitlab
