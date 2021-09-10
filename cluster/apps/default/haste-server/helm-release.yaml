@@ -47,5 +47,4 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteMany
         size: 4Gi
