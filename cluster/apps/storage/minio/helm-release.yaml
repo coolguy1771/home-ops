@@ -20,7 +20,7 @@ spec:
     console:
       image:
         repository: minio/console
-        tag: v0.9.6
+        tag: v0.9.8
         pullPolicy: IfNotPresent
       ingress:
         enabled: true
@@ -38,7 +38,7 @@ spec:
         ## Registry location and Tag to download MinIO Server image
         image:
           repository: minio/minio
-          tag: RELEASE.2021-09-03T03-56-13Z
+          tag: RELEASE.2021-09-09T21-37-07Z
           pullPolicy: IfNotPresent
         ## Customize namespace for tenant deployment
         namespace: storage
