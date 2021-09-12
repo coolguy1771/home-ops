@@ -4,4 +4,3 @@ resources:
 - gotk-components.yaml
 - gotk-sync.yaml
 - charts
-- notifications
