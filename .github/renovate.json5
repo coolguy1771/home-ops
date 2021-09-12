@@ -10,7 +10,7 @@
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{newVersion}}",
   "commitMessageSuffix": "",
-  // set up Renovate Managers
+ // set up Renovate Managers
   "helmv3": {
     "fileMatch": ["charts/.+/Chart\\.yaml$"]
   },
@@ -18,8 +18,13 @@
     "fileMatch": ["cluster/.+/helm-release\\.yaml$"]
   },
   "kubernetes": {
-    "fileMatch": ["cluster/.+\\.yaml$"],
-    "ignorePaths": ["cluster/base/"]
+    "fileMatch": [
+      "cluster/.+\\.yaml$",
+      "server/.+\\.yaml$"
+    ],
+    "ignorePaths": [
+      "cluster/base/"
+    ]
   },
   "regexManagers": [
     // regexManager to read and process HelmRelease files
@@ -43,10 +48,11 @@
       ],
       "datasourceTemplate": "helm"
     },
-    // regexManager to read and process kube-prometheus-stack CRD's
+    // regexManager to read and process kube-prometheus-stack and velero CRD's
     {
       "fileMatch": [
-        "cluster/crds/kube-prometheus-stack/.+\\.yaml$"
+        "cluster/crds/kube-prometheus-stack/.+\\.yaml$",
+        "cluster/crds/velero/.+\\.yaml$"
       ],
       "matchStrings": [
         "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n"
@@ -60,16 +66,6 @@
       ],
       "matchStrings": [
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n"
-      ],
-      "datasourceTemplate": "helm"
-    },
-    // regexManager to read and process Rook-Ceph CRD's
-    {
-      "fileMatch": [
-        "cluster/crds/rook-ceph/.+\\.yaml$"
-      ],
-      "matchStrings": [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n"
       ],
       "datasourceTemplate": "helm"
     },
@@ -140,31 +136,6 @@
       "semanticCommitType": "fix",
       "labels": ["renovate/helm", "dep/patch"]
     },
-    // custom version schemes
-    {
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$",
-      "matchPackageNames": ["blakeblackshear/frigate"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
-      "matchPackageNames": ["minio/minio"]
-    },
-    // pin package versions
-    {
-      "matchDatasources": ["docker"],
-      "allowedVersions": "<13",
-      "matchPackageNames": [
-        "postgres",
-        "prodrigestivill/postgres-backup-local"
-      ]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "allowedVersions": "<2",
-      "matchPackageNames": ["influxdb"]
-    },
     // version strategies
     {
       "matchDatasources": ["docker"],
@@ -189,20 +160,17 @@
     // group packages
     {
       "matchDatasources": ["github-releases", "docker"],
-      "matchPackagePatterns": ["external-dns"],
-      "groupName": "external-dns-suite",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
-    },
-    {
-      "matchDatasources": ["github-releases", "docker"],
-      "matchPackagePatterns": ["external-snapshotter"],
+      "matchPackagePatterns": [
+        "external-snapshotter",
+        "snapshot-controller"
+      ],
       "groupName": "external-snapshotter-suite",
       "additionalBranchPrefix": "",
       "separateMinorPatch": true
     },
     {
-      "matchPackageNames": ["system-upgrade-controller"],
+      "matchDatasources": ["github-tags", "docker"],
+      "matchPackagePatterns": ["rancher/system-upgrade-controller"],
       "groupName": "system-upgrade-controller-suite",
       "additionalBranchPrefix": "",
       "separateMinorPatch": true
