@@ -64,7 +64,6 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "plex"
           kubernetes.io/ingress.class: "traefik"
-          traefik.ingress.kubernetes.io/service.serversscheme: https
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
