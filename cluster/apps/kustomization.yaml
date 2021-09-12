@@ -11,3 +11,4 @@ resources:
 - monitoring
 - cattle-system
 - docs
+- calico-system
