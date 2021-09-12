@@ -12,3 +12,4 @@ resources:
 - cattle-system
 - docs
 - calico-system
+- falco-system
