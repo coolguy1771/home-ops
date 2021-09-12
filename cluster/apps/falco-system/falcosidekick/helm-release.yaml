@@ -32,6 +32,8 @@ spec:
       annotations:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+        external-dns/is-public: "true"
       hosts:
         - host: "falcosidekick.${SECRET_DOMAIN}"
           paths:
@@ -48,6 +50,8 @@ spec:
         annotations:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
         hosts:
           - host: "falcosidekick-ui.${SECRET_DOMAIN}"
             paths: ["/ui", "/events", "/healthz", "/ws"]
