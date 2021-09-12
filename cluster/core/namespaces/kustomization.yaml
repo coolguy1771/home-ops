@@ -13,9 +13,9 @@ resources:
 - game-servers.yaml
 - auth.yaml
 - git.yaml
-- k10.yaml
+- falco-system.yaml
 - security.yaml
 - cattle-system.yaml
 - storage.yaml
-- minio.yaml
+- calico-system.yaml
 - docs.yaml
