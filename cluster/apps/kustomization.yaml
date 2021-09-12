@@ -13,3 +13,4 @@ resources:
 - docs
 - calico-system
 - falco-system
+- flux-system
