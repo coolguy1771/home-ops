@@ -7,14 +7,14 @@ metadata:
 spec:
   type: discord
   username: Flux
-  channel: flux
+  channel: k3s-notifications
   secretRef:
     name: discord-webhook-url
 ---
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Alert
 metadata:
-  name: home-cluster
+  name: k3s
   namespace: flux-system
 spec:
   providerRef:
