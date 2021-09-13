@@ -27,8 +27,6 @@ spec:
         enabled: true
         annotations:
           hajimari.io/enable: "true"
-          hajimari.io/icon: ""
-
           kubernetes.io/ingress.class: "traefik"
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
@@ -47,7 +45,6 @@ spec:
         accessMode: ReadWriteOnce
         storageClass: longhorn
         size: 1Gi
-        mountPath: /config/jackett
         #existingClaim: jackett-config
     resources:
       requests:
