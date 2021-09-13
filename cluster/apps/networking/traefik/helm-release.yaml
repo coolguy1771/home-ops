@@ -24,13 +24,16 @@ spec:
       name: ghcr.io/k8s-at-home/traefik
     deployment:
       kind: Deployment
-      replicas: 1
+      replicas: 3
     service:
       enabled: true
       type: LoadBalancer
       spec:
-        loadBalancerIP: "${SVC_TRAEFIK_ADDR}"
+        externalIPs:
+          - "${SVC_TRAEFIK_ADDR}"
         externalTrafficPolicy: Local
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "${SECRET_DOMAIN}"
     logs:
       general:
         format: json
