@@ -6,3 +6,4 @@ resources:
   - tls-store
   - dashboard
   - prometheus-rule.yaml
+  - service-monitor.yaml
