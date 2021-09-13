@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: thanos
-      version: 5.5.1
+      version: 6.0.0
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
@@ -30,14 +30,13 @@ spec:
       ingress:
         enabled: true
         hostname: "thanos.${SECRET_DOMAIN}"
+        ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          kubernetes.io/ingress.class: "traefik"
-          hajimari.io/enable: "true"
         tls: true
     existingObjstoreSecret: thanos-objstore
     queryFrontend:
-      enabled: true
+      enabled: false
     bucketweb:
       enabled: true
     compactor:
