@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: unifi-poller
-      version: 9.0.0
+      version: 10.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -23,7 +23,7 @@ spec:
     env:
       TZ: "UTC"
       UP_UNIFI_DEFAULT_ROLE: "homelab-controller"
-      UP_UNIFI_DEFAULT_URL: "https://unifi.networking.svc.cluster.local"
+      UP_UNIFI_DEFAULT_URL: "https://unifi.networking.svc.cluster.local:8443"
       UP_UNIFI_DEFAULT_VERIFY_SSL: false
       UP_UNIFI_DEFAULT_USER: "unifipoller"
       UP_UNIFI_DEFAULT_PASS: "${SECRET_UNIFI_POLLER_PASSWORD}"
@@ -31,7 +31,13 @@ spec:
       UP_UNIFI_DEFAULT_SAVE_DPI: true
       UP_INFLUXDB_DISABLE: true
       UP_PROMETHEUS_DISABLE: false
-      UP_PROMETHEUS_NAMESPACE: "monitoring"
-    prometheus:
+      UP_PROMETHEUS_NAMESPACE: "unifipoller"
+    metrics:
+      # -- Enable and configure a Prometheus serviceMonitor for the chart under this key.
+      # @default -- See values.yaml
+      enabled: true
       serviceMonitor:
+        interval: 1m
+        scrapeTimeout: 30s
+      prometheusRule:
         enabled: true
