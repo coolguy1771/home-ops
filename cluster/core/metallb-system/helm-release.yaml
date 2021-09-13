@@ -28,9 +28,3 @@ spec:
         enabled: true
       prometheusRule:
         enabled: true
-    speaker:
-      tolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
