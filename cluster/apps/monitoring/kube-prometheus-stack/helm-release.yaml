@@ -197,4 +197,4 @@ spec:
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
               - targets:
-                  - "192.168.1.147:9768"
+                  - "${NAS_ADDR}:9768"

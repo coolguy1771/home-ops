@@ -76,5 +76,5 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: 192.168.1.147
+            server: "${NAS_ADDR}"
             path: /mnt/user/appdata/stash/data
