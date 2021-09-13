@@ -51,9 +51,7 @@ spec:
       PLEX_PREFERENCE_24: "CinemaTrailersType=0"
     service:
       main:
-        type: LoadBalancer
-        externalIPs:
-          - 10.10.10.6
+        type: ClusterIP
         externalTrafficPolicy: Local
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
