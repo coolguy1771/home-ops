@@ -51,7 +51,9 @@ spec:
       PLEX_PREFERENCE_24: "CinemaTrailersType=0"
     service:
       main:
-        type: ClusterIP
+        type: LoadBalancer
+        externalIPs:
+          - "${SVC_PLEX_ADDR}"
         externalTrafficPolicy: Local
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
