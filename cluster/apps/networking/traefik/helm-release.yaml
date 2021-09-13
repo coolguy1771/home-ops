@@ -57,7 +57,6 @@ spec:
       - "--providers.kubernetescrd.allowexternalnameservices=true"
       - "--providers.kubernetescrd.allowCrossNamespace=true"
       - "--providers.kubernetesingress.allowexternalnameservices=true"
-      - "--providers.kubernetescrd.allowexternalnameservices=true"
     ports:
       traefik:
         expose: true
