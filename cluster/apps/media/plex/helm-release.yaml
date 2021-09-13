@@ -52,7 +52,8 @@ spec:
     service:
       main:
         type: LoadBalancer
-        externalIPs: 10.10.10.6
+        externalIPs:
+          - 10.10.10.141
         externalTrafficPolicy: Local
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
