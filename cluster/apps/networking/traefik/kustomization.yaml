@@ -5,3 +5,4 @@ resources:
   - helm-release.yaml
   - tls-store
   - dashboard
+  - prometheus-rule.yaml
