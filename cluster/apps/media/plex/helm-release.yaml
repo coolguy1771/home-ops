@@ -52,7 +52,7 @@ spec:
     service:
       main:
         type: LoadBalancer
-        externalIPs: 10.10.10.241
+        externalIPs: "${SVC_PLEX_ADDR}"
         externalTrafficPolicy: Local
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
