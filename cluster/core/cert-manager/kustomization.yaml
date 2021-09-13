@@ -5,3 +5,4 @@ resources:
 - letsencrypt-production.yaml
 - letsencrypt-staging.yaml
 - secret.sops.yaml
+- prometheus-rules.yaml
