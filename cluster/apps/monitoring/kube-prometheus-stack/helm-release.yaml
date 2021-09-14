@@ -16,7 +16,6 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
-  timeout: 20m
   values:
     fullnameOverride: prometheus
     alertmanager:
@@ -25,12 +24,12 @@ spec:
           slack_api_url: "${SECRET_ALERT_MANAGER_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
-          - name: 'null'
-          - name: 'discord'
+          - name: "null"
+          - name: "discord"
             slack_configs:
-              - channel: '#prometheus'
-                icon_url: 'https://avatars3.githubusercontent.com/u/3380462'
-                username: 'Prometheus'
+              - channel: "#prometheus"
+                icon_url: https://avatars3.githubusercontent.com/u/3380462
+                username: "Prometheus"
                 send_resolved: true
                 title: |-
                   [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
@@ -75,8 +74,8 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
+        ingressClassName: traefik
         annotations:
-          kubernetes.io/ingress.class: "traefik"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           hajimari.io/enable: "true"
           hajimari.io/icon: "torch"
@@ -186,7 +185,7 @@ spec:
                   storage: 10Gi
         thanos:
           image: quay.io/thanos/thanos:v0.22.0
-          version: v0.9.0
+          version: v0.22.0
           objectStorageConfig:
             name: thanos-objstore
             key: objstore.yml
