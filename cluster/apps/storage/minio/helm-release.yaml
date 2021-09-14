@@ -48,13 +48,13 @@ spec:
           ## Note that the operator does not support upgrading from standalone to distributed mode.
           - servers: 4
             ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
-            volumesPerServer: 1
+            volumesPerServer: 2
             ## size specifies the capacity per volume
             size: 20Gi
             ## storageClass specifies the storage class name to be used for this pool
-            storageClassName: "longhorn"
+            storageClassName: "nfs-client"
             accessModes:
-              - ReadWriteMany
+              - ReadWriteOnce
         # pool secrets
         secrets:
           # create a kubernetes secret object with the accessKey and secretKey as defined here.
@@ -74,4 +74,4 @@ spec:
         ## accessible as DNS entries of form `<bucketname>.minio.default.svc.cluster.local`
         s3:
           ## This feature is turned off by default
-          bucketDNS: false
+          bucketDNS: true
