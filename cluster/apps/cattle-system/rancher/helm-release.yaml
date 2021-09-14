@@ -68,6 +68,7 @@ spec:
         kubernetes.io/tls-acme: "true"
         kubernetes.io/ingress.class: "traefik"
         hajimari.io/enable: "true"
+        hajimari.io/icon: "account-cowboy-hat-outline"
       tls:
         # options: rancher, letsEncrypt, secret
         source: rancher

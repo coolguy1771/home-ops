@@ -2,9 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-
     hajimari.io/enable: "true"
-    hajimari.io/icon: https://avatars.githubusercontent.com/u/9778794
+    hajimari.io/icon: "game-pad-variant-outline"
     external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
     external-dns/is-public: "true"
   name: pufferpanel

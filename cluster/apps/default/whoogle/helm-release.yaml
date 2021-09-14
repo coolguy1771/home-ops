@@ -27,7 +27,7 @@ spec:
         enabled: true
         annotations:
           hajimari.io/enable: "true"
-        #  hajimari.io/icon: https://js.wiki/img/wikijs-full-2021.b840e376.svg
+          hajimari.io/icon: "cloud-search-outline"
           kubernetes.io/ingress.class: "traefik"
 
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"

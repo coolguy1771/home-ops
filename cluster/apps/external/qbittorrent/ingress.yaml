@@ -3,9 +3,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-
     hajimari.io/enable: "true"
-    hajimari.io/icon: "https://avatars.githubusercontent.com/u/2131270"
+    hajimari.io/icon: "tray-arrow-download"
     external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
     external-dns/is-public: "true"
   name: qbittorrent

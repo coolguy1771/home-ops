@@ -48,9 +48,9 @@ spec:
       main:
         enabled: true
         annotations:
-
           kubernetes.io/ingress.class: "traefik"
           hajimari.io/enable: "true"
+          hajimari.io/icon: "text-box-multiple-outline"
         hosts:
           - host: paper.witlinserver.com
             paths:

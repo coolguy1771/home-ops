@@ -115,6 +115,8 @@ spec:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         kubernetes.io/ingress.class: "traefik"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "application-outline"
       tls: true
 
     ## @section Metrics parameters

@@ -54,7 +54,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
-          hajimari.io/icon: https://bitwarden.com/images/icons/apple-touch-icon.png
+          hajimari.io/icon: "archive-lock-outline"
         hosts:
           - host: vault.witlinserver.com
             paths:

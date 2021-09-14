@@ -78,6 +78,8 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "traefik"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "torch"
         hosts:
           - "alert-manager.${SECRET_DOMAIN}"
         tls:
@@ -156,6 +158,8 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "torch"
         hosts:
           - "prometheus.${SECRET_DOMAIN}"
         tls:

@@ -27,9 +27,6 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "traefik"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "https://avatars.githubusercontent.com/u/34385001"
-
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
