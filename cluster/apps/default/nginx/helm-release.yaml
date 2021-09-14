@@ -63,14 +63,6 @@ spec:
       ## @param cloneStaticSiteFromGit.enabled Get the server static content from a Git repository
       ##
       enabled: true
-      ## Bitnami Git image version
-      ## ref: https://hub.docker.com/r/bitnami/git/tags/
-      ## @param cloneStaticSiteFromGit.image.registry Git image registry
-      ## @param cloneStaticSiteFromGit.image.repository Git image repository
-      ## @param cloneStaticSiteFromGit.image.tag Git image tag (immutable tags are recommended)
-      ## @param cloneStaticSiteFromGit.image.pullPolicy Git image pull policy
-      ## @param cloneStaticSiteFromGit.image.pullSecrets Specify docker-registry secret names as an array
-      ##
       image:
         registry: docker.io
         repository: bitnami/git
@@ -114,6 +106,7 @@ spec:
       ##
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "traefik"
         hajimari.io/enable: "true"
         hajimari.io/icon: "application-outline"
