@@ -33,3 +33,4 @@ resources:
   - hajimari-charts.yaml
   - longhorn-charts.yaml
   - metallb-charts.yaml
+  - vmware-tanzu-charts.yaml
