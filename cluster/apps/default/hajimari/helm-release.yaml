@@ -22,7 +22,7 @@ spec:
       pullPolicy: IfNotPresent
       tag: v0.1.0
     hajimari:
-      defaultEnable: true
+      defaultEnable: false
       namespaceSelector:
         matchNames:
           - media
