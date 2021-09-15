@@ -80,7 +80,7 @@ spec:
         enabled: true
         mountPath: /config
         accessMode: ReadWriteMany
-        storageClass: rook-ceph
+        storageClass: rook-ceph-block
         size: 5Gi
       transcode:
         enabled: true

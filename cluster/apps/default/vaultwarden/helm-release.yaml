@@ -89,7 +89,7 @@ spec:
         type: RollingUpdate
       persistence:
         enabled: true
-        storageClass: rook-ceph
+        storageClass: rook-ceph-block
         existingClaim: data-vaultwarden-postgresql-0
         accessModes:
           - ReadWriteOnce

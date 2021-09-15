@@ -58,5 +58,5 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: rook-ceph
+        storageClass: rook-ceph-block
         size: 4Gi

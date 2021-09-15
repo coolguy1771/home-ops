@@ -69,7 +69,7 @@ spec:
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
         enabled: true
-        storageClass: rook-ceph
+        storageClass: rook-ceph-block
         accessModes:
           - ReadWriteOnce
       s3_backup:
