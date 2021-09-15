@@ -79,7 +79,7 @@ spec:
       config:
         enabled: true
         mountPath: /config
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
         storageClass: rook-ceph-block
         size: 5Gi
       transcode:
