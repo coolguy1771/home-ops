@@ -1,6 +1,11 @@
 ---
 creation_rules:
-- encrypted_regex: '^(data|stringData)$'
-  pgp: >-
-    86B2157D15BC53A36FBA055FCC5C3C333A4093D1,
-    E04EE454BEACA869B2FB211472C2E881FE50E35B
+  - path_regex: ansible/.*\.sops\.ya?ml
+    unencrypted_regex: "^(kind)$"
+    pgp: >-
+      6ECFDEA57C701C60882FC1617028FE4C7F94BFFC
+  - path_regex: cluster/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    pgp: >-
+      86B2157D15BC53A36FBA055FCC5C3C333A4093D1,
+      E04EE454BEACA869B2FB211472C2E881FE50E35B

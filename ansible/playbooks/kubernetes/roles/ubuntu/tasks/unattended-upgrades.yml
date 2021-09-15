@@ -9,6 +9,7 @@
       APT::Periodic::Download-Upgradeable-Packages "1";
       APT::Periodic::AutocleanInterval "7";
       APT::Periodic::Unattended-Upgrade "1";
+
 - name: Copy 50unattended-upgrades unattended-upgrades config
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
@@ -22,6 +23,7 @@
           "${distro_id} ${distro_codename}-security";
           "${distro_id} ${distro_codename}-updates";
       };
+
 - name: Start unattended-upgrades service
   ansible.builtin.systemd:
     name: unattended-upgrades

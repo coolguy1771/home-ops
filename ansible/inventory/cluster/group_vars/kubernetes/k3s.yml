@@ -24,7 +24,7 @@ k3s_etcd_datastore: true
 # this is set to my haproxy address running on my router.
 # If you want to use kube-vip only
 # set this to "{{ kubevip_address }}"
-k3s_registration_address: 192.168.1.1
+k3s_registration_address: 10.10.10.1
 
 #
 # /var/lib/rancher/k3s/server/manifests

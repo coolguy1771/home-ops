@@ -12,6 +12,7 @@
     block: |
       127.0.0.1 localhost
       127.0.1.1 {{ inventory_hostname }}
+
       # The following lines are desirable for IPv6 capable hosts
       ::1 ip6-localhost ip6-loopback
       fe00::0 ip6-localnet
@@ -19,6 +20,7 @@
       ff02::1 ip6-allnodes
       ff02::2 ip6-allrouters
       ff02::3 ip6-allhosts
+
 - name: Check for bridge-nf-call-iptables
   ansible.builtin.stat:
     path: /proc/sys/net/bridge/bridge-nf-call-iptables
@@ -32,6 +34,8 @@
     block: |
       net.ipv4.ip_forward = 1
       net.bridge.bridge-nf-call-iptables = 1
+      net.ipv6.conf.all.forwarding = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
   when:
     - bridge_nf_call_iptables_result.stat.exists
   register: sysctl_network
