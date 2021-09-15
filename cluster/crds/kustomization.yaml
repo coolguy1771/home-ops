@@ -5,3 +5,4 @@ resources:
 - kube-prometheus-stack
 - external-dns
 - velero
+- rook-ceph
