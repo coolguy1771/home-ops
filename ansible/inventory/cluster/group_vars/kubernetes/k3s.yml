@@ -19,17 +19,18 @@ k3s_debug: false
 
 # Enabled embedded etcd
 k3s_etcd_datastore: true
-
+k3s_use_unsupported_config: true
 # Control Plane registration address
 # this is set to my haproxy address running on my router.
 # If you want to use kube-vip only
 # set this to "{{ kubevip_address }}"
-k3s_registration_address: 10.10.10.1
+k3s_registration_address: 10.10.10.20
 
 #
 # /var/lib/rancher/k3s/server/manifests
 #
-
+#k3s_server_config_yaml_d_files:
+#  - "k3s/10-etcd-snapshots.yaml.j2"
 # k3s_server_manifests_templates:
 #   - "home-dns/home-dns-rbac.yaml.j2"
 #   - "calico/calico-installation.yaml.j2"
@@ -45,6 +46,3 @@ k3s_registration_address: 10.10.10.1
 #
 # /var/lib/rancher/k3s/agent/pod-manifests
 #
-
-k3s_server_pod_manifests_templates:
-  - "kube-vip/kube-vip-pod.yaml.j2"
