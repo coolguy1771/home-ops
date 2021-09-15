@@ -124,7 +124,7 @@ spec:
         enabled: true
         accessMode: ReadWriteOnce
         size: 2Gi
-        storageClass: longhorn
+        storageClass: rook-ceph
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
     resources:
