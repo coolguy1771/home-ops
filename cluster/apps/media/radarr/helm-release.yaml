@@ -59,7 +59,7 @@ spec:
         emptyDir:
           enabled: false
         accessMode: ReadWriteOnce
-        storageClass: longhorn
+        storageClass: rook-ceph
         mountPath: /config
         size: 1Gi
       movies:

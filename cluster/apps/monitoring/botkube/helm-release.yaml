@@ -42,7 +42,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -61,7 +61,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -81,7 +81,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -101,7 +101,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -120,7 +120,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -139,7 +139,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -158,7 +158,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -177,7 +177,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -196,7 +196,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -215,7 +215,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -234,7 +234,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -252,7 +252,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -271,7 +271,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:
@@ -290,7 +290,7 @@ spec:
           - game-servers
           - external
           - storage
-          - longhorn-system
+          - rook-ceph
           - k10
           - git
         events:

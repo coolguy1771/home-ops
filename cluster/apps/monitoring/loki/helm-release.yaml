@@ -24,7 +24,7 @@ spec:
           retention_period: 336h
       persistence:
         enabled: true
-        storageClassName: longhorn
+        storageClassName: rook-ceph
         size: 25Gi
       serviceMonitor:
         enabled: true

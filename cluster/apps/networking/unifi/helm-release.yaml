@@ -80,5 +80,5 @@ spec:
       data:
         enabled: true
         size: 20Gi
-        storageClass: "longhorn"
+        storageClass: "rook-ceph"
         accessMode: ReadWriteOnce

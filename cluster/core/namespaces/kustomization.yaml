@@ -9,7 +9,6 @@ resources:
 - media.yaml
 - external.yaml
 - monitoring.yaml
-- longhorn-system.yaml
 - game-servers.yaml
 - auth.yaml
 - git.yaml
@@ -20,3 +19,4 @@ resources:
 - calico-system.yaml
 - docs.yaml
 - velero.yaml
+- rook-ceph.yaml

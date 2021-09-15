@@ -47,4 +47,4 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
+        storageClass: rook-ceph

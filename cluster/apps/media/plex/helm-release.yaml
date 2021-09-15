@@ -80,7 +80,7 @@ spec:
         enabled: true
         mountPath: /config
         accessMode: ReadWriteMany
-        storageClass: longhorn
+        storageClass: rook-ceph
         size: 5Gi
       transcode:
         enabled: true

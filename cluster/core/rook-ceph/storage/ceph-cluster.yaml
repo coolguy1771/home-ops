@@ -64,12 +64,18 @@ spec:
       metadataDevice:
       osdsPerDevice: "1"
     nodes:
+      - name: "k8s-0"
+        devices:
+          - name: "sdb"
+      - name: "k8s-1"
+        devices:
+          - name: "sdb"
       - name: "k8s-2"
         devices:
-          - name: "nvme0n1"
+          - name: "sdb"
       - name: "k8s-3"
         devices:
-          - name: "nvme0n1"
+          - name: "sdb"
       - name: "k8s-4"
         devices:
-          - name: "nvme0n1"
+          - name: "sdb"
