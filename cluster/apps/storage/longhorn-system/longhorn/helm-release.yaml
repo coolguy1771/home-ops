@@ -21,6 +21,8 @@ spec:
     persistence:
       defaultClassReplicaCount: 4
       defaultClass: false
+      backingImage:
+        enable: true
     defaultSettings:
       defaultReplicaCount: 4
       storageMinimalAvailablePercentage: "10"
