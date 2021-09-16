@@ -81,7 +81,8 @@ spec:
         mountPath: /config
         accessMode: ReadWriteOnce
         storageClass: rook-ceph-block
-        size: 5Gi
+        size: 15Gi
+        existingClaim: plex-config
       transcode:
         enabled: true
         emptyDir:
