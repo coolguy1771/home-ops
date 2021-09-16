@@ -80,7 +80,7 @@ spec:
         sniStrict: true
     pilot:
       enabled: true
-      token: "${SECRET_TRAEFIK_PILOT_TOKEN}"
+      token: ${SECRET_TRAEFIK_PILOT_TOKEN}
     experimental:
       plugins:
         enabled: true
