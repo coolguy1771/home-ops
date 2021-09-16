@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.goauthentik.io
       chart: authentik
-      version: 2.3.2
+      version: 3.0.0-rc1
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -22,8 +22,6 @@ spec:
       tag: 2021.9.1-rc1
       pullPolicy: IfNotPresent
     authentik:
-      authentik:
-        geoip: /geoip/GeoLite2-City.mmdb
       geoip: /geoip/GeoLite2-City.mmdb
       secret_key: "${SECRET_AUTHENTIK_KEY}"
       error_reporting:
@@ -75,5 +73,23 @@ spec:
         secret_key: ${SECRET_S3_ACCESS_KEY}
         # Optional S3 host
         host: "${NAS_ADDR}:9768"
+        insecure_skip_verify: true
     redis:
       enabled: true
+    prometheus:
+      serviceMonitor:
+        create: true
+        interval: 30s
+        scrapeTimeout: 3s
+      rules:
+        create: true
+    service:
+      # -- Service that is created to access authentik
+      enabled: true
+      type: ClusterIP
+      port: 80
+      name: http
+      protocol: TCP
+      labels: {}
+      annotations:
+        traefik.ingress.kubernetes.io/service.serversscheme: https
