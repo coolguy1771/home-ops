@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://falcosecurity.github.io/charts
       chart: falcosidekick
-      version: 0.3.17
+      version: 0.4.0
       sourceRef:
         kind: HelmRepository
         name: falco-security-charts
@@ -32,14 +32,12 @@ spec:
       annotations:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+        external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
         external-dns/is-public: "true"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "desktop-classic"
       hosts:
         - host: "falcosidekick.${SECRET_DOMAIN}"
           paths:
-            - /
+            - path: /
       tls:
         - hosts:
             - "falcosidekick.${SECRET_DOMAIN}"
@@ -52,11 +50,15 @@ spec:
         annotations:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
           external-dns/is-public: "true"
         hosts:
           - host: "falcosidekick-ui.${SECRET_DOMAIN}"
-            paths: ["/ui", "/events", "/healthz", "/ws"]
+            paths:
+              - path: /ui
+              - path: /events
+              - path: /healthz
+              - path: /ws
         tls:
           - hosts:
               - "falcosidekick-ui.${SECRET_DOMAIN}"
