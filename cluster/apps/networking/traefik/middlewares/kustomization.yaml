@@ -5,3 +5,4 @@ resources:
   - rfc1918.yaml
   - redirect-path.yaml
   - discord.yaml
+  - secure.yaml
