@@ -19,7 +19,7 @@ spec:
   values:
     image:
       name: ghcr.io/goauthentik/server
-      tag: 2021.8.5
+      tag: 2021.9.1-rc1
       pullPolicy: IfNotPresent
     authentik:
       authentik:
@@ -42,22 +42,19 @@ spec:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        kubernetes.io/ingress.class: "traefik"
         hajimari.io/enable: "true"
         hajimari.io/icon: "account-lock-outline"
         external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
         external-dns/is-public: "true"
+        kubernetes.io/tls-acme: "true"
       hosts:
         - host: "auth.${SECRET_DOMAIN_STUDIO}"
           paths:
             - path: "/"
               pathType: Prefix
-      tls:
-        - hosts:
-            - "auth.${SECRET_DOMAIN_STUDIO}"
-          secretName: blackelement-studio-tls
     geoip:
   # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
