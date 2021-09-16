@@ -2,7 +2,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: TLSStore
 metadata:
-  name: default
+  name: icb
   namespace: networking
 spec:
   defaultCertificate:
