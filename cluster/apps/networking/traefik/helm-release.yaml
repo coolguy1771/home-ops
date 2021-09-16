@@ -95,7 +95,7 @@ spec:
                     operator: In
                     values:
                       - traefik
-              topologyKey: kubernetes.io/hostname
+              topologyKey: kubernetes.io/nodeName
     resources:
       requests:
         memory: 100Mi
