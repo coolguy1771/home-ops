@@ -54,6 +54,9 @@ spec:
           paths:
             - path: "/"
               pathType: Prefix
+      tls:
+        - hosts:
+            - "auth.${SECRET_DOMAIN_STUDIO}"
     geoip:
   # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
@@ -84,13 +87,3 @@ spec:
         scrapeTimeout: 3s
       rules:
         create: true
-    service:
-      # -- Service that is created to access authentik
-      enabled: true
-      type: ClusterIP
-      port: 80
-      name: http
-      protocol: TCP
-      labels: {}
-      annotations:
-        traefik.ingress.kubernetes.io/service.serversscheme: https
