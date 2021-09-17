@@ -48,6 +48,7 @@ spec:
         hajimari.io/icon: "account-lock-outline"
         external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
         external-dns/is-public: "true"
+        kubernetes.io/tls-acme: "true"
       hosts:
         - host: "auth.${SECRET_DOMAIN_STUDIO}"
           paths:
@@ -55,7 +56,8 @@ spec:
               pathType: Prefix
       tls:
         - hosts:
-            - "${SECRET_DOMAIN_STUDIO/./-}"
+            - "auth.${SECRET_DOMAIN_STUDIO}"
+          secretName: authentik-tls
     geoip:
   # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
