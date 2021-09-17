@@ -32,7 +32,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "ring"
           kubernetes.io/ingress.class: "traefik"
-          external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
         - host: "gollum.${SECRET_DOMAIN}"

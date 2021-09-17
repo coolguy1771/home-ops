@@ -5,7 +5,7 @@ metadata:
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: "tray-arrow-download"
-    external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
     external-dns/is-public: "true"
   name: qbittorrent
   namespace: external
