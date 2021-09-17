@@ -56,7 +56,7 @@ spec:
               pathType: Prefix
       tls:
         - hosts:
-            - "auth.${SECRET_DOMAIN_STUDIO}"
+            - "${SECRET_DOMAIN_STUDIO/./-}"
     geoip:
   # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
