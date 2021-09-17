@@ -13,7 +13,7 @@ metadata:
   namespace: external
 spec:
   rules:
-    - host: console.s3.${SECRET_DOMAIN}
+    - host: console${SECRET_DOMAIN}
       http:
         paths:
           - pathType: Prefix
@@ -25,5 +25,5 @@ spec:
                   number: 9769
   tls:
     - hosts:
-        - console.s3.${SECRET_DOMAIN}
+        - console.${SECRET_DOMAIN}
       secretName: s3-console-external-cert
