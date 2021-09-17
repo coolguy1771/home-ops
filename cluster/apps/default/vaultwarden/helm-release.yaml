@@ -27,11 +27,11 @@ spec:
     env:
       # TZ:
       DATA_FOLDER: "config"
-      DOMAIN: "https://vault.witlinserver.com"
+      DOMAIN: "https://vault.${SECRET_DOMAIN}"
       SIGNUPS_ALLOWED: true
       ADMIN_TOKEN: "${SECRET_VAULTWARDEN_ADMIN_TOKEN}"
       SMTP_HOST: "smtp.sendgrid.net"
-      SMTP_FROM: "no-reply@witlinserver.com"
+      SMTP_FROM: "no-reply@${SECRET_DOMIAN}"
       SMTP_FROM_NAME: "Vaultwarden"
       SMTP_SSL: true
       SMTP_PORT: 587
@@ -50,13 +50,12 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "traefik"
-
           external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN}"
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
-          hajimari.io/icon: "archive-lock-outline"
+          hajimari.io/icon: "shield-key"
         hosts:
-          - host: vault.witlinserver.com
+          - host: vault.${SECRET_DOMIAN}
             paths:
               - path: /
                 pathType: Prefix
@@ -73,7 +72,7 @@ spec:
         tls:
           - secretName: vaultwarden-tls
             hosts:
-              - vault.witlinserver.com
+              - vault.${SECRET_DOMIAN}
     persistence:
       config:
         enabled: true
@@ -92,3 +91,12 @@ spec:
         storageClass: rook-ceph-block
         accessModes:
           - ReadWriteOnce
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+      secret.reloader.stakater.com/reload: "vaultwarden"
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 2000Mi
