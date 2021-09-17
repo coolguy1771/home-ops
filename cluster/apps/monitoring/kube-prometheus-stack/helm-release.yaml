@@ -84,7 +84,7 @@ spec:
         tls:
           - hosts:
               - "alert-manager.${SECRET_DOMAIN}"
-            secretName: alert-manager-tls
+            secretName: "alert-manager-${SECRET_DOMAIN//./-}-tls"
     nodeExporter:
       serviceMonitor:
         relabelings:
@@ -164,6 +164,7 @@ spec:
         tls:
           - hosts:
               - "prometheus.${SECRET_DOMAIN}"
+            secretName: "prometheus-${SECRET_DOMAIN//./-}-tls"
       thanosService:
         enabled: true
       prometheusSpec:
