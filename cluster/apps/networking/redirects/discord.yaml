@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.middlewares: discord@kuberentescrd
+    cert-manager.io/cluster-issuer: letsencrypt-production
   name: redirect
   namespace: networking
 spec:
@@ -19,7 +20,7 @@ spec:
             name: nginx
             port:
               number: 80
-  tls:
-  - hosts:
-    - discord.${SECRET_DOMAIN_STUDIO}
-    secretName: discord-external-redirect-tls
+    tls:
+    - hosts:
+      - discord.${SECRET_DOMAIN_STUDIO}
+      secretName: discord-tls

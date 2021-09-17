@@ -7,6 +7,7 @@ metadata:
     hajimari.io/icon: "tray-arrow-download"
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
     external-dns/is-public: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
   name: qbittorrent
   namespace: external
 spec:
@@ -24,4 +25,4 @@ spec:
   tls:
     - hosts:
         - "torrent.${SECRET_DOMAIN}"
-      secretName: qbittorrent-cert
+      secretName: qbittorrent-tls

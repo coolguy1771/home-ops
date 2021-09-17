@@ -75,7 +75,7 @@ spec:
         tls:
           - hosts:
               - "ui.${SECRET_DOMAIN}"
-            secretName: unifi-cert
+            secretName: unifi-tls
       # -- Configure persistence settings for the chart under this key.
       #@default -- See values.yaml
     persistence:

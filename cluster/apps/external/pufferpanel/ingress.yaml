@@ -4,8 +4,9 @@ metadata:
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: "game-pad-variant-outline"
-    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_GAMES}"
     external-dns/is-public: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
   name: pufferpanel
   namespace: external
 spec:
@@ -23,4 +24,4 @@ spec:
   tls:
     - hosts:
         - panel.${SECRET_DOMAIN_GAMES}
-      secretName: pufferpanel-external-cert
+      secretName: puffelpanel-tls

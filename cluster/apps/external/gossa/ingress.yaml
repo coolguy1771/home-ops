@@ -7,6 +7,7 @@ metadata:
     hajimari.io/icon: "cloud-print-outline"
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
     external-dns/is-public: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
   #  hajimari.io/icon:
   name: gossa
   namespace: external
@@ -25,4 +26,4 @@ spec:
   tls:
     - hosts:
         - cdn.${SECRET_DOMAIN}
-      secretName: gossa-cert
+      secretName: gossa-tls

@@ -34,6 +34,7 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         external-dns/is-public: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
         - host: "falcosidekick.${SECRET_DOMAIN}"
           paths:
@@ -41,6 +42,7 @@ spec:
       tls:
         - hosts:
             - "falcosidekick.${SECRET_DOMAIN}"
+          secretName: falcosidekick-tls
     webui:
       enabled: true
       # image:
@@ -52,6 +54,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: "falcosidekick-ui.${SECRET_DOMAIN}"
             paths:
@@ -62,3 +65,4 @@ spec:
         tls:
           - hosts:
               - "falcosidekick-ui.${SECRET_DOMAIN}"
+            secretName: falcosidekick-ui-tls

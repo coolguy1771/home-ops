@@ -43,6 +43,7 @@ spec:
           kubernetes.io/ingress.class: "traefik"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: "stash.${SECRET_DOMAIN}"
             paths:
@@ -52,7 +53,6 @@ spec:
           - hosts:
               - "stash.${SECRET_DOMAIN}"
             secretName: stash-tls
-
     # -- Configure persistence settings for the chart under this key.
     # @default -- See values.yaml
     persistence:

@@ -29,17 +29,18 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "cloud-search-outline"
           kubernetes.io/ingress.class: "traefik"
-
+          cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
-        - host: "search.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "search.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "search.${SECRET_DOMAIN}"
+          - hosts:
+              - "search.${SECRET_DOMAIN}"
+            secretName: whoogle-tls
     env:
       WHOOGLE_CONFIG_DARK: 1
       WHOOGLE_CONFIG_URL: https://search.witlinserver.com

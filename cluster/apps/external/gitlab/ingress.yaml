@@ -27,4 +27,4 @@ spec:
   tls:
   - hosts:
     - git.${SECRET_DOMAIN_STUDIO}
-    secretName: external-gitlab-cert
+    secretName: gitlab-tls

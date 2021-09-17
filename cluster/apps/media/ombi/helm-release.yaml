@@ -35,15 +35,16 @@ spec:
           hajimari.io/icon: "link-box-variant-outline"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-        - host: "ombi.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "ombi.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "ombi.${SECRET_DOMAIN}"
-          secretName: ombi-tls
+          - hosts:
+              - "ombi.${SECRET_DOMAIN}"
+            secretName: ombi-tls
     persistence:
       config:
         enabled: true

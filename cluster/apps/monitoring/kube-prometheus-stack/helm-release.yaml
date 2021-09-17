@@ -79,12 +79,15 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           hajimari.io/enable: "true"
           hajimari.io/icon: "torch"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
         hosts:
           - "alert-manager.${SECRET_DOMAIN}"
         tls:
           - hosts:
               - "alert-manager.${SECRET_DOMAIN}"
-            secretName: "alert-manager-${SECRET_DOMAIN//./-}-tls"
+            secretName: "alert-manager-tls"
     nodeExporter:
       serviceMonitor:
         relabelings:
@@ -159,12 +162,13 @@ spec:
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "torch"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - "prometheus.${SECRET_DOMAIN}"
         tls:
           - hosts:
               - "prometheus.${SECRET_DOMAIN}"
-            secretName: "prometheus-${SECRET_DOMAIN//./-}-tls"
+            secretName: "prometheus-tls"
       thanosService:
         enabled: true
       prometheusSpec:

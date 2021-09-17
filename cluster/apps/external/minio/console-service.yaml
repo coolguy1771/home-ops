@@ -4,9 +4,6 @@ kind: Service
 metadata:
   name: s3-console
   namespace: external
-  annotations:
-    kubernetes.io/ingress.class: "traefik"
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
 spec:
   type: ExternalName
   externalName: "${NAS_ADDR}"

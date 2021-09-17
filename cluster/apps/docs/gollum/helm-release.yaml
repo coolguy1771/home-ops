@@ -34,11 +34,16 @@ spec:
           kubernetes.io/ingress.class: "traefik"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-        - host: "gollum.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "gollum.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "gollum.${SECRET_DOMAIN}"
+            secretName: gollum-tls
     # -- Configure persistence settings for the chart under this key.
     # @default -- See values.yaml
     persistence:
@@ -56,7 +61,7 @@ spec:
       gitUrl: https://github.com/coolguy1771/wiki.git
       # -- Additional arguments for starting gollum
       additionalArgs:
-      - --h1-title
+        - --h1-title
       # -- Command run during the sync cron
       syncCommand: git pull && git push
       # -- Gollum config.rb customizations

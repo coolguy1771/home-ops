@@ -51,6 +51,9 @@ spec:
           kubernetes.io/ingress.class: "traefik"
           hajimari.io/enable: "true"
           hajimari.io/icon: "text-box-multiple-outline"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMIAN}"
+          external-dns/is-public: "true"
         hosts:
           - host: paper.witlinserver.com
             paths:

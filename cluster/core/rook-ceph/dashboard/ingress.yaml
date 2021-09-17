@@ -8,6 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
     external-dns/is-public: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
   labels:
     app.kubernetes.io/instance: rook-ceph-mgr-dashboard
     app.kubernetes.io/name: rook-ceph-mgr-dashboard
@@ -27,3 +28,4 @@ spec:
   tls:
     - hosts:
         - "rook.${SECRET_DOMAIN}"
+      secretName: rook-tls

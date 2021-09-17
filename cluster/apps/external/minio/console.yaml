@@ -9,11 +9,12 @@ metadata:
     external-dns/is-public: "true"
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    cert-manager.io/cluster-issuer: letsencrypt-production
   name: s3-console
   namespace: external
 spec:
   rules:
-    - host: console${SECRET_DOMAIN}
+    - host: console.${SECRET_DOMAIN}
       http:
         paths:
           - pathType: Prefix
@@ -26,4 +27,4 @@ spec:
   tls:
     - hosts:
         - console.${SECRET_DOMAIN}
-      secretName: s3-console-external-cert
+      secretName: s3-console-tls

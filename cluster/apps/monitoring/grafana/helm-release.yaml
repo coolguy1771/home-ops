@@ -167,6 +167,7 @@ spec:
         hajimari.io/icon: "chart-box-outline"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         external-dns/is-public: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
         - "grafana.${SECRET_DOMAIN}"
       tls:
