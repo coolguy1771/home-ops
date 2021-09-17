@@ -118,7 +118,7 @@ spec:
         tls:
           - hosts:
               - "home.${SECRET_DOMAIN}"
-            secretName: hajimari-tls
+            secretName: "hajimari-${SECRET_DOMAIN//./-}-tls"
     persistence:
       data:
         enabled: true
