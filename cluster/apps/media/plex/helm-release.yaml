@@ -82,7 +82,6 @@ spec:
         accessMode: ReadWriteOnce
         storageClass: rook-ceph-block
         size: 50Gi
-        existingClaim: plex-config
       transcode:
         enabled: true
         emptyDir:
