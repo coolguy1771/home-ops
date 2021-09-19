@@ -19,7 +19,7 @@ spec:
   values:
     image:
       name: ghcr.io/goauthentik/server
-      tag: 2021.9.1-rc1
+      tag: 2021.9.1-rc3
       pullPolicy: IfNotPresent
     authentik:
       geoip: /geoip/GeoLite2-City.mmdb
