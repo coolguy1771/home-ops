@@ -55,8 +55,8 @@ spec:
         externalIPs:
           - "10.10.10.8"
         externalTrafficPolicy: Local
-        annotations:
-          traefik.ingress.kubernetes.io/service.serversscheme: https
+        annotations: {}
+        #  traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true
