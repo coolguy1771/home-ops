@@ -56,7 +56,7 @@ spec:
           - "10.10.10.8"
         externalTrafficPolicy: Local
         annotations:
-          traefik.ingress.kubernetes.io/service.serversscheme: https
+        #  traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true
@@ -64,7 +64,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
-          traefik.ingress.kubernetes.io/service.serversscheme: https
+        #  traefik.ingress.kubernetes.io/service.serversscheme: https
           hajimari.io/enable: "true"
           hajimari.io/icon: "plex"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
@@ -111,12 +111,12 @@ spec:
           nfs:
             server: "${NAS_ADDR}"
             path: /mnt/user/Media/content/tv
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "plex-promtail"
+    #podSecurityContext:
+    #  runAsUser: 568
+    #  runAsGroup: 568
+    #  fsGroup: 568
+    #podAnnotations:
+    #  configmap.reloader.stakater.com/reload: "plex-promtail"
     addons:
       promtail:
         enabled: true
@@ -125,10 +125,10 @@ spec:
           tag: 2.3.0
         loki: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
         logs:
-          - name: promtail/plex
-            path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
-          - name: promtail/plex/plugins
-            path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
+        #  - name: promtail/plex
+        #    path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
+        #  - name: promtail/plex/plugins
+        #    path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
         volumeMounts:
           - name: config
             mountPath: /config
