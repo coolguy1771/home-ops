@@ -49,14 +49,14 @@ spec:
       #PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
       #PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
       #PLEX_PREFERENCE_24: "CinemaTrailersType=0"
-    service:
-      main:
-        type: LoadBalancer
-        externalIPs:
-          - "10.10.10.8"
-        externalTrafficPolicy: Local
-        annotations:
-          traefik.ingress.kubernetes.io/service.serversscheme: https
+    #service:
+    #  main:
+    #    type: LoadBalancer
+    #    externalIPs:
+    #      - "10.10.10.8"
+    #    externalTrafficPolicy: Local
+    #    annotations:
+    #      traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true
@@ -64,7 +64,8 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
-          traefik.ingress.kubernetes.io/service.serversscheme: https
+        #  traefik.ingress.kubernetes.io/service.serversscheme: https
+        #  traefik.ingress.kubernetes.io/router.tls: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "plex"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
