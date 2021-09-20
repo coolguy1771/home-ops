@@ -55,18 +55,18 @@ spec:
         externalIPs:
           - "10.10.10.8"
         externalTrafficPolicy: Local
-        annotations: {}
-        #  traefik.ingress.kubernetes.io/service.serversscheme: https
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true
         ingressClassName: "traefik"
         annotations:
-        #  external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        #  external-dns/is-public: "true"
-        #  traefik.ingress.kubernetes.io/service.serversscheme: https
-        #  hajimari.io/enable: "true"
-        #  hajimari.io/icon: "plex"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
+          traefik.ingress.kubernetes.io/service.serversscheme: https
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "plex"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
@@ -115,11 +115,11 @@ spec:
     #  runAsUser: 568
     #  runAsGroup: 568
     #  fsGroup: 568
-    #podAnnotations:
-    #  configmap.reloader.stakater.com/reload: "plex-promtail"
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "plex-promtail"
     addons:
       promtail:
-        enabled: false
+        enabled: true
         image:
           repository: ghcr.io/k8s-at-home/promtail
           tag: 2.3.0
