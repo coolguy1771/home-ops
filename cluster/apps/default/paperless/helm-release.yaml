@@ -52,7 +52,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "text-box-multiple-outline"
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMIAN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
           - host: paper.witlinserver.com
