@@ -49,15 +49,14 @@ spec:
       #PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
       #PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
       #PLEX_PREFERENCE_24: "CinemaTrailersType=0"
-    #service:
-    #  main:
-    #    type: LoadBalancer
-    #    externalIPs:
-    #      - "10.10.10.8"
-    #    externalTrafficPolicy: Local
-    #    annotations:
-    #      traefik.ingress.kubernetes.io/service.serversscheme: https
-    hostNetwork: true
+    service:
+      main:
+        type: LoadBalancer
+        externalIPs:
+          - "10.10.10.8"
+        externalTrafficPolicy: Local
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true
