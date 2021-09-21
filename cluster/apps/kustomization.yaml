@@ -13,3 +13,4 @@ resources:
 - calico-system
 - falco-system
 - flux-system
+- velero
