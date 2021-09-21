@@ -14,3 +14,4 @@ resources:
 - falco-system
 - flux-system
 - velero
+- tools

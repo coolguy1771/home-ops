@@ -20,3 +20,4 @@ resources:
 - docs.yaml
 - velero.yaml
 - rook-ceph.yaml
+- tools.yaml
