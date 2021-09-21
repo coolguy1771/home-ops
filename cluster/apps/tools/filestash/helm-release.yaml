@@ -35,6 +35,9 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "web-sync"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
         hosts:
           - host: "filestash.${SECRET_DOMAIN}"
             paths:
