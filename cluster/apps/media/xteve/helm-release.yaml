@@ -22,22 +22,29 @@ spec:
       pullPolicy: IfNotPresent
     env:
       TZ: UTC
-    main:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "traefik"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        external-dns/is-public: "true"
-        cert-manager.io/cluster-issuer: letsencrypt-production
-      hosts:
-        - host: "xteve.${SECRET_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - "xteve.${SECRET_DOMAIN}"
-          secretName: xteve-tls
+    service:
+      main:
+        type: LoadBalancer
+        externalIPs:
+          - "10.10.10.9"
+        externalTrafficPolicy: Local
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "traefik"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        hosts:
+          - host: "xteve.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "xteve.${SECRET_DOMAIN}"
+            secretName: xteve-tls
     persistence:
       config:
         enabled: true
