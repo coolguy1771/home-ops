@@ -48,7 +48,6 @@ spec:
         hajimari.io/icon: "account-lock-outline"
         external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
         external-dns/is-public: "true"
-        kubernetes.io/tls-acme: "true"
       hosts:
         - host: "auth.${SECRET_DOMAIN_STUDIO}"
           paths:
@@ -78,7 +77,7 @@ spec:
         secret_key: ${SECRET_S3_ACCESS_KEY}
         host: "https://s3.{SECRET_DOMAIN}"
         location: "/"
-        insecure_skip_verify: false
+        insecure_skip_verify: true
     redis:
       enabled: true
     prometheus:
