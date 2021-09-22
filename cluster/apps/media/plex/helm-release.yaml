@@ -111,11 +111,12 @@ spec:
           nfs:
             server: "${NAS_ADDR}"
             path: /mnt/user/Media/content/tv
-    #podSecurityContext:
-    #  runAsUser: 568
-    #  runAsGroup: 568
-    #  fsGroup: 568
     podAnnotations:
+      backup.velero.io/backup-volumes: config
+      pre.hook.backup.velero.io/container: fsfreeze
+      pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/config"]'
+      post.hook.backup.velero.io/container: fsfreeze
+      post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/config"]'
       configmap.reloader.stakater.com/reload: "plex-promtail"
     addons:
       promtail:
@@ -135,3 +136,12 @@ spec:
             readOnly: true
         securityContext:
           runAsUser: 0
+    additionalContainers:
+      fsfreeze:
+        name: fsfreeze
+        image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
+        volumeMounts:
+          - name: config
+            mountPath: /config
+        securityContext:
+          privileged: true
