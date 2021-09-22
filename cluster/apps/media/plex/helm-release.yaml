@@ -15,10 +15,10 @@ spec:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
+      interval: 5m
   values:
     image:
       repository: ghcr.io/k8s-at-home/plex
-      pullPolicy: IfNotPresent
       tag: v1.24.3.5033-757abe6b4
     strategy:
       type: Recreate
@@ -44,7 +44,7 @@ spec:
       #PLEX_PREFERENCE_17: "GdmEnabled=0"
       #PLEX_PREFERENCE_18: "RelayEnabled=0"
       #PLEX_PREFERENCE_19: "allowedNetworks=192.168.0.0/16,10.0.0.0/8,172.16.0.0/12"
-      #PLEX_PREFERENCE_20: "customConnections=https://plex.witlinserver.com"
+      #PLEX_PREFERENCE_20: "customConnections=https://plex.${SECRET_DOMAIN}.com"
       #PLEX_PREFERENCE_21: "secureConnections=0"
       #PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
       #PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
@@ -64,7 +64,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
-          kubernetes.io/ingress.class: "traefik"
           hajimari.io/enable: "true"
           hajimari.io/icon: "plex"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
@@ -87,12 +86,8 @@ spec:
         size: 50Gi
       transcode:
         enabled: true
-        emptyDir:
-          enabled: true
-        mountPath: /transcode
-        accessMode: ReadWriteMany
-        storageClass: nfs-client
-        size: 300Gi
+        type: emptyDir
+        medium: Memory
       movies:
         enabled: true
         type: custom
