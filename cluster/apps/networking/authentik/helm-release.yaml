@@ -29,10 +29,10 @@ spec:
         environment: "k8s"
         sendpii: true
       email:
-        host: "smtp.sendgrid.net"
+        host: "in-v3.mailjet.com"
         port: 587
-        username: "apikey"
-        password: "${SECRET_AUTHENTIK_EMAIL_PASSWORD}"
+        username: "${SECRET_EMAIL_USERNAME}"
+        password: "${SECRET_EMAIL_PASSWORD}"
         use_tls: true
         timeout: 30
         from: "No-Reply <no-reply@${SECRET_DOMAIN_STUDIO}>"
