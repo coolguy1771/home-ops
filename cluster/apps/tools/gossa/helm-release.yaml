@@ -63,4 +63,4 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/appdata/cdn
+            path: /mnt/user/appdata/cdn
