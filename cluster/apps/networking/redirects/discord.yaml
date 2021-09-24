@@ -11,6 +11,10 @@ metadata:
   name: redirect
   namespace: networking
 spec:
+  tls:
+  - hosts:
+    - discord.${SECRET_DOMAIN_STUDIO}
+    secretName: discord-tls
   rules:
   - host: discord.${SECRET_DOMAIN_STUDIO}
     http:
