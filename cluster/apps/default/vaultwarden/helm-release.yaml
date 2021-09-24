@@ -31,7 +31,7 @@ spec:
       SIGNUPS_ALLOWED: true
       ADMIN_TOKEN: "${SECRET_VAULTWARDEN_ADMIN_TOKEN}"
       SMTP_HOST: "in-v3.mailjet.comt"
-      SMTP_FROM: "no-reply@${SECRET_DOMIAN}"
+      SMTP_FROM: "no-reply@${SECRET_DOMIAN_STUDIO}"
       SMTP_FROM_NAME: "Vaultwarden"
       SMTP_SSL: true
       SMTP_PORT: 587
