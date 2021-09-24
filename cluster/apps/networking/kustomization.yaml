@@ -8,7 +8,6 @@ resources:
 - cloudflare-ddns
 - cloudflare-ddns-icb
 - cloudflare-ddns-studio
-- redirects
 - external-dns
 - traefik
 - error-pages
