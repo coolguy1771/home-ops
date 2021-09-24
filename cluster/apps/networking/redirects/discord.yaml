@@ -6,6 +6,8 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.middlewares: discord@kuberentescrd
     cert-manager.io/cluster-issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
+    external-dns/is-public: "true"
   name: redirect
   namespace: networking
 spec:
