@@ -30,13 +30,13 @@ spec:
       DOMAIN: "https://vault.${SECRET_DOMAIN}"
       SIGNUPS_ALLOWED: true
       ADMIN_TOKEN: "${SECRET_VAULTWARDEN_ADMIN_TOKEN}"
-      SMTP_HOST: "smtp.sendgrid.net"
+      SMTP_HOST: "in-v3.mailjet.comt"
       SMTP_FROM: "no-reply@${SECRET_DOMIAN}"
       SMTP_FROM_NAME: "Vaultwarden"
       SMTP_SSL: true
       SMTP_PORT: 587
-      SMTP_USERNAME: "apikey"
-      SMTP_PASSWORD: "${SECRET_BITWARDEN_EMAIL_PASSWORD}"
+      SMTP_USERNAME: "${SECRET_EMAIL_USERNAME"
+      SMTP_PASSWORD: "${SECRET_EMAIL_PASSWORD}"
       WEBSOCKET_ADDRESS: 0.0.0.0
       WEBSOCKET_ENABLED: true
       WEBSOCKET_PORT: 3012
