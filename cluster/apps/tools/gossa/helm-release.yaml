@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: filestash
+  namespace: tools
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: /charts/kah-common/
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: pldubouilh/gossa
+      tag: v0.1.8.0
+    nameOverride: gossa
+    env:
+      FOLLOW_SYMLINKS: "true"
+      READONLY: "true"
+      SKIP_HIDDEN_FILE: "true"
+      UID: "1000"
+      GID: "1000"
+      HOST: "0.0.0.0"
+      PORT: "8001"
+      PREFIX: "/"
+      DATADIR: "/data"
+    service:
+      main:
+        ports:
+          http:
+            port: 8001
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "web-sync"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
+        hosts:
+          - host: "cdn.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "cdn.${SECRET_DOMAIN}"
+            secretName: gossa-tls
+    persistence:
+      data:
+        enabled: true
+        type: custom
+        mountPath: /data
+        readOnly: true
+        volumeSpec:
+          nfs:
+            server: "${NAS_ADDR}"
+            path: /mnt/appdata/cdn
