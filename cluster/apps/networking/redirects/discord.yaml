@@ -6,7 +6,6 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.middlewares: discord@kuberentescrd
     cert-manager.io/cluster-issuer: letsencrypt-production
-    kubernetes.io/tls-acme: "true"
   name: redirect
   namespace: networking
 spec:
