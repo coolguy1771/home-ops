@@ -30,7 +30,7 @@ spec:
       DOMAIN: "https://vault.${SECRET_DOMAIN}"
       SIGNUPS_ALLOWED: true
       ADMIN_TOKEN: "${SECRET_VAULTWARDEN_ADMIN_TOKEN}"
-      SMTP_HOST: "in-v3.mailjet.comt"
+      SMTP_HOST: "in-v3.mailjet.com"
       SMTP_FROM: "no-reply@${SECRET_DOMIAN}"
       SMTP_SSL: true
       SMTP_PORT: 587
