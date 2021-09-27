@@ -19,7 +19,7 @@ spec:
     image:
       repository: gabekangas/owncast
       pullPolicy: IfNotPresent
-      tag: 0.0.8
+      tag: 0.0.9
     strategy:
       type: Recreate
     service:
