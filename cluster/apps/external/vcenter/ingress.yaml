@@ -19,7 +19,7 @@ spec:
               service:
                 name: vcenter
                 port:
-                  number: 80
+                  number: 443
   tls:
     - hosts:
         - "vcenter.${SECRET_DOMAIN}"
