@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+    external-dns/is-public: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: vcenter
+  namespace: external
+spec:
+  rules:
+    - host: "vcenter.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: vcenter
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - "vcenter.${SECRET_DOMAIN}"
+      secretName: vcenter-tls
