@@ -43,4 +43,4 @@ spec:
             secretName: whoogle-tls
     env:
       WHOOGLE_CONFIG_DARK: 1
-      WHOOGLE_CONFIG_URL: https://search.witlinserver.com
+      WHOOGLE_CONFIG_URL: https://search.${SECERT_DOMAIN}
