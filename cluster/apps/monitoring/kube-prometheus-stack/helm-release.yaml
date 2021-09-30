@@ -186,11 +186,6 @@ spec:
             name: thanos-objstore
             key: objstore.yml
         additionalScrapeConfigs:
-          - job_name: "coredns"
-            honor_timestamps: true
-            static_configs:
-              - targets:
-                  - "${GATEWAY_ADDR}:9153"
           - job_name: 'minio-job'
             honor_timestamps: true
             metrics_path: /minio/v2/metrics/cluster
