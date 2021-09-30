@@ -50,6 +50,6 @@ spec:
     persistence:
       data:
         enabled: true
-        accessModes: ReadWriteOnce
+        accessMode: ReadWriteOnce
         storageClassName: rook-ceph-block
         size: 20Gi
