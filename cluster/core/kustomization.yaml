@@ -5,5 +5,4 @@ resources:
 - metallb-system
 - cert-manager
 - system-upgrade
-- kube-system
 - rook-ceph
