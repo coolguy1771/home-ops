@@ -55,14 +55,14 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
-          - host: paper.witlinserver.com
+          - host: paper.${SECRET_DOMAIN}
             paths:
               - path: "/"
                 pathType: Prefix
         tls:
           - secretName: paperless-tls
             hosts:
-              - paper.witlinserver.com
+              - paper.${SECRET_DOMAIN}
 
     persistence:
       # -- Configure persistence for data.
