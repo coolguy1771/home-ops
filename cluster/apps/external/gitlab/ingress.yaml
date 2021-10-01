@@ -26,5 +26,5 @@ spec:
               number: 9080
   tls:
   - hosts:
-    - git.${SECRET_DOMAIN_STUDIO}
+    - old.${SECRET_DOMAIN_STUDIO}
     secretName: gitlab-tls
