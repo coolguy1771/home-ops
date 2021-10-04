@@ -8,18 +8,18 @@ data "http" "ipv4" {
 #
 
 # Record which will be updated by DDNS
-resource "cloudflare_record" "apex_ipv4" {
+resource "cloudflare_record" "cname_ipv4" {
 
-  name    = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
+  name    = "ipv4"
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  value   = "ipv4.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
+  value   = "${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
   proxied = true
   type    = "CNAME"
   ttl     = 1
 }
 
 resource "cloudflare_record" "apex_root" {
-  name    = "@"
+  name    = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
   value   = chomp(data.http.ipv4.body)
   proxied = true

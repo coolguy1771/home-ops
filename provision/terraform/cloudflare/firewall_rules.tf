@@ -16,18 +16,35 @@ resource "cloudflare_firewall_rule" "countries" {
 }
 
 #
-# Allow CF approved Bots
+# Bots
 #
+
 resource "cloudflare_filter" "bots" {
   zone_id     = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  description = "Expression to allow Cloudflare approved bots"
+  description = "Expression to block bots determined by CF"
   expression  = "(cf.client.bot)"
-
 }
 
 resource "cloudflare_firewall_rule" "bots" {
   zone_id     = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  description = "Firewall rule allow Cloudflare approved bots"
+  description = "Firewall rule to block bots determined by CF"
   filter_id   = cloudflare_filter.bots.id
-  action      = "allow"
+  action      = "block"
+}
+
+#
+# Block threats less than Medium
+#
+
+resource "cloudflare_filter" "threats" {
+  zone_id     = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  description = "Expression to block medium threats"
+  expression  = "(cf.threat_score gt 14)"
+}
+
+resource "cloudflare_firewall_rule" "threats" {
+  zone_id     = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  description = "Firewall rule to block medium threats"
+  filter_id   = cloudflare_filter.threats.id
+  action      = "block"
 }
