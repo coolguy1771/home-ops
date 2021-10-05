@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: paperless
-  namespace: default
+  namespace: tools
 spec:
   interval: 5m
   chart:
@@ -17,11 +17,8 @@ spec:
         namespace: flux-system
   values:
     image:
-      # -- image repository
       repository: jonaswinkler/paperless-ng
-      # -- image pull policy
       pullPolicy: IfNotPresent
-      # -- image tag
       tag: 1.5.0
 
     # -- See the following files for additional environment variables:
@@ -29,22 +26,13 @@ spec:
     # https://github.com/jonaswinkler/paperless-ng/blob/master/paperless.conf.example
     # @default -- See below
     env:
-      # -- Project name
       COMPOSE_PROJECT_NAME: paperless
-      # -- Redis to use
       PAPERLESS_REDIS: redis://localhost:6379
-      # -- OCR languages to install
       PAPERLESS_OCR_LANGUAGE: eng
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       PAPERLESS_TIME_ZONE: UTC
-
-    # -- Configures service settings for the chart.
-    # @default -- See values.yaml
-
     ingress:
-      # -- Enable and configure ingress settings for the chart under this key.
-      # @default -- See values.yaml
       main:
         enabled: true
         annotations:
@@ -63,10 +51,7 @@ spec:
           - secretName: paperless-tls
             hosts:
               - paper.${SECRET_DOMAIN}
-
     persistence:
-      # -- Configure persistence for data.
-      # @default -- See values.yaml
       data:
         enabled: true
         mountPath: /usr/src/paperless/data
@@ -75,8 +60,6 @@ spec:
         size: 100Gi
         emptyDir:
           enabled: false
-      # -- Configure persistence for media.
-      # @default -- See values.yaml
       media:
         enabled: true
         mountPath: /usr/src/paperless/media
@@ -85,8 +68,6 @@ spec:
         size: 50Gi
         emptyDir:
           enabled: false
-      # -- Configure volume to monitor for new documents.
-      # @default -- See values.yaml
       consume:
         enabled: true
         mountPath: /usr/src/paperless/consume
@@ -95,8 +76,6 @@ spec:
         size: 10Gi
         emptyDir:
           enabled: false
-      # -- Configure export volume.
-      # @default -- See values.yaml
       export:
         enabled: true
         mountPath: /usr/src/paperless/export
