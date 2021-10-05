@@ -42,32 +42,28 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingress.class: "traefik"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
           hajimari.io/enable: "true"
           hajimari.io/icon: "shield-key"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - host: vault.${SECRET_DOMIAN}
+          - host: vault.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
-                service:
-                  port: 80
-              - path: /notifications/hub/negotiate
-                pathType: Prefix
-                service:
-                  port: 80
               - path: /notifications/hub
                 pathType: Prefix
                 service:
                   port: 3012
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
         tls:
-          - secretName: vaultwarden-tls
-            hosts:
-              - vault.${SECRET_DOMIAN}
+          - hosts:
+              - vault.${SECRET_DOMAIN}
+            secretName: vaultwarden-tls
     persistence:
       config:
         enabled: true
