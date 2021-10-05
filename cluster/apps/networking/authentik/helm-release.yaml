@@ -19,7 +19,7 @@ spec:
   values:
     image:
       name: ghcr.io/goauthentik/server
-      tag: 2021.9.4
+      tag: 2021.9.5
       pullPolicy: IfNotPresent
     authentik:
       geoip: /geoip/GeoLite2-City.mmdb
@@ -35,7 +35,7 @@ spec:
         password: "${SECRET_EMAIL_PASSWORD}"
         use_tls: true
         timeout: 30
-        from: "No-Reply <no-reply@${SECRET_DOMAIN_STUDIO}>"
+        from: "Authentik <no-reply@${SECRET_DOMAIN_STUDIO}>"
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
         s3_backup:
@@ -63,9 +63,7 @@ spec:
             - "auth.${SECRET_DOMAIN_STUDIO}"
           secretName: authentik-tls
     geoip:
-  # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
-  # -- sign up under https://www.maxmind.com/en/geolite2/signup
       accountId: "418977"
       licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
