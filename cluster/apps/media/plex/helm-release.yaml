@@ -106,6 +106,33 @@ spec:
           nfs:
             server: "${NAS_ADDR}"
             path: /mnt/user/Media/content/tv
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            # - matchExpressions:
+            #     - key: feature.node.kubernetes.io/custom-intel-gpu
+            #       operator: In
+            #       values:
+            #         - "true"
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - k8s-6
+    podSecurityContext:
+      supplementalGroups:
+        - 44
+        - 109
+        - 100
+    resources:
+      requests:
+        gpu.intel.com/i915: 1
+        cpu: 1000m
+        memory: 1000Mi
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 16000Mi
     podAnnotations:
       backup.velero.io/backup-volumes: config
       pre.hook.backup.velero.io/container: fsfreeze
