@@ -16,6 +16,10 @@ spec:
         name: node-feature-discovery-charts
         namespace: flux-system
   values:
+    image:
+      repository: gcr.io/k8s-staging-nfd/node-feature-discovery
+      # This should be set to 'IfNotPresent' for released version
+      pullPolicy: IfNotPresent
     master:
       tolerations:
         - key: "node-role.kubernetes.io/master"
