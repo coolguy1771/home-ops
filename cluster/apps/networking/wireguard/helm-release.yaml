@@ -40,13 +40,15 @@ spec:
         enabled: false
     persistence:
       config:
-        enabled: false
+        enabled: true
         mountPath: /etc/wireguard
+        storageClass: rook-ceph-block
+        size: 5Gi
     securityContext:
       capabilities:
         add:
         - NET_ADMIN
         - SYS_MODULE
     configSecret:
-      enabled: true
+      enabled: false
       existingSecretName: wireguard-backend-config
