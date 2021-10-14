@@ -24,7 +24,7 @@ spec:
     args:
       - -shared-dev-num
       - "4"
-      - enable-monitoring
+      - -enable-monitoring
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
