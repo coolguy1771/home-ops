@@ -99,10 +99,10 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: feature.node.kubernetes.io/custom-intel-gpu
+                - key: kubernetes.io/hostname
                   operator: In
                   values:
-                    - "true"
+                    - k8s-6
     podSecurityContext:
       supplementalGroups:
         - 44
