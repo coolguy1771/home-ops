@@ -51,4 +51,3 @@ spec:
         - SYS_MODULE
     configSecret:
       enabled: false
-      existingSecretName: wireguard-backend-config
