@@ -23,7 +23,8 @@ spec:
       pullPolicy: IfNotPresent
     args:
       - -shared-dev-num
-      - "2"
+      - "4"
+      - enable-monitoring
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
