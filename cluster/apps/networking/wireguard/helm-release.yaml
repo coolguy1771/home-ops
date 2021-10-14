@@ -48,6 +48,5 @@ spec:
         - NET_ADMIN
         - SYS_MODULE
     configSecret:
-      # -- Store Wireguard config as a secret
       enabled: false
       existingSecretName: wireguard-config
