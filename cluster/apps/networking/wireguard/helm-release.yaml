@@ -49,5 +49,5 @@ spec:
         - SYS_MODULE
     configSecret:
       # -- Store Wireguard config as a secret
-      enabled: true
+      enabled: false
       existingSecretName: wireguard-config
