@@ -21,13 +21,20 @@ spec:
       repository: ghcr.io/k8s-at-home/wireguard
       tag: v1.0.20210424
       pullPolicy: IfNotPresent
+    controller:
+      enabled: true
+      replicas: 1
+      strategy: RollingUpdate
     env:
-      TZ: UTC
-      IPTABLES_BACKEND: nft
-      KILLSWITCH: false
+      TZ: "America/New_York"
+      IPTABLES_BACKEND: "nft"
+      KILLSWITCH: "false"
     service:
       main:
         enabled: true
+        type: LoadBalancer
+        loadBalancerIP: "${SVC_WIREGUARD_ADDR}"
+        externalTrafficPolicy: Local
         ports:
           http:
             enabled: false
@@ -35,18 +42,16 @@ spec:
             enabled: true
             port: 51820
             protocol: UDP
-    ingress:
-      main:
-        enabled: false
     persistence:
       config:
-        enabled: false
-        mountPath: /etc/wireguard
-    securityContext:
-      capabilities:
-        add:
-        - NET_ADMIN
-        - SYS_MODULE
-    configSecret:
-      enabled: true
-      existingSecretName: wireguard-backend-config
+        enabled: true
+        type: custom
+        mountPath: /etc/wireguard/wg0.conf
+        subPath: wg0.conf
+        readOnly: true
+        volumeSpec:
+          secret:
+            defaultMode: 0600
+            secretName: wireguard-backend-config
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "wireguard-backend-config"
