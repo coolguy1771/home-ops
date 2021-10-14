@@ -66,8 +66,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -85,8 +83,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - update
@@ -105,8 +101,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - update
@@ -125,8 +119,7 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
+
           events:
             - create
             - delete
@@ -144,8 +137,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -163,8 +154,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -182,8 +171,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -201,8 +188,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -220,8 +205,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -239,8 +222,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -258,8 +239,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - update
             - error
@@ -276,8 +255,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -295,8 +272,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
@@ -314,8 +289,6 @@ spec:
               - external
               - storage
               - rook-ceph
-              - k10
-              - git
           events:
             - create
             - delete
