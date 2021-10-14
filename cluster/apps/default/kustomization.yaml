@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
 - haste-server
 - vaultwarden
-- whoogle
 - photoprism
 - hajimari
 - paperless
