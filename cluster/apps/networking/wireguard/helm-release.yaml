@@ -48,5 +48,5 @@ spec:
         - NET_ADMIN
         - SYS_MODULE
     configSecret:
-      enabled: false
+      enabled: true
       existingSecretName: wireguard-backend-config
