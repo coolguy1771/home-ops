@@ -49,4 +49,4 @@ spec:
         - SYS_MODULE
     configSecret:
       enabled: true
-      existingSecretName: wireguard-config
+      existingSecretName: wireguard-backend-config
