@@ -103,8 +103,8 @@ spec:
                   operator: In
                   values:
                     - k8s-6
-    resources:
-      requests:
-        gpu.intel.com/i915: 1
-        cpu: 1000m
-        memory: 1000Mi
+    podSecurityContext:
+      supplementalGroups:
+        - 44
+        - 109
+        - 100
