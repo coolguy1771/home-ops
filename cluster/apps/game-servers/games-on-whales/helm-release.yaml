@@ -94,15 +94,6 @@ spec:
         repository: busybox
         tag: 1.34.0
         pullPolicy: IfNotPresent
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - k8s-6
     podSecurityContext:
       supplementalGroups:
         - 44
