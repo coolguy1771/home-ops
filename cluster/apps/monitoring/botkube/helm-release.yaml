@@ -18,18 +18,40 @@ spec:
       interval: 5m
   values:
     communications:
-      discord:
-        enabled: true
-        notiftype: short
-        token: "${SECRET_BOTKUBE_DISCORD_TOKEN}"
-        botid: "${SECRET_BOTKUBE_DISCORD_BOT_ID}"
-        channel: "${SECRET_BOTKUBE_DISCORD_CHANNEL_ID}"
+      existingSecretName: "botkube-communications"
     serviceMonitor:
       enabled: true
     config:
       recommendations: false
       settings:
-        clustername: k3s
+        clustername: home-cluster
+        kubectl:
+          enabled: true
+          restrictAccess: true
+          commands:
+            verbs:
+              [
+                "api-resources",
+                "api-versions",
+                "cluster-info",
+                "describe",
+                "diff",
+                "explain",
+                "get",
+                "logs",
+                "top",
+                "auth",
+              ]
+            resources:
+              [
+                "deployments",
+                "pods",
+                "namespaces",
+                "daemonsets",
+                "statefulsets",
+                "storageclasses",
+                "nodes",
+              ]
       resources:
         - name: v1/services
           namespaces:
