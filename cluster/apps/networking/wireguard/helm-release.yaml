@@ -1,0 +1,53 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: wireguard
+  namespace: networking
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: wireguard
+      version: 1.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/wireguard
+      tag: v1.0.20210424
+      pullPolicy: IfNotPresent
+    env:
+      TZ: UTC
+      IPTABLES_BACKEND: nft
+      KILLSWITCH: false
+    service:
+      main:
+        enabled: true
+        ports:
+          http:
+            enabled: false
+          vpn:
+            enabled: true
+            port: 51820
+            protocol: UDP
+    ingress:
+      main:
+        enabled: false
+    persistence:
+      config:
+        enabled: false
+        mountPath: /etc/wireguard
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+        - SYS_MODULE
+    configSecret:
+      # -- Store Wireguard config as a secret
+      enabled: true
+      existingSecretName: wireguard-config
