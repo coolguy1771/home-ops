@@ -52,6 +52,6 @@ spec:
         volumeSpec:
           secret:
             defaultMode: 0600
-            secretName: wireguard-backend-config
+            secretName: wireguard-config
     podAnnotations:
-      secret.reloader.stakater.com/reload: "wireguard-backend-config"
+      secret.reloader.stakater.com/reload: "wireguard-config"
