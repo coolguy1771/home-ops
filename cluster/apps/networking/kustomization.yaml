@@ -11,4 +11,3 @@ resources:
 - external-dns
 - traefik
 - error-pages
-- wireguard
