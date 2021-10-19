@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - default.yaml
   - icb.yaml
-  - blackelement.yaml

@@ -1,9 +1,0 @@
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: TLSStore
-metadata:
-  name: blackelement
-  namespace: networking
-spec:
-  defaultCertificate:
-    secretName: "${SECRET_DOMAIN_STUDIO/./-}-tls"
