@@ -22,8 +22,6 @@ spec:
       tag: 1.22.2
     strategy:
       type: Recreate
-    # See more environment variables in the Vaultwarden documentation
-    # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
     env:
       # TZ:
       DATA_FOLDER: "config"
@@ -68,20 +66,6 @@ spec:
       config:
         enabled: true
         storageClass: nfs-client
-      #  existingClaim: vaultwarden-config
-    # https://github.com/bitnami/charts/tree/master/bitnami/postgresql/#installing-the-chart
-    postgresql:
-      enabled: true
-      postgresqlUsername: "vaultwarden"
-      postgresqlPassword: "${SECRET_VAULTWARDEN_DATABASE_PASSWORD}"
-      postgresqlDatabase: "vaultwarden"
-      updateStrategy:
-        type: RollingUpdate
-      persistence:
-        enabled: true
-        storageClass: rook-ceph-block
-        accessModes:
-          - ReadWriteOnce
     podAnnotations:
       backup.velero.io/backup-volumes: config
       pre.hook.backup.velero.io/container: fsfreeze
