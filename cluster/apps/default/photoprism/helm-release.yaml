@@ -65,6 +65,7 @@ spec:
         tls:
         - hosts:
           - "photos.${SECRET_DOMAIN}"
+          secretName: photoprism-tls
     # -- Configure persistence settings for the chart under this key.
     # @default -- See values.yaml
     persistence:
