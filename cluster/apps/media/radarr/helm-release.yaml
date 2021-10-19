@@ -71,7 +71,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/downloads/complete/tv-sonarr
+            path: /mnt/user/downloads/complete/radarr
     exporter:
       enabled: true
       image:
