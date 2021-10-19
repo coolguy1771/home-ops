@@ -20,7 +20,7 @@ spec:
       # -- image repository
       repository: photoprism/photoprism
       # -- image tag
-      tag: "20211010"
+      tag: "20211018"
       # -- image pull policy
       pullPolicy: IfNotPresent
     # -- environment variables. See [image docs](https://docs.photoprism.org/getting-started/config-options/) for more details.
