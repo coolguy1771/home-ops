@@ -23,6 +23,7 @@ apt_install_packages:
   - software-properties-common
   - unattended-upgrades
   - unzip
+  - open-vm-tools
 
 apt_remove_packages:
   - apparmor
