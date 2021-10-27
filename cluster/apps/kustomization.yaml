@@ -15,4 +15,3 @@ resources:
 - tools
 - velero
 - kube-system
-- game-servers
