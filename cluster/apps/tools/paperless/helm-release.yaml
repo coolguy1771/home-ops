@@ -71,18 +71,20 @@ spec:
           enabled: false
       consume:
         enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${NAS_ADDR}"
+            path: /mnt/user/Media/consume
         mountPath: /usr/src/paperless/consume
-        accessMode: ReadWriteOnce
-        storageClass: nfs-client
-        size: 10Gi
-        emptyDir:
-          enabled: false
       export:
         enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${NAS_ADDR}"
+            path: /mnt/user/Media/export
         mountPath: /usr/src/paperless/export
-        accessMode: ReadWriteOnce
-        storageClass: nfs-client
-        size: 10Gi
     redis:
       enabled: true
     postgresql:
