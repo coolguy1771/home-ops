@@ -81,10 +81,7 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        storageClass: rook-ceph-block
-        size: 50Gi
+        existingClaim: plex-config-v1
       transcode:
         enabled: true
         type: emptyDir
