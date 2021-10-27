@@ -59,8 +59,6 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: nfs-client
-        emptyDir:
-          enabled: false
+        storageClass: ceph-block
         mountPath: /app/data
         accessMode: ReadWriteOnce
