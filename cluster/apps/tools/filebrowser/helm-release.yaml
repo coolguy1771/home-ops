@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: filestash
+  name: filebrowser
   namespace: tools
 spec:
   interval: 5m
@@ -16,17 +16,20 @@ spec:
       interval: 5m
   values:
     image:
-      repository: machines/filestash
-      tag: latest@sha256:e12e61e0ba73b0fc99277b64fb16dd09a94dd835875679a764e91ce8895dfaee
-    nameOverride: filestash
+      repository: filebrowser/filebrowser
+      tag: v2.17.2
+    nameOverride: filebrowser
     env:
-      APPLICATION_URL: "https://filestash.${SECRET_DOMAIN}"
+      FB_DATABASE: "/config/filebrowser.db"
+      FB_ROOT: "/media"
+      FB_LOG: "stdout"
+      FB_NOAUTH: "true"
       TZ: "America/New_York"
     service:
       main:
         ports:
           http:
-            port: 8334
+            port: 80
     ingress:
       main:
         enabled: true
@@ -39,23 +42,30 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
-          - host: "filestash.${SECRET_DOMAIN}"
+          - host: "files.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "filestash.${SECRET_DOMAIN}"
-            secretName: filestash-tls
+              - "files.${SECRET_DOMAIN}"
+            secretName: filebrowser-tls
     persistence:
       config:
         enabled: true
-        accessModes: ReadWriteOnce
-        storageClassName: rook-ceph-block
-        mountPath: /app/data/state
+        existingClaim: filebrowser-config-v1
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${NAS_ADDR}"
+            path: /mnt/user/k3s
+        mountPath: /k3s
+        readOnly: true
     resources:
       requests:
         memory: 100Mi
         cpu: 100m
       limits:
-        memory: 750Mi
+        memory: 500Mi
