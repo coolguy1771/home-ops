@@ -52,7 +52,7 @@ spec:
             - name: Discord
               url: 'https://discord.com'
             - name: Gmail
-              url: 'http://mail.google..com'
+              url: 'http://mail.google.com'
         - name: Media
           links:
             - name: Plex
@@ -77,8 +77,6 @@ spec:
               url: 'https://ui.${SECRET_DOMAIN}'
             - name: Traefik
               url: 'https://traefik.${SECRET_DOMAIN}'
-            - name: Rancher
-              url: 'rancher.${SECRET_DOMAIN}'
             - name: Falco
               url: 'https://falcosidekick-ui.${SECRET_DOMAIN}/ui'
         - name: Monitoring
@@ -101,8 +99,6 @@ spec:
           links:
             - name: Minio
               url: 'https://console.s3.${SECRET_DOMAIN}'
-            - name: Longhorn
-              url: 'longhorn.${SECRET_DOMAIN}'
     ingress:
       main:
         enabled: true
@@ -123,9 +119,7 @@ spec:
     persistence:
       data:
         enabled: true
-        accessMode: ReadWriteOnce
-        size: 2Gi
-        storageClass: rook-ceph-block
+        existingClaim: hajimari-config-v1
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
     resources:

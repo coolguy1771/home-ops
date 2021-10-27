@@ -94,4 +94,4 @@ spec:
       postgresqlDatabase: paperless
       persistence:
         enabled: true
-        storageClass: "rook-ceph-block"
+        storageClass: "ceph-block"

@@ -43,11 +43,8 @@ spec:
             secretName: jackett-tls
     persistence:
       config:
-        enabled: true
-        accessMode: ReadWriteOnce
-        storageClass: rook-ceph-block
-        size: 1Gi
-        #existingClaim: jackett-config
+        enables: true
+        existingClaim: jackett-config-v1
     resources:
       requests:
         memory: 100Mi

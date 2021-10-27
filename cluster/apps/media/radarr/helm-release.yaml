@@ -48,12 +48,7 @@ spec:
     persistence:
       config:
         enabled: true
-        emptyDir:
-          enabled: false
-        accessMode: ReadWriteOnce
-        storageClass: rook-ceph-block
-        mountPath: /config
-        size: 1Gi
+        existingClaim: radarr-config-v1
       movies:
         enabled: true
         type: custom

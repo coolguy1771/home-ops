@@ -48,11 +48,7 @@ spec:
     persistence:
       config:
         enabled: true
-        accessMode: ReadWriteOnce
-        size: 1Gi
-      #  existingClaim: sonarr-config
-        storageClass: rook-ceph-block
-      #  mountPath: /app/config
+        existingClaim: sonarr-config-v1
       tv:
         enabled: true
         type: custom

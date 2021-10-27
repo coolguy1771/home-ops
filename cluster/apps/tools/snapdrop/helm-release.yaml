@@ -51,5 +51,5 @@ spec:
       data:
         enabled: true
         accessMode: ReadWriteOnce
-        storageClassName: rook-ceph-block
+        storageClassName: ceph-block
         size: 20Gi

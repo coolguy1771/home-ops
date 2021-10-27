@@ -59,5 +59,4 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: rook-ceph-block
-        size: 4Gi
+        existingClaim: haste-server-config-v1

@@ -71,8 +71,7 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /photoprism/storage
-        storageClass: rook-ceph-block
+        existingClaim: photoprism-config-v1
       originals:
         enabled: true
         type: custom

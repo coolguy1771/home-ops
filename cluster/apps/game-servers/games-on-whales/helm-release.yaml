@@ -42,7 +42,7 @@ spec:
         enabled: true
         type: emptyDir
         mountPath: /home/retro
-        storageClass: "rook-ceph-block"
+        storageClass: "ceph-block"
         size: 40Gi
     graphic_resources:
       gpu.intel.com/i915: 1
