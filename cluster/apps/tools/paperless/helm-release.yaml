@@ -24,6 +24,10 @@ spec:
     env:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_REDIS: redis://localhost:6379
+      PAPERLESS_DBHOST: localhost
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER: paperless
+      PAPERLESS_DBPASS: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
       PAPERLESS_OCR_LANGUAGE: eng
       USERMAP_UID: 1000
       USERMAP_GID: 1000
