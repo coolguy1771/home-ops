@@ -45,12 +45,6 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "k8s-0"
-            devices:
-              - name: "sdb"
-          - name: "k8s-1"
-            devices:
-              - name: "sdb"
           - name: "k8s-2"
             devices:
               - name: "sdb"
@@ -58,6 +52,9 @@ spec:
             devices:
               - name: "sdb"
           - name: "k8s-4"
+            devices:
+              - name: "sdb"
+          - name: "k8s-5"
             devices:
               - name: "sdb"
     cephFileSystems: []
