@@ -12,7 +12,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  dataSource:
-    name: hajimari-config
-    kind: PersistentVolumeClaim
   storageClassName: ceph-block
