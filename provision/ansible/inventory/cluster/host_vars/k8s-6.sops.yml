@@ -1,0 +1,36 @@
+# yamllint disable
+kind: Secret
+ansible_user: ENC[AES256_GCM,data:IS+yEEfqug==,iv:uZEwVEhok9kQ0bKLcXl7EK/hSZVO68YU1Y7otKZItCM=,tag:rIIRbqEdRlRpqo8U2H4dKg==,type:str]
+ansible_become_pass: ENC[AES256_GCM,data:VuIZnqNyyYW4xA==,iv:MoHibFqV/Rtm2dHxV6KqhTJuWyBoBGS0NZPkgS2lTpI=,tag:m0V7vTStxNIBCUKtHFr0og==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2021-10-28T20:00:23Z"
+    mac: ENC[AES256_GCM,data:Ft2HuJyc30iMARrSfpot2/2uWopzb5fjYazEmc28NcaIbx1Psd4paHrP001HX40cZ+gjO5Rue8Q2fQRXVCMygbzhD0bigWXUcPwiwWAjgBbKZbfO+lcc7PksQk0BTFNtCUZXhEOGEN1bgfRsXIxfyLUvDwG+cG8piQSUyhgXJGU=,iv:sACumcPOalaKHuKvOug0GVDIb2lZkRXn6oaxeuOOBC0=,tag:3ivX5BQdVs7YACo19I3ErA==,type:str]
+    pgp:
+        - created_at: "2021-10-28T18:10:08Z"
+          enc: |
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA04Hh5gxi1K1AQ/+PHC8YuAd7ZHkh7MRruPl/UzIBa080U/kw1hqYhQHFWUv
+            mBJbCktvQQB3y/KirLEDTNuBSj98uu99r+7d++Dh2kS1iobfx6olhbJCO0frMcVu
+            HLcRleMdAJvhqKvU1A0rIrw+LMLtrPvBwXNZOwKn0gdgOhPUJMt/SxpcG4ZQyNO8
+            xX2DjND8L8M3eSFF6vBqabWU3jRQQEuma+aP93M9tRSTrQYrbSgaLdr4IF4fAu6Q
+            6jRYEKw52HbTOKvdWy6748EyxFdoHacz9mkTKoKnXiZfFqmxUIL+JVs7U36T07Rb
+            wzX83qgml/On2F9wp+0V1PzNPmQLrQMQLrlj4wv34ZbXsftKMnbs8R9uSDP3YTgm
+            hPRyoBUpgbXWjZ1Dqe980DT6iUulkNpr9nynV+OgS3WN6ECpwVT1KMBqj6l5cgA9
+            rDS1WuJyob2jcfH0/Tgz2yK3W8FH3y3cs5PeElILWSCxA1zWm53zGaeNdPTuFUlM
+            IuytdWiol7EX2zdnS44jn34rVDhS9dB5+fvn1dNWiQfwvUvIHp497TvCaMGbDHH/
+            PQutz1QlHAtXs2zyAJyBcsJIIelLvPRufTbPTEdl83hcaEhvx6utTE2sIG7LbjHJ
+            7qailb7MI3zpZX/mZuE+U89C7LUj44kUNBvcv/7NzhFiSWeLQi/FoFfITNok983U
+            aAEJAhAI6CWeGvcLBpnrpWFTnmymu9YNz1j3lB0eyzNKjdvcNeCLzh2oS29v2zWL
+            xHvuL6xtsMwlH+exGSFbGqP8VTVpdPiySX3k5BA3/AwH+joJ1OLzITDVSy0zU2Kt
+            /Yyv6o3DPesm
+            =rRdB
+            -----END PGP MESSAGE-----
+          fp: 16AE3913B4C05B587909A154A97B6D4ABCDEF447
+    unencrypted_regex: ^(kind)$
+    version: 3.7.1

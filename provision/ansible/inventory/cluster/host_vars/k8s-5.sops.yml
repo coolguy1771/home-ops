@@ -1,0 +1,36 @@
+# yamllint disable
+kind: Secret
+ansible_user: ENC[AES256_GCM,data:3GwhVL+t,iv:tIibDRrqrt8Le0BbfEHXzUqnCQJLyqFMPLS6FuJRI2Q=,tag:vbP/T1mUCP8l0S9oHHIY6A==,type:str]
+ansible_become_pass: ENC[AES256_GCM,data:9rTTqaG8j1kcvQ==,iv:Fa3QDP/xhvImcTtrrolVbuUtg4CPQdCaPRvD5f/oZmY=,tag:KrxXzXX9aSlF25wKGVJHWQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2021-10-28T19:58:04Z"
+    mac: ENC[AES256_GCM,data:5JJ7KiUflDEbQSpyZSyYGp9nHKZyTgYgtcWC5T04U0ya12hAVxPGZ5mue+W4gienZ1OnORuz+E2jSjGToLBypA+Fr5RAfm4/trI0GAllMbEnV6cYHaRpA2RxM51WEpmzkPJ7Ag65prZTwJxpikPLFykJpFcMleuHvIMAfGXzy1g=,iv:asAaovjwoHtc7YcIdYBvFm0MdF12YOds/KZ0HDU0iNI=,tag:4/ZS13AX4SLTitsCk7o92g==,type:str]
+    pgp:
+        - created_at: "2021-10-28T18:10:06Z"
+          enc: |
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA04Hh5gxi1K1AQ/+N8TAH+Z4K3uGuY0o/34u1BHh0+wMk/7FjxGmxyf6FKCg
+            oXQ1cQ2rPe6pdfKER9sGmrpVCZi9NlsWwBss68mys5UQiKcqzwIX6f82UKJTk51b
+            f4ROQWRQZ+yHoO2vWz+z1EqtNn15k6CRiW0OsuzV92P+cLfk3MXM7MmVetu+rdk3
+            ZCcZdmWXnI3FYoLwSFdPLI9RJOOCD2lScGgwmX8m2r70yZ3IvEcUJemZJ7txT92u
+            BfGnsjhIYJxdem9FMF/8qLNYWBxyUbI4EPUNC1FrTS+JiuEYd/LG0BaCVmjJl4qg
+            8tz+j4EEJaSvVrUrP4ZHYuEAtvwmYFcQYrjhyoONTovo5Z8lNcbsHBzGE1hneBlO
+            1JSXWaXW5gRJmZOxCkE9Tl85TqWes1Pmfl+JblKJwEAFEhp0Nj4fleJhazEfR/VW
+            CT1ur+X/HJ6b8W7Q9DvguflAV6u7NFtgWXo9Q2eQqBptA+nKP/YnRypcOKSNHY4P
+            PvX0Df4pWtdfX2Nv0tt7HU9wZAnrjUoslzZ2ZukeLaevgfg9lcxxFGD7JyBGs2bz
+            j520Fp3GctN3YFFla8eet6kIOzDEvXawchlSFOok6X5H7stB5UMmoIT8ZTiEKfGP
+            jXtmuxcM3ZqwVf1wFhkBMrcw+yGW6tZCK70t3xksWd8eZGGnnPoMIK55/95Jq4/U
+            aAEJAhBXXlSUO8WC5aH2/J0XbWo91ztpC0t5OOwU3tfDktCwb+EA+hVtu4+6Otyg
+            MHjRFGECsPmcthSnpkqCt1uNDni3pAfWptlfw4QVjwQxz1Qh6bKwcoSzuLlqDD/c
+            nHxYqDZY4u0y
+            =/M6y
+            -----END PGP MESSAGE-----
+          fp: 16AE3913B4C05B587909A154A97B6D4ABCDEF447
+    unencrypted_regex: ^(kind)$
+    version: 3.7.1

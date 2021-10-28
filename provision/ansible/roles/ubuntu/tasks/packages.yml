@@ -1,15 +1,4 @@
 ---
-- name: Disable APT recommends
-  ansible.builtin.blockinfile:
-    path: /etc/apt/apt.conf.d/02norecommends
-    mode: 0644
-    create: true
-    block: |
-      APT::Install-Recommends "false";
-      APT::Install-Suggests "false";
-      APT::Get::Install-Recommends "false";
-      APT::Get::Install-Suggests "false";
-
 - name: Upgrade all system packages
   ansible.builtin.apt:
     upgrade: full
@@ -23,7 +12,23 @@
 
 - name: Install common packages
   ansible.builtin.apt:
-    name: "{{ apt_install_packages }}"
+    name:
+      - apt-transport-https
+      - arptables
+      - ca-certificates
+      - curl
+      - ebtables
+      - iputils-ping
+      - ipvsadm
+      - lvm2
+      - net-tools
+      - nfs-common
+      - open-iscsi
+      - psmisc
+      - smartmontools
+      - software-properties-common
+      - unattended-upgrades
+      - open-vm-tools
     install_recommends: false
     update_cache: true
     cache_valid_time: 3600
@@ -32,57 +37,39 @@
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
-  when:
-    - apt_install_packages is defined
-    - apt_install_packages is iterable
-    - apt_install_packages | length > 0
 
-- name: Gather installed packages
-  ansible.builtin.package_facts:
-    manager: auto
+- name: Copy 20auto-upgrades unattended-upgrades config
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: 0644
+    create: true
+    block: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Download-Upgradeable-Packages "1";
+      APT::Periodic::AutocleanInterval "7";
+      APT::Periodic::Unattended-Upgrade "1";
+- name: Copy 50unattended-upgrades unattended-upgrades config
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    mode: 0644
+    create: true
+    block: |
+      Unattended-Upgrade::Automatic-Reboot "false";
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+      Unattended-Upgrade::Allowed-Origins {
+          "${distro_id} stable";
+          "${distro_id} ${distro_codename}-security";
+          "${distro_id} ${distro_codename}-updates";
+      };
+- name: Start unattended-upgrades service
+  ansible.builtin.systemd:
+    name: unattended-upgrades
+    enabled: true
+    state: started
 
-- name: Remove packages
-  block:
-    - name: Check if snap is installed
-      ansible.builtin.debug:
-        msg: "snapd is installed"
-      register: snapd_check
-      when:
-        - "'snapd' in apt_remove_packages"
-        - "'snapd' in ansible_facts.packages"
-    - name: Remove snap packages
-      ansible.builtin.command: snap remove {{ item }}
-      loop:
-        - lxd
-        - core18
-        - core20
-        - snapd
-      when:
-        - "'snapd' in apt_remove_packages"
-        - "'snapd' in ansible_facts.packages"
-        - snapd_check.failed is defined
-    - name: Remove packages
-      ansible.builtin.apt:
-        name: "{{ apt_remove_packages }}"
-        state: absent
-        autoremove: true
-    - name: Remove files
-      ansible.builtin.file:
-        state: absent
-        path: "{{ item }}"
-      loop:
-        - "/home/{{ ansible_user }}/.snap"
-        - "/snap"
-        - "/var/snap"
-        - "/var/lib/snapd"
-        - "/var/cache/snapd"
-        - "/usr/lib/snapd"
-        - "/etc/cloud"
-        - "/var/lib/cloud"
-      when:
-        - "'snapd' in apt_remove_packages"
-        - "'cloud-init' in apt_remove_packages"
-  when:
-    - apt_remove_packages is defined
-    - apt_remove_packages is iterable
-    - apt_remove_packages | length > 0
+- name: Restart unattended-upgrades service
+  ansible.builtin.service:
+    name: unattended-upgrades.service
+    daemon_reload: true
+    enabled: true
+    state: restarted
