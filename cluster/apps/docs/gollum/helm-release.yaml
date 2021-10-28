@@ -50,7 +50,7 @@ spec:
       wiki:
         enabled: true
         mountPath: /wiki
-        storageClass: nfs-client
+        storageClass: ceph-block
         size: 10Gi
         accessMode: ReadWriteMany
     gollum:

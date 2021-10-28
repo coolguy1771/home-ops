@@ -59,7 +59,7 @@ spec:
       config:
         enabled: true
         mountPath: /root/.stash
-        storageClass: nfs-client
+        storageClass: ceph-block
         size: 15Gi
         accessMode: ReadWriteOnce
       media:
@@ -67,7 +67,7 @@ spec:
         mountPath: /media
         accessMode: ReadWriteMany
         size: 50Gi
-        storageClass: nfs-client
+        storageClass: ceph-block
       external:
         enabled: true
         type: custom

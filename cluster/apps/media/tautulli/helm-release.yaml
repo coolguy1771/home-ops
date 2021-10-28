@@ -42,7 +42,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: nfs-client
+        storageClass: ceph-block
         emptyDir:
           enabled: false
         mountPath: /config

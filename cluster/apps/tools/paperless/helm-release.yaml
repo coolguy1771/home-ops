@@ -57,14 +57,14 @@ spec:
         enabled: true
         mountPath: /usr/src/paperless/data
         accessMode: ReadWriteOnce
-        storageClass: nfs-client
+        storageClass: ceph-block
         size: 100Gi
         emptyDir:
           enabled: false
       media:
         enabled: true
         mountPath: /usr/src/paperless/media
-        storageClass: nfs-client
+        storageClass: ceph-block
         accessMode: ReadWriteOnce
         size: 50Gi
         emptyDir:
