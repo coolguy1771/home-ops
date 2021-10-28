@@ -19,7 +19,7 @@ spec:
     - name: rook-ceph
   values:
     toolbox:
-      enabled: false
+      enabled: true
     monitoring:
       enabled: true
     cephClusterSpec:
