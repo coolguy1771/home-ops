@@ -3,7 +3,7 @@ version: "3"
 
 vars:
   K3S_PRIMARY_MASTER_NODE_USERNAME: "twitlin"
-  K3S_PRIMARY_MASTER_NODE_ADDRESS: "10.10.10.20"
+  K3S_PRIMARY_MASTER_NODE_ADDRESS: "10.10.10.26"
 
 tasks:
   kubeconfig:
