@@ -87,20 +87,6 @@ tasks:
       - "ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/cluster/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/kubernetes/k3s-install.yml"
     silent: true
 
-  list-dell:
-    desc: List all the idrac interfaces
-    dir: ansible
-    cmds:
-      - "ansible all -i {{.ANSIBLE_INVENTORY_DIR}}/dell/hosts.yml --list-hosts"
-    silent: true
-
-  ping-dell:
-    desc: Ping all the hosts
-    dir: ansible
-    cmds:
-      - "ansible all -i {{.ANSIBLE_INVENTORY_DIR}}/dell/hosts.yml --one-line -m 'ping'"
-    silent: true
-
   playbook:get-inventory:
     desc: View overall system inventory information status
     dir: ansible
