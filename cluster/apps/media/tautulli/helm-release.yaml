@@ -46,7 +46,7 @@ spec:
         emptyDir:
           enabled: false
         mountPath: /config
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
         size: 1Gi
     podAnnotations:
       backup.velero.io/backup-volumes: config
