@@ -2,12 +2,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- wildcard-certificate
-- unifi
-- cloudflare-ddns
-- cloudflare-ddns-icb
-- cloudflare-ddns-studio
-- external-dns
-- traefik
-- error-pages
-- authentik
+  - wildcard-certificate
+  - unifi
+  - cloudflare-ddns
+  - cloudflare-ddns-icb
+  - cloudflare-ddns-studio
+  - external-dns
+  - traefik
+  - error-pages
+  - authentik

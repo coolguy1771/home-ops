@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- nfs-subdir-external-provisioner
-- kured
-- metrics-server
-- node-feature-discovery
-- node-problem-detector
-- reloader
-- intel-gpu-plugin
+  - nfs-subdir-external-provisioner
+  - kured
+  - metrics-server
+  - node-feature-discovery
+  - node-problem-detector
+  - reloader
+  - intel-gpu-plugin

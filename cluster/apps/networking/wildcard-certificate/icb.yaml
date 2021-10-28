@@ -11,5 +11,5 @@ spec:
     kind: ClusterIssuer
   commonName: "${SECRET_DOMAIN_GAMES}"
   dnsNames:
-  - "${SECRET_DOMAIN_GAMES}"
-  - "*.${SECRET_DOMAIN_GAMES}"
+    - "${SECRET_DOMAIN_GAMES}"
+    - "*.${SECRET_DOMAIN_GAMES}"

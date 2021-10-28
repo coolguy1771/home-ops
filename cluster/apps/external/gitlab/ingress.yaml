@@ -14,17 +14,17 @@ metadata:
   namespace: external
 spec:
   rules:
-  - host: git.${SECRET_DOMAIN_STUDIO}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: gitlab
-            port:
-              number: 9080
+    - host: git.${SECRET_DOMAIN_STUDIO}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: gitlab
+                port:
+                  number: 9080
   tls:
-  - hosts:
-    - git.${SECRET_DOMAIN_STUDIO}
-    secretName: gitlab-tls
+    - hosts:
+        - git.${SECRET_DOMAIN_STUDIO}
+      secretName: gitlab-tls

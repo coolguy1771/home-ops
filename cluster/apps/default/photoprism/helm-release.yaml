@@ -43,7 +43,7 @@ spec:
       # -- Sets GID Photoprism runs under.
       GID: 1000
       # -- Sets UMASK.
-      UMASK:  # 0000
+      UMASK: # 0000
 
     ingress:
       # -- Enable and configure ingress settings for the chart under this key.
@@ -58,14 +58,14 @@ spec:
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-        - host: "photos.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: "photos.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "photos.${SECRET_DOMAIN}"
-          secretName: photoprism-tls
+          - hosts:
+              - "photos.${SECRET_DOMAIN}"
+            secretName: photoprism-tls
     # -- Configure persistence settings for the chart under this key.
     # @default -- See values.yaml
     persistence:

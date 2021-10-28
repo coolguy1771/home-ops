@@ -2,16 +2,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- calico-system
-- default
-- docs
-- external
-- falco-system
-- flux-system
-- media
-- monitoring
-- networking
-- system-upgrade
-- tools
-- velero
-- kube-system
+  - calico-system
+  - default
+  - docs
+  - external
+  - falco-system
+  - flux-system
+  - media
+  - monitoring
+  - networking
+  - system-upgrade
+  - tools
+  - velero
+  - kube-system

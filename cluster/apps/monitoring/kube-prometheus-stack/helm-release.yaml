@@ -187,7 +187,7 @@ spec:
             name: thanos-objstore
             key: objstore.yml
         additionalScrapeConfigs:
-          - job_name: 'minio-job'
+          - job_name: "minio-job"
             honor_timestamps: true
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
