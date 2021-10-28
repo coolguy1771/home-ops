@@ -123,21 +123,25 @@ spec:
       enabled: true
       endpoints:
         - 10.10.10.20
+        - 10.10.10.21
         - 10.10.10.26
     kubeScheduler:
       enabled: true
       endpoints:
         - 10.10.10.20
+        - 10.10.10.21
         - 10.10.10.26
     kubeProxy:
       enabled: true
       endpoints:
         - 10.10.10.20
+        - 10.10.10.21
         - 10.10.10.26
     kubeEtcd:
       enabled: true
       endpoints:
         - 10.10.10.20
+        - 10.10.10.21
         - 10.10.10.26
       service:
         enabled: true
