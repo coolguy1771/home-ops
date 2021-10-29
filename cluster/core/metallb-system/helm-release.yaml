@@ -22,7 +22,7 @@ spec:
         - name: default
           protocol: layer2
           addresses:
-            - "${METALLB_ARP_RANGE}"
+            - "${METALLB_LB_RANGE}"
     prometheus:
       podMonitor:
         enabled: true
