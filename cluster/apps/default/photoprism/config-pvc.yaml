@@ -12,7 +12,4 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  dataSource:
-    name: photoprism-config
-    kind: PersistentVolumeClaim
   storageClassName: ceph-block
