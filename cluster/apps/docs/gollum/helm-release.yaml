@@ -52,7 +52,7 @@ spec:
         mountPath: /wiki
         storageClass: ceph-block
         size: 10Gi
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
     gollum:
       # -- Branch to pull
       gitBranch: master
