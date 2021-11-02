@@ -10,4 +10,3 @@ resources:
   - external-dns
   - traefik
   - error-pages
-  - authentik
