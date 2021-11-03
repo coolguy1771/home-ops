@@ -7,7 +7,7 @@ metadata:
     hajimari.io/enable: "true"
     hajimari.io/icon: "gitlab"
     kubernetes.io/ingress.class: traefik
-    external-dns.alpha.kubernetes.io/target: "${SECRET_DOMAIN_STUDIO}"
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
     external-dns/is-public: "true"
   #  hajimari.io/icon:
   name: gitlab

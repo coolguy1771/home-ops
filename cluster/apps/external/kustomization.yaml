@@ -5,4 +5,4 @@ resources:
   - pufferpanel
   - qbittorrent
   - minio
-  - vcenter
+  - gitlab
