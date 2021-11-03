@@ -31,6 +31,7 @@ spec:
       SUPERUSER_EMAIL: ${SECRET_HEALTH_CHECKS_SUPER_EMAIL}
       SUPERUSER_PASSWORD: ${SECRET_HEALTH_CHECKS_SUPER_PASSWORD}
       SITE_LOGO_URL: https://blackelement.studio/images/BlackElement_Logo.png
+      SECRET_KEY: ${SECRET_HEALTH_CHECKS_KEY}
     ingress:
       main:
         enabled: true
