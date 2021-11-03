@@ -48,3 +48,4 @@ spec:
         tls:
           - hosts:
               - "health.${SECRET_DOMAIN_STUDIO}"
+            secretName: health-checks-tls
