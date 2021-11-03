@@ -4,9 +4,7 @@ kind: Kustomization
 resources:
   - wildcard-certificate
   - unifi
-  - cloudflare-ddns
-  - cloudflare-ddns-icb
-  - cloudflare-ddns-studio
   - external-dns
   - traefik
   - error-pages
+  - ddns

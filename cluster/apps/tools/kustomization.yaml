@@ -6,3 +6,6 @@ resources:
   - gossa
   - snapdrop
   - paperless
+  - hajimari-be
+  - haste-server-be
+  - health-checks

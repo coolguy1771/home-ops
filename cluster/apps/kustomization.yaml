@@ -15,3 +15,5 @@ resources:
   - tools
   - velero
   - kube-system
+  - website
+  - auth

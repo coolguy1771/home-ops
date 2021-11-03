@@ -18,3 +18,4 @@ resources:
   - velero.yaml
   - rook-ceph.yaml
   - tools.yaml
+  - website.yaml

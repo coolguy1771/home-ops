@@ -20,3 +20,4 @@ spec:
           dnsZones:
             - ${SECRET_DOMAIN}
             - ${SECRET_DOMAIN_GAMES}
+            - ${SECRET_DOMAIN_STUDIO}
