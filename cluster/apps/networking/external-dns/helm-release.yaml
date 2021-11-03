@@ -40,8 +40,9 @@ spec:
     txtPrefix: "k8s."
     txtOwnerId: "default"
     domainFilters:
-      - "${SECRET_DOMAIN}"
-      - "${SECRET_DOMAIN_GAMES}"
+      - ${SECRET_DOMAIN}
+      - ${SECRET_DOMAIN_GAMES}
+      - ${SECRET_DOMAIN_STUDIO}
     resources:
       requests:
         memory: 100Mi
