@@ -84,6 +84,7 @@ spec:
         tls:
           - hosts:
               - "home.${SECRET_DOMAIN_STUDIO}"
+            secretName: hajimari-be-tls
     persistence:
       data:
         enabled: true
