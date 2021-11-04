@@ -34,3 +34,4 @@ resources:
   - longhorn-charts.yaml
   - metallb-charts.yaml
   - vmware-tanzu-charts.yaml
+  - influx-charts.yaml
