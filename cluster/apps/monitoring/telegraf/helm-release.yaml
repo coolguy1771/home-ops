@@ -24,8 +24,8 @@ spec:
     classes:
       secretName: "telegraf-operator-classes"
       default: "infra"
-      data:
-        existingSecretName: telegraf-config
+      existingSecretName: telegraf-config
+
     certManager:
       enable: false
     hotReload: true
