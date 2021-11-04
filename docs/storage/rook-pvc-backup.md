@@ -13,10 +13,10 @@ kubectl -n rook-ceph exec -it (kubectl -n rook-ceph get pod -l "app=rook-direct-
 ```sh
 mkdir -p /mnt/nfsdata
 mkdir -p /mnt/data
-mount -t nfs -o "nfsvers=4.1,hard" 192.168.42.50:/Data /mnt/nfsdata
+mount -t nfs -o "nfsvers=4.1,hard" 192.168.42.60:/Data /mnt/nfsdata
 ```
 
-## Restore data from a NFS share
+## Backup data to a NFS share
 
 !!! info "Ran from your workstation"
 

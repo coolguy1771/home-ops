@@ -2,7 +2,7 @@
 
 This repository _is_ my home Kubernetes cluster in a declarative state. [Flux](https://github.com/fluxcd/flux2) watches my [cluster](./cluster/) folder and makes the changes to my cluster based on the YAML manifests.
 
-Feel free to open a [Github issue](https://github.com/onedr0p/home-cluster/issues/new/choose) or join the [k8s@home Discord](https://discord.gg/sTMX7Vh) if you have any questions.
+Feel free to open a [Github issue](https://github.com/coolguy1771/k3s/issues/new/choose) or join the [k8s@home Discord](https://discord.gg/sTMX7Vh) if you have any questions.
 
 This repository is built off the [k8s-at-home/template-cluster-k3s](https://github.com/k8s-at-home/template-cluster-k3s) repository.
 
@@ -19,6 +19,8 @@ See my [ansible](./ansible/) directory for my playbooks and roles.
 - [Mozilla SOPS](https://toolkit.fluxcd.io/guides/mozilla-sops/): Encrypts secrets which is safe to store - even to a public repository.
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): Creates DNS entries in a separate [coredns](https://github.com/coredns/coredns) deployment which is backed by my clusters [etcd](https://github.com/etcd-io/etcd) deployment.
 - [cert-manager](https://cert-manager.io/docs/): Configured to create TLS certs for all ingress services automatically using LetsEncrypt.
+- [kube-vip](https://github.com/kube-vip/kube-vip): HA solution for Kubernetes control plane
+- [Kasten](https://www.kasten.io): Data backup and recovery
 
 ## Repository structure
 
@@ -45,11 +47,12 @@ The Git repository contains the following directories under `cluster` and are or
 
 ## Hardware
 
-| Device                 | Count | OS Disk Size | Data Disk Size       | Ram  | Purpose                     |
-| ---------------------- | ----- | ------------ | -------------------- | ---- | --------------------------- |
-| VM       | 1     | 500GB vDisk   | N/A                  | 8GB | k3s Masters |
-| VM       | 3     | 500GB vDisk  | N/A | 8GB | k3s Workers                 |              |
-| Unraid (custom) | 1     | 4GB Flash Drive    | 4x4TB        | 64GB | Shared file storage         |
+| Device                   | Count | OS Disk Size | Data Disk Size          | Ram  | Purpose                    |
+| ------------------------ | ----- | ------------ | ----------------------- | ---- | -------------------------- |
+| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | k3s Master (embedded etcd) |
+| VM                       | 2     | 50GB vDisk   | N/A                     | 16GB | k3s Master (embedded etcd) |
+| VM                       | 3     | 50GB vDisk   | 600GB vDISK (rook-ceph) | 16GB | k3s Workers                |
+| PowerEdge T340           | 1     | 500GB SSD    | 4x4TB RAIDz2            | 64GB | Shared file storage        |
 
 ## Tools
 
