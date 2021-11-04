@@ -89,8 +89,12 @@ spec:
             type: loki
             access: proxy
             url: http://loki:3100
+          - name: Influxdb
+            type: influxdb
+            access: proxy
+            url: http://influxdb:8086
     dashboards:
-      default:
+      unifi:
         unifi-client-insights:
           gnetId: 11315
           revision: 8
@@ -111,6 +115,7 @@ spec:
           revision: 8
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/13502
+      cluster:
         minio:
           gnetId: 13502
           revision: 10
@@ -126,12 +131,14 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
           datasource: Prometheus
+      media:
         radarr:
           url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/radarr.json
           datasource: Prometheus
         sonarr:
           url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
           datasource: Prometheus
+      rook-ceph:
         ceph-cluster:
           gnetId: 2842
           revision: 14
@@ -146,6 +153,28 @@ spec:
           gnetId: 5342
           revision: 5
           datasource: Prometheus
+      vmware:
+        VMware-vSphere-Overview:
+          gnetId: 8159
+          revision: 38
+          datasource: Influxdb
+        VMwarevSphere-VMs:
+          gnetId: 8168
+          revision: 14
+          datasource: Influxdb
+        VMwarevSphere-Datastore:
+          gnetId: 8162
+          revision: 9
+          datasource: Influxdb
+        VMwarevSphere-Hosts:
+          gnetId: 8165
+          revision: 14
+          datasource: Influxdb
+      hosts:
+        iDRAC-HostStats:
+          gnetId: 12106
+          revision: 2
+          datasource: Influxdb
     sidecar:
       dashboards:
         enabled: true
