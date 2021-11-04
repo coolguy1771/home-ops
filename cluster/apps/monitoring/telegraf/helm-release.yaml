@@ -20,7 +20,7 @@ spec:
     image:
       repository: quay.io/influxdb/telegraf-operator
       pullPolicy: IfNotPresent
-      sidecarImage: "docker.io/library/telegraf:1.19"
+      sidecarImage: "docker.io/library/telegraf:1.20"
     classes:
       secretName: "telegraf-operator-classes"
       default: "infra"
