@@ -26,5 +26,5 @@ spec:
       default: "infra"
       existingSecretName: telegraf-config
     certManager:
-      enable: true
+      enable: false
     hotReload: true
