@@ -24,15 +24,15 @@ spec:
       dashboard:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         host:
-          name: "rook.${SECRET_DOMAIN}"
+          name: rook.${SECRET_DOMAIN}
           path: "/"
         tls:
           - hosts:
-              - "rook.${SECRET_DOMAIN}"
+              - rook.${SECRET_DOMAIN}
             secretName: rook-tls
       cephClusterSpec:
         dashboard:
