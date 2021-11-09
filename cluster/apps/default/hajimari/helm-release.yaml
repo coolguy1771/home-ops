@@ -98,7 +98,7 @@ spec:
         - name: Storage
           links:
             - name: Minio
-              url: "https://console.s3.${SECRET_DOMAIN}"
+              url: "https://console${SECRET_DOMAIN}"
     ingress:
       main:
         enabled: true
