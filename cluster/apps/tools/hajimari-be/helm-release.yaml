@@ -76,6 +76,8 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "weather-sunset"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
+          external-dns/is-public: "true"
         hosts:
           - host: "home.${SECRET_DOMAIN_STUDIO}"
             paths:
