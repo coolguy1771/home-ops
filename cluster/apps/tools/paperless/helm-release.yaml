@@ -23,7 +23,7 @@ spec:
     env:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_REDIS: redis://broker:6379
-      PAPERLESS_DBHOST: db
+      PAPERLESS_DBHOST:
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: paperless
       PAPERLESS_DBPASS: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
@@ -33,6 +33,7 @@ spec:
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       PAPERLESS_TIME_ZONE: UTC
+      PAPERLESS_ALLOWED_HOSTS: paper.${SECRET_DOMIAN}
     ingress:
       main:
         enabled: true
@@ -88,7 +89,7 @@ spec:
     redis:
       enabled: true
     postgresql:
-      enabled: true
+      enabled: false
       postgresqlUsername: paperless
       postgresqlPassword: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
       postgresqlDatabase: paperless
