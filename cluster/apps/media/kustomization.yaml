@@ -5,5 +5,7 @@ resources:
   - ombi
   - owncast
   - plex
+  - radarr
+  - sonarr
   - stash
   - tautulli
