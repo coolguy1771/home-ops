@@ -24,12 +24,12 @@ spec:
       - name: CF_API_EMAIL
         valueFrom:
           secretKeyRef:
-            name: cloudflare-credentials
+            name: cloudflare-creds
             key: email
       - name: CF_API_KEY
         valueFrom:
           secretKeyRef:
-            name: cloudflare-credentials
+            name: cloudflare-creds
             key: api-key
     extraArgs:
       - --annotation-filter=external-dns/is-public in (true)
