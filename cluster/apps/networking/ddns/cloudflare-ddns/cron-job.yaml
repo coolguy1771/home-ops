@@ -17,7 +17,7 @@ spec:
           hostNetwork: true
           containers:
             - name: cloudflare-ddns
-              image: curlimages/curl:7.79.1
+              image: curlimages/curl:7.80.0
               imagePullPolicy: IfNotPresent
               envFrom:
                 - secretRef:
