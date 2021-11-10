@@ -66,6 +66,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -83,6 +92,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - update
@@ -101,6 +119,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - update
@@ -119,6 +146,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
 
           events:
             - create
@@ -137,6 +173,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -154,6 +199,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -171,6 +225,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -188,6 +251,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -205,6 +277,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -222,6 +303,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -239,6 +329,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - update
             - error
@@ -255,6 +354,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -272,6 +380,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
@@ -289,6 +406,15 @@ spec:
               - external
               - storage
               - rook-ceph
+              - website
+              - tools
+              - falco-system
+              - calico-system
+              - auth
+              - velero
+              - cert-manager
+              - docs
+              - flux-system
           events:
             - create
             - delete
