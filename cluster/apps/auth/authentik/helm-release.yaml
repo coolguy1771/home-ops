@@ -62,26 +62,17 @@ spec:
         - hosts:
             - "auth.${SECRET_DOMAIN_STUDIO}"
           secretName: authentik-tls
-
     geoip:
-  # -- optional GeoIP, deploys a cronjob to download the maxmind database
       enabled: true
-  # -- sign up under https://www.maxmind.com/en/geolite2/signup
       accountId: "418977"
       licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
       enabled: true
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
-      persistence:
-        enabled: true
-        storageClass: ceph-block
-        accessModes:
-          - ReadWriteOnce
+      existingClaim: authentik-postgres-v1
     redis:
       enabled: true
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
+      existingClaim: authentik-redis-v1
     prometheus:
       serviceMonitor:
         create: true
