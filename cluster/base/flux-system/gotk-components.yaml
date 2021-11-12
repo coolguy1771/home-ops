@@ -337,7 +337,7 @@ spec:
                   Bucket sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -637,7 +637,7 @@ spec:
                   repository sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -736,7 +736,7 @@ spec:
                   description: Artifact represents the output of a source synchronisation.
                   properties:
                     checksum:
-                      description: Checksum is the SHA1 checksum of the artifact.
+                      description: Checksum is the SHA256 checksum of the artifact.
                       type: string
                     lastUpdateTime:
                       description: LastUpdateTime is the timestamp corresponding to
@@ -923,7 +923,7 @@ spec:
                   chart sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -1901,7 +1901,7 @@ spec:
                   repository sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -5747,7 +5747,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/helm-controller:v0.12.1
+        image: ghcr.io/fluxcd/helm-controller:v0.13.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -5820,7 +5820,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/image-automation-controller:v0.17.0
+        image: ghcr.io/fluxcd/image-automation-controller:v0.17.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -5895,7 +5895,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/image-reflector-controller:v0.13.0
+        image: ghcr.io/fluxcd/image-reflector-controller:v0.13.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -5974,7 +5974,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/kustomize-controller:v0.17.0
+        image: ghcr.io/fluxcd/kustomize-controller:v0.18.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -6129,7 +6129,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/source-controller:v0.17.2
+        image: ghcr.io/fluxcd/source-controller:v0.18.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -6173,4 +6173,3 @@ spec:
         name: data
       - emptyDir: {}
         name: tmp
----
