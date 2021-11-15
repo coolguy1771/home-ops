@@ -5,5 +5,4 @@ resources:
   - haste-server
   - vaultwarden
   - photoprism
-  - hajimari
   - nginx
