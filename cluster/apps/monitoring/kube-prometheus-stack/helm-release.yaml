@@ -60,17 +60,7 @@ spec:
               severity: "critical"
             target_match:
               severity: "warning"
-            # Apply inhibition if the alertname is the same.
             equal: ["alertname", "namespace"]
-        templates: ["*.tmpl"]
-      alertmanagerSpec:
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: ceph-block
-              resources:
-                requests:
-                  storage: 10Gi
       ingress:
         enabled: true
         pathType: Prefix
@@ -88,6 +78,14 @@ spec:
           - hosts:
               - "alert-manager.${SECRET_DOMAIN}"
             secretName: "alert-manager-tls"
+      alertmanagerSpec:
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "ceph-block"
+              resources:
+                requests:
+                  storage: 1Gi
     nodeExporter:
       serviceMonitor:
         relabelings:
@@ -108,7 +106,7 @@ spec:
         dashboards:
           multicluster:
             etcd:
-              enabled: false
+              enabled: true
     kubelet:
       enabled: true
       serviceMonitor:
@@ -125,6 +123,14 @@ spec:
         - 10.10.10.20
         - 10.10.10.21
         - 10.10.10.26
+      service:
+        enabled: true
+        port: 10257
+        targetPort: 10257
+      serviceMonitor:
+        enabled: true
+        https: true
+        insecureSkipVerify: true
     kubeScheduler:
       enabled: true
       endpoints:
@@ -147,6 +153,9 @@ spec:
         enabled: true
         port: 2381
         targetPort: 2381
+    # Setting this option to 0 disabled CPU limits
+    prometheusOperator:
+      configReloaderCpu: 0
     prometheus:
       ingress:
         enabled: true
@@ -167,6 +176,8 @@ spec:
             secretName: "prometheus-tls"
       thanosService:
         enabled: true
+      thanosServiceMonitor:
+        enabled: true
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: "replica"
@@ -180,7 +191,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: "ceph-block"
               resources:
                 requests:
                   storage: 10Gi
