@@ -10,7 +10,7 @@ metadata:
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
     external-dns/is-public: "true"
   #  hajimari.io/icon:
-  name: gitlab
+  name: gitea
   namespace: external
 spec:
   rules:
@@ -21,10 +21,10 @@ spec:
             path: /
             backend:
               service:
-                name: gitlab
+                name: gitea
                 port:
-                  number: 9080
+                  number: 3010
   tls:
     - hosts:
         - git.${SECRET_DOMAIN_STUDIO}
-      secretName: gitlab-tls
+      secretName: gitea-tls

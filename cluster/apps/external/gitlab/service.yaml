@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gitlab
+  name: gitea
   namespace: external
   annotations: {}
   #  traefik.ingress.kubernetes.io/service.serversscheme: https
@@ -9,4 +9,4 @@ spec:
   type: ExternalName
   externalName: "${NAS_ADDR}"
   ports:
-    - port: 9080
+    - port: 3010
