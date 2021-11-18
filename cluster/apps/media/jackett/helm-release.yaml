@@ -19,7 +19,7 @@ spec:
     image:
       repository: ghcr.io/k8s-at-home/jackett
       pullPolicy: IfNotPresent
-      tag: v0.20.10
+      tag: v0.20.36
     strategy:
       type: Recreate
     ingress:
