@@ -8,3 +8,4 @@ resources:
   - paperless
   - haste-server-be
   - health-checks
+  - hajimari-be
