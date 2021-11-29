@@ -10,7 +10,6 @@ My DNS setup may seem a bit complicated at first, but it allows for completely a
 
 {{ links.external('traefik') }} is my cluster ingress controller. It is set to a `externalIPs` so that I can forward a port on my router directly to the service.
 
-
 ### external-dns
 
 {{ links.external('external-dns') }} runs in my cluster and is connected to Cloudflare. When an ingress has the `external-dns/is-public: "true"` annotation set external-dns will add, update or delete that record in Cloudflare automatically

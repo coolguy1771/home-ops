@@ -7,7 +7,7 @@ Description of how my network is set up.
 | Name                        | CIDR              |
 | --------------------------- | ----------------- |
 | Management                  | `192.168.1.0/24`  |
-| Servers                     | `10.10.10.0/24` |
+| Servers                     | `10.10.10.0/24`   |
 | k8s external services (BGP) | `192.168.69.0/24` |
 | k8s pods                    | `10.69.0.0/16`    |
 | k8s services                | `10.96.0.0/16`    |
