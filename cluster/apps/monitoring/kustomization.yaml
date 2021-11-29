@@ -10,5 +10,3 @@ resources:
   - unifi-poller
   - thanos
   - promtail
-  - telegraf
-  - influxdb
