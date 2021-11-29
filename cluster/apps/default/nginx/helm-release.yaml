@@ -81,7 +81,6 @@ spec:
         external-dns/is-public: "true"
       tls: true
 
-
     ## Prometheus Exporter / Metrics
     metrics:
       ## @param metrics.enabled Start a Prometheus exporter sidecar container

@@ -107,7 +107,6 @@ spec:
             annotations:
               summary: "Vaultwarden is unable to connect to postgresql"
 
-
   # TODO: https://github.com/grafana/helm-charts/pull/700
   postRenderers:
     - kustomize:

@@ -36,4 +36,3 @@ resources:
   - vmware-tanzu-charts.yaml
   - influx-charts.yaml
   - metrics-server-charts.yaml
-  

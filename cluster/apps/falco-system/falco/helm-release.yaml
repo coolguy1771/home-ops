@@ -484,4 +484,3 @@ spec:
           output: Unexpected syscall in nginx container (command=%proc.cmdline pid=%proc.pid user=%user.name syscall=%evt.type args=%evt.args %container.info image=%container.image)
           priority: NOTICE
           warn_evttypes: False
-
