@@ -64,7 +64,7 @@ spec:
       pathType: ImplementationSpecific
       ## @param ingress.apiVersion Force Ingress API version (automatically detected if not set)
       ## @param ingress.hostname Default host for the ingress resource
-      hostname: frosty.${SECRET_DOMAIN_STUDIO}
+      hostname: perscom.${SECRET_DOMAIN_STUDIO}
       ## @param ingress.path The Path to Nginx. You may need to set this to '/*' in order to use this with ALB ingress controllers.
       path: /
       ## @param ingress.annotations Ingress annotations
