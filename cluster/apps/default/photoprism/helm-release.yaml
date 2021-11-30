@@ -42,9 +42,9 @@ spec:
       PHOTOPRISM_DARKTABLE_PRESETS: "true"
       PHOTOPRISM_HTTP_COMPRESSION: "gzip"
       # -- Sets UID Photoprism runs under.
-      UID: 1000
+      PHOTOPRISM_UID: 1000
       # -- Sets GID Photoprism runs under.
-      GID: 1000
+      PHOTOPRISM_GID: 1000
       # -- Sets UMASK.
       UMASK: # 0000
 
