@@ -36,8 +36,11 @@ spec:
       PHOTOPRISM_ADMIN_PASSWORD: "${SECRET_PHOTOPRISM_ADMIN_PASSWORD}"
       # -- Disable authentication / password protection
       PHOTOPRISM_PUBLIC: "false"
-      PHOTOPRISM_DETECT_NSFW: true
-      PHOTOPRISM_SITE_URL: "photos.witl.xyz"
+      PHOTOPRISM_DETECT_NSFW: "true"
+      PHOTOPRISM_UPLOAD_NSFW: "true"
+      PHOTOPRISM_THUMB_FILTER: "blackman"
+      PHOTOPRISM_DARKTABLE_PRESETS: "true"
+      PHOTOPRISM_HTTP_COMPRESSION: "gzip"
       # -- Sets UID Photoprism runs under.
       UID: 1000
       # -- Sets GID Photoprism runs under.
