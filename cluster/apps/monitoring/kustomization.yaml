@@ -5,9 +5,7 @@ resources:
   - botkube
   - grafana
   - kube-prometheus-stack
-  - loki
   - speedtest-exporter
   - unifi-poller
   - thanos
-  - promtail
   - snmp-exporter
