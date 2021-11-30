@@ -37,7 +37,7 @@ spec:
       # -- Disable authentication / password protection
       PHOTOPRISM_PUBLIC: "false"
       PHOTOPRISM_DETECT_NSFW: true
-      #PHOTOPRISM_SITE_URL: "photos.witl.xyz"
+      PHOTOPRISM_SITE_URL: "photos.witl.xyz"
       # -- Sets UID Photoprism runs under.
       UID: 1000
       # -- Sets GID Photoprism runs under.
