@@ -32,6 +32,7 @@ spec:
       GF_DATE_FORMATS_INTERVAL_DAY: "DD/MM"
       GF_DATE_FORMATS_INTERVAL_MONTH: "MM-YYYY"
       GF_DATE_FORMATS_INTERVAL_YEAR: "YYYY"
+      VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
       GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
       GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
       GF_AUTH_GENERIC_OAUTH_CLIENT_ID: "${SECRET_GRAFANA_CLIENT_ID}"
@@ -60,41 +61,34 @@ spec:
         mode: console
       grafana_net:
         url: https://grafana.net
-    dashboardProviders:
-      dashboardproviders.yaml:
-        apiVersion: 1
-        providers:
-          - name: "default"
-            orgId: 1
-            folder: ""
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/default
-    datasources:
-      datasources.yaml:
-        apiVersion: 1
-        # list of datasources that should be deleted from the database
-        deleteDatasources:
-          - name: Loki
-            orgId: 1
-        datasources:
-          - name: Prometheus
-            type: prometheus
-            access: proxy
-            url: http://thanos-query:9090/
-            isDefault: true
-          - name: Loki
-            type: loki
-            access: proxy
-            url: http://loki:3100
-          - name: Influxdb
-            type: influxdb
-            access: proxy
-            url: http://influxdb:8086
     dashboards:
       default:
+        # # Ref: https://grafana.com/grafana/dashboards/12175
+        # calico-felix:
+        #   gnetId: 12175
+        #   revision: 5
+        #   datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/2842
+        ceph-cluster:
+          gnetId: 2842
+          revision: 14
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5336
+        ceph-osd:
+          gnetId: 5336
+          revision: 5
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5342
+        ceph-pools:
+          gnetId: 5342
+          revision: 5
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/7845
+        minio:
+          gnetId: 13502
+          revision: 10
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11315
         unifi-client-insights:
           gnetId: 11315
           revision: 8
@@ -114,62 +108,11 @@ spec:
           gnetId: 11312
           revision: 8
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/13502
-        minio:
-          gnetId: 13502
-          revision: 10
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/1366
+        # Ref: https://grafana.com/grafana/dashboards/13665
         speedtest:
           gnetId: 13665
           revision: 1
           datasource: Prometheus
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
-          datasource: Prometheus
-        radarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/radarr.json
-          datasource: Prometheus
-        sonarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
-          datasource: Prometheus
-        ceph-cluster:
-          gnetId: 2842
-          revision: 14
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5336
-        ceph-osd:
-          gnetId: 5336
-          revision: 5
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5342
-        ceph-pools:
-          gnetId: 5342
-          revision: 5
-          datasource: Prometheus
-        VMware-vSphere-Overview:
-          gnetId: 8159
-          revision: 38
-          datasource: Influxdb
-        VMwarevSphere-VMs:
-          gnetId: 8168
-          revision: 14
-          datasource: Influxdb
-        VMwarevSphere-Datastore:
-          gnetId: 8162
-          revision: 9
-          datasource: Influxdb
-        VMwarevSphere-Hosts:
-          gnetId: 8165
-          revision: 14
-          datasource: Influxdb
-        iDRAC-HostStats:
-          gnetId: 12106
-          revision: 2
-          datasource: Influxdb
     sidecar:
       dashboards:
         enabled: true

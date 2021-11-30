@@ -10,3 +10,4 @@ resources:
   - unifi-poller
   - thanos
   - promtail
+  - snmp-exporter
