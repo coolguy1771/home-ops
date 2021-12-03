@@ -7,7 +7,6 @@ resources:
   - default
   - docs
   - external
-  - falco-system
   - flux-system
   - media
   - monitoring
