@@ -7,4 +7,3 @@ resources:
   - velero
   - rook-ceph
   - external-snapshotter
-  - traefik

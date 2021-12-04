@@ -30,7 +30,7 @@ spec:
       main:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "traefik"
+          kubernetes.io/ingress.class: "nginx"
           hajimari.io/enable: "true"
           hajimari.io/icon: "link-box-variant-outline"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"

@@ -51,9 +51,9 @@ spec:
       hostname: ${SECRET_DOMAIN_STUDIO}
       path: /
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        
         cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: "traefik"
+        kubernetes.io/ingress.class: "nginx"
         hajimari.io/enable: "true"
         hajimari.io/icon: "application-outline"
       tls: true

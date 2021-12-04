@@ -30,9 +30,9 @@ spec:
       ingress:
         enabled: true
         hostname: "thanos.${SECRET_DOMAIN}"
-        ingressClassName: "traefik"
+        ingressClassName: "nginx"
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          
           cert-manager.io/cluster-issuer: letsencrypt-production
         tls: true
     existingObjstoreSecret: thanos-objstore

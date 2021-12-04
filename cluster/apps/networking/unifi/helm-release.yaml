@@ -58,10 +58,10 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: "nginx"
         annotations:
-          traefik.ingress.kubernetes.io/service.serversscheme: https
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/tls-acme: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"

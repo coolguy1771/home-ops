@@ -161,7 +161,7 @@ spec:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: "traefik"
+        kubernetes.io/ingress.class: "nginx"
         hajimari.io/enable: "true"
         hajimari.io/icon: "chart-box-outline"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"

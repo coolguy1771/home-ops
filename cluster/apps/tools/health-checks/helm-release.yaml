@@ -37,7 +37,7 @@ spec:
         enabled: true
         annotations:
           hajimari.io/enable: "true"
-          kubernetes.io/ingress.class: "traefik"
+          kubernetes.io/ingress.class: "nginx"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production

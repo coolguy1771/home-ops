@@ -5,7 +5,7 @@ metadata:
   name: gitea
   namespace: external
   annotations: {}
-  #  traefik.ingress.kubernetes.io/service.serversscheme: https
+  #  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   type: ExternalName
   externalName: "${NAS_ADDR}"

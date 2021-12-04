@@ -45,9 +45,9 @@ spec:
           host: "https://s3.${SECRET_DOMAIN}"
     ingress:
       enabled: true
-      ingressClassName: "traefik"
+      ingressClassName: "nginx"
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        
         cert-manager.io/cluster-issuer: letsencrypt-production
         hajimari.io/enable: "true"
         hajimari.io/icon: "account-lock-outline"

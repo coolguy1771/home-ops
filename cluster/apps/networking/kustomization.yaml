@@ -5,6 +5,5 @@ resources:
   - wildcard-certificate
   - unifi
   - external-dns
-  - traefik
-  - error-pages
+  - ingress-nginx
   - ddns
