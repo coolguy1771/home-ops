@@ -9,3 +9,5 @@ resources:
   - unifi-poller
   - thanos
   - snmp-exporter
+  - loki
+  - promtail
