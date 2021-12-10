@@ -38,7 +38,7 @@ spec:
       image:
         registry: docker.io
         repository: bitnami/git
-        tag: 2.33.0-debian-10-r14
+        tag: 2.34.1-debian-10-r14
         pullPolicy: IfNotPresent
         pullSecrets: []
       repository: "https://github.com/coolguy1771/website.git"
