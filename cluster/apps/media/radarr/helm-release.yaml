@@ -16,15 +16,10 @@ spec:
         name: k8s-at-home-charts
         namespace: flux-system
   values:
-    podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
     image:
       repository: ghcr.io/k8s-at-home/radarr
       pullPolicy: IfNotPresent
       tag: v3.2.2.5080
-    strategy:
-      type: Recreate
     ingress:
       main:
         enabled: true
@@ -34,8 +29,11 @@ spec:
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "filmstrip"
-
           cert-manager.io/cluster-issuer: letsencrypt-production
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css"></head>';
+            sub_filter_once on;
         hosts:
           - host: "radarr.${SECRET_DOMAIN}"
             paths:
@@ -67,36 +65,24 @@ spec:
           nfs:
             server: "${NAS_ADDR}"
             path: /mnt/user/downloads/complete/radarr
-    exporter:
+    metrics:
       enabled: true
-      image:
-        repository: ghcr.io/onedr0p/exportarr
-        tag: v0.6.2
-      env:
-        port: 32123
-        additionalMetrics: true
-        unknownQueueItems: false
-      podMonitor:
+      serviceMonitor:
         interval: 3m
         scrapeTimeout: 1m
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
-      pre.hook.backup.velero.io/container: fsfreeze
-      pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/config"]'
-      post.hook.backup.velero.io/container: fsfreeze
-      post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/config"]'
+      prometheusRule:
+        enabled: true
+      exporter:
+        image:
+          repository: ghcr.io/onedr0p/exportarr
+          tag: v0.6.2
+        env:
+          port: 9794
+          additionalMetrics: true
+          unknownQueueItems: false
     resources:
       requests:
         memory: 250Mi
         cpu: 500m
       limits:
         memory: 1500Mi
-    additionalContainers:
-      fsfreeze:
-        name: fsfreeze
-        image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
-        volumeMounts:
-          - name: config
-            mountPath: /config
-        securityContext:
-          privileged: true
