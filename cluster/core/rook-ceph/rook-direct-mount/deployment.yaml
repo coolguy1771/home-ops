@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rook-direct-mount
-  namespace: rook-ceph # namespace:cluster
+  namespace: rook-ceph
   labels:
     app: rook-direct-mount
 spec:
@@ -20,8 +20,7 @@ spec:
       containers:
         - name: rook-direct-mount
           image: rook/ceph:v1.8.0
-          command: ["/tini"]
-          args: ["-g", "--", "/usr/local/bin/toolbox.sh"]
+          command: ["/usr/local/bin/toolbox.sh"]
           imagePullPolicy: IfNotPresent
           env:
             - name: ROOK_CEPH_USERNAME
@@ -49,6 +48,9 @@ spec:
               mountPath: /mnt/nas-data
             - name: direct-mount-scripts
               mountPath: /scripts
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
       # if hostNetwork: false, the "rbd map" command hangs, see https://github.com/rook/rook/issues/2021
       hostNetwork: true
       volumes:
@@ -70,7 +72,7 @@ spec:
         - name: nas-data
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/k3s/data
+            path: /mnt/user/k3s/Data
         - name: direct-mount-scripts
           projected:
             defaultMode: 0775

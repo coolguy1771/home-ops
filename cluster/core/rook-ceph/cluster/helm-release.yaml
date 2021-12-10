@@ -34,9 +34,12 @@ spec:
               - rook.${SECRET_DOMAIN}
             secretName: rook-tls
       cephClusterSpec:
+        mgr:
+          count: 1
         dashboard:
           enabled: true
           urlPrefix: /
+          ssl: false
         storage:
           useAllNodes: false
           useAllDevices: false
