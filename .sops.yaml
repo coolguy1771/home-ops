@@ -2,14 +2,9 @@
 creation_rules:
   - path_regex: provision/.*\.sops\.ya?ml
     unencrypted_regex: "^(kind)$"
-    pgp: >-
-      65C16CA584E97C935AE482578967C1536E79773C
     age: >-
       age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
   - path_regex: cluster/.*\.ya?ml
     encrypted_regex: "^(data|stringData)$"
-    pgp: >-
-      FA9B76A1A2A613F2760642200B6DEB2FF6B015EA,
-      65C16CA584E97C935AE482578967C1536E79773C
     age: >-
       age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9

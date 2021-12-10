@@ -5,7 +5,7 @@
 #
 
 # Use a specific version of k3s
-k3s_release_version: "v1.22.3+k3s1"
+k3s_release_version: "v1.22.4+k3s1" 
 
 # Install using hard links rather than symbolic links.
 # ...if you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
@@ -23,6 +23,8 @@ k3s_etcd_datastore: true
 # this is set to my haproxy address running on my router.
 # If you want to use kube-vip only
 # set this to "{{ kubevip_address }}
+
+k3s_use_unsupported_config: false
 
 k3s_server_config_yaml_d_files:
   - "k3s/10-etcd-snapshots.yaml.j2"
