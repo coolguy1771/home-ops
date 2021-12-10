@@ -6,7 +6,6 @@ resources:
   - cert-manager
   - default
   - docs
-  - external
   - flux-system
   - media
   - monitoring
