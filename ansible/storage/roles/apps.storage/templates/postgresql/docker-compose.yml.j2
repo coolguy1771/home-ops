@@ -1,0 +1,111 @@
+---
+version: "3.8"
+
+services:
+  postgresql:
+    image: docker.io/library/postgres:14.1
+    restart: unless-stopped
+    container_name: postgresql
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: "{{ POSTGRESQL_USERNAME }}"
+      POSTGRES_PASSWORD: "{{ POSTGRESQL_PASSWORD }}"
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - diun.enable=true
+
+  postgresql-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.10.0
+    restart: unless-stopped
+    container_name: postgresql-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://{{ POSTGRESQL_USERNAME }}:{{ POSTGRESQL_PASSWORD }}@pgsql-server:5432/postgres?sslmode=disable"
+    ports:
+      - 9187:9187
+    links:
+      - postgresql:pgsql-server
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - diun.enable=true
+
+  pgadmin:
+    image: docker.io/dpage/pgadmin4:6.2
+    restart: unless-stopped
+    container_name: postgresql-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "{{ PGADMIN_USERNAME }}"
+      PGADMIN_DEFAULT_PASSWORD: "{{ PGADMIN_PASSWORD }}"
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 12080:80
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - postgresql:pgsql-server
+    depends_on:
+      - postgresql
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - traefik.enable=true
+      - traefik.http.routers.pgadmin.rule=Host(`pgadmin.turbo.ac`)
+      - traefik.http.routers.pgadmin.entrypoints=websecure
+      - traefik.http.routers.pgadmin.tls.certresolver=letsencrypt
+      - traefik.http.services.pgadmin.loadbalancer.server.port=80
+      - diun.enable=true
+
+  pgbackups:
+    image: docker.io/prodrigestivill/postgres-backup-local:14
+    restart: unless-stopped
+    container_name: postgresql-pgbackups
+    environment:
+      POSTGRES_HOST: pgsql-server
+      POSTGRES_DB: postgres
+      POSTGRES_USER: "{{ POSTGRESQL_USERNAME }}"
+      POSTGRES_PASSWORD: "{{ POSTGRESQL_PASSWORD }}"
+      POSTGRES_EXTRA_OPTS: "-Z9 --schema=public --blobs"
+      SCHEDULE: "@daily"
+      BACKUP_KEEP_DAYS: 7
+      BACKUP_KEEP_WEEKS: 0
+      BACKUP_KEEP_MONTHS: 0
+      HEALTHCHECK_PORT: 8080
+    volumes:
+      - pgbackups-data:/backups
+    links:
+      - postgresql:pgsql-server
+    depends_on:
+      - postgresql
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - diun.enable=true
+
+volumes:
+  pg-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ data_dir }}/postgresql/data"
+
+  pgadmin-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ data_dir }}/postgresql/pgadmin"
+
+  pgbackups-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ data_dir }}/postgresql/pgbackups"

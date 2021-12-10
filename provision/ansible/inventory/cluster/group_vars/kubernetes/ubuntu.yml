@@ -1,8 +1,0 @@
----
-# Timezone for the servers
-timezone: "America/New_York"
-
-# Additional ssh public keys to add to the nodes
-ssh_authorized_keys:
-  # MacBook
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLZMTM5GW3SyDsIjZPXAhHNAurFrE+lHepuvCJnjGMA tylerwitlin@gmail.com
