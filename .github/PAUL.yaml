@@ -1,0 +1,17 @@
+---
+maintainers:
+  - coolguy1771
+labels: true
+empty_description_check:
+  enabled: false
+  enforced: false
+branch_destroyer:
+  enabled: true
+  protected_branches:
+    - main
+    - gh-pages
+pull_requests:
+  automated_merge: true
+  cats_enabled: true
+  dogs_enabled: true
+  allow_approval: true
