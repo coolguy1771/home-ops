@@ -41,7 +41,6 @@ spec:
       secretName: influx-tls
       hostname: influx.${SECRET_DOMAIN}
       annotations:
-        
         hajimari.io/enable: "true"
         cert-manager.io/cluster-issuer: letsencrypt-production
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"

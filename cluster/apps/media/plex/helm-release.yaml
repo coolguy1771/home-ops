@@ -67,7 +67,7 @@ spec:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           hajimari.io/enable: "true"
           hajimari.io/icon: "plex"
-          
+
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: "plex.${SECRET_DOMAIN}"

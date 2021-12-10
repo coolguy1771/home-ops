@@ -46,7 +46,7 @@ spec:
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "shield-key"
-          
+
         hosts:
           - host: vault.${SECRET_DOMAIN}
             paths:

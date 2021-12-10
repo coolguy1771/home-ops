@@ -32,7 +32,6 @@ spec:
         hostname: "thanos.${SECRET_DOMAIN}"
         ingressClassName: "nginx"
         annotations:
-          
           cert-manager.io/cluster-issuer: letsencrypt-production
         tls: true
     existingObjstoreSecret: thanos-objstore

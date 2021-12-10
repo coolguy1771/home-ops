@@ -72,7 +72,6 @@ spec:
       ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
       ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
       annotations:
-        
         cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: "nginx"
         hajimari.io/enable: "true"

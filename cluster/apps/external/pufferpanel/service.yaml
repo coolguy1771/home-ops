@@ -4,7 +4,7 @@ metadata:
   name: pufferpanel
   namespace: external
   annotations:
-    
+
 spec:
   type: ExternalName
   externalName: 10.10.10.92
