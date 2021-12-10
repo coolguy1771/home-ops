@@ -24,7 +24,7 @@ spec:
           value: America/New_York
       service:
         externalIPs:
-          - "${METALLB_NIGNX_ADDR}"
+          - "${SVC_NGINX_ADDR}"
         externalTrafficPolicy: Local
       publishService:
         enabled: true
@@ -51,16 +51,6 @@ spec:
           enabled: false
       extraArgs:
         default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-tls"
-      defaultBackend:
-        enabled: true
-        image:
-          repository: ghcr.io/181192/custom-error-pages
-          tag: 1.2.1
-        extraEnvs:
-          - name: TEMPLATE_NAME
-            value: ghost
-          - name: ERROR_FILES_PATH
-            value: ./themes/ghost
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -85,3 +75,11 @@ spec:
           cpu: 100m
         limits:
           memory: 1000Mi
+    defaultBackend:
+      enabled: true
+      image:
+        repository: ghcr.io/181192/custom-error-pages
+        tag: 1.2.1
+      extraEnvs:
+        - name: ERROR_FILES_PATH
+          value: ./themes/ghost
