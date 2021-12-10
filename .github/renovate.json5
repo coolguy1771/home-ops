@@ -98,6 +98,11 @@
     }
   ],
   "packageRules": [
+    // setup automerge for non-major updates
+    {
+        "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+        "automerge": true
+    },
     // setup datasources
     {
       "matchDatasources": ["helm"],
