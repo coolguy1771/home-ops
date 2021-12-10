@@ -3,13 +3,13 @@ version: "3"
 
 vars:
   K3S_PRIMARY_MASTER_NODE_USERNAME: "twitlin"
-  K3S_PRIMARY_MASTER_NODE_ADDRESS: "10.10.10.26"
+  K3S_PRIMARY_MASTER_NODE_ADDR: "10.10.10.26"
+  K3S_LB_ADDR: "10.10.10.2"
 
 tasks:
   kubeconfig:
     desc: Remotely fetch kubeconfig from k3s
     cmds:
-      - rsync --verbose --progress --partial --rsync-path="sudo rsync" {{.K3S_PRIMARY_MASTER_NODE_USERNAME}}@{{.K3S_PRIMARY_MASTER_NODE_ADDRESS}}:/etc/rancher/k3s/k3s.yaml ./kubeconfig
-      - sed -i '' 's/127.0.0.1/{{.K3S_KUBEVIP_ADDRESS}}/g' ./kubeconfig
-      - chmod go-r kubeconfig
-    silent: true
+      - rsync --verbose --progress --partial --rsync-path="sudo rsync" {{.K3S_PRIMARY_MASTER_NODE_USERNAME}}@{{.K3S_PRIMARY_MASTER_NODE_ADDR}}:/etc/rancher/k3s/k3s.yaml ./cluster/kubeconfig
+      - sed -i '' 's/127.0.0.1/{{.K3S_LB_ADDR}}/g' ./cluster/kubeconfig
+      - chmod go-r ./cluster/kubeconfig
