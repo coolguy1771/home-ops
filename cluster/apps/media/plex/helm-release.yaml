@@ -24,31 +24,11 @@ spec:
       type: Recreate
     env:
       TZ: America/New_York
-      #PLEX_PREFERENCE_0: "MetricsEpoch=1"
-      #PLEX_PREFERENCE_1: "TranscoderTempDirectory=/tmp/transcode"
-      #PLEX_PREFERENCE_2: "DlnaEnabled=0"
-      #PLEX_PREFERENCE_3: "DvrIncrementalEpgLoader=0"
-      #PLEX_PREFERENCE_4: "LanguageInCloud=1"
-      #PLEX_PREFERENCE_5: "AcceptedEULA=1"
-      #PLEX_PREFERENCE_6: "PublishServerOnPlexOnlineKey=1"
-      #PLEX_PREFERENCE_7: "LastAutomaticMappedPort=12821"
-      #PLEX_PREFERENCE_8: "logDebug=0"
-      #PLEX_PREFERENCE_9: "sendCrashReports=0"
-      #PLEX_PREFERENCE_10: "OnDeckLimit=8"
-      #PLEX_PREFERENCE_11: "OnDeckWindow=3"
-      #PLEX_PREFERENCE_12: "ScannerLowPriority=0"
-      #PLEX_PREFERENCE_13: "SmartShuffleMusic=0"
-      #PLEX_PREFERENCE_14: "allowMediaDeletion=0"
-      #PLEX_PREFERENCE_15: "DisableTLSv1_0=1"
-      #PLEX_PREFERENCE_16: "EnableIPv6=0"
-      #PLEX_PREFERENCE_17: "GdmEnabled=0"
-      #PLEX_PREFERENCE_18: "RelayEnabled=0"
-      #PLEX_PREFERENCE_19: "allowedNetworks=192.168.0.0/16,10.0.0.0/8,172.16.0.0/12"
-      #PLEX_PREFERENCE_20: "customConnections=https://plex.${SECRET_DOMAIN}.com"
-      #PLEX_PREFERENCE_21: "secureConnections=0"
-      #PLEX_PREFERENCE_22: "DlnaReportTimeline=0"
-      #PLEX_PREFERENCE_23: "ButlerTaskRefreshLibraries=1"
-      #PLEX_PREFERENCE_24: "CinemaTrailersType=0"
+    podSecurityContext:
+      supplementalGroups:
+        - 44
+        - 109
+        - 100
     service:
       main:
         type: LoadBalancer
@@ -56,7 +36,7 @@ spec:
           - ${SVC_PLEX_ADDR}
         externalTrafficPolicy: Local
         annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/backend-protocol: https
     ingress:
       main:
         enabled: true
@@ -67,8 +47,8 @@ spec:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           hajimari.io/enable: "true"
           hajimari.io/icon: "plex"
-
           cert-manager.io/cluster-issuer: letsencrypt-production
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: "plex.${SECRET_DOMAIN}"
             paths:
@@ -113,11 +93,9 @@ spec:
                   operator: In
                   values:
                     - "true"
-    podSecurityContext:
-      supplementalGroups:
-        - 44
-        - 109
-        - 100
+    
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "plex-promtail"
     resources:
       requests:
         gpu.intel.com/i915: 1
@@ -126,13 +104,6 @@ spec:
       limits:
         gpu.intel.com/i915: 1
         memory: 16000Mi
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
-      pre.hook.backup.velero.io/container: fsfreeze
-      pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/config"]'
-      post.hook.backup.velero.io/container: fsfreeze
-      post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/config"]'
-      configmap.reloader.stakater.com/reload: "plex-promtail"
     addons:
       promtail:
         enabled: true
@@ -151,12 +122,3 @@ spec:
             readOnly: true
         securityContext:
           runAsUser: 0
-    additionalContainers:
-      fsfreeze:
-        name: fsfreeze
-        image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
-        volumeMounts:
-          - name: config
-            mountPath: /config
-        securityContext:
-          privileged: true
