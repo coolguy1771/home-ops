@@ -1,0 +1,95 @@
+---
+- name: Create coredns directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - /usr/local/etc/coredns
+    - /var/log/coredns
+
+- name: Copy kubeconfig to Opnsense
+  ansible.builtin.copy:
+    src: /tmp/kubeconfig-homedns
+    dest: /usr/local/etc/coredns/kubeconfig
+    mode: 0755
+  register: kubernetes_kubeconfig
+
+- name: Create Corefile
+  ansible.builtin.template:
+    src: Corefile.j2
+    dest: /usr/local/etc/coredns/Corefile
+    mode: 0755
+  register: coredns_corefile
+
+- name: Create CoreDNS rc.conf script
+  ansible.builtin.template:
+    src: coredns-rc.conf.j2
+    dest: /etc/rc.conf.d/coredns
+    mode: 0755
+  register: coredns_rc
+
+- name: Create CoreDNS rc.d script
+  ansible.builtin.template:
+    src: coredns-rc.d.j2
+    dest: /usr/local/etc/rc.d/coredns
+    mode: 0755
+  register: coredns_rc_d
+
+- name: Create CoreDNS action script
+  ansible.builtin.template:
+    src: actions_coredns.conf.j2
+    dest: /usr/local/opnsense/service/conf/actions.d/actions_coredns.conf
+    mode: 0755
+  register: coredns_actions
+
+- name: Create CoreDNS start up script
+  ansible.builtin.template:
+    src: 99-coredns.j2
+    dest: /usr/local/etc/rc.syshook.d/start/99-coredns
+    mode: 0755
+  register: coredns_syshook
+
+- name: Create CoreDNS log rotation config
+  ansible.builtin.template:
+    src: coredns-newsyslog.conf.j2
+    dest: /etc/newsyslog.conf.d/coredns
+    mode: 0755
+  register: coredns_newsyslog
+
+- name: Get local coredns SHA-1 checksum
+  ansible.builtin.stat:
+    path: /tmp/coredns/bin/coredns
+    checksum_algorithm: sha1
+  delegate_to: localhost
+  register: coredns_local_file
+
+- name: Get router coredns SHA-1 checksum
+  ansible.builtin.stat:
+    path: /usr/local/sbin/coredns
+    checksum_algorithm: sha1
+  register: coredns_router_file
+
+- name: Reconfigure coredns
+  block:
+    - name: Stop running CoreDNS
+      ansible.builtin.shell: |
+        /usr/local/etc/rc.d/coredns stop
+    - name: Copy CoreDNS
+      ansible.builtin.copy:
+        src: /tmp/coredns/bin/coredns
+        dest: /usr/local/sbin/coredns
+        mode: 0755
+
+    - name: Run CoreDNS
+      ansible.builtin.shell: |
+        /usr/local/etc/rc.d/coredns start
+  when: |-
+    kubernetes_kubeconfig.changed
+    or coredns_corefile.changed
+    or coredns_rc.changed
+    or coredns_rc_d.changed
+    or coredns_actions.changed
+    or coredns_syshook.changed
+    or coredns_newsyslog.changed
+    or coredns_local_file.stat.checksum != coredns_router_file.stat.checksum

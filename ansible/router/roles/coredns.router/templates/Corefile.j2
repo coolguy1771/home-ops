@@ -1,0 +1,50 @@
+(common) {
+  errors
+  log
+  reload
+  loadbalance
+  cache 300
+  loop
+  local
+  # dnsmasq is enabled only for setting hostnames in the Opnsense UI
+  hosts /var/etc/dnsmasq-hosts {
+    # Set DNS names for static IPs
+    192.168.1.1       opnsense.turbo.ac
+    192.168.42.60     artifacts.turbo.ac
+    192.168.42.60     registry.turbo.ac
+    192.168.42.60     mirror.turbo.ac
+    192.168.42.60     minio.turbo.ac
+    192.168.42.60     s3.turbo.ac
+    192.168.42.60     vault.turbo.ac
+    192.168.42.60     pgadmin.turbo.ac
+
+    ttl 600
+    reload 5s
+    fallthrough
+  }
+  prometheus 192.168.1.1:9153
+}
+
+. {
+  bind 192.168.1.1 127.0.0.1 ::1
+  import common
+  k8s_gateway {{ SECRET_DOMAIN }} {
+    resources Ingress
+    ttl 1
+    kubeconfig /usr/local/etc/coredns/kubeconfig
+    fallthrough
+  }
+  forward . tls://1.1.1.1 tls://1.0.0.1 {
+    tls_servername cloudflare-dns.com
+  }
+}
+
+turbo.ac {
+  bind 192.168.1.1 127.0.0.1 ::1
+  import common
+  k8s_gateway . {
+    resources Ingress
+    ttl 30
+    kubeconfig /usr/local/etc/coredns/kubeconfig
+  }
+}
