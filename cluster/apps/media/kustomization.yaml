@@ -10,3 +10,4 @@ resources:
   - sonarr
   - stash
   - tautulli
+  - qbittorrent
