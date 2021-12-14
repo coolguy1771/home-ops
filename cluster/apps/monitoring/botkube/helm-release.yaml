@@ -64,16 +64,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -90,16 +87,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -117,16 +111,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -144,16 +135,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
 
           events:
@@ -171,16 +159,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -197,16 +182,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -223,16 +205,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -249,16 +228,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -275,16 +251,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -301,16 +274,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -327,16 +297,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - update
@@ -352,16 +319,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -378,16 +342,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
@@ -404,16 +365,13 @@ spec:
               - networking
               - game-servers
               - external
-              - storage
               - rook-ceph
               - website
               - tools
               - falco-system
               - calico-system
               - auth
-              - velero
               - cert-manager
-              - docs
               - flux-system
           events:
             - create
