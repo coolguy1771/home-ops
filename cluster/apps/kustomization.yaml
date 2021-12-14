@@ -14,4 +14,4 @@ resources:
   - tools
   - kube-system
   - website
-
+  - external
