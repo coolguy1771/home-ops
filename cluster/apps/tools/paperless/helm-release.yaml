@@ -22,7 +22,6 @@ spec:
       tag: 1.5.0
     env:
       COMPOSE_PROJECT_NAME: paperless
-      PAPERLESS_REDIS: redis://redis
       PAPERLESS_OCR_LANGUAGE: eng
       USERMAP_UID: 1000
       USERMAP_GID: 1000
@@ -81,7 +80,7 @@ spec:
             path: /mnt/user/Media/export
         mountPath: /usr/src/paperless/export
     redis:
-      enabled: true
+      enabled: false
     postgresql:
       enabled: false
       postgresqlUsername: paperless
