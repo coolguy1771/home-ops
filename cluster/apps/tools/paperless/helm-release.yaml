@@ -26,7 +26,6 @@ spec:
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       PAPERLESS_TIME_ZONE: UTC
-      PAPERLESS_ALLOWED_HOSTS: "paper.${SECRET_DOMIAN}"
       PAPERLESS_REDIS: 
     ingress:
       main:
