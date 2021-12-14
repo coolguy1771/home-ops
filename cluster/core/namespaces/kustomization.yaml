@@ -12,8 +12,6 @@ resources:
   - game-servers.yaml
   - auth.yaml
   - calico-system.yaml
-  - docs.yaml
-  - velero.yaml
   - rook-ceph.yaml
   - tools.yaml
   - website.yaml
