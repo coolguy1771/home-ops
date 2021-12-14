@@ -23,7 +23,7 @@ spec:
     env:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_REDIS: redis://broker:6379
-      PAPERLESS_DBHOST:
+      PAPERLESS_DBHOST: postgres-paperless-0
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: paperless
       PAPERLESS_DBPASS: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
@@ -89,7 +89,7 @@ spec:
     redis:
       enabled: true
     postgresql:
-      enabled: false
+      enabled: true
       postgresqlUsername: paperless
       postgresqlPassword: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
       postgresqlDatabase: paperless
