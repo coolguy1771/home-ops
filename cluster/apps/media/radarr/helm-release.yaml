@@ -64,7 +64,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/downloads/complete/radarr
+            path: /mnt/user/Media/radarr
     metrics:
       enabled: true
       serviceMonitor:

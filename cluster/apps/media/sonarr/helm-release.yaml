@@ -64,7 +64,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/downloads/complete/tv-sonarr
+            path: /mnt/user/Media/tv-sonarr
     metrics:
       enabled: true
       serviceMonitor:
