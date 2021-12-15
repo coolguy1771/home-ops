@@ -35,8 +35,6 @@ spec:
         externalIPs:
           - ${SVC_PLEX_ADDR}
         externalTrafficPolicy: Local
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: https
     ingress:
       main:
         enabled: true
