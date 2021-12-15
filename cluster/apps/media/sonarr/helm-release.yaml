@@ -55,15 +55,6 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/Media/content/tv
-      downloads:
-        enabled: true
-        type: custom
-        mountPath: /downloads
-        readOnly: false
-        volumeSpec:
-          nfs:
-            server: "${NAS_ADDR}"
             path: /mnt/user/Media/tv-sonarr
     metrics:
       enabled: true

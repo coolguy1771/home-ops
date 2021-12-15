@@ -55,15 +55,6 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/Media/content/movies
-      downloads:
-        enabled: true
-        type: custom
-        mountPath: /downloads
-        readOnly: false
-        volumeSpec:
-          nfs:
-            server: "${NAS_ADDR}"
             path: /mnt/user/Media/radarr
     metrics:
       enabled: true

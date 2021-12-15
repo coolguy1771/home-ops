@@ -72,7 +72,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/Media/content/movies
+            path: /mnt/user/Media/radarr
       tv:
         enabled: true
         type: custom
@@ -81,7 +81,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/user/Media/content/tv
+            path: /mnt/user/Media/tv-sonarr
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
