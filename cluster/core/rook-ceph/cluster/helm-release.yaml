@@ -34,6 +34,8 @@ spec:
               - rook.${SECRET_DOMAIN}
             secretName: rook-tls
       cephClusterSpec:
+        crashCollector:
+          disable: true
         mgr:
           count: 2
         dashboard:
