@@ -64,7 +64,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: traefik
+        ingressClassName: "nginx"
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "torch"
@@ -85,19 +85,20 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    nodeExporter:
-      serviceMonitor:
-        relabelings:
-          - action: replace
-            regex: (.*)
-            replacement: $1
-            sourceLabels:
-              - __meta_kubernetes_pod_node_name
-            targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
     prometheus-node-exporter:
       fullnameOverride: node-exporter
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -162,7 +163,14 @@ spec:
         targetPort: 2381
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
-      configReloaderCpu: 0
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 100Mi
     prometheus:
       ingress:
         enabled: true
