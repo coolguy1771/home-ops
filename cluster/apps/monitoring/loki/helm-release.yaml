@@ -21,10 +21,7 @@ spec:
       repository: ghcr.io/k8s-at-home/loki
     ingress:
       enabled: true
-      # ingressClassName: "nginx"
       annotations:
-        kubernetes.io/ingress.class: "nginx"
-
         cert-manager.io/cluster-issuer: letsencrypt-production
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         external-dns/is-public: "true"
@@ -92,7 +89,18 @@ spec:
               severity: critical
               category: logs
             annotations:
-              summary: "{{$app}} is experiencing locked database issues"
+              # TODO: Figure out how to use hostname in summary
+              summary: "An arr app is experiencing locked database issues"
+          - alert: ArrDatabaseIsMalformed
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database disk image is malformed"[2m])) > 0
+            for: 10s
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              # TODO: Figure out how to use hostname in summary
+              summary: "An arr app is experiencing malformed database disk image issues"
       #
       # vaultwarden
       #
@@ -100,7 +108,7 @@ spec:
         rules:
           - alert: VaultwardenUnableToReachPostgresql
             expr: |
-              sum by (app) (count_over_time({app=~"vaultwarden"} |~ "(?i)could not connect to server"[2m])) > 0
+              sum by (app) (count_over_time({app="vaultwarden"} |~ "(?i)could not connect to server"[2m])) > 0
             for: 10s
             labels:
               severity: critical
@@ -117,6 +125,9 @@ spec:
               kind: Ingress
               name: loki
             patch:
+              - op: add
+                path: /spec/ingressClassName
+                value: nginx
               - op: replace
                 path: /apiVersion
                 value: networking.k8s.io/v1
