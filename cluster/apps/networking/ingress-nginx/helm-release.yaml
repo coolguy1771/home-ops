@@ -80,8 +80,8 @@ spec:
     defaultBackend:
       enabled: true
       image:
-        repository: ghcr.io/181192/custom-error-pages
-        tag: 1.2.1
+        repository: ghcr.io/coolguy1771/custom-error-pages
+        tag: 1.3.0
       extraEnvs:
         - name: ERROR_FILES_PATH
-          value: ./themes/ghost
+          value: ./themes/knockout
