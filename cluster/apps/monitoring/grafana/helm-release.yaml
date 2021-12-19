@@ -92,25 +92,10 @@ spec:
             url: http://loki:3100
     dashboards:
       default:
-        # # Ref: https://grafana.com/grafana/dashboards/12175
-        # calico-felix:
-        #   gnetId: 12175
-        #   revision: 5
-        #   datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/2842
-        ceph-cluster:
-          gnetId: 2842
-          revision: 14
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5336
-        ceph-osd:
-          gnetId: 5336
-          revision: 5
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5342
-        ceph-pools:
-          gnetId: 5342
-          revision: 5
+        # Ref: https://grafana.com/grafana/dashboards/7845
+        zfs:
+          gnetId: 7845
+          revision: 4
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/7845
         minio:
@@ -160,8 +145,8 @@ spec:
       enabled: true
     ingress:
       enabled: true
+      ingressClassName: "nignx"
       annotations:
-        kubernetes.io/ingress.class: "nginx"
         hajimari.io/enable: "true"
         hajimari.io/icon: "chart-box-outline"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
