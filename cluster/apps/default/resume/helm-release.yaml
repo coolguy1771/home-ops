@@ -16,7 +16,7 @@ spec:
       interval: 5m
   values:
     image:
-      repository: coolguy1771/resume-dot-witl-dot-xyz
+      repository: ghcr.io/coolguy1771/resume-dot-witl-dot-xyz
       tag: 1.0.0
     nameOverride: resume
     env:
