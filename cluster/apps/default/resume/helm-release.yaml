@@ -16,9 +16,9 @@ spec:
       interval: 5m
   values:
     image:
-      repository: coolguy1771.resume-dot-witl-dot-xyz
+      repository: coolguy1771/resume-dot-witl-dot-xyz
       tag: latest@sha-256:c6438445a314786aa7760160bf608c1e7819e5911f32d822111237529cb4c980
-    nameOverride: filebrowser
+    nameOverride: resume
     env:
     service:
       main:
