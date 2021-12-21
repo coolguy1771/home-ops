@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: filebrowser/filebrowser
-      tag: v2.20.0
+      tag: v2.20.1
     nameOverride: filebrowser
     env:
       FB_DATABASE: "/config/filebrowser.db"
