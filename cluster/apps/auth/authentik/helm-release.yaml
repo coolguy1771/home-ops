@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.goauthentik.io
       chart: authentik
-      version: 4.0.3
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -18,24 +18,41 @@ spec:
       interval: 5m
   values:
     image:
-      name: ghcr.io/goauthentik/server
-      tag: 2021.10.4
+      repository: ghcr.io/goauthentik/server
+      tag: 2021.12.3
       pullPolicy: IfNotPresent
-    authentik:
-      geoip: /geoip/GeoLite2-City.mmdb
-      secret_key: "${SECRET_AUTHENTIK_KEY}"
-      error_reporting:
+    ingress:
         enabled: true
-        environment: "k8s"
-        sendpii: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "account-lock-outline"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
+          external-dns/is-public: "true"
+        hosts:
+          - host: "auth.${SECRET_DOMAIN_STUDIO}"
+            paths:
+              - path: "/"
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "auth.${SECRET_DOMAIN_STUDIO}"
+            secretName: authentik-tls 
+    authentik:
+      secret_key: "${SECRET_AUTHENTIK_KEY}"
+      geoip: /geoip/GeoLite2-City.mmdb
       email:
         host: "in-v3.mailjet.com"
         port: 587
         username: "${SECRET_EMAIL_USERNAME}"
         password: "${SECRET_EMAIL_PASSWORD}"
         use_tls: true
-        timeout: 30
         from: "No-Reply <no-reply@${SECRET_DOMAIN_STUDIO}>"
+      error_reporting:
+        enabled: true
+        environment: "k8s"
+        sendpii: true
       postgresql:
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
         s3_backup:
@@ -43,24 +60,6 @@ spec:
           access_key: ${SECRET_S3_KEY}
           secret_key: ${SECRET_S3_ACCESS_KEY}
           host: "https://s3.${SECRET_DOMAIN}"
-    ingress:
-      enabled: true
-      ingressClassName: "nginx"
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "account-lock-outline"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
-        external-dns/is-public: "true"
-      hosts:
-        - host: "auth.${SECRET_DOMAIN_STUDIO}"
-          paths:
-            - path: "/"
-              pathType: Prefix
-      tls:
-        - hosts:
-            - "auth.${SECRET_DOMAIN_STUDIO}"
-          secretName: authentik-tls
     geoip:
       enabled: true
       accountId: "418977"
