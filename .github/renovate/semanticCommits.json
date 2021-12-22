@@ -1,39 +1,41 @@
 {
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "semanticCommitType": "feat!"
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(images)!: "
     },
     {
-      "matchUpdateTypes": [
-        "minor"
-      ],
-      "semanticCommitType": "feat"
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(charts)!: "
     },
     {
-      "matchUpdateTypes": [
-        "patch"
-      ],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
       "semanticCommitScope": "images"
     },
     {
-      "matchDatasources": [
-        "helm"
-      ],
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
       "semanticCommitScope": "charts"
     },
     {
-      "matchManagers": [
-        "github-actions"
-      ],
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "images"
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "charts"
+    },
+    {
+      "matchManagers": ["github-actions"],
       "semanticCommitType": "ci"
     }
   ]

@@ -1,44 +1,46 @@
 {
-    "packageRules": [
-      {
-        "matchUpdateTypes": [
-          "major"
-        ],
-        "labels": [
-          "dep/major"
-        ]
-      },
-      {
-        "matchUpdateTypes": [
-          "minor"
-        ],
-        "labels": [
-          "dep/minor"
-        ]
-      },
-      {
-        "matchUpdateTypes": [
-          "patch"
-        ],
-        "labels": [
-          "dep/patch"
-        ]
-      },
-      {
-        "matchDatasources": [
-          "helm"
-        ],
-        "labels": [
-          "renovate/helm"
-        ]
-      },
-      {
-        "matchDatasources": [
-          "docker"
-        ],
-        "labels": [
-          "renovate/image"
-        ]
-      }
-    ]
-  }
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["major"],
+      "labels": ["major", "container-image"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["minor"],
+      "labels": ["minor", "container-image"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch"],
+      "labels": ["patch", "container-image"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "labels": ["major", "helm-chart"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor"],
+      "labels": ["minor", "helm-chart"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["patch"],
+      "labels": ["patch", "helm-chart"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "labels": ["major"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "labels": ["minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "labels": ["patch"]
+    }
+  ]
+}
