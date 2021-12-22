@@ -145,7 +145,7 @@ spec:
       enabled: true
     ingress:
       enabled: true
-      ingressClassName: "nignx"
+      ingressClassName: "nginx"
       annotations:
         hajimari.io/enable: "true"
         hajimari.io/icon: "chart-box-outline"
