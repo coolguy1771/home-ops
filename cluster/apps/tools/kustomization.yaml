@@ -2,10 +2,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - filebrowser
   - gossa
-  - snapdrop
   - paperless
-  - haste-server-be
-  - health-checks
-  - hajimari-be
