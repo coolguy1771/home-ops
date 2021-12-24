@@ -23,6 +23,7 @@ spec:
     ingress:
       dashboard:
         annotations:
+          kubernetes.io/ingress.class: "nginx"
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -34,8 +35,17 @@ spec:
               - rook.${SECRET_DOMAIN}
             secretName: rook-tls
       cephClusterSpec:
+      # placement:
+      #   mon:
+      #     tolerations:
+      #       - effect: NoSchedule
+      #         operator: Exists
+      #   mgr:
+      #     tolerations:
+      #       - effect: NoSchedule
+      #         operator: Exists
         crashCollector:
-          disable: true
+          disable: false
         mgr:
           count: 2
         dashboard:
