@@ -10,4 +10,4 @@ spec:
   type: ExternalName
   externalName: "${NAS_ADDR}"
   ports:
-    - port: 3010
+    - port: 9080

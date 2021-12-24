@@ -22,8 +22,8 @@ spec:
               service:
                 name: gitea
                 port:
-                  number: 3010
+                  number: 9080
   tls:
     - hosts:
         - git.${SECRET_DOMAIN_STUDIO}
-      secretName: gitea-tls
+      secretName: gitlab-tls
