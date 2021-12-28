@@ -1,0 +1,35 @@
+---
+name: Schedule - Library Chart Update
+
+on: # yamllint disable-line rule:truthy
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */4 * * *"
+
+jobs:
+  library-chart-update:
+    name: Library Chart Update
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/setup-helm@v1
+        with:
+          version: v3.6.3
+      - run: helm repo add k8s-at-home-library https://library-charts.k8s-at-home.com
+      - run: helm repo update
+      - run: helm dep update
+        working-directory: charts/kah-common
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: renovate-kah-library-chart
+          delete-branch: true
+          title: "chore(ci): update kah library chart"
+          signoff: true
+          committer: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
+          author: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
+          assignees: "coolguy1771"
+          commit-message: "chore(ci): update kah library chart"
+          body: |
+            Update the kah library chart
+          labels: component/ci

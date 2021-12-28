@@ -1,36 +1,38 @@
 ---
-name: Publish docs via GitHub Pages
+name: Schedule - Flux Update
 
 on: # yamllint disable-line rule:truthy
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/docs.yaml"
-      - "mkdocs.yaml"
-      - "docs/**"
+  schedule:
+    - cron: "0 */4 * * *"
 
 jobs:
-  publish-docs:
+  flux-update:
+    name: Flux Update
     runs-on: ubuntu-20.04
-    if: github.event.pull_request.head.repo.fork == false
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: fluxcd/flux2/action@main
+      - id: update
+        run: |
+          UGLY_VERSION="$(flux -v)"
+          VERSION="v${UGLY_VERSION#*flux version }"
+          flux install --version="${VERSION}" \
+            --components-extra=image-reflector-controller,image-automation-controller \
+            --network-policy=false \
+            --export > ./cluster/base/flux-system/gotk-components.yaml
+          echo "::set-output name=flux_version::$VERSION"
+      - uses: peter-evans/create-pull-request@v3
         with:
-          python-version: 3.x
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.x
-      - run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - run: |
-          pip install \
-            mkdocs>=1.1 \
-            mkdocs-macros-plugin >=0.5 \
-            mkdocs-material >=1.0 \
-            mkdocs-minify-plugin>=0.3 \
-            mkdocs-redirects>=1.0
-      - run: mkdocs gh-deploy --config-file ./mkdocs.yaml --force
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+          delete-branch: true
+          title: "chore(ci): update flux components to ${{ steps.update.outputs.flux_version }}"
+          signoff: true
+          committer: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
+          author: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
+          assignees: "coolguy1771"
+          commit-message: "chore(ci): update flux components to ${{ steps.update.outputs.flux_version }}"
+          body: |
+            Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
+          labels: component/ci
