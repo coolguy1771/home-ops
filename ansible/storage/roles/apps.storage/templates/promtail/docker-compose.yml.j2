@@ -4,14 +4,12 @@ version: "3.8"
 services:
   promtail:
     image: docker.io/grafana/promtail:2.4.1
-    restart: unless-stopped
     container_name: promtail
+    restart: unless-stopped
+    network_mode: host
     command:
       - -config.file=/etc/promtail/promtail.yaml
     volumes:
-      - "{{ apps_dir }}/promtail/promtail.yaml:/etc/promtail/promtail.yaml:ro"
+      - "{{ containers_base_dir }}/apps/promtail/promtail.yaml:/etc/promtail/promtail.yaml:ro"
       - /var/log:/var/log:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-      - diun.enable=true
+      # - /var/lib/docker/containers:/var/lib/docker/containers:ro

@@ -1,3 +1,7 @@
 ---
-apps_dir: /neon/System/Containers/apps
-data_dir: /neon/System/Containers/data
+#
+# SECRET* vars are encrypted with sops
+#
+
+system_base_dir: /tycho/System
+containers_base_dir: "{{ system_base_dir }}/Containers"

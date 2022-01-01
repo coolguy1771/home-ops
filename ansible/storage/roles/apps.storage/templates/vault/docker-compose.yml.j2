@@ -4,8 +4,9 @@ version: "3.8"
 services:
   vault:
     image: docker.io/library/vault:1.9.2
-    restart: unless-stopped
     container_name: vault
+    restart: unless-stopped
+    network_mode: bridge
     cap_add:
       - IPC_LOCK
     environment:
@@ -16,14 +17,12 @@ services:
     ports:
       - 8200:8200
     volumes:
-      - "{{ apps_dir }}/vault/vault.json:/vault/config/vault.json"
+      - "{{ containers_base_dir }}/apps/vault/vault.json:/vault/config/vault.json"
       - vault-policies:/vault/policies
       - vault-data:/vault/data
     labels:
-      - com.centurylinklabs.watchtower.enable=true
-      - diun.enable=true
       - traefik.enable=true
-      - traefik.http.routers.vault.rule=Host(`vault.turbo.ac`)
+      - traefik.http.routers.vault.rule=Host(`vault.{{ SECRET_PRIVATE_DOMAIN }}`)
       - traefik.http.routers.vault.entrypoints=websecure
       - traefik.http.routers.vault.tls.certresolver=letsencrypt
       - traefik.http.services.vault.loadbalancer.server.port=8200
@@ -34,11 +33,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "{{ data_dir }}/vault/policies"
-
+      device: "{{ containers_base_dir }}/data/vault/policies"
   vault-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ data_dir }}/vault/data"
+      device: "{{ containers_base_dir }}/data/vault/data"

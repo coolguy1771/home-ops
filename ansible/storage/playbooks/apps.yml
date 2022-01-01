@@ -1,3 +1,4 @@
+---
 - hosts:
     - storage
   become: true
@@ -9,11 +10,8 @@
         seconds: 5
   roles:
     - role: geerlingguy.pip
-      tags:
-        - pip
     - role: geerlingguy.docker
-      tags:
-        - docker
     - role: apps.storage
       tags:
         - apps.storage
+x

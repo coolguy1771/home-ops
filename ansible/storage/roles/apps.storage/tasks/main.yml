@@ -4,12 +4,18 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /tycho/System/Containers
-    - /tycho/System/Containers/apps
-    - /tycho/System/Containers/config
-    - /tycho/System/Containers/data
+    - "{{ containers_base_dir }}/apps"
+    - "{{ containers_base_dir }}/config"
+    - "{{ containers_base_dir }}/data"
   tags:
     - always
+
+# - name: Create docker network
+#   community.docker.docker_network:
+#     name: apps
+#     driver: bridge
+#   tags:
+#     - always
 
 - import_tasks: cadvisor.yml
   tags:
@@ -19,14 +25,6 @@
   tags:
     - node-exporter
 
-- import_tasks: watchtower.yml
-  tags:
-    - watchtower
-
-- import_tasks: diun.yml
-  tags:
-    - diun
-
 - import_tasks: minio.yml
   tags:
     - minio
@@ -35,9 +33,12 @@
   tags:
     - vault
 
-- import_tasks: promtail.yml
-  tags:
-    - promtail
+# # TODO: Promtail has issues resolving DNS
+# # https://github.com/grafana/loki/issues/3994
+# # https://grafana.slack.com/archives/CEPJRLQNL/p1639934111400500
+# - import_tasks: promtail.yml
+#   tags:
+#     - promtail
 
 - import_tasks: traefik.yml
   tags:
@@ -50,6 +51,14 @@
 - import_tasks: nexus.yml
   tags:
     - nexus
+
+- import_tasks: time-machine.yml
+  tags:
+    - time-machine
+
+- import_tasks: vector.yml
+  tags:
+    - vector
 
 - import_tasks: docker.yml
   tags:

@@ -4,27 +4,19 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - "{{ apps_dir }}/minio"
-    - "{{ data_dir }}/minio"
+    - "{{ containers_base_dir }}/apps/minio"
+    - "{{ containers_base_dir }}/data/minio"
 
-- name: Copy minio docker compose file
-  ansible.builtin.template:
-    src: minio/docker-compose.yml.j2
-    dest: "{{ apps_dir }}/minio/docker-compose.yml"
-    mode: 0755
-  register: compose
+- block:
+    - name: Create minio docker compose file
+      ansible.builtin.template:
+        src: minio/docker-compose.yml.j2
+        dest: "{{ containers_base_dir }}/apps/minio/docker-compose.yml"
+        mode: 0755
 
-- name: Create minio systemd file
-  ansible.builtin.template:
-    src: "docker-compose@.service.j2"
-    dest: "/etc/systemd/system/docker-compose@minio.service"
-    mode: 0644
-  register: systemd
-
-- name: Start and enable minio
-  ansible.builtin.systemd:
-    name: "docker-compose@minio.service"
-    state: restarted
-    enabled: true
-    daemon_reload: true
-  when: compose.changed or systemd.changed
+    - name: Create minio systemd service file
+      ansible.builtin.template:
+        src: "docker-compose@.service.j2"
+        dest: "/etc/systemd/system/docker-compose@minio.service"
+        mode: 0644
+  notify: Restart minio

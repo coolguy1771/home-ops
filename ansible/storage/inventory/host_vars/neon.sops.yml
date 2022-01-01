@@ -1,14 +1,16 @@
 kind: Secret
-ansible_become_pass: ENC[AES256_GCM,data:2LrKUA==,iv:N/RJCqacErkahG6V2XZXqQgXeo19JZvDEh1pmucrWfg=,tag:DYw4GsZU6szNh6rRuZro1Q==,type:str]
-SECRET_DOMAIN: ENC[AES256_GCM,data:P+rbUttkbDE=,iv:S2reWmd/EtNSL77DAzMrR0eqD9HJA71CkT+xxqvu6UU=,tag:JCO8363VVvdjb88YRrqmyQ==,type:str]
-POSTGRESQL_USERNAME: ENC[AES256_GCM,data:ep9l+Q==,iv:E3nwJekjkd48v9o+gM7XcoH3ytbOiNXRNfC2vo92UI4=,tag:IQORhjQmG08uPe2lKegEfg==,type:str]
-POSTGRESQL_PASSWORD: ENC[AES256_GCM,data:fXpMWg==,iv:Fv15mWEbzxk3s+5HLXZ4fbDpEhgq+fmjmXlL54Gz7SQ=,tag:s2zWzHXY62NZ6L29HaElCw==,type:str]
-PGADMIN_USERNAME: ENC[AES256_GCM,data:E0mcdw==,iv:0CEiETyXv9KiezY+cN4p1eBAUpd4LVhR7WAFcUxCi3s=,tag:ei9M4t9qbPTytDYJnhm++A==,type:str]
-PGADMIN_PASSWORD: ENC[AES256_GCM,data:b5WHmA==,iv:80MfUksllAGhoOzKGyBqKWUM8t5zkBz65i+lP36KDow=,tag:efwglBkiOsX4bCJ57BTCMw==,type:str]
-CLOUDFLARE_EMAIL: ENC[AES256_GCM,data:5c4jF2MEFX9K3NMtSi1SMxC2P6Ld,iv:vtJvkoFnGIalOeGz9H++H5LWz/iO1ep7CpwGC2EKG+s=,tag:ZkeLmzfFvS5QqwjvvtKOEA==,type:str]
-CLOUDFLARE_APIKEY: ENC[AES256_GCM,data:4QI/5g==,iv:KpImW3uj8A9u/1M8uIRc3KsFv2w6rD8gMTn2VFhyzVw=,tag:FxrllVCXDdydO30ORo2+/Q==,type:str]
-MINIO_ROOT_PASSWORD: ENC[AES256_GCM,data:zuSwUg==,iv:Q4w4y8GOOzCk1x/4g3Ws17LoJGcXyMJAwTyMGFSp80s=,tag:h/n5ZWpND5UJR+sIKInZzw==,type:str]
-MINIO_ROOT_USER: ENC[AES256_GCM,data:zt6ybO+4tA==,iv:NifK9D25kte8WCkfT0koPPVv09RSGMVtvwl2btNSTRw=,tag:Efat1XrGl0REfcSLVzv8Wg==,type:str]
+ansible_become_pass: null
+SECRET_PUBLIC_DOMAIN: null
+SECRET_PRIVATE_DOMAIN: null
+SECRET_POSTGRESQL_USERNAME: null
+SECRET_POSTGRESQL_PASSWORD: null
+SECRET_PGADMIN_USERNAME: null
+SECRET_PGADMIN_PASSWORD: null
+SECRET_CLOUDFLARE_EMAIL: null
+SECRET_CLOUDFLARE_APIKEY: null
+SECRET_MINIO_ROOT_PASSWORD: null
+SECRET_MINIO_ROOT_USER: null
+SECRET_TIMEMACHINE_PASSWORD: null
 sops:
     kms: []
     gcp_kms: []
@@ -24,8 +26,8 @@ sops:
             WWw1VGVKWjRWdEJsMnJTTDU1aUJqS00KFPmfeX3J10uIEv9XoMuPlMRMXDhonaCA
             YX3K7cXUz/IrtkBxFef5ea5DaAGRCz4FPgY4Rc7hNz7mLZDl7xmzwQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2021-12-10T19:07:14Z"
-    mac: ENC[AES256_GCM,data:ACwN47oulT2B3RLgODyds3fYsxATTUxnql+QLRAyGCUJ2W+Z+uITfe7CRUfENTuXPCye3ET/A6Hpbv9KonXJX7ubBnhWqhWFjDMKlKc/jiJqW90ZL41dlWGJRefmaogMDMxk/CPMDeLa0Fc+yKa/EcNB5CaPqlNcwxUkr/hB2SU=,iv:ouEb1/GR++dNDuqsuTbWOlx2zs/g+TAAreul4q6LZL4=,tag:wTqo5CVEtGSW8oMEhAzsMg==,type:str]
+    lastmodified: "2021-12-28T18:55:40Z"
+    mac: ENC[AES256_GCM,data:8Hlb9/HCRE2ptyzSSp1QUSc7n8pKVERMdVYPcJWbh9eUbn6Mwwr8sM2xdPN5et57NLU5QpAd1DH/jk8lKCUe1ylBCbOhd4b0x9bzUCqfXf94Z6vbaF7aVERhzJo43AiC2IviMODBvP8xnHZ7nLj/XM6jP6pIXdKMQUgI0PfgxBA=,iv:wcexx8v/BMG2QVoIgzkMzWh1Xbj12dcPO24iTUf5WKM=,tag:iv7J2OV9LpGJ9NzsEp5T0g==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.1
