@@ -33,8 +33,7 @@ spec:
         tls:
           - hosts:
               - rook.${SECRET_DOMAIN}
-            secretName: rook-tls
-      cephClusterSpec:
+    cephClusterSpec:
       # placement:
       #   mon:
       #     tolerations:
@@ -44,19 +43,19 @@ spec:
       #     tolerations:
       #       - effect: NoSchedule
       #         operator: Exists
-        crashCollector:
-          disable: false
-        mgr:
-          count: 2
-        dashboard:
-          enabled: true
-          urlPrefix: /
-          ssl: false
-        storage:
-          useAllNodes: false
-          useAllDevices: false
-          config:
-            osdsPerDevice: "1"
+      crashCollector:
+        disable: false
+      mgr:
+        count: 2
+      dashboard:
+        enabled: true
+        urlPrefix: /
+        ssl: false
+      storage:
+        useAllNodes: false
+        useAllDevices: false
+        config:
+          osdsPerDevice: "1"
           nodes:
             - name: "k8s-2"
               devices:
