@@ -7,4 +7,3 @@ resources:
   - cert-manager
   - system-upgrade
   - rook-ceph
-  - kube-system
