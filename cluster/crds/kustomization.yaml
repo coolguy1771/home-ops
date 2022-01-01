@@ -5,3 +5,5 @@ resources:
   - kube-prometheus-stack
   - external-dns
   - rook-ceph
+  - external-snapshotter
+  
