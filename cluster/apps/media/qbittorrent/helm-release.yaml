@@ -32,9 +32,8 @@ spec:
       bittorrent:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: "${SVC_QBITTORRENT_ADDR}"
-        #externalIPs:
-        #  - "${SVC_QBITTORRENT_ADDR}"
+        externalIPs:
+          - "${SVC_QBITTORRENT_ADDR}"
         ports:
           bittorrent:
             enabled: true
