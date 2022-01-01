@@ -81,6 +81,7 @@ spec:
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
+          mountOptions: []
           parameters:
             imageFormat: "2"
             imageFeatures: layering
