@@ -6,8 +6,8 @@ vars:
     sh: "git rev-parse --show-toplevel"
   CLUSTER_DIR: "{{.PROJECT_DIR}}/cluster"
   K3S_PRIMARY_MASTER_NODE_USERNAME: "ubuntu"
-  K3S_PRIMARY_MASTER_NODE_ADDR: "10.10.10.20"
-  K3S_LB_ADDR: "10.10.10.2"
+  K3S_PRIMARY_MASTER_NODE_ADDR: "10.10.10.26"
+  K3S_LB_ADDR: "192.168.1.1"
 
 env:
   KUBECONFIG: "{{.CLUSTER_DIR}}/kubeconfig"
