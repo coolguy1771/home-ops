@@ -66,6 +66,7 @@ spec:
       licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
       enabled: true
+      postgresqlUsername: postgres
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_POSTGRES_PASSWORD}"
       persistence:
         enabled: true
