@@ -5,13 +5,7 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
-  GATEWAY_ADDR: "192.168.1.1"
   NAS_ADDR: 192.168.1.147
-  #
-  METALLB_LB_RANGE: 10.10.10.6-10.10.10.254
-  #
-  KUBE_VIP_ADDR: "10.10.10.2"
-  KUBE_VIP_IFACE: "ens192"
   #
   SVC_BLOCKY_ADDR: 10.10.10.10
   SVC_PLEX_ADDR: 10.10.10.8
