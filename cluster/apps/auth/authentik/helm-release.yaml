@@ -54,7 +54,6 @@ spec:
         environment: "k8s"
         sendpii: true
       postgresql:
-        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
         s3_backup:
           bucket: "authentik"
           access_key: ${SECRET_S3_KEY}
