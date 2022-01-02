@@ -60,14 +60,15 @@ spec:
           access_key: ${SECRET_S3_KEY}
           secret_key: ${SECRET_S3_SECRET_KEY}
           host: "http://192.168.1.147:9768"
+          insecure_skip_verify: true
     geoip:
       enabled: true
       accountId: "418977"
       licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
       enabled: true
-      postgresqlUsername: postgres
-      postgresqlPostgresPassword: "${SECRET_AUTHENTIK_POSTGRES_POSTGRES_PASSWORD}"
+      postgresqlUsername: "authentik"
+      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
         enabled: true
         existingClaim: authentik-postgres-v1
