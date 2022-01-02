@@ -10,3 +10,4 @@ resources:
   - snmp-exporter
   - loki
   - promtail
+  - vector-agent
