@@ -222,3 +222,13 @@ spec:
             static_configs:
               - targets:
                   - "${NAS_ADDR}:9768"
+          - job_name: coredns
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - "opnsense:9153"
+          - job_name: node-exporter
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - "opnsense:9100"
