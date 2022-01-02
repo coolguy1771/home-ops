@@ -67,7 +67,6 @@ spec:
       licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
       enabled: true
-      postgresqlUsername: "authentik"
       persistence:
         enabled: true
         existingClaim: authentik-postgres-v1
