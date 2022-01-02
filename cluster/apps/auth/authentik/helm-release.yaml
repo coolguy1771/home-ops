@@ -69,12 +69,12 @@ spec:
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
         enabled: true
-        existingClaim: authentik-redis-v1
+        existingClaim: authentik-postgres-v1
     redis:
       enabled: true
       persistence:
         enabled: true
-        existingClaim: authentik-postgres-v1
+        existingClaim: authentik-redis-v1
     prometheus:
       serviceMonitor:
         create: true
