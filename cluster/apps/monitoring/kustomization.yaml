@@ -9,5 +9,4 @@ resources:
   - thanos
   - snmp-exporter
   - loki
-  - promtail
   - vector-agent
