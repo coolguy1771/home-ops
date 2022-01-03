@@ -22,24 +22,24 @@ spec:
       tag: 2021.12.4
       pullPolicy: IfNotPresent
     ingress:
-        enabled: true
-        ingressClassName: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "account-lock-outline"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
-          external-dns/is-public: "true"
-        hosts:
-          - host: "auth.${SECRET_DOMAIN_STUDIO}"
-            paths:
-              - path: "/"
-                pathType: Prefix
-        tls:
-          - hosts:
-              - "auth.${SECRET_DOMAIN_STUDIO}"
-            secretName: authentik-tls 
+      enabled: true
+      ingressClassName: "nginx"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "account-lock-outline"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
+        external-dns/is-public: "true"
+      hosts:
+        - host: auth.${SECRET_DOMAIN_STUDIO}
+          paths:
+            - path: "/"
+              pathType: Prefix
+      tls:
+        - hosts:
+          - "auth.${SECRET_DOMAIN_STUDIO}"
     authentik:
+      log_level: info
       secret_key: "${SECRET_AUTHENTIK_KEY}"
       email:
         host: "in-v3.mailjet.com"
@@ -50,22 +50,37 @@ spec:
         from: "no-reply@${SECRET_DOMAIN_STUDIO}"
       error_reporting:
         enabled: true
-        sendpii: true
+        send_pii: true
       postgresql:
+        host: '{{ .Release.Name }}-postgresql'
+        name: "authentik"
         user: "authentik"
-        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+        password: ""
+        port: 5432
         s3_backup:
           bucket: "authentik"
           access_key: ${SECRET_S3_KEY}
           secret_key: ${SECRET_S3_SECRET_KEY}
           host: "http://192.168.1.147:9768"
           insecure_skip_verify: true
-    geoip:
-      enabled: true
-      accountId: "418977"
-      licenseKey: "${SECRET_GEOIP_KEY}"
+    livenessProbe:
+      # -- enables or disables the livenessProbe
+      enabled: false
+      httpGet:
+        # -- liveness probe url path
+        path: /-/health/live/
+        port: http
+      initialDelaySeconds: 50
+      periodSeconds: 10
+    readinessProbe:
+      enabled: false
+      httpGet:
+        path: /-/health/ready/
+        port: http
+      initialDelaySeconds: 50
+      periodSeconds: 10
     postgresql:
-      enabled: true
+      enabled: false
       postgresqlUsername: "authentik"
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
@@ -74,8 +89,12 @@ spec:
     redis:
       enabled: true
       persistence:
-        enabled: true
+        enabled: false
         existingClaim: authentik-redis-v1
+    geoip:
+      enabled: true
+      accountId: "418977"
+      licenseKey: "${SECRET_GEOIP_KEY}"
     prometheus:
       serviceMonitor:
         create: true
