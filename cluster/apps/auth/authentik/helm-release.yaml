@@ -82,7 +82,7 @@ spec:
     postgresql:
       enabled: true
       postgresqlUsername: "authentik"
-      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+      #postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
         enabled: false
         existingClaim: authentik-postgres-v1
