@@ -80,11 +80,11 @@ spec:
       initialDelaySeconds: 50
       periodSeconds: 10
     postgresql:
-      enabled: false
+      enabled: true
       postgresqlUsername: "authentik"
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
-        enabled: true
+        enabled: false
         existingClaim: authentik-postgres-v1
     redis:
       enabled: true
