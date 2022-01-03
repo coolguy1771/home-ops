@@ -53,6 +53,7 @@ spec:
         sendpii: true
       postgresql:
         user: "postgres"
+        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
         s3_backup:
           bucket: "authentik"
           access_key: ${SECRET_S3_KEY}
@@ -66,6 +67,7 @@ spec:
     postgresql:
       enabled: true
       postgresqlUsername: "postgres"
+      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
         enabled: true
         existingClaim: authentik-postgres-v1
