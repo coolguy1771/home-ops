@@ -41,20 +41,18 @@ spec:
             secretName: authentik-tls 
     authentik:
       secret_key: "${SECRET_AUTHENTIK_KEY}"
-      geoip: /geoip/GeoLite2-City.mmdb
       email:
         host: "in-v3.mailjet.com"
         port: 587
         username: "${SECRET_EMAIL_USERNAME}"
         password: "${SECRET_EMAIL_PASSWORD}"
-        use_tls: true
-        from: "No-Reply <no-reply@${SECRET_DOMAIN_STUDIO}>"
+        use_ssl: true
+        from: "no-reply@${SECRET_DOMAIN_STUDIO}"
       error_reporting:
         enabled: true
-        environment: "k8s"
         sendpii: true
       postgresql:
-        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
+        user: "postgres"
         s3_backup:
           bucket: "authentik"
           access_key: ${SECRET_S3_KEY}
@@ -67,6 +65,7 @@ spec:
       licenseKey: "${SECRET_GEOIP_KEY}"
     postgresql:
       enabled: true
+      postgresqlUsername: "postgres"
       persistence:
         enabled: true
         existingClaim: authentik-postgres-v1
