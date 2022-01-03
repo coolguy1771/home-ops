@@ -55,7 +55,7 @@ spec:
         host: '{{ .Release.Name }}-postgresql'
         name: "authentik"
         user: "authentik"
-        password: ""
+        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
         port: 5432
         s3_backup:
           bucket: "authentik"
