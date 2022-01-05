@@ -52,12 +52,16 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  port: http
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
+                service:
+                  port: http
               - path: /notifications/hub
                 pathType: Prefix
                 service:
-                  port: 3012
-              - path: /notifications/hub/negotiate
-                pathType: Prefix
+                  port: websocket
         tls:
           - hosts:
               - vault.${SECRET_DOMAIN}
