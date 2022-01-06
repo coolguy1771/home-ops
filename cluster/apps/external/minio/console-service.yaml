@@ -6,6 +6,6 @@ metadata:
   namespace: external
 spec:
   type: ExternalName
-  externalName: neon
+  externalName: "neon.${SECRET_PRIVATE_DOMAIN}"
   ports:
     - port: 9769

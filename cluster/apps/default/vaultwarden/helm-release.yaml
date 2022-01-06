@@ -25,7 +25,7 @@ spec:
     env:
       # TZ:
       DATA_FOLDER: "config"
-      DOMAIN: "https://vault.${SECRET_DOMAIN}"
+      DOMAIN: "https://vault.${SECRET_PUBLIC_DOMAIN}"
       SIGNUPS_ALLOWED: true
       ADMIN_TOKEN: "${SECRET_VAULTWARDEN_ADMIN_TOKEN}"
       SMTP_HOST: "in-v3.mailjet.com"
@@ -42,13 +42,13 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "shield-key"
 
         hosts:
-          - host: vault.${SECRET_DOMAIN}
+          - host: vault.${SECRET_PUBLIC_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -64,7 +64,7 @@ spec:
                   port: websocket
         tls:
           - hosts:
-              - vault.${SECRET_DOMAIN}
+              - vault.${SECRET_PUBLIC_DOMAIN}
             secretName: vaultwarden-tls
     persistence:
       config:

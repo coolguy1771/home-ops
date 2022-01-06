@@ -27,17 +27,17 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-          - host: "tautulli.${SECRET_DOMAIN}"
+          - host: "tautulli.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "tautulli.${SECRET_DOMAIN}"
+              - "tautulli.${SECRET_PUBLIC_DOMAIN}"
             secretName: tautulli-tls
     persistence:
       config:

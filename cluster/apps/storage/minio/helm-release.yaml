@@ -29,9 +29,9 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-prod
         tls:
           - hosts:
-              - minio.${SECRET_DOMAIN}
+              - minio.${SECRET_PUBLIC_DOMAIN}
             secretName: minio-tls
-        host: minio.${SECRET_DOMAIN}
+        host: minio.${SECRET_PUBLIC_DOMAIN}
     tenants:
       # Tenant name
       - name: minio

@@ -49,7 +49,7 @@ spec:
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     grafana.ini:
       server:
-        root_url: "https://grafana.${SECRET_DOMAIN}"
+        root_url: "https://grafana.${SECRET_PUBLIC_DOMAIN}"
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -149,14 +149,14 @@ spec:
       annotations:
         hajimari.io/enable: "true"
         hajimari.io/icon: "chart-box-outline"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
         external-dns/is-public: "true"
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - "grafana.${SECRET_DOMAIN}"
+        - "grafana.${SECRET_PUBLIC_DOMAIN}"
       tls:
         - hosts:
-            - "grafana.${SECRET_DOMAIN}"
+            - "grafana.${SECRET_PUBLIC_DOMAIN}"
           secretName: grafana-tls
     serviceAccount:
       create: true

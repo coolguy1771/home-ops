@@ -25,7 +25,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "television-box"
@@ -35,13 +35,13 @@ spec:
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css"></head>';
             sub_filter_once on;
         hosts:
-          - host: "sonarr.${SECRET_DOMAIN}"
+          - host: "sonarr.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "sonarr.${SECRET_DOMAIN}"
+              - "sonarr.${SECRET_PUBLIC_DOMAIN}"
             secretName: sonarr-tls
     persistence:
       config:
@@ -54,7 +54,7 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: neon
+            server: "neon.${SECRET_PRIVATE_DOMAIN}"
             path: /mnt/user/Media/tv-sonarr
     metrics:
       enabled: true

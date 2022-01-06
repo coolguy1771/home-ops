@@ -8,6 +8,6 @@ metadata:
   #  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   type: ExternalName
-  externalName: neon
+  externalName: "neon.${SECRET_PRIVATE_DOMAIN}"
   ports:
     - port: 9080

@@ -35,17 +35,17 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "text-box-multiple-outline"
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
-          - host: paper.${SECRET_DOMAIN}
+          - host: paper.${SECRET_PUBLIC_DOMAIN}
             paths:
               - path: "/"
                 pathType: Prefix
         tls:
           - secretName: paperless-tls
             hosts:
-              - paper.${SECRET_DOMAIN}
+              - paper.${SECRET_PUBLIC_DOMAIN}
     persistence:
       data:
         enabled: true
@@ -68,7 +68,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: neon
+            server: "neon.${SECRET_PRIVATE_DOMAIN}"
             path: /mnt/user/Media/consume
         mountPath: /usr/src/paperless/consume
       export:
@@ -76,7 +76,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: neon
+            server: "neon.${SECRET_PRIVATE_DOMAIN}"
             path: /mnt/user/Media/export
         mountPath: /usr/src/paperless/export
     redis:

@@ -56,65 +56,65 @@ spec:
         - name: Media
           links:
             - name: Plex
-              url: "https://plex${SECRET_DOMAIN}"
+              url: "https://plex${SECRET_PUBLIC_DOMAIN}"
             - name: Sonarr
-              url: "https://sonarr.${SECRET_DOMAIN}"
+              url: "https://sonarr.${SECRET_PUBLIC_DOMAIN}"
             - name: Radarr
-              url: "https://radarr.${SECRET_DOMAIN}"
+              url: "https://radarr.${SECRET_PUBLIC_DOMAIN}"
             - name: Jackett
-              url: "https://jackett.${SECRET_DOMAIN}"
+              url: "https://jackett.${SECRET_PUBLIC_DOMAIN}"
             - name: Ombi
-              url: "https://ombi.${SECRET_DOMAIN}"
+              url: "https://ombi.${SECRET_PUBLIC_DOMAIN}"
             - name: Owncast
-              url: "https://stream.${SECRET_DOMAIN_GAMES}"
+              url: "https://stream.${SECRET_PUBLIC_DOMAIN_GAMES}"
             - name: Paperless
-              url: "https://paper.${SECRET_DOMAIN}"
+              url: "https://paper.${SECRET_PUBLIC_DOMAIN}"
             - name: Photoprism
-              url: "https://photos.${SECRET_DOMAIN}"
+              url: "https://photos.${SECRET_PUBLIC_DOMAIN}"
         - name: Homelab
           links:
             - name: Unifi
-              url: "https://ui.${SECRET_DOMAIN}"
+              url: "https://ui.${SECRET_PUBLIC_DOMAIN}"
             - name: Traefik
-              url: "https://traefik.${SECRET_DOMAIN}"
+              url: "https://traefik.${SECRET_PUBLIC_DOMAIN}"
             - name: Falco
-              url: "https://falcosidekick-ui.${SECRET_DOMAIN}/ui"
+              url: "https://falcosidekick-ui.${SECRET_PUBLIC_DOMAIN}/ui"
         - name: Monitoring
           links:
             - name: Grafana
-              url: "https://grafana.${SECRET_DOMAIN}"
+              url: "https://grafana.${SECRET_PUBLIC_DOMAIN}"
             - name: Prometheus
-              url: "https://prometheus.${SECRET_DOMAIN}"
+              url: "https://prometheus.${SECRET_PUBLIC_DOMAIN}"
         - name: Security
           links:
             - name: Vaultwarden
-              url: "https://vault.${SECRET_DOMAIN}"
+              url: "https://vault.${SECRET_PUBLIC_DOMAIN}"
             - name: Authentik
               url: "https://auth.${SECRET_DOMAIN_STUDIO}"
         - name: Tools
           links:
             - name: Hastebin
-              url: "https://paste.${SECRET_DOMAIN}"
+              url: "https://paste.${SECRET_PUBLIC_DOMAIN}"
         - name: Storage
           links:
             - name: Minio
-              url: "https://console.${SECRET_DOMAIN}"
+              url: "https://console.${SECRET_PUBLIC_DOMAIN}"
     ingress:
       main:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-          - host: "home.${SECRET_DOMAIN}"
+          - host: "home.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "home.${SECRET_DOMAIN}"
+              - "home.${SECRET_PUBLIC_DOMAIN}"
             secretName: "hajimari-tls"
     persistence:
       data:

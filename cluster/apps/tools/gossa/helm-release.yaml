@@ -43,16 +43,16 @@ spec:
           hajimari.io/icon: "web-sync"
 
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
-          - host: "cdn.${SECRET_DOMAIN}"
+          - host: "cdn.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "cdn.${SECRET_DOMAIN}"
+              - "cdn.${SECRET_PUBLIC_DOMAIN}"
             secretName: gossa-tls
     persistence:
       data:
@@ -62,5 +62,5 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: neon
+            server: "neon.${SECRET_PRIVATE_DOMAIN}"
             path: /mnt/user/appdata/cdn
