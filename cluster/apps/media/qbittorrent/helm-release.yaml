@@ -90,7 +90,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${NAS_ADDR}"
+            server: neon
             path: /mnt/user/Media
         mountPath: /media
     resources:

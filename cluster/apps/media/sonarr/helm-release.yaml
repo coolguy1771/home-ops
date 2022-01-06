@@ -54,7 +54,7 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: "${NAS_ADDR}"
+            server: neon
             path: /mnt/user/Media/tv-sonarr
     metrics:
       enabled: true

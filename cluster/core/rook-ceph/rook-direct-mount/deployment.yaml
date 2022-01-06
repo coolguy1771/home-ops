@@ -71,7 +71,7 @@ spec:
                 path: mon-endpoints
         - name: nas-data
           nfs:
-            server: 192.168.1.147
+            server: neon
             path: /mnt/user/k3s
         - name: direct-mount-scripts
           projected:

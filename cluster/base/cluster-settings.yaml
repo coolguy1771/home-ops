@@ -5,7 +5,7 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
-  NAS_ADDR: 192.168.1.147
+  NAS_ADDR: neon
   #
   SVC_BLOCKY_ADDR: "10.0.42.4"
   SVC_PLEX_ADDR: "10.0.42.3"

@@ -71,7 +71,7 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: "${NAS_ADDR}"
+            server: neon
             path: /mnt/user/Media/radarr
       tv:
         enabled: true
@@ -80,7 +80,7 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: "${NAS_ADDR}"
+            server: neon
             path: /mnt/user/Media/tv-sonarr
     affinity:
       nodeAffinity:

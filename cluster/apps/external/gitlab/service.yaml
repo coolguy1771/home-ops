@@ -8,6 +8,6 @@ metadata:
   #  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   type: ExternalName
-  externalName: "${NAS_ADDR}"
+  externalName: neon
   ports:
     - port: 9080

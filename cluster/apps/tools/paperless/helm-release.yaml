@@ -68,7 +68,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${NAS_ADDR}"
+            server: neon
             path: /mnt/user/Media/consume
         mountPath: /usr/src/paperless/consume
       export:
@@ -76,7 +76,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${NAS_ADDR}"
+            server: neon
             path: /mnt/user/Media/export
         mountPath: /usr/src/paperless/export
     redis:

@@ -6,6 +6,6 @@ metadata:
   namespace: external
 spec:
   type: ExternalName
-  externalName: "${NAS_ADDR}"
+  externalName: neon
   ports:
     - port: 9768

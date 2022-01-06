@@ -21,7 +21,7 @@ spec:
   values:
     replicaCount: 2
     nfs:
-      server: 192.168.1.147
+      server: neon
       path: "/mnt/user/k3s"
       mountOptions:
         - noatime
