@@ -59,37 +59,20 @@ spec:
         port: 5432
         s3_backup:
           bucket: "authentik"
-          access_key: ${SECRET_S3_KEY}
-          secret_key: ${SECRET_S3_SECRET_KEY}
-          host: "https://s3.witl.xyz"
-
-    livenessProbe:
-      # -- enables or disables the livenessProbe
-      enabled: false
-      httpGet:
-        # -- liveness probe url path
-        path: /-/health/live/
-        port: http
-      initialDelaySeconds: 50
-      periodSeconds: 10
-    readinessProbe:
-      enabled: false
-      httpGet:
-        path: /-/health/ready/
-        port: http
-      initialDelaySeconds: 50
-      periodSeconds: 10
+          access_key: "${SECRET_S3_KEY}"
+          secret_key: "${SECRET_S3_SECRET_KEY}"
+          host: "neon.${SECRET_PRIVATE_DOMAIN}:9768"
     postgresql:
       enabled: true
       postgresqlUsername: "authentik"
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       persistence:
-        enabled: false
+        enabled: true
         existingClaim: authentik-postgres-v1
     redis:
       enabled: true
       persistence:
-        enabled: false
+        enabled: true
         existingClaim: authentik-redis-v1
     geoip:
       enabled: true
