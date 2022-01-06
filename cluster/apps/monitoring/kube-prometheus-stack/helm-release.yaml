@@ -221,7 +221,7 @@ spec:
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
               - targets:
-                  - "${NAS_ADDR}:9768"
+                  - "neon:9768"
           - job_name: coredns
             honor_timestamps: true
             static_configs:
