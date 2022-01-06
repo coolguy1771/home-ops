@@ -25,7 +25,7 @@ terraform.tfstate*
 .decrypted~*
 *.agekey
 # Kubernetes
-kubeconfig
+kubeconfig*
 talosconfig
 # NAS
 secrets.json
