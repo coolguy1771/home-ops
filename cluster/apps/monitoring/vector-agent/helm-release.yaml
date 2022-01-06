@@ -27,9 +27,9 @@ spec:
         enabled: false
       # Sources
       sources:
-        #journal_logs:
-        #  type: journald
-        #  journal_directory: /var/log/journal
+        journal_logs:
+          type: journald
+          journal_directory: /var/log/journal
         kubernetes_logs:
           type: kubernetes_logs
       # Sinks
