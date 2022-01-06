@@ -61,7 +61,8 @@ spec:
           bucket: "authentik"
           access_key: "${SECRET_S3_KEY}"
           secret_key: "${SECRET_S3_SECRET_KEY}"
-          host: "neon.${SECRET_PRIVATE_DOMAIN}:9768"
+          host: "http://neon.${SECRET_PRIVATE_DOMAIN}:9768"
+          insecure_skip_verify: true
     postgresql:
       enabled: true
       postgresqlUsername: "authentik"
