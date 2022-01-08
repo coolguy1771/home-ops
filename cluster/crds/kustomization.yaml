@@ -6,4 +6,3 @@ resources:
   - external-dns
   - rook-ceph
   - external-snapshotter
-  
