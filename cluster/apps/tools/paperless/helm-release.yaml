@@ -26,7 +26,6 @@ spec:
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       PAPERLESS_TIME_ZONE: UTC
-      PAPERLESS_REDIS: 
     ingress:
       main:
         enabled: true
@@ -68,16 +67,16 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/Media/consume
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media/consume
         mountPath: /usr/src/paperless/consume
       export:
         enabled: true
         type: custom
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/Media/export
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media/export
         mountPath: /usr/src/paperless/export
     redis:
       enabled: false

@@ -71,8 +71,8 @@ spec:
                 path: mon-endpoints
         - name: nas-data
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/k3s
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/k3s
         - name: direct-mount-scripts
           projected:
             defaultMode: 0775
