@@ -60,28 +60,28 @@ spec:
       config:
         enabled: true
         existingClaim: plex-config-v1
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media
+        mountPath: /media
+        readOnly: true
+      backup:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "cairo.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Data/Backups/plex
+        mountPath: /config/Backups
+        readOnly: false
       transcode:
         enabled: true
         type: emptyDir
         medium: Memory
-      movies:
-        enabled: true
-        type: custom
-        mountPath: /movies
-        readOnly: true
-        volumeSpec:
-          nfs:
-            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Media/radarr
-      tv:
-        enabled: true
-        type: custom
-        mountPath: /tv
-        readOnly: true
-        volumeSpec:
-          nfs:
-            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Media/tv-sonarr
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -102,21 +102,3 @@ spec:
       limits:
         gpu.intel.com/i915: 1
         memory: 16000Mi
-    addons:
-      promtail:
-        enabled: true
-        image:
-          repository: ghcr.io/k8s-at-home/promtail
-          tag: v2.4.1
-        loki: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
-        logs:
-          - name: promtail/plex
-            path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
-          - name: promtail/plex/plugins
-            path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
-        securityContext:
-          runAsUser: 0
