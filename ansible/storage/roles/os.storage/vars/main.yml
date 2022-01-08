@@ -29,7 +29,6 @@ os_packages_install:
   - neofetch
   - ntpdate
   - podman
-  - podman-plugins
   - psmisc
   - rclone
   - software-properties-common
@@ -39,6 +38,8 @@ os_packages_install:
   - unzip
   - zfs-zed
   - zfsutils-linux
+  - fzf
+  - silversearcher-ag
 os_packages_remove:
   - apparmor
   - apport

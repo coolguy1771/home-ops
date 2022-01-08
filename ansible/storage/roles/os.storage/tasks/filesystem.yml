@@ -16,13 +16,13 @@
     - smartmontools
     - socat
 
-- name: Configure smartd
-  ansible.builtin.copy:
-    dest: /etc/smartd.conf
-    mode: 0644
-    content: |
-      DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
-    notify: Restart smartd
+#- name: Configure smartd
+#  ansible.builtin.copy:
+#    dest: /etc/smartd.conf
+#    mode: 0644
+#    content: |
+#      DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
+#    notify: Restart smartd
 
 - name: Disable swap at runtime
   ansible.builtin.command: swapoff -a

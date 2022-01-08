@@ -6,13 +6,15 @@
 
 - name: Check if apparmor is disabled
   ansible.builtin.shell:
-    cmd: set -o pipefail && grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "apparmor=0"
+    cmd: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "apparmor=0"
+  ignore_errors: true
   register: apparmor_status
   changed_when: apparmor_status.rc != 0
 
 - name: Check if mitigations is disabled
   ansible.builtin.shell:
-    cmd: set -o pipefail && grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "mitigations=off"
+    cmd: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "mitigations=off"
+  ignore_errors: true
   register: mitigations_status
   changed_when: mitigations_status.rc != 0
 

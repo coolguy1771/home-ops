@@ -3,5 +3,5 @@
 # SECRET* vars are encrypted with sops
 #
 
-system_base_dir: /tycho/System
+system_base_dir: /cairo/System
 containers_base_dir: "{{ system_base_dir }}/Containers"
