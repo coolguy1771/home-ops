@@ -72,7 +72,7 @@ spec:
         - name: nas-data
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/k3s
+            path: /cairo/Data
         - name: direct-mount-scripts
           projected:
             defaultMode: 0775
