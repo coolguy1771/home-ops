@@ -5,7 +5,7 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
-  NAS_ADDR: "neon.${SECRET_PRIVATE_DOMAIN}"
+  NAS_ADDR: "osiris.${SECRET_PRIVATE_DOMAIN}"
   #
   SVC_BLOCKY_ADDR: "10.0.42.4"
   SVC_PLEX_ADDR: "10.0.42.3"

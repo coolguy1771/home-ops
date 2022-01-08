@@ -71,8 +71,8 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/Media/radarr
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media/radarr
       tv:
         enabled: true
         type: custom
@@ -80,8 +80,8 @@ spec:
         readOnly: true
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/Media/tv-sonarr
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media/tv-sonarr
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -91,7 +91,7 @@ spec:
                   operator: In
                   values:
                     - "true"
-    
+
     podAnnotations:
       configmap.reloader.stakater.com/reload: "plex-promtail"
     resources:

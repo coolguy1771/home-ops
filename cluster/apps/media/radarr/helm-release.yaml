@@ -54,8 +54,8 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/Media/radarr
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media/radarr
     metrics:
       enabled: true
       serviceMonitor:

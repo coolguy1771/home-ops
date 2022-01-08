@@ -90,8 +90,8 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/Media
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media
         mountPath: /media
     resources:
       requests:

@@ -76,5 +76,5 @@ spec:
         readOnly: false
         volumeSpec:
           nfs:
-            server: "neon.${SECRET_PRIVATE_DOMAIN}"
-            path: /mnt/user/appdata/stash/data
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/appdata/stash/data

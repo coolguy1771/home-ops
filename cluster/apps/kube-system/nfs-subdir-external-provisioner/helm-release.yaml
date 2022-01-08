@@ -21,8 +21,8 @@ spec:
   values:
     replicaCount: 2
     nfs:
-      server: "neon.${SECRET_PRIVATE_DOMAIN}"
-      path: "/mnt/user/k3s"
+      server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+      path: "/cairo/PersistentVolumeClaims"
       mountOptions:
         - noatime
     storageClass:
