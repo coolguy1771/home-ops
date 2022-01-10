@@ -48,8 +48,8 @@ spec:
         aws:
           bucketnames: loki
           endpoint: "s3.${SECRET_PRIVATE_DOMAIN}"
-          access_key_id: "${SECRET_S3_KEY}"
-          secret_access_key: "${SECRET_S3_ACCESS_KEY}"
+          access_key_id: "${SECRET_S3_ACCESS_KEY}"
+          secret_access_key: "${SECRET_S3_SECRET_KEY}"
           s3forcepathstyle: true
           insecure: false
         boltdb_shipper:

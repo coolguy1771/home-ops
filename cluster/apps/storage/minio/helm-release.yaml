@@ -61,7 +61,7 @@ spec:
           enabled: true
           name: minio-secret
           accessKey: ${SECRET_S3_ACCESS_KEY}
-          secretKey: ${SECRET_S3_KEY}
+          secretKey: ${SECRET_S3_SECRET_KEY}
         # pool metrics to be read by Prometheus
         metrics:
           enabled: true
