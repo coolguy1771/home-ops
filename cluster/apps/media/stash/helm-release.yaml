@@ -77,4 +77,4 @@ spec:
         volumeSpec:
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/appdata/stash/data
+            path: /cairo/appdata/stash/
