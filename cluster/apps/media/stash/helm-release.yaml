@@ -67,7 +67,7 @@ spec:
         storageClass: ceph-block
         size: 15Gi
         accessMode: ReadWriteOnce
-      external:
+      media:
         enabled: true
         type: custom
         mountPath: /external
@@ -75,4 +75,4 @@ spec:
         volumeSpec:
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/appdata/stash/
+            path: /cairo/Media/stash/
