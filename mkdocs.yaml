@@ -6,8 +6,8 @@ site_author: Tyler Witlin
 site_url: https://coolguy1771.github.io/k3s/
 
 # Repository
-repo_name: coolguy1771/k3s
-repo_url: https://github.com/coolguy1771/k3s
+repo_name: coolguy1771/home-ops
+repo_url: https://github.com/coolguy1771/home-ops
 edit_uri: "edit/main/docs/"
 
 theme:

@@ -7,9 +7,9 @@
     ":semanticCommits",
     ":separatePatchReleases",
     "docker:enableMajor",
-    "github>coolguy1771/k3s//.github/renovate/autoMerge",
-    "github>coolguy1771/k3s//.github/renovate/labels",
-    "github>coolguy1771/k3s//.github/renovate/semanticCommits"
+    "github>coolguy1771/home-ops//.github/renovate/autoMerge",
+    "github>coolguy1771/home-ops//.github/renovate/labels",
+    "github>coolguy1771/home-ops//.github/renovate/semanticCommits"
   ],
   "timezone": "America/New_York",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
