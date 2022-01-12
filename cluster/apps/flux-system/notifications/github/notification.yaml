@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   type: github
-  address: https://github.com/coolguy1771/k3s
+  address: https://github.com/coolguy1771/home-ops
   secretRef:
     name: github-token
 ---

@@ -37,7 +37,7 @@ spec:
               pathType: Prefix
       tls:
         - hosts:
-          - "auth.${SECRET_DOMAIN_STUDIO}"
+            - "auth.${SECRET_DOMAIN_STUDIO}"
     authentik:
       log_level: info
       secret_key: "${SECRET_AUTHENTIK_KEY}"
@@ -52,7 +52,7 @@ spec:
         enabled: true
         send_pii: true
       postgresql:
-        host: '{{ .Release.Name }}-postgresql'
+        host: "{{ .Release.Name }}-postgresql"
         name: "authentik"
         user: "authentik"
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"

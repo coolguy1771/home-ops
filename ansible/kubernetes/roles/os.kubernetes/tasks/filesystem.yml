@@ -47,7 +47,6 @@
   loop:
     - swap
     - none
-
 # - name: Update user open file limit
 #   ansible.builtin.blockinfile:
 #     path: /etc/security/limits.conf

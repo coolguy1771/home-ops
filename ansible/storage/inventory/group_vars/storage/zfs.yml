@@ -22,14 +22,14 @@ zfs_pools:
 zfs_filesystems:
   - name: Media
     pool: cairo
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=100,rw=@10.0.42.0/24,rw=@192.168.1.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/24"
     state: present
     owner: 568
     group: 568
     mountpoint: "/cairo/Media"
   - name: Data
     pool: cairo
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=100,rw=@10.0.42.0/24,rw=@192.168.1.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/24"
     state: present
     owner: 568
     group: 568
@@ -42,7 +42,7 @@ zfs_filesystems:
     mountpoint: "/cairo/System"
   - name: PersistentVolumeClaims
     pool: cairo
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=100,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24"
     state: present
     owner: 568
     group: 568
@@ -53,7 +53,7 @@ zfs_filesystems:
     sharesmb: true
     owner: 568
     group: 568
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=100,rw=@192.168.1.0/24,rw=@10.10.10.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/24"
     smb_options:
       browseable: "yes"
       create_directory_mask: "0755"
@@ -78,7 +78,7 @@ zfs_filesystems:
       writable: "yes"
       share_name: Matt
     mountpoint: "/cairo/Matt"
-    
+
 zfs_enable_monitoring: true
 zfs_monitoring_capacity_threshold: 80
 zfs_monitoring_scrub_max_age: 8

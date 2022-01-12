@@ -1,5 +1,4 @@
 ---
-
 - name: Copy GeoIP Update binary into place
   ansible.builtin.copy:
     src: /root/geoipupdate-bin

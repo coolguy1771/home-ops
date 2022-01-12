@@ -13,7 +13,6 @@
     mode: 0660
   when:
     - not msmtp_status.stat.exists
-
 # /etc/zfs/zed.d/zed.rc
 # /etc/smartd.conf
 # /etc/msmtprc

@@ -6,7 +6,6 @@ services:
     image: quay.io/minio/minio:RELEASE.2022-01-08T03-11-54Z
     restart: unless-stopped
     container_name: minio
-    restart: unless-stopped
     network_mode: bridge
     environment:
       MINIO_ROOT_USER: "{{ SECRET_MINIO_ROOT_USER }}"

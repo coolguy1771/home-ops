@@ -1,5 +1,4 @@
 ---
-
 - name: Copy Vector binary into place
   ansible.builtin.copy:
     src: /root/vector-bin
