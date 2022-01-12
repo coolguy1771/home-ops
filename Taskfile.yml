@@ -14,8 +14,8 @@ env:
 
 includes:
   blocky: .taskfiles/blocky.yml
-  format: .taskfiles/format.yml
-  lint: .taskfiles/lint.yml
+  formatter: .taskfiles/formatter.yml
+  linter: .taskfiles/linter.yml
 
 tasks:
   deps:
@@ -28,7 +28,6 @@ tasks:
     cmds:
       - "ansible-galaxy install -r requirements.yml --roles-path ~/.ansible/roles --force"
       - "ansible-galaxy collection install -r requirements.yml --collections-path ~/.ansible/collections --force"
-      - "pip3 install -r requirements.txt"
 
   deps:pre-commit:
     desc: install/upgrade pre-commit deps
