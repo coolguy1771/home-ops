@@ -1,5 +1,5 @@
 ---
-name: Schedule - Upgrade Flux
+name: Schedule - Flux Update
 
 on: # yamllint disable-line rule:truthy
   workflow_dispatch:
@@ -7,12 +7,13 @@ on: # yamllint disable-line rule:truthy
     - cron: "0 */4 * * *"
 
 jobs:
-  upgrade-flux:
-    runs-on: ubuntu-20.04
+  flux-update:
+    name: Flux Update
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: fluxcd/flux2/action@main
-      - id: upgrade
+      - id: update
         run: |
           UGLY_VERSION="$(flux -v)"
           VERSION="v${UGLY_VERSION#*flux version }"
@@ -24,14 +25,14 @@ jobs:
       - uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "flux/upgrade-${{ steps.upgrade.outputs.flux_version }}"
+          branch: "flux/update-${{ steps.update.outputs.flux_version }}"
           delete-branch: true
-          title: "chore(deps): upgrade flux components to ${{ steps.upgrade.outputs.flux_version }}"
+          title: "chore(ci): update flux components to ${{ steps.update.outputs.flux_version }}"
           signoff: true
           committer: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
           author: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
           assignees: "coolguy1771"
-          commit-message: "chore(deps): upgrade flux components to ${{ steps.upgrade.outputs.flux_version }}"
+          commit-message: "chore(ci): update flux components to ${{ steps.update.outputs.flux_version }}"
           body: |
-            Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.upgrade.outputs.flux_version }}
-          labels: flux/upgrade
+            Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
+          labels: component/ci

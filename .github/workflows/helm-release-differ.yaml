@@ -15,7 +15,7 @@ env:
 jobs:
   detect-file-changes:
     name: Detect File Changes
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       files: "${{ steps.extract.outputs.files }}"
     steps:
@@ -32,10 +32,9 @@ jobs:
           filtered=$(grep -zl "kind: HelmRelease.*registryUrl=" ${{ steps.filter.outputs.changed_files }} \
             | jq -nR '[inputs | select(length>0)]')
           echo ::set-output name=files::${filtered}
-
   helm-release-differ:
     name: Helm Release Differ
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: ${{ needs.detect-file-changes.outputs.files != '' }}
     needs:
       - detect-file-changes
@@ -109,7 +108,6 @@ jobs:
             message="$message"'```diff'$'\n'"$diff"$'\n''```'
           fi
           echo "::set-output name=message::$(echo "$message" | jq --raw-input --slurp)"
-
       - uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.pull_request.number }}
