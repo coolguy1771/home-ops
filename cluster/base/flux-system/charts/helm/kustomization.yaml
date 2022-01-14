@@ -37,3 +37,4 @@ resources:
   - influx-charts.yaml
   - metrics-server-charts.yaml
   - vector-charts.yaml
+  - cilium-charts.yaml
