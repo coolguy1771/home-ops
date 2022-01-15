@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: ghcr.io/coolguy1771/resume
-      tag: sha-8c898af
+      tag: sha-20bfed0
     nameOverride: resume
     env:
     service:
