@@ -40,8 +40,7 @@ spec:
             - git.${SECRET_PUBLIC_DOMAIN}
     persistence:
       enabled: true
-      existingClaim: gitea-config
-
+      existingClaim: gitea-config-v1
     signing:
       enabled: true
       gpgHome: /data/git/.gnupg
