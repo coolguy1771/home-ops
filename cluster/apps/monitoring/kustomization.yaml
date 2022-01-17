@@ -10,3 +10,4 @@ resources:
   - snmp-exporter
   - loki
   - vector-agent
+  - blackbox-exporter
