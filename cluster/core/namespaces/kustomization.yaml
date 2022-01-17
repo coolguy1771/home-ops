@@ -15,3 +15,4 @@ resources:
   - rook-ceph.yaml
   - tools.yaml
   - website.yaml
+  - git.yaml

@@ -1,0 +1,112 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gitea
+  namespace: git
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://dl.gitea.io/charts/
+      chart: gitea
+      version: 1.15.8
+      sourceRef:
+        kind: HelmRepository
+        name: gitea-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: gitea/gitea
+      tag: 1.15.8
+      pullPolicy: IfNotPresent
+      rootless: true # only possible when running 1.14 or later
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
+        external-dns/is-public: "true"
+      hosts:
+        - host: git.${SECRET_PUBLIC_DOMAIN}
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: gitea-tls
+          hosts:
+            - git.${SECRET_PUBLIC_DOMAIN}
+    persistence:
+      enabled: true
+      existingClaim: gitea-config
+
+    signing:
+      enabled: true
+      gpgHome: /data/git/.gnupg
+    gitea:
+      admin:
+        username: ${SECRET_GITEA_USERNAME}
+        password: ${SECRET_GITEA_PASSWORD}
+        email: ${SECRET_GITEA_EMAIL}
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    config:
+      #  APP_NAME: "Gitea: Git with a cup of tea"
+      RUN_USER: git
+      RUN_MODE: prod
+      repository:
+        SCRIPT_TYPE: bash
+        ROOT: /code/
+      server:
+        DOMAIN: git.${SECRET_PUBLIC_DOMAIN}
+        ENABLE_GZIP: true
+        LANDING_PAGE: explore
+        LFS_START_SERVER: true
+        ALLOW_GRACEFUL_RESTARTS: true
+      database:
+        DB_TYPE: postgres
+        HOST: gitea-postgresql:5432
+        NAME: gitea
+        PASSWD: ${SECRET_GITEA_POSTGRES_PASSWORD}
+      security:
+        SECRET_KEY: ${SECRET_GITEA_SECRET_KEY}
+        PASSWORD_COMPLEXITY: lower,upper,digit,spec
+        PASSWORD_CHECK_PWN: true
+      service:
+        DEFAULT_KEEP_EMAIL_PRIVATE: true
+      cache:
+        ENABLED: true
+        ADAPTOR: memcache
+        HOST: 127.0.0.1:11211
+      attachment:
+        STORAGE_TYPE: minio
+        MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
+        MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
+        MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
+        MINIO_BUCKET: gitea
+      cron:
+        ENABLED: true
+      metrics:
+        ENABLED: true
+        ENABLED_ISSUE_BY_LABEL: true
+        ENABLED_ISSUE_BY_REPOSITORY: true
+      storage:
+        MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
+        MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
+        MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
+        MINIO_BUCKET: gitea
+    postgresql:
+      enabled: true
+      global:
+        postgresql:
+          postgresqlPassword: ${SECRET_GITEA_POSTGRES_PASSWORD}
+      persistence:
+        size: 10Gi
+    memcached:
+      enabled: true
+      service:
+        port: 11211

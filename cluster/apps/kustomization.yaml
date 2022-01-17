@@ -16,3 +16,4 @@ resources:
   - website
   - external
   - rook-ceph
+  - git
