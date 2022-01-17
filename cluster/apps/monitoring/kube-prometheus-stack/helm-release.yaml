@@ -16,6 +16,12 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
     fullnameOverride: prometheus
     alertmanager:
@@ -123,28 +129,12 @@ spec:
         - 10.10.10.20
         - 10.10.10.21
         - 10.10.10.26
-      service:
-        enabled: true
-        port: 10257
-        targetPort: 10257
-      serviceMonitor:
-        enabled: true
-        https: true
-        insecureSkipVerify: true
     kubeScheduler:
       enabled: true
       endpoints:
         - 10.10.10.20
         - 10.10.10.21
         - 10.10.10.26
-      service:
-        enabled: true
-        port: 10259
-        targetPort: 10259
-      serviceMonitor:
-        enabled: true
-        https: true
-        insecureSkipVerify: true
     kubeProxy:
       enabled: true
       endpoints:
@@ -161,7 +151,6 @@ spec:
         enabled: true
         port: 2381
         targetPort: 2381
-    # Setting this option to 0 disabled CPU limits
     prometheusOperator:
       prometheusConfigReloader:
         resources:
