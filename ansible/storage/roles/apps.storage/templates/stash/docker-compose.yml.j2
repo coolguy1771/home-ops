@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  stash:
+    image: stashapp/stash:latest
+    container_name: stash
+    restart: unless-stopped
+    ports:
+      - "9999:9999"
+    # network_mode: host
+    environment:
+      - STASH_STASH=/data/
+      - STASH_GENERATED=/generated/
+      - STASH_METADATA=/metadata/
+      - STASH_CACHE=/cache/
+      - STASH_PORT=9999
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.stash.rule=Host(`stash.{{ SECRET_PRIVATE_DOMAIN }}`)
+      - traefik.http.routers.stash.service=stash
+      - traefik.http.routers.stash.entrypoints=websecure
+      - traefik.http.routers.stash.tls.certresolver=letsencrypt
+      - traefik.http.services.stash.loadbalancer.server.port=9999
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - stash-config:/root/.stash
+      - stash-data:/data
+      - stash-metadata:/metadata
+      - stash-cache:/cache
+      - stash-generated:/generated
+
+volumes:
+  stash-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/stash/config"
+  stash-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/stash/data"
+  stash-metadata:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/stash/metadata"
+  stash-cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/stash/cache"
+  stash-generated:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/stash/generated"

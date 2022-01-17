@@ -1,0 +1,26 @@
+---
+- name: Create stash directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ containers_base_dir }}/apps/stash"
+    - "{{ containers_base_dir }}/data/stash"
+    - "{{ containers_base_dir }}/data/stash/config"
+    - "{{ containers_base_dir }}/data/stash/data"
+    - "{{ containers_base_dir }}/data/stash/metadata"
+    - "{{ containers_base_dir }}/data/stash/cache"
+    - "{{ containers_base_dir }}/data/stash/generated"
+
+- block:
+    - name: Create stash docker compose file
+      ansible.builtin.template:
+        src: stash/docker-compose.yml.j2
+        dest: "{{ containers_base_dir }}/apps/stash/docker-compose.yml"
+        mode: 0755
+    - name: Create stash systemd service file
+      ansible.builtin.template:
+        src: "docker-compose@.service.j2"
+        dest: "/etc/systemd/system/docker-compose@stash.service"
+        mode: 0644
+  notify: Restart stash

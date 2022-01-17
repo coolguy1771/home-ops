@@ -68,3 +68,10 @@
     state: restarted
     enabled: true
     daemon_reload: true
+
+- name: Restart stash
+  ansible.builtin.systemd:
+    name: "docker-compose@stash.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
