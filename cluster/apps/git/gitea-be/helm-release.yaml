@@ -21,7 +21,7 @@ spec:
       repository: gitea/gitea
       tag: 1.15.10
       pullPolicy: IfNotPresent
-      rootless: true # only possible when running 1.14 or later
+      rootless: false # only possible when running 1.14 or later
     ingress:
       enabled: true
       className: nginx
@@ -69,7 +69,8 @@ spec:
         ALLOW_GRACEFUL_RESTARTS: true
         REDIRECT_OTHER_PORT: true
       ui:
-        DEFAULT_THEME: arc-green
+        DEFAULT_THEME: earl-grey
+        THEMES: gitea,arc-green,earl-grey
       database:
         DB_TYPE: postgres
         HOST: gitea-postgresql:5432
