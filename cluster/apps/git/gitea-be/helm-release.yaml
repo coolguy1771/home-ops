@@ -80,7 +80,7 @@ spec:
       cache:
         ENABLED: true
         ADAPTOR: memcache
-        HOST: 127.0.0.1:11211
+        HOST: gitea-memcached:11211
       attachment:
         STORAGE_TYPE: minio
         MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
