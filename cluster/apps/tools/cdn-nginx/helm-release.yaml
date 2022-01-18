@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: gossa
+  name: cdn-nginx
   namespace: tools
 spec:
   interval: 5m
@@ -16,24 +16,14 @@ spec:
       interval: 5m
   values:
     image:
-      repository: pldubouilh/gossa
-      tag: v0.1.8.0
-    nameOverride: gossa
-    env:
-      FOLLOW_SYMLINKS: "true"
-      READONLY: "true"
-      SKIP_HIDDEN_FILE: "true"
-      UID: "1000"
-      GID: "1000"
-      HOST: "0.0.0.0"
-      PORT: "8001"
-      PREFIX: "/"
-      DATADIR: "/data"
+      repository: ghcr.io/coolguy1771/nignx
+      tag: v1.25.0
+    nameOverride: cdn-nginx
     service:
       main:
         ports:
           http:
-            port: 8001
+            port: 8080
     ingress:
       main:
         enabled: true
@@ -41,7 +31,6 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "web-sync"
-
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
@@ -53,12 +42,12 @@ spec:
         tls:
           - hosts:
               - "cdn.${SECRET_PUBLIC_DOMAIN}"
-            secretName: gossa-tls
+            secretName: cdn-nginx-tls
     persistence:
       data:
         enabled: true
         type: custom
-        mountPath: /data
+        mountPath: /var/www/html
         readOnly: true
         volumeSpec:
           nfs:
