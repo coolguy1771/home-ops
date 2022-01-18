@@ -45,6 +45,7 @@ spec:
         tls:
           - hosts:
               - "files.${SECRET_DOMAIN_STUDIO}"
+            secretName: filebrowser-tls
     persistence:
       config:
         enabled: true
