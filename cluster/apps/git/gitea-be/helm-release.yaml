@@ -59,7 +59,6 @@ spec:
         RUN_MODE: prod
         repository:
           SCRIPT_TYPE: bash
-          ROOT: /code/
         server:
           DISABLE_SSH: true
           PROTOCOL: https
