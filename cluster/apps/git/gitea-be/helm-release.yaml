@@ -61,11 +61,13 @@ spec:
         SCRIPT_TYPE: bash
         ROOT: /code/
       server:
+        PROTOCOL: https
         DOMAIN: git.${SECRET_DOMAIN_STUDIO}
         ENABLE_GZIP: true
         LANDING_PAGE: explore
         LFS_START_SERVER: true
         ALLOW_GRACEFUL_RESTARTS: true
+        REDIRECT_OTHER_PORT: true
       database:
         DB_TYPE: postgres
         HOST: gitea-postgresql:5432
