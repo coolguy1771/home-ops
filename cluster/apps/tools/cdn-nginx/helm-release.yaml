@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: ghcr.io/coolguy1771/nignx
-      tag: 1.25.0
+      tag: 1.25.5
     nameOverride: cdn-nginx
     service:
       main:
