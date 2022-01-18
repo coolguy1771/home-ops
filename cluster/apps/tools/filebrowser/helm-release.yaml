@@ -1,0 +1,65 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: filebrowser
+  namespace: tools
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: /charts/kah-common/
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 5m
+  values:
+    fullnameOverride: filebrowser
+    image:
+      repository: docker.io/filebrowser/filebrowser
+      tag: v2.20.1
+    env:
+      FB_DATABASE: "/config/filebrowser.db"
+      FB_ROOT: "/files"
+      FB_LOG: "stdout"
+      TZ: "America/New_York"
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
+          external-dns/is-public: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        hosts:
+          - host: "files.${SECRET_DOMAIN_STUDIO}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "files.${SECRET_DOMAIN_STUDIO}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: media-browser-config-v1
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/blackelement/files
+        mountPath: /files
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 750Mi
