@@ -6,5 +6,4 @@ resources:
   - external-dns
   - ingress-nginx
   - ddns
-  - blocky
   - opnsense
