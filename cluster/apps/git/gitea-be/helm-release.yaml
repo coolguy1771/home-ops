@@ -61,6 +61,7 @@ spec:
         SCRIPT_TYPE: bash
         ROOT: /code/
       server:
+        DISABLE_SSH: true
         PROTOCOL: https
         DOMAIN: git.${SECRET_DOMAIN_STUDIO}
         ENABLE_GZIP: true
