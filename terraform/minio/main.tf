@@ -34,7 +34,6 @@ locals {
   bucket_settings = {
     "k3s"    = { versioning_enabled = false },
     "loki"   = { versioning_enabled = false },
-    "phone"  = { versioning_enabled = false },
     "thanos" = { versioning_enabled = false }
   }
 }
