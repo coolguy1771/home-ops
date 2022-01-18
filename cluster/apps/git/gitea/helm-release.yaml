@@ -68,6 +68,8 @@ spec:
         LFS_START_SERVER: true
         ALLOW_GRACEFUL_RESTARTS: true
         REDIRECT_OTHER_PORT: true
+      ui:
+        DEFAULT_THEME: arc-green
       database:
         DB_TYPE: postgres
         HOST: gitea-postgresql:5432
@@ -79,6 +81,8 @@ spec:
         PASSWORD_CHECK_PWN: true
       service:
         DEFAULT_KEEP_EMAIL_PRIVATE: true
+        DEFAULT_ALLOW_CREATE_ORGANIZATION: false
+        DEFAULT_USER_IS_RESTRICTED: true
       cache:
         ENABLED: true
         ADAPTOR: memcache
