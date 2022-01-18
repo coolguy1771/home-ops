@@ -27,7 +27,7 @@ spec:
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       PAPERLESS_TIME_ZONE: UTC
-      PAPERLESS_DBHOST: postgresql://paperless-postgres
+      PAPERLESS_DBHOST: postgresql://paperless-postgres:5432
     ingress:
       main:
         enabled: true
