@@ -1,5 +1,4 @@
 ---
-
 - block:
     - name: Create GeoIP Update config
       ansible.builtin.template:

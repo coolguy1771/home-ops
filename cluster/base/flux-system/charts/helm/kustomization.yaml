@@ -39,4 +39,3 @@ resources:
   - vector-charts.yaml
   - cilium-charts.yaml
   - gitea-charts.yaml
-

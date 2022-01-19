@@ -20,7 +20,6 @@ _... managed with Flux, Renovate and GitHub Actions_ :robot:
 
 </div>
 
-
 ---
 
 ## :book:&nbsp; Overview
