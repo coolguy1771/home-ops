@@ -19,8 +19,8 @@ jobs:
         uses: tibdex/github-app-token@v1
         id: generate-token
         with:
-          app_id: "${{ secrets.ROSEY_BOT_APP_ID }}"
-          private_key: "${{ secrets.ROSEY_BOT_APP_PRIVATE_KEY }}"
+          app_id: "${{ secrets.LUMIERE_BOT_APP_ID }}"
+          private_key: "${{ secrets.LUMIERE_BOT_APP_PRIVATE_KEY }}"
       - name: Lint
         uses: github/super-linter/slim@v4
         env:
