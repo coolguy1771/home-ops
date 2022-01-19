@@ -3,16 +3,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - cert-manager.yaml
-  - metallb-system.yaml
   - networking.yaml
-  - apps.yaml
   - media.yaml
-  - external.yaml
   - monitoring.yaml
-  - game-servers.yaml
   - auth.yaml
   - calico-system.yaml
   - rook-ceph.yaml
   - tools.yaml
   - website.yaml
   - git.yaml
+  - kasten-io.yaml
+
