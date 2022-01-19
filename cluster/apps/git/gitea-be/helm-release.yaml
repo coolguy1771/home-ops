@@ -67,7 +67,7 @@ spec:
           LANDING_PAGE: explore
           LFS_START_SERVER: true
           ALLOW_GRACEFUL_RESTARTS: true
-          REDIRECT_OTHER_PORT: true
+          REDIRECT_OTHER_PORT: false
         ui:
           DEFAULT_THEME: earl-grey
           THEMES: gitea,arc-green,earl-grey
