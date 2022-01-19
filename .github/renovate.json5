@@ -1,5 +1,5 @@
 {
-  "extends": [
+"extends": [
     ":enableRenovate",
     "config:base",
     ":disableRateLimiting",
@@ -12,6 +12,12 @@
     "github>coolguy1771/home-ops//.github/renovate/labels",
     "github>coolguy1771/home-ops//.github/renovate/semanticCommits"
   ],
+  "platform": "github",
+  "username": "lumiere-bot[bot]",
+  "repositories": ["coolguy1771/home-ops"],
+  "onboarding": false,
+  "requireConfig": false,
+  "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
   "timezone": "America/New_York",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": [
