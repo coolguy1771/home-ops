@@ -46,6 +46,10 @@
   tags:
     - vector
 
+- import_tasks: stash.yml
+  tags:
+    - stash
+
 - import_tasks: docker.yml
   tags:
     - docker
