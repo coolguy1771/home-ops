@@ -49,61 +49,61 @@ spec:
         username: ${SECRET_GITEA_USERNAME}
         password: ${SECRET_GITEA_PASSWORD}
         email: ${SECRET_GITEA_EMAIL}
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-    config:
-      #  APP_NAME: "Gitea: Git with a cup of tea"
-      RUN_USER: git
-      RUN_MODE: prod
-      repository:
-        SCRIPT_TYPE: bash
-        ROOT: /code/
-      server:
-        PROTOCOL: https
-        DOMAIN: git.${SECRET_PUBLIC_DOMAIN}
-        ENABLE_GZIP: true
-        LANDING_PAGE: explore
-        LFS_START_SERVER: true
-        ALLOW_GRACEFUL_RESTARTS: true
-        REDIRECT_OTHER_PORT: true
-      ui:
-        DEFAULT_THEME: arc-green
-      database:
-        DB_TYPE: postgres
-        HOST: gitea-postgresql:5432
-        NAME: gitea
-        PASSWD: ${SECRET_GITEA_POSTGRES_PASSWORD}
-      security:
-        SECRET_KEY: ${SECRET_GITEA_SECRET_KEY}
-        PASSWORD_COMPLEXITY: lower,upper,digit,spec
-        PASSWORD_CHECK_PWN: true
-      service:
-        DEFAULT_KEEP_EMAIL_PRIVATE: true
-        DEFAULT_ALLOW_CREATE_ORGANIZATION: false
-        DEFAULT_USER_IS_RESTRICTED: true
-      cache:
-        ENABLED: true
-        ADAPTOR: memcache
-        HOST: gitea-memcached:11211
-      attachment:
-        STORAGE_TYPE: minio
-        MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
-        MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
-        MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
-        MINIO_BUCKET: gitea
-      cron:
-        ENABLED: true
       metrics:
-        ENABLED: true
-        ENABLED_ISSUE_BY_LABEL: true
-        ENABLED_ISSUE_BY_REPOSITORY: true
-      storage:
-        MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
-        MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
-        MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
-        MINIO_BUCKET: gitea
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      config:
+        #  APP_NAME: "Gitea: Git with a cup of tea"
+        RUN_USER: git
+        RUN_MODE: prod
+        repository:
+          SCRIPT_TYPE: bash
+          ROOT: /code/
+        server:
+          PROTOCOL: https
+          DOMAIN: git.${SECRET_PUBLIC_DOMAIN}
+          ENABLE_GZIP: true
+          LANDING_PAGE: explore
+          LFS_START_SERVER: true
+          ALLOW_GRACEFUL_RESTARTS: true
+          REDIRECT_OTHER_PORT: true
+        ui:
+          DEFAULT_THEME: arc-green
+        database:
+          DB_TYPE: postgres
+          HOST: gitea-postgresql:5432
+          NAME: gitea
+          PASSWD: ${SECRET_GITEA_POSTGRES_PASSWORD}
+        security:
+          SECRET_KEY: ${SECRET_GITEA_SECRET_KEY}
+          PASSWORD_COMPLEXITY: lower,upper,digit,spec
+          PASSWORD_CHECK_PWN: true
+        service:
+          DEFAULT_KEEP_EMAIL_PRIVATE: true
+          DEFAULT_ALLOW_CREATE_ORGANIZATION: false
+          DEFAULT_USER_IS_RESTRICTED: true
+        cache:
+          ENABLED: true
+          ADAPTOR: memcache
+          HOST: gitea-memcached:11211
+        attachment:
+          STORAGE_TYPE: minio
+          MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
+          MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
+          MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
+          MINIO_BUCKET: gitea
+        cron:
+          ENABLED: true
+        metrics:
+          ENABLED: true
+          ENABLED_ISSUE_BY_LABEL: true
+          ENABLED_ISSUE_BY_REPOSITORY: true
+        storage:
+          MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
+          MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
+          MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
+          MINIO_BUCKET: gitea
     postgresql:
       enabled: true
       global:
