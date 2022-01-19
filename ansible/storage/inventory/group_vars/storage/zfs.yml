@@ -47,6 +47,13 @@ zfs_filesystems:
     owner: 568
     group: 568
     mountpoint: "/cairo/PersistentVolumeClaims"
+  - name: BlackElement
+    pool: cairo
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24"
+    state: present
+    owner: 568
+    group: 568
+    mountpoint: "/cairo/blackelement"
   - name: vmware
     pool: cairo
     sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@192.168.1.0/24,rw=@10.10.10.0/24"
