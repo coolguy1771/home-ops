@@ -31,12 +31,12 @@ spec:
                   subPath: cloudflare-ddns.sh
                   readOnly: true
           volumes:
-            - name: cloudflare-ddns
+            - name: cloudflare-ddns-home
               projected:
                 defaultMode: 0775
                 sources:
                   - configMap:
-                      name: cloudflare-ddns
+                      name: cloudflare-ddns-home
                       items:
                         - key: cloudflare-ddns.sh
                           path: cloudflare-ddns.sh

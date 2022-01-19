@@ -6,7 +6,7 @@ resources:
   - secret.sops.yaml
 namespace: networking
 configMapGenerator:
-  - name: cloudflare-ddns
+  - name: cloudflare-ddns-home
     files:
       - cloudflare-ddns.sh
 generatorOptions:
