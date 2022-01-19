@@ -26,7 +26,7 @@ spec:
                 - "/bin/bash"
                 - "/app/cloudflare-ddns.sh"
               volumeMounts:
-                - name: cloudflare-ddns
+                - name: cloudflare-ddns-icb
                   mountPath: /app/cloudflare-ddns.sh
                   subPath: cloudflare-ddns.sh
                   readOnly: true
