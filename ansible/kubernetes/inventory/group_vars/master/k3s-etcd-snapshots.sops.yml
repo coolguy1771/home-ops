@@ -1,8 +1,8 @@
 #ENC[AES256_GCM,data:JOUZJ2wNBxbbvJ16olpLy3M=,iv:zZt9Y1h+JeUuuFVY6z3sRInOaH3+JgCd+B/hZTmBipQ=,tag:3Wu9I/Asb1ZwruyLA0Shjg==,type:comment]
 kind: Secret
-SECRET_MINIO_ACCESS_KEY: ENC[AES256_GCM,data:nFfHxeWIN1DYLWkkjImYgjrRAnvrGQI3RDQRztTYSsI=,iv:Q0iLUg4ry1N2ymaDbhHl7HEnSM6WJG1JM8KLm3Anp5o=,tag:TzJU1BGXI6bhrcbCw5Q6zw==,type:str]
-SECRET_MINIO_SECRET_KEY: ENC[AES256_GCM,data:KT5N7OqO4b+V0Ojw/mAJbD8vUHiHo/WuyPqmSldaARs=,iv:vSY1qcaka1FCpDczPDSBxHVxSl67O+xJ3KGrohmh7Jw=,tag:vqjyTa0NmO4CFdKBLanw/A==,type:str]
-SECRET_PRIVATE_DOMAIN: ENC[AES256_GCM,data:3jLcHuybItUxU7xq0Q3Qq346,iv:ziOzHe3Ok4dcEjpsRn73RXnicHtxHSCcXqm4XO78DpM=,tag:gieplEAMx3KmBWdqX9rmew==,type:str]
+SECRET_MINIO_ACCESS_KEY: ENC[AES256_GCM,data:4c7yezudpzjEbbCkVrpa7BzMA/4=,iv:hAGvPZAG+wxZUENN9sSfzB93qSJ2NWhDvaCLuLq34E4=,tag:CbMfVKjgD6Kr6NKRxd3FlA==,type:str]
+SECRET_MINIO_SECRET_KEY: ENC[AES256_GCM,data:/a2riGsqPWAgmtTOmXifULlQbEo=,iv:LcEhQI2XoLKANjOOJLyw8/zi3cv8URnlglTCzNJqInE=,tag:RTz6wQElibRzdOq5IGUDdA==,type:str]
+SECRET_PRIVATE_DOMAIN: ENC[AES256_GCM,data:LgVhd4RqARV1oewrTEc=,iv:osxQ7CXYQ1iGkKPvT+TwtM/cqc5q4JElhIeJmS8OIvo=,tag:sh4DZL17xthoqlHwO0z5qA==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -18,8 +18,8 @@ sops:
             UXUyNGFmTDVIWlZ1OTRsNTJpdHFJTTgKAGrZnb8oitsBjNlL33kRKlVwdarEXkpj
             iJqrhKhKYiyFdGxZDPI4Oit+QtDCctxo2N95YCt4J+3oGc2kYHhm/g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2021-12-31T04:40:39Z"
-    mac: ENC[AES256_GCM,data:2HzapvzGxOwclBqt8qjNaJjDObyE2xp3348V5ZRhmhBpuJz5O7+djyJiFqKgkJ8WST/3nRN7QRgkMwSpT4f1kfAxFRKD7jbWj31zocquhiikqqvC6COJsW7txrjaLi8M8ZMB3lV28zz/MoFMoaUYiw89mhQ97BdIYWZ5Mn4/kUo=,iv:tvwck5SSwvQuiO79feJsPG3bfHtxIYajlZLsCbJ6r3M=,tag:7/8ad+sMFMIk9RkhI3Krew==,type:str]
+    lastmodified: "2022-01-19T15:56:21Z"
+    mac: ENC[AES256_GCM,data:dSByqAB/LIRNDNkeJqrvGjFqYY++7YyPVJ7S6gdQ5kEjnh4WGhL4HTzJbnXyw8Vuro7mRvFaBiv4y0wxiaoQqB40R1sKtDANOIByd0GFJeLxc688He3IcK55WbQ9BcjDXlO2PsXKdW7vLA1r65vkxVgffF8dy24+lT5WnHYu+0M=,iv:yDD2kgjyT1UmWHDwgxLgD8TO/dKSvAAP5S706m+lqTs=,tag:E26jjvbdcO0cyx6cLDQi4A==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.1
