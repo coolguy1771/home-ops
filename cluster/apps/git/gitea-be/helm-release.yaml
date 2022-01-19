@@ -76,7 +76,7 @@ spec:
           HOST: gitea-postgresql:5432
           NAME: gitea
           USER: gitea
-          PASSWD: "${SECRET_GITEA_BE_POSTGRES_PASSWORD}"
+        #  PASSWD: "${SECRET_GITEA_BE_POSTGRES_PASSWORD}"
         security:
           SECRET_KEY: ${SECRET_GITEA_BE_SECRET_KEY}
           PASSWORD_COMPLEXITY: lower,upper,digit,spec
