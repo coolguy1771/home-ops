@@ -73,7 +73,7 @@ spec:
           THEMES: gitea,arc-green,earl-grey
         database:
           DB_TYPE: postgres
-          HOST: gitea-postgresql:5432
+          HOST: gitea-be-postgresql:5432
           NAME: gitea
           USER: gitea
           PASSWD: ${SECRET_GITEA_BE_POSTGRES_PASSWORD}
@@ -88,7 +88,7 @@ spec:
         cache:
           ENABLED: true
           ADAPTOR: memcache
-          HOST: gitea-memcached:11211
+          HOST: gitea-be-memcached:11211
         attachment:
           STORAGE_TYPE: minio
           MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
