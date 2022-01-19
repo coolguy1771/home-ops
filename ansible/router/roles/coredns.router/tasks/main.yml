@@ -5,6 +5,7 @@
     state: directory
     mode: 0755
   loop:
+    - /usr/local/etc/cron.d
     - /usr/local/etc/coredns
     - /var/log/coredns
 
@@ -21,7 +22,9 @@
         dest: "/tmp/coredns-{{ coredns_version }}-freebsd-amd64.tar.gz"
     - name: Extract CoreDNS
       ansible.builtin.shell:
-        cmd: "tar xvf /tmp/coredns-{{ coredns_version }}-freebsd-amd64.tar.gz -C /tmp/coredns-{{ coredns_version }}-freebsd-amd64"
+        cmd: >-
+          mkdir -p /tmp/coredns-{{ coredns_version }}-freebsd-amd64;
+          tar xvf /tmp/coredns-{{ coredns_version }}-freebsd-amd64.tar.gz -C /tmp/coredns-{{ coredns_version }}-freebsd-amd64
     - name: Move CoreDNS binary into place
       ansible.builtin.copy:
         src: /tmp/coredns-{{ coredns_version }}-freebsd-amd64/coredns
@@ -34,6 +37,10 @@
   notify: Restart coredns
 
 - block:
+    - name: Copy kubeconfig
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../cluster/kubeconfig-homedns"
+        dest: /usr/local/etc/coredns/kubeconfig
     - name: Create Corefile
       ansible.builtin.template:
         src: Corefile.j2
