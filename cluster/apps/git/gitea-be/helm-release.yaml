@@ -111,6 +111,8 @@ spec:
       global:
         postgresql:
           postgresqlPassword: ${SECRET_GITEA_BE_POSTGRES_PASSWORD}
+          postgresqlUsername: gitea
+          servicePort: 5432
       persistence:
         size: 10Gi
     memcached:
