@@ -61,7 +61,7 @@ spec:
           SCRIPT_TYPE: bash
         server:
           DISABLE_SSH: true
-          PROTOCOL: https
+          PROTOCOL: http
           DOMAIN: git.${SECRET_DOMAIN_STUDIO}
           ENABLE_GZIP: true
           LANDING_PAGE: explore
