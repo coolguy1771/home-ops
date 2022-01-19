@@ -16,3 +16,4 @@ resources:
   - website
   - rook-ceph
   - git
+  - kasten-io
