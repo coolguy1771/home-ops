@@ -61,7 +61,7 @@ spec:
           SCRIPT_TYPE: bash
           ROOT: /code/
         server:
-          PROTOCOL: https
+          PROTOCOL: http
           DOMAIN: git.${SECRET_PUBLIC_DOMAIN}
           ENABLE_GZIP: true
           LANDING_PAGE: explore
