@@ -67,7 +67,6 @@ spec:
           LANDING_PAGE: explore
           LFS_START_SERVER: true
           ALLOW_GRACEFUL_RESTARTS: true
-          REDIRECT_OTHER_PORT: true
         ui:
           DEFAULT_THEME: arc-green
         database:
