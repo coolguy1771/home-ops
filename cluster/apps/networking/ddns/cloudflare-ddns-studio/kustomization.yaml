@@ -6,7 +6,7 @@ resources:
   - secret.sops.yaml
 namespace: networking
 configMapGenerator:
-  - name: cloudflare-ddns-icb
+  - name: cloudflare-ddns-studio
     files:
       - cloudflare-ddns.sh
 generatorOptions:
