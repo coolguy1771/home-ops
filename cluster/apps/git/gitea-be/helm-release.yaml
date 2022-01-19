@@ -20,7 +20,7 @@ spec:
       repository: gitea/gitea
       tag: 1.15.10
       pullPolicy: IfNotPresent
-      rootless: false # only possible when running 1.14 or later
+      rootless: true # only possible when running 1.14 or later
     ingress:
       enabled: true
       className: nginx
