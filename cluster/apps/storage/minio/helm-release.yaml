@@ -8,6 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://operator.min.io/
       chart: minio-operator
       version: 4.3.7
       sourceRef:

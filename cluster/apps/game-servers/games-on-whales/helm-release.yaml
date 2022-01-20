@@ -9,6 +9,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: games-on-whales
       version: 1.6.0
       sourceRef:
