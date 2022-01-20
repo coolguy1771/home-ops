@@ -1,0 +1,38 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_STUDIO}"
+    external-dns/is-public: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: arma-webadmin
+  namespace: tools
+spec:
+  rules:
+    - host: panel.${SECRET_DOMAIN_PANEL}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: pufferpanel
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - panel.${SECRET_DOMAIN_PANEL}
+      secretName: arma-webadmin-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arma-webadmin
+  namespace: tools
+  annotations: {}
+spec:
+  type: ExternalName
+  externalName: panel.${SECRET_PRIVATE_DOMAIN}
+  ports:
+    - port: 3000
