@@ -7,8 +7,8 @@ on: # yamllint disable-line rule:truthy
     - cron: "0 0 * * *"
 
 env:
-  CLOUDFLARE_IP_RANGES_FILE: cluster/apps/networking/ingress-nginx/cloudflare-ip-ranges.txt
-
+  CLOUDFLARE_IP_RANGES_FILE: >-
+    cluster/apps/networking/ingress-nginx/cloudflare-ip-ranges.txt
 jobs:
   cloudflare-ip-ranges-update:
     name: Cloudflare IP Ranges
@@ -20,8 +20,8 @@ jobs:
         uses: tibdex/github-app-token@v1
         id: generate-token
         with:
-          app_id: "${{ secrets.LUMIERE_BOT_APP_ID }}"
-          private_key: "${{ secrets.LUMIERE_BOT_APP_PRIVATE_KEY }}"
+          app_id: "${{ secrets.BOT_APP_ID }}"
+          private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
       - name: Cloudflare IP Ranges
         run: |
           bash ./.github/scripts/cloudflare-ip-ranges.sh > ${{ env.CLOUDFLARE_IP_RANGES_FILE }}
@@ -33,9 +33,6 @@ jobs:
           delete-branch: true
           title: "chore(ci): update cloudflare IP ranges"
           signoff: true
-          committer: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
-          author: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
-          assignees: "coolguy1771"
           commit-message: "chore(ci): update cloudflare IP ranges"
           body: |
             Update Cloudflare IP ranges from https://www.cloudflare.com/ips/

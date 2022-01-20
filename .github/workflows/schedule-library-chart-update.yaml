@@ -17,8 +17,8 @@ jobs:
         uses: tibdex/github-app-token@v1
         id: generate-token
         with:
-          app_id: "${{ secrets.LUMIERE_BOT_APP_ID }}"
-          private_key: "${{ secrets.LUMIERE_BOT_APP_PRIVATE_KEY }}"
+          app_id: "${{ secrets.BOT_APP_ID }}"
+          private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
@@ -38,9 +38,6 @@ jobs:
           delete-branch: true
           title: "chore(ci): update kah library chart"
           signoff: true
-          committer: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
-          author: "Tyler Witlin <45468117+coolguy1771@users.noreply.github.com>"
-          assignees: "coolguy1771"
           commit-message: "chore(ci): update kah library chart"
           body: |
             Update the kah library chart
