@@ -104,7 +104,7 @@ I have port forwarded ports `80` and `443` to the load balancer IP of my ingress
 
 ### Dynamic DNS
 
-My home IP can change at any given time and in order to keep my WAN IP address up to date on Cloudflare I have deployed a [CronJob](./cluster/apps/networking/cloudflare-ddns) in my cluster. This periodically checks and updates the `A` record `ipv4.domain.tld`.
+My home IP can change at any given time and in order to keep my WAN IP address up to date on Cloudflare I have deployed a [CronJob](./cluster/apps/networking/ddns) in my cluster. This periodically checks and updates the `A` record `ipv4.domain.tld`.
 
 ---
 
