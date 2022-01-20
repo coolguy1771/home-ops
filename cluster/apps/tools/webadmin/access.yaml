@@ -10,19 +10,19 @@ metadata:
   namespace: tools
 spec:
   rules:
-    - host: panel.${SECRET_DOMAIN_PANEL}
+    - host: "panel.${SECRET_DOMAIN_STUDIO}"
       http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: pufferpanel
+                name: arma-webadmin
                 port:
                   number: 3000
   tls:
     - hosts:
-        - panel.${SECRET_DOMAIN_PANEL}
+        - "panel.${SECRET_DOMAIN_STUDIO}"
       secretName: arma-webadmin-tls
 ---
 apiVersion: v1
@@ -33,6 +33,6 @@ metadata:
   annotations: {}
 spec:
   type: ExternalName
-  externalName: panel.${SECRET_PRIVATE_DOMAIN}
+  externalName: "panel.${SECRET_PRIVATE_DOMAIN}"
   ports:
     - port: 3000
