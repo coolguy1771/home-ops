@@ -34,7 +34,7 @@ spec:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: gitea-tls
+        - secretName: gitea-be-tls
           hosts:
             - git.${SECRET_DOMAIN_STUDIO}
     persistence:
