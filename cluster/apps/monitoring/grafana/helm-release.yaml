@@ -31,7 +31,6 @@ spec:
       GF_DATE_FORMATS_INTERVAL_DAY: "DD/MM"
       GF_DATE_FORMATS_INTERVAL_MONTH: "MM-YYYY"
       GF_DATE_FORMATS_INTERVAL_YEAR: "YYYY"
-      VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
       #GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
       #GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
       #GF_AUTH_GENERIC_OAUTH_CLIENT_ID: "${SECRET_GRAFANA_CLIENT_ID}"
@@ -130,6 +129,9 @@ spec:
       dashboards:
         enabled: true
         searchNamespace: ALL
+        folderAnnotation: grafana_folder
+        provider:
+          foldersFromFilesStructure: true
       datasources:
         enabled: true
         searchNamespace: ALL
