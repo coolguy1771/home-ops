@@ -28,3 +28,10 @@ spec:
           args:
             - "--v=5"
             - "--leader-election=true"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: snapshot-controller
