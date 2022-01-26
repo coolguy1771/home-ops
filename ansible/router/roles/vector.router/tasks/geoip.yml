@@ -1,5 +1,4 @@
 ---
-
 - name: Install the community repository
   ansible.builtin.get_url:
     url: https://www.routerperformance.net/mimugmail.conf
