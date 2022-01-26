@@ -17,7 +17,7 @@
   "repositories": ["coolguy1771/home-ops"],
   "onboarding": false,
   "requireConfig": false,
-  "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
+  "gitAuthor": "lumiere-bot <98047013+lumiere-bot[bot]@users.noreply.github.com",
   "timezone": "America/New_York",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": [
@@ -65,16 +65,6 @@
       ],
       "datasourceTemplate": "helm"
     },
-    // regexManager to read and process Rook-Ceph CRDs
-    {
-      "fileMatch": [
-        "cluster/crds/rook-ceph/.+\\.yaml$"
-      ],
-      "matchStrings": [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n"
-      ],
-      "datasourceTemplate": "helm"
-    },
     // regexManager to read and process External Snapshotter and External DNS CRDs
     {
       "fileMatch": [
@@ -83,6 +73,16 @@
       ],
       "matchStrings": [
         "datasource=(?<datasource>.*?)\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+    // regexManager to read and process github-releases in ansible directory
+    {
+      "fileMatch": [
+        "ansible/.+\\.yml$"
+      ],
+      "matchStrings": [
+        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)\n.*?_version: \"(?<currentValue>.*)\"\n"
       ],
       "datasourceTemplate": "github-releases"
     }
