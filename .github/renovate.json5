@@ -17,8 +17,7 @@
   "repositories": ["coolguy1771/home-ops"],
   "onboarding": false,
   "requireConfig": false,
-  "gitAuthor": "lumiere-bot <98047013+lumiere-bot[bot]@users.noreply.github.com",
-  "timezone": "America/New_York",
+  "gitAuthor": "lumiere-bot <98047013+rosey-bot[bot]@users.noreply.github.com>",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": [
     "prIgnoreNotification"
