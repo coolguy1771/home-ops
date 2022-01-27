@@ -18,7 +18,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/nginx
-      tag: 1.21.5-debian-10-r0
+      tag: 1.21.6-debian-10-r0
       pullPolicy: IfNotPresent
     podSecurityContext:
       enabled: true
