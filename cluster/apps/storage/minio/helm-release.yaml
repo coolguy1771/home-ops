@@ -19,7 +19,7 @@ spec:
     console:
       image:
         repository: minio/console
-        tag: v0.13.3
+        tag: v0.14.1
         pullPolicy: IfNotPresent
       ingress:
         enabled: true
