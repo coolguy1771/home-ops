@@ -20,7 +20,7 @@ spec:
   values:
     replicaCount: 2
     nfs:
-      server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+      server: osiris.${SECRET_PRIVATE_DOMAIN}
       path: "/cairo/PersistentVolumeClaims"
       mountOptions:
         - noatime
