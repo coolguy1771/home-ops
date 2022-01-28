@@ -81,6 +81,7 @@ spec:
         mountPath: /usr/src/paperless/export
     redis:
       enabled: true
+      architecture: true
     postgresql:
       enabled: true
       postgresqlUsername: paperless
