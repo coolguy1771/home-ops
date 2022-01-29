@@ -44,7 +44,7 @@ spec:
         ssl-protocols: "TLSv1.3 TLSv1.2"
         use-forwarded-headers: "true"
         enable-brotli: "true"
-        use-gzip: "true"
+        use-gzip: "false"
       metrics:
         enabled: true
         serviceMonitor:
