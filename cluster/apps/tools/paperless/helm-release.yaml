@@ -30,6 +30,8 @@ spec:
       PAPERLESS_DBUSER: paperless
       PAPERLESS_DBPASS: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
       PAPERLESS_DBHOST: paperless-postgres
+      PAPERLESS_DBPORT: 5432
+      PAPERLESS_DBSSLMODE: disable
     ingress:
       main:
         enabled: true
