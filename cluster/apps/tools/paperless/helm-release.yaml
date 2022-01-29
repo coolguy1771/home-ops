@@ -32,6 +32,7 @@ spec:
       PAPERLESS_DBHOST: 10.96.211.217
       PAPERLESS_DBPORT: 5432
       PAPERLESS_DBSSLMODE: disable
+      PAPERLESS_CORS_ALLOWED_HOSTS: paper.${SECRET_PUBLIC_DOMAIN}
     ingress:
       main:
         enabled: true
