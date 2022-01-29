@@ -29,7 +29,7 @@ spec:
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: paperless
       PAPERLESS_DBPASS: ${SECRET_PAPERLESS_POSTGRES_PASSWORD}
-      PAPERLESS_DBHOST: 10.96.211.217
+      PAPERLESS_DBHOST: paperless-postgresql.tools.svc.cluster.local
       PAPERLESS_DBPORT: 5432
       PAPERLESS_DBSSLMODE: disable
       PAPERLESS_CORS_ALLOWED_HOSTS: https://paper.${SECRET_PUBLIC_DOMAIN}
