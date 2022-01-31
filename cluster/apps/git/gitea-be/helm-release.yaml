@@ -20,7 +20,7 @@ spec:
       repository: gitea/gitea
       tag: 1.16.0
       pullPolicy: IfNotPresent
-      rootless: true # only possible when running 1.14 or later
+      rootless: false # only possible when running 1.14 or later
     ingress:
       enabled: true
       className: nginx
@@ -58,7 +58,6 @@ spec:
         RUN_MODE: prod
         repository:
           SCRIPT_TYPE: bash
-          ROOT: /code/
         server:
           DISABLE_SSH: true
           PROTOCOL: http
