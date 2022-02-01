@@ -22,14 +22,14 @@ zfs_pools:
 zfs_filesystems:
   - name: Media
     pool: cairo
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/8"
     state: present
     owner: 568
     group: 568
     mountpoint: "/cairo/Media"
   - name: Data
     pool: cairo
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/8"
     state: present
     owner: 568
     group: 568
@@ -67,7 +67,7 @@ zfs_filesystems:
     sharesmb: true
     owner: 568
     group: 568
-    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/24"
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/8"
     smb_options:
       browseable: "yes"
       create_directory_mask: "0755"
