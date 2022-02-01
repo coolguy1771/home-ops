@@ -6,8 +6,8 @@ metadata:
   namespace: flux-system
 data:
   NAS_ADDR: "osiris.${SECRET_PRIVATE_DOMAIN}"
+  TIMEZONE: "America/New_York"
   #
-  SVC_BLOCKY_ADDR: "10.0.42.4"
   SVC_PLEX_ADDR: "10.0.42.3"
   SVC_NGINX_ADDR: "10.0.42.2"
   SVC_QBITTORRENT_ADDR: "10.0.42.5"

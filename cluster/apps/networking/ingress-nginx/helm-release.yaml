@@ -15,12 +15,14 @@ spec:
         name: ingress-nginx-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
   values:
     controller:
       replicaCount: 3
       extraEnvs:
         - name: TZ
-          value: America/New_York
+          value: "${TIMEZONE}"
       service:
         externalIPs:
           - "${SVC_NGINX_ADDR}"
@@ -32,19 +34,18 @@ spec:
       config:
         client-header-timeout: 120
         client-body-buffer-size: "100M"
-        custom-http-errors: 401,403,404,500,501,502,503
+        client-body-timeout: 120
+        custom-http-errors: >-
+          401,403,404,500,501,502,503
+        enable-brotli: "true"
         forwarded-for-header: "CF-Connecting-IP"
         hsts-max-age: "31449600"
         keep-alive: 120
         keep-alive-requests: 10000
         proxy-body-size: "100M"
-        # Cloudflare IP Addresses - Used to forward the real client IP address to the backend service
-        # https://www.cloudflare.com/ips/
-        proxy-real-ip-cidr: "103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/13,104.24.0.0/14,108.162.192.0/18,131.0.72.0/22,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,2400:cb00::/32,2606:4700::/32,2803:f800::/32,2405:b500::/32,2405:8100::/32,2a06:98c0::/29,2c0f:f248::/32"
         ssl-protocols: "TLSv1.3 TLSv1.2"
         use-forwarded-headers: "true"
-        enable-brotli: "true"
-        use-gzip: "false"
+        use-gzip: "true"
       metrics:
         enabled: true
         serviceMonitor:
@@ -63,6 +64,13 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/instance: ingress-nginx
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      podAnnotations:
+        configmap.reloader.stakater.com/reload: "cloudflare-proxied-networks"
       resources:
         requests:
           memory: 250Mi
@@ -72,8 +80,17 @@ spec:
     defaultBackend:
       enabled: true
       image:
-        repository: ghcr.io/coolguy1771/custom-error-pages
-        tag: 1.4.0
+        repository: ghcr.io/tarampampam/error-pages
+        tag: 2.5.0
       extraEnvs:
-        - name: ERROR_FILES_PATH
-          value: ./themes/knockout
+        - name: TEMPLATE_NAME
+          value: ghost
+        - name: SHOW_DETAILS
+          value: "false"
+  valuesFrom:
+    # Cloudflare Networks
+    # https://www.cloudflare.com/ips/
+    - kind: ConfigMap
+      name: cloudflare-proxied-networks
+      valuesKey: cloudflare-proxied-networks.txt
+      targetPath: controller.config.proxy-real-ip-cidr
