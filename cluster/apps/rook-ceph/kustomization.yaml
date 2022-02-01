@@ -5,3 +5,4 @@ resources:
   - dashboard
   - snapshot-controller
   - volume-snapshot-class.yaml
+  - rook-direct-mount
