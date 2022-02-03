@@ -6,5 +6,4 @@ resources:
   - vaultwarden
   - photoprism
   - nginx
-  - hajimari
   - resume
