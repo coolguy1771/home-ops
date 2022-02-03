@@ -24,7 +24,7 @@ spec:
       main:
         ports:
           http:
-            port: 3000
+            port: 8000
     ingress:
       main:
         enabled: true
