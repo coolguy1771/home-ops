@@ -12,7 +12,6 @@ resources:
   - system-upgrade
   - tools
   - kube-system
-  - website
   - rook-ceph
   - git
   - kasten-io

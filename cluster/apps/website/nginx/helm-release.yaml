@@ -54,7 +54,7 @@ spec:
         kubernetes.io/ingress.class: "nginx"
       tls: true
     metrics:
-      enabled: false
+      enabled: true
       image:
         registry: docker.io
         repository: bitnami/nginx-exporter
@@ -72,6 +72,6 @@ spec:
           prometheus.io/port: "{{ .Values.metrics.service.port }}"
         requests: {}
       serviceMonitor:
-        enabled: false
+        enabled: true
         namespace: "monitoring"
         interval: "10"
