@@ -17,10 +17,12 @@ spec:
         name: nfs-subdir-external-provisioner-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
   values:
-    replicaCount: 2
+    replicaCount: 3
     nfs:
-      server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+      server: "192.168.1.147"
       path: "/cairo/PersistentVolumeClaims"
       mountOptions:
         - noatime
