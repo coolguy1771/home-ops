@@ -86,7 +86,7 @@ spec:
         - name: TEMPLATE_NAME
           value: ghost
         - name: SHOW_DETAILS
-          value: "false"
+          value: "true"
   valuesFrom:
     # Cloudflare Networks
     # https://www.cloudflare.com/ips/
