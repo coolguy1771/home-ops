@@ -26,13 +26,20 @@
   // set up renovate managers
   "docker-compose": {
     "fileMatch": [
-      "(^|\/)docker-compose.*\.ya?ml$",
-      "(^|\/)docker-compose.*\.ya?ml\.j2$"
+      "ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$"
+    ]
+  },
+  "flux": {
+    "fileMatch": [
+      "cluster/.+\\.ya?ml$"
+    ],
+    "ignorePaths": [
+      "cluster/.+/gotk-components\\.ya?ml$"
     ]
   },
   "helm-values": {
     "fileMatch": [
-      "cluster/.+/helm-release\\.ya?ml$"
+      "cluster/.+\\.ya?ml$"
     ]
   },
   "helmv3": {
@@ -45,15 +52,7 @@
       "cluster/.+\\.ya?ml$"
     ],
     "ignorePaths": [
-      "cluster/base/"
-    ]
-  },
-  "flux": {
-    "fileMatch": [
-      "cluster/.+\\.ya?ml$"
-    ],
-    "ignorePaths": [
-      "cluster/base/"
+      "cluster/.+/gotk-components\\.ya?ml$"
     ]
   },
   "regexManagers": [
@@ -134,12 +133,14 @@
     },
     {
       "matchDatasources": [
-        "docker"
+        "docker",
+        "github-releases"
       ],
       "versioning": "loose",
       "matchPackageNames": [
         "ghcr.io/k8s-at-home/plex",
-        "ghcr.io/k8s-at-home/qbittorrent"
+        "ghcr.io/k8s-at-home/qbittorrent",
+        "Hypfer/Valetudo"
       ]
     },
     // group packages
