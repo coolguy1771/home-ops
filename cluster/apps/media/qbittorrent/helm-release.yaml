@@ -64,6 +64,7 @@ spec:
         tls:
           - hosts:
               - "torrent.${SECRET_PUBLIC_DOMAIN}"
+            secretName: qbittorrent-tls
     metrics:
       enabled: true
       exporter:
