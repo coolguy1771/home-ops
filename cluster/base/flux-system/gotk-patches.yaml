@@ -1,4 +1,5 @@
 ---
+# Increase memory limits on source-controller
 apiVersion: apps/v1
 kind: Deployment
 metadata:
