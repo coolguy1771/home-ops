@@ -8,8 +8,6 @@ resources:
   - kube-prometheus-stack
   - loki
   - node-problem-detector
-  - opnsense
-  # - pushgateway
   - snmp-exporter
   - speedtest-exporter
   - thanos

@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - dashboard
   - issuers
+  - prometheus-rule.yaml
