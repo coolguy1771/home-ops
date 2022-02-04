@@ -79,4 +79,3 @@ spec:
             sources:
               - configMap:
                   name: direct-mount-scripts
-  
