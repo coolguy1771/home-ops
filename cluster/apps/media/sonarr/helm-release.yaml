@@ -9,16 +9,20 @@ spec:
   chart:
     spec:
       chart: sonarr
-      version: 15.3.0
+      version: 16.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
   values:
     image:
-      repository: ghcr.io/k8s-at-home/sonarr
-      pullPolicy: IfNotPresent
-      tag: v3.0.6.1342
+      repository: ghcr.io/k8s-at-home/sonarr-develop
+      tag: v3.0.6.1451
+    env:
+      TZ: "${TIMEZONE}"
     ingress:
       main:
         enabled: true
@@ -27,32 +31,23 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "television-box"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css"></head>';
             sub_filter_once on;
         hosts:
-          - host: "sonarr.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "sonarr.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "sonarr.${SECRET_PUBLIC_DOMAIN}"
-            secretName: sonarr-tls
-    persistence:
-      config:
-        enabled: true
-        existingClaim: sonarr-config-v1
-      tv:
-        enabled: true
-        type: custom
-        mountPath: /tv
-        readOnly: false
-        volumeSpec:
-          nfs:
-            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Media/tv-sonarr
+              - *host
+    podSecurityContext:
+      supplementalGroups:
+        - 100
     metrics:
       enabled: true
       serviceMonitor:
@@ -63,14 +58,35 @@ spec:
       exporter:
         image:
           repository: ghcr.io/onedr0p/exportarr
-          tag: v0.6.2
+          tag: v1.0.0
         env:
           port: 9794
           additionalMetrics: true
-          unknownQueueItems: false
+          unknownQueueItems: true
+    persistence:
+      config:
+        enabled: true
+        existingClaim: sonarr-config-v1
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Media
+        mountPath: /media
+      backup:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+            path: /cairo/Data/Backups/app/sonarr
+        mountPath: /config/Backups
+        readOnly: false
     resources:
       requests:
         memory: 250Mi
         cpu: 500m
       limits:
-        memory: 1500Mi
+        memory: 2000Mi
