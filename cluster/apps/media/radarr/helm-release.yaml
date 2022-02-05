@@ -45,6 +45,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: radarr-tls
     podSecurityContext:
       supplementalGroups:
         - 100
