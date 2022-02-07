@@ -61,12 +61,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -84,12 +82,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -108,12 +104,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -132,12 +126,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -156,12 +148,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -179,12 +169,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -202,12 +190,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -225,12 +211,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -248,12 +232,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -271,12 +253,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -294,12 +274,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -316,12 +294,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -339,12 +315,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
@@ -362,12 +336,10 @@ spec:
               - media
               - monitoring
               - networking
-              - game-servers
-              - external
+              - git
               - rook-ceph
               - website
               - tools
-              - falco-system
               - calico-system
               - auth
               - cert-manager
