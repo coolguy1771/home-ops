@@ -16,6 +16,7 @@ spec:
         namespace: flux-system
       interval: 5m
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -41,7 +42,9 @@ spec:
                 text: >-
                   {{ range .Alerts -}}
                     **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
                   **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
+
                   **Details:**
                     {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
                     {{ end }}
@@ -72,8 +75,6 @@ spec:
         ingressClassName: "nginx"
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
-          external-dns/is-public: "true"
         hosts:
           - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
         tls:
@@ -163,8 +164,6 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
-          external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "prometheus.${SECRET_PUBLIC_DOMAIN}"
