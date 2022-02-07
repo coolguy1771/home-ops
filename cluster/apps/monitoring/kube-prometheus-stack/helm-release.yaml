@@ -75,10 +75,10 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
         hosts:
-          - "alert-manager.${SECRET_PUBLIC_DOMAIN}"
+          - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
         tls:
           - hosts:
-              - "alert-manager.${SECRET_PUBLIC_DOMAIN}"
+              - *host
             secretName: "alert-manager-tls"
       alertmanagerSpec:
         storage:
@@ -167,10 +167,10 @@ spec:
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-          - "prometheus.${SECRET_PUBLIC_DOMAIN}"
+          - &host "prometheus.${SECRET_PUBLIC_DOMAIN}"
         tls:
           - hosts:
-              - "prometheus.${SECRET_PUBLIC_DOMAIN}"
+              - *host
             secretName: "prometheus-tls"
       thanosService:
         enabled: true
