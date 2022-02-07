@@ -17,11 +17,11 @@ spec:
       interval: 5m
   install:
     createNamespace: true
-    #remediation:
-    #  retries: 3
-  #upgrade:
-  #  remediation:
-  #    retries: 3
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
     fullnameOverride: prometheus
     alertmanager:
@@ -42,9 +42,7 @@ spec:
                 text: >-
                   {{ range .Alerts -}}
                     **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
-
                   **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
-
                   **Details:**
                     {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
                     {{ end }}
