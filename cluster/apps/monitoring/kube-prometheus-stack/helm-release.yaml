@@ -42,7 +42,9 @@ spec:
                 text: >-
                   {{ range .Alerts -}}
                     **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
                   **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
+
                   **Details:**
                     {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
                     {{ end }}
@@ -54,6 +56,9 @@ spec:
           repeat_interval: 6h
           receiver: "discord"
           routes:
+            - receiver: "null"
+              match:
+                alertname: InfoInhibitor
             - receiver: "null"
               match:
                 alertname: Watchdog
@@ -78,7 +83,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "alert-manager-tls"
+            secretName: alert-manager-tls
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
