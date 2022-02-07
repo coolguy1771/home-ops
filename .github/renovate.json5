@@ -23,6 +23,15 @@
     "prIgnoreNotification"
   ],
   "rebaseWhen": "conflicted",
+  // set up ignored deps
+  "ignoreDeps": [
+    "ghcr.io/fluxcd/helm-controller",
+    "ghcr.io/fluxcd/image-automation-controller",
+    "ghcr.io/fluxcd/image-reflector-controller",
+    "ghcr.io/fluxcd/kustomize-controller",
+    "ghcr.io/fluxcd/notification-controller",
+    "ghcr.io/fluxcd/source-controller"
+  ],
   // set up renovate managers
   "docker-compose": {
     "fileMatch": [
@@ -47,9 +56,6 @@
   "kubernetes": {
     "fileMatch": [
       "cluster/.+\\.ya?ml$"
-    ],
-    "ignorePaths": [
-      "cluster/.+/gotk-components\\.ya?ml$"
     ]
   },
   "regexManagers": [
@@ -109,7 +115,7 @@
       ],
       "commitMessageExtra": "to {{newVersion}}"
     },
-    // custom versioning
+    // packages with custom versioning
     {
       "matchDatasources": [
         "docker"
@@ -128,6 +134,7 @@
         "quay.io/minio/minio"
       ]
     },
+    // packages with loose versioning
     {
       "matchDatasources": [
         "docker",
