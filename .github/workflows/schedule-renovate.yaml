@@ -5,7 +5,7 @@ on: # yamllint disable-line rule:truthy
     inputs:
       dryRun:
         description: "Dry-Run"
-        default: "true"
+        default: "false"
         required: false
       logLevel:
         description: "Log-Level"
@@ -21,7 +21,7 @@ on: # yamllint disable-line rule:truthy
       - ".github/renovate/**.json"
 
 env:
-  LOG_LEVEL: info
+  LOG_LEVEL: debug
   DRY_RUN: false
 
 jobs:
