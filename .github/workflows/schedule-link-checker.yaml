@@ -4,9 +4,6 @@ on: # yamllint disable-line rule:truthy
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
-  push:
-    branches:
-      - main
 
 jobs:
   link-checker:
@@ -24,6 +21,8 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.2.0
         id: lychee
+        env:
+          GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
         with:
           output: ./lychee.md
       - name: Find Link Checker Issue
