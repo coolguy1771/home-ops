@@ -44,7 +44,7 @@ spec:
       image:
         registry: docker.io
         repository: bitnami/git
-        tag: 2.34.1-debian-10-r14
+        tag: 2.35.1-debian-10-r14
         pullPolicy: IfNotPresent
         pullSecrets: []
       ## @param cloneStaticSiteFromGit.repository Git Repository to clone static content from
