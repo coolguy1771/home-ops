@@ -30,7 +30,7 @@ This is a mono repository for my home infrastructure and Kubernetes cluster. I t
 
 ## ⛵ Kubernetes
 
-There's an excellent template over at [k8s-at-home/template-cluster-k3](https://github.com/k8s-at-home/template-cluster-k3s) if you wanted to try and follow along with some of the practices I use here.
+There's an excellent template over at [k8s-at-home/template-cluster-k3s](https://github.com/k8s-at-home/template-cluster-k3s) if you wanted to try and follow along with some of the practices I use here.
 
 ### Installation
 
