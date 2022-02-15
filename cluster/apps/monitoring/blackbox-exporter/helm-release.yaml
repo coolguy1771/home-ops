@@ -15,6 +15,8 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
   values:
     fullnameOverride: blackbox-exporter
     image:
@@ -23,17 +25,15 @@ spec:
       enabled: true
       className: nginx
       annotations:
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
-        external-dns/is-public: "true"
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - host: "blackbox.${SECRET_PUBLIC_DOMAIN}"
+        - host: &host "blackbox.${SECRET_PUBLIC_DOMAIN}"
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - "blackbox.${SECRET_PUBLIC_DOMAIN}"
+            - *host
           secretName: blackbox-tls
     allowIcmp: true
     config:
@@ -68,7 +68,7 @@ spec:
       rules:
         - alert: HostDown
           expr: probe_success == 0
-          for: 1m
+          for: 5m
           labels:
             severity: critical
           annotations:
