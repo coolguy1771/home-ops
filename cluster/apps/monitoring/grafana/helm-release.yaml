@@ -23,27 +23,7 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
-      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_DATE_FORMATS_FULL_DATE: "MMM Do, YYYY hh:mm:ss a"
-      GF_DATE_FORMATS_INTERVAL_SECOND: "hh:mm:ss a"
-      GF_DATE_FORMATS_INTERVAL_MINUTE: "hh:mm a"
-      GF_DATE_FORMATS_INTERVAL_HOUR: "DD/MM hh:mm a"
-      GF_DATE_FORMATS_INTERVAL_DAY: "DD/MM"
-      GF_DATE_FORMATS_INTERVAL_MONTH: "MM-YYYY"
-      GF_DATE_FORMATS_INTERVAL_YEAR: "YYYY"
-      #GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
-      #GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
-      #GF_AUTH_GENERIC_OAUTH_CLIENT_ID: "${SECRET_GRAFANA_CLIENT_ID}"
-      #GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: "${SECRET_GRAFANA_CLIENT_SECRET}"
-      #GF_AUTH_GENERIC_OAUTH_SCOPES: "openid profile email"
-      #GF_AUTH_GENERIC_OAUTH_AUTH_URL: "https://auth.${SECRET_DOMAIN_STUDIO}/application/o/authorize/"
-      #GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://auth.${SECRET_DOMAIN_STUDIO}/application/o/token/"
-      #GF_AUTH_GENERIC_OAUTH_API_URL: "https://auth.${SECRET_DOMAIN_STUDIO}/application/o/userinfo/"
-      #GF_AUTH_SIGNOUT_REDIRECT_URL: "https://auth.${SECRET_DOMAIN_STUDIO}/application/o/grafana/end-session/"
-      # Optionally enable auto-login (bypasses Grafana login screen)
-      #GF_AUTH_OAUTH_AUTO_LOGIN: "true"
-      # Optionally map user groups to Grafana roles
-      #GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'"
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     grafana.ini:
       server:
@@ -152,10 +132,10 @@ spec:
         external-dns/is-public: "true"
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - "grafana.${SECRET_PUBLIC_DOMAIN}"
+        - &host "grafana.${SECRET_PUBLIC_DOMAIN}"
       tls:
         - hosts:
-            - "grafana.${SECRET_PUBLIC_DOMAIN}"
+            *host
           secretName: grafana-tls
     serviceAccount:
       create: true
