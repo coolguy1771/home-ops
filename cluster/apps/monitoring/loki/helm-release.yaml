@@ -24,25 +24,25 @@ spec:
       annotations:
         kubernetes.io/ingress.class: nginx
         cert-manager.io/cluster-issuer: letsencrypt-production
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
-        external-dns/is-public: "true"
       hosts:
-        - host: "loki.${SECRET_PUBLIC_DOMAIN}"
+        - host: &host "loki.${SECRET_PUBLIC_DOMAIN}"
           paths:
             - /
       tls:
         - hosts:
-            - "loki.${SECRET_PUBLIC_DOMAIN}"
+            - *host
           secretName: loki-tls
     serviceMonitor:
       enabled: true
+    # extraArgs:
+    #   log.level: debug
     config:
       limits_config:
         enforce_metric_name: false
         reject_old_samples: true
         reject_old_samples_max_age: 168h
-        ingestion_rate_mb: 8
-        ingestion_burst_size_mb: 12
+        ingestion_rate_mb: 16
+        ingestion_burst_size_mb: 24
       storage_config:
         aws:
           bucketnames: loki
@@ -83,14 +83,14 @@ spec:
             annotations:
               summary: "SMART has reported failures on host {{ $labels.hostname }}"
       #
-      # *arr applications
+      # *arr
       #
       - name: arr
         rules:
           - alert: ArrDatabaseIsLocked
             expr: |
               sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database is locked"[2m])) > 0
-            for: 10s
+            for: 2m
             labels:
               severity: critical
               category: logs
@@ -99,7 +99,7 @@ spec:
           - alert: ArrDatabaseIsMalformed
             expr: |
               sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database disk image is malformed"[2m])) > 0
-            for: 10s
+            for: 2m
             labels:
               severity: critical
               category: logs
