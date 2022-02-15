@@ -15,12 +15,14 @@ spec:
         name: k8s-at-home-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
   values:
     image:
       repository: ghcr.io/k8s-at-home/qbittorrent
-      tag: v4.4.0
+      tag: v4.3.9
     env:
-      TZ: "America/New_York"
+      TZ: "${TIMEZONE}"
     settings:
       automaticPortSetup: false
     service:
@@ -31,6 +33,7 @@ spec:
       bittorrent:
         enabled: true
         type: LoadBalancer
+        # loadBalancerIP: 192.168.70.106
         externalIPs:
           - "${SVC_QBITTORRENT_ADDR}"
         ports:
@@ -45,10 +48,6 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          external-dns/is-public: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
-          # Custom themes provided by https://github.com/gilbN/theme.park
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_hide_header "x-webkit-csp";
             proxy_hide_header "content-security-policy";
@@ -57,13 +56,13 @@ spec:
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/qbittorrent/nord.css"></head>';
             sub_filter_once on;
         hosts:
-          - host: "torrent.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "torrent.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "torrent.${SECRET_PUBLIC_DOMAIN}"
+              - *host
             secretName: qbittorrent-tls
     metrics:
       enabled: true
@@ -71,14 +70,14 @@ spec:
         image:
           repository: ghcr.io/k8s-at-home/prometheus-qbittorrent-exporter
           tag: v1.2.0
-        env:
-          user: "${SECRET_QB_USERNAME}"
-          password: "${SECRET_QB_PASSWORD}"
       serviceMonitor:
         interval: 1m
         scrapeTimeout: 10s
       prometheusRule:
         enabled: true
+    podSecurityContext:
+      supplementalGroups:
+        - 100
     persistence:
       config:
         enabled: true
