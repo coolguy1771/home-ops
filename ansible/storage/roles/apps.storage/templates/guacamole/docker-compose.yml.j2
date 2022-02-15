@@ -1,0 +1,73 @@
+---
+version: "3.8"
+
+services:
+  postgres:
+    image: docker.io/library/postgres:14.1
+    container_name: postgresql
+    restart: unless-stopped
+    network_mode: bridge
+    environment:
+      POSTGRES_DB: guacamo;e
+      POSTGRES_USER: "{{ SECRET_GUACAMOLE_POSTGRESQL_USERNAME }}"
+      POSTGRES_PASSWORD: "{{ SECRET_GUACAMOLE_POSTGRESQL_PASSWORD }}"
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  guacamole:
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.10.1
+    container_name: guacamole
+    network_mode: bridge
+    environment:
+      DATA_SOURCE_NAME: "postgresql://{{ SECRET_POSTGRESQL_USERNAME }}:{{ SECRET_POSTGRESQL_PASSWORD }}@pgsql-server:5432/postgres?sslmode=disable"
+    ports:
+      - 9187:9187
+    links:
+      - postgresql:pgsql-server
+
+  guacd:
+    image: docker.io/dpage/pgadmin4:6.4
+    container_name: postgresql-pgadmin
+    restart: unless-stopped
+    network_mode: bridge
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "{{ SECRET_PGADMIN_USERNAME }}"
+      PGADMIN_DEFAULT_PASSWORD: "{{ SECRET_PGADMIN_PASSWORD }}"
+      PGADMIN_LISTEN_PORT: 12080
+    ports:
+      - 4822:4822
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - postgresql:pgsql-server
+    depends_on:
+      - postgresql
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pgadmin.rule=Host(`pgadmin.{{ SECRET_PRIVATE_DOMAIN }}`)
+      - traefik.http.routers.pgadmin.entrypoints=websecure
+      - traefik.http.routers.pgadmin.tls.certresolver=letsencrypt
+      - traefik.http.services.pgadmin.loadbalancer.server.port=12080
+
+volumes:
+  pg-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/guacamole/data"
+  pgadmin-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/postgresql/pgadmin"
+  pgbackups-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/postgresql/pgbackups"
