@@ -5,6 +5,7 @@ resources:
   - blackbox-exporter
   - botkube
   - grafana
+  - gotify
   - kube-prometheus-stack
   - loki
   - node-problem-detector
