@@ -134,8 +134,7 @@ spec:
       hosts:
         - &host "grafana.${SECRET_PUBLIC_DOMAIN}"
       tls:
-        - hosts:
-            *host
+        - hosts: *host
           secretName: grafana-tls
     serviceAccount:
       create: true

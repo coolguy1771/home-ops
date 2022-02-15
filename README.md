@@ -64,12 +64,12 @@ The Git repository contains the following directories under [cluster](./cluster/
 
 ### Networking
 
-| Name                                         | CIDR              |
-|----------------------------------------------|-------------------|
+| Name                                         | CIDR            |
+| -------------------------------------------- | --------------- |
 | Kubernetes Nodes                             | `10.10.10.0/24` |
-| Kubernetes external services (Calico w/ BGP) | `10.0.42.0/24` |
-| Kubernetes pods                              | `10.69.0.0/16`    |
-| Kubernetes services                          | `10.96.0.0/16`    |
+| Kubernetes external services (Calico w/ BGP) | `10.0.42.0/24`  |
+| Kubernetes pods                              | `10.69.0.0/16`  |
+| Kubernetes services                          | `10.96.0.0/16`  |
 
 - HAProxy configured on Opnsense for the Kubernetes Control Plane Load Balancer.
 - Calico configured with `externalIPs` to expose Kubernetes services with their own IP over BGP which is configured on my router.
