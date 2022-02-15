@@ -65,7 +65,7 @@ spec:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
             path: /cairo/Media
         mountPath: /media
-        readOnly: true
+        readOnly: false
       backup:
         enabled: true
         type: custom
