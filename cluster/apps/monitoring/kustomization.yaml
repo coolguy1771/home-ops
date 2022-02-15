@@ -11,4 +11,4 @@ resources:
   - snmp-exporter
   - speedtest-exporter
   - thanos
-  - vector-agent
+  - vector
