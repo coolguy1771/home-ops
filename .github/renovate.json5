@@ -23,6 +23,7 @@
     "prIgnoreNotification"
   ],
   "rebaseWhen": "conflicted",
+  "commitBodyTable": true,
   // set up ignored deps
   "ignoreDeps": [
     "ghcr.io/fluxcd/helm-controller",
@@ -149,39 +150,52 @@
     },
     // group packages
     {
+      "groupName": "rook-ceph-suite",
       "matchDatasources": [
-        "helm",
-        "docker"
+        "docker",
+        "helm"
       ],
       "matchPackagePatterns": [
         "^rook.ceph"
       ],
-      "groupName": "rook-ceph-suite",
       "additionalBranchPrefix": "",
       "separateMinorPatch": true
     },
     {
+      "groupName": "external-snapshotter-suite",
       "matchDatasources": [
-        "github-releases",
-        "docker"
+        "docker",
+        "github-releases"
       ],
       "matchPackagePatterns": [
         "external-snapshotter",
         "snapshot-controller"
       ],
-      "groupName": "external-snapshotter-suite",
       "additionalBranchPrefix": "",
       "separateMinorPatch": true
     },
     {
+      "groupName": "system-upgrade-controller-suite",
       "matchDatasources": [
-        "github-tags",
-        "docker"
+        "docker",
+        "github-tags"
       ],
       "matchPackagePatterns": [
         "rancher/system-upgrade-controller"
       ],
-      "groupName": "system-upgrade-controller-suite",
+      "additionalBranchPrefix": "",
+      "separateMinorPatch": true
+    },
+    {
+      "groupName": "vector-suite",
+      "matchDatasources": [
+        "docker",
+        "github-releases",
+        "helm"
+      ],
+      "matchPackagePatterns": [
+        "vector"
+      ],
       "additionalBranchPrefix": "",
       "separateMinorPatch": true
     }
