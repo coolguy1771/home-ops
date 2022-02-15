@@ -31,8 +31,6 @@ spec:
       dashboard:
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
-          external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         host:
           name: &host "rook.${SECRET_PUBLIC_DOMAIN}"
@@ -63,18 +61,23 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "k8s-2"
+          - name: k8s-2
             devices:
-              - name: "sdb"
-          - name: "k8s-3"
+              - name: sdb
+          - name: k8s-3
             devices:
-              - name: "sdb"
-          - name: "k8s-4"
+              - name: sdb
+          - name: k8s-4
             devices:
-              - name: "sdb"
-          - name: "k8s-5"
+              - name: sdb
+          - name: k8s-5
             devices:
-              - name: "sdb"
+              - name: sdb
+    cephBlockPoolsVolumeSnapshotClass:
+      enabled: true
+      name: csi-rbdplugin-snapclass
+      annotations:
+        k10.kasten.io/is-snapshot-class: "true"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
