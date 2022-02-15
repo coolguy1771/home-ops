@@ -1,0 +1,17 @@
+version = 1
+
+[[analyzers]]
+name = "ansible"
+enabled = true
+
+[[analyzers]]
+name = "shell"
+enabled = true
+
+[[analyzers]]
+name = "docker"
+enabled = true
+
+[[analyzers]]
+name = "terraform"
+enabled = true
