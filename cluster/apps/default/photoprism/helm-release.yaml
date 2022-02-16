@@ -34,13 +34,14 @@ spec:
       # -- Initial admin password. **BE SURE TO CHANGE THIS!**
       PHOTOPRISM_ADMIN_PASSWORD: "${SECRET_PHOTOPRISM_ADMIN_PASSWORD}"
       # -- Disable authentication / password protection
+      PHOTOPRISM_LOG_LEVEL: debug
       PHOTOPRISM_PUBLIC: "false"
       PHOTOPRISM_DETECT_NSFW: "true"
       PHOTOPRISM_UPLOAD_NSFW: "true"
       PHOTOPRISM_THUMB_FILTER: "blackman"
       PHOTOPRISM_DARKTABLE_PRESETS: "true"
       PHOTOPRISM_HTTP_COMPRESSION: "gzip"
-      PHOTOPRISM_SITE_URL: "https://${SECRET_PUBLIC_DOMAIN}"
+      PHOTOPRISM_SITE_URL: "https://photos.${SECRET_PUBLIC_DOMAIN}"
       PHOTOPRISM_READONLY: "false"
       PHOTOPRISM_EXPERIMENTAL: "true"
       PHOTOPRISM_HTTP_HOST: "0.0.0.0"
