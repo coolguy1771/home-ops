@@ -58,14 +58,14 @@ spec:
       PHOTOPRISM_JPEG_QUALITY: 95             # set to 95 for high-quality thumbnails (25-100)
       TF_CPP_MIN_LOG_LEVEL: 0
       # -- Sets UID Photoprism runs under.
-      PHOTOPRISM_UID: 1000
+      PHOTOPRISM_UID: 568
       # -- Sets GID Photoprism runs under.
-      PHOTOPRISM_GID: 1000
-      # -- Sets UMASK.
-      UMASK: # 0000
-    envFrom:
-      - secretRef:
-          name: photoprism
+      PHOTOPRISM_GID: 568
+      PHOTOPRISM_DATABASE_DRIVER: postgres
+      PHOTOPRISM_DATABASE_SERVER: 192.168.1.147:5432
+      PHOTOPRISM_DATABASE_NAME: photoprism
+      PHOTOPRISM_DATABASE_USER: photoprism
+      PHOTOPRISM_DATABASE_PASSWORD: ${SECRET_PHOTOPRISM_POSTGRES_PASSWORD}
 
     ingress:
       # -- Enable and configure ingress settings for the chart under this key.
