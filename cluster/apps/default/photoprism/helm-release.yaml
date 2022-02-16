@@ -66,6 +66,8 @@ spec:
       PHOTOPRISM_DATABASE_NAME: photoprism
       PHOTOPRISM_DATABASE_USER: photoprism
       PHOTOPRISM_DATABASE_PASSWORD: ${SECRET_PHOTOPRISM_MARIADB_PASSWORD}
+      UID: 568
+      GID: 568
 
     ingress:
       # -- Enable and configure ingress settings for the chart under this key.
