@@ -69,7 +69,6 @@ spec:
       PHOTOPRISM_DATABASE_PASSWORD: ${SECRET_PHOTOPRISM_MARIADB_PASSWORD}
       UID: 568
       GID: 568
-      UMASK: 022
 
     ingress:
       # -- Enable and configure ingress settings for the chart under this key.
