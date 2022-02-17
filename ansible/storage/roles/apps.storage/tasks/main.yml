@@ -9,6 +9,10 @@
     - "{{ containers_base_dir }}/data"
   tags:
     - always
+    
+- import_tasks: docker.yml
+  tags:
+    - docker
 
 - import_tasks: cadvisor.yml
   tags:
@@ -53,6 +57,7 @@
 - import_tasks: mariadb.yml
   tags:
     - mariadb
+
 - import_tasks: docker.yml
   tags:
     - docker
