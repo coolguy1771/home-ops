@@ -1,0 +1,22 @@
+---
+- name: Create mariadb directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ containers_base_dir }}/apps/mariadb"
+    - "{{ containers_base_dir }}/data/mariadb"
+
+- block:
+    - name: Create mariadb docker compose file
+      ansible.builtin.template:
+        src: mariadb/docker-compose.yml.j2
+        dest: "{{ containers_base_dir }}/apps/mariadb/docker-compose.yml"
+        mode: 0755
+
+    - name: Create mariadb systemd service file
+      ansible.builtin.template:
+        src: "docker-compose@.service.j2"
+        dest: "/etc/systemd/system/docker-compose@mariadb.service"
+        mode: 0644
+  notify: Restart mariadb

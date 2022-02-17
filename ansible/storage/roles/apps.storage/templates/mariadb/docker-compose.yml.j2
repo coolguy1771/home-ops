@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  mariadb:
+    image: mariadb:10.7
+    container_name: mariadb
+    restart: unless-stopped
+    network_mode: bridge
+    environment:
+      MARIADB_DATABASE: mariadb
+      MARIADB_USER: "{{ SECRET_MARIADB_USERNAME }}"
+      MARIADB_ROOT_PASSWORD: "{{ SECRET_MARIADB_PASSWORD }}"
+    ports:
+      - 3306:3306
+    volumes:
+      - maria-data:/var/lib/mysql
+      - maria-config:/etc/mysql
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    ports:
+      - 8080:8080
+
+volumes:
+  maria-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/mariadb/data"
+  maria-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "{{ containers_base_dir }}/data/mariadb/config"

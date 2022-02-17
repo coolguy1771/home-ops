@@ -50,6 +50,9 @@
   tags:
     - stash
 
+- import_tasks: mariadb.yml
+  tags:
+    - mariadb
 - import_tasks: docker.yml
   tags:
     - docker
