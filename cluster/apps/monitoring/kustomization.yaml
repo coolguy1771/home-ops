@@ -6,6 +6,7 @@ resources:
   - botkube
   - grafana
   - gotify
+  - karma
   - kube-prometheus-stack
   - loki
   - node-problem-detector
