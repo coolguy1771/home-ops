@@ -70,8 +70,8 @@ zfs_filesystems:
     sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/8"
     smb_options:
       browseable: "yes"
-      create_directory_mask: "0755"
-      create_mask: "0777"
+      #create_directory_mask: "0755"
+      #create_mask: "0777"
       guest_ok: "no"
       read_only: "no"
       writable: "yes"
@@ -85,18 +85,35 @@ zfs_filesystems:
     group: 568
     smb_options:
       browseable: "yes"
-      create_directory_mask: "0755"
-      create_mask: "0777"
+      #create_directory_mask: "0755"
+      #create_mask: "0777"
       guest_ok: "no"
       read_only: "no"
       writable: "yes"
       share_name: Matt
     mountpoint: "/cairo/Matt"
-
+  - name: Minio
+    pool: cairo
+    state: present
+    owner: 568
+    group: 568
+    mountpoint: /cairo/Minio
+  - name: TimeMachine
+    pool: cairo
+    state: present
+    owner: 568
+    group: 568
+    mountpoint: /cairo/TimeMachine
+  - name: Nexus
+    pool: cairo
+    state: present
+    owner: 568
+    group: 568
+    mountpoint: /cairo/Nexus
 zfs_enable_monitoring: true
 zfs_monitoring_capacity_threshold: 80
 zfs_monitoring_scrub_max_age: 8
-zfs_monitoring_email_dest: anthonyjrabbito@localhost
+zfs_monitoring_email_dest: twitlin@witl.xyz
 zfs_pools_scrub_cron:
   minute: 0
   hour: 0

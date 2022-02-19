@@ -9,7 +9,7 @@
     - "{{ containers_base_dir }}/data"
   tags:
     - always
-    
+
 - import_tasks: docker.yml
   tags:
     - docker

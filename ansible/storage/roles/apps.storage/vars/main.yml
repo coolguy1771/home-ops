@@ -5,3 +5,18 @@
 
 system_base_dir: /cairo/System
 containers_base_dir: "{{ system_base_dir }}/Containers"
+
+# -- Minio Data Directory
+minio_data_dir: /cairo/Minio
+
+# -- Nexus Data Directory
+nexus_data_dir: /cairo/Nexus
+
+# -- Time Machine Data Directory
+time_machine_data_dir: /cairo/TimeMachine
+
+# -- Vector Aggregator Address
+vector_aggregator_addr: "10.0.42.6"
+
+# -- Vector Aggregator Port
+vector_aggregator_port: "6000"
