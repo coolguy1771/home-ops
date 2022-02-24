@@ -7,4 +7,5 @@ resources:
   - external-dns
   - ingress-nginx
   - opnsense
+  - traefik
   - wildcard-certificate
