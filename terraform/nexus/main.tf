@@ -19,15 +19,15 @@ terraform {
   }
 }
 
-data "sops_file" "minio_secrets" {
+data "sops_file" "nexus_secrets" {
   source_file = "secret.sops.yaml"
 }
 
 provider "nexus" {
   insecure = false
-  url      = data.sops_file.minio_secrets.data["nexus_address"]
-  username = data.sops_file.minio_secrets.data["nexus_username"]
-  password = data.sops_file.minio_secrets.data["nexus_password"]
+  url      = data.sops_file.nexus_secrets.data["nexus_address"]
+  username = data.sops_file.nexus_secrets.data["nexus_username"]
+  password = data.sops_file.nexus_secrets.data["nexus_password"]
 }
 
 resource "nexus_repository_docker_hosted" "docker_local" {

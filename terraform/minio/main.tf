@@ -9,7 +9,7 @@ terraform {
 
   required_providers {
     minio = {
-      source  = "refaktory/minio"
+      source  = "coolguy1771/minio"
       version = "0.1.0"
     }
     sops = {
