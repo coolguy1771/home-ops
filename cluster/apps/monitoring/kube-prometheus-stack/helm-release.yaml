@@ -218,29 +218,29 @@ spec:
             honor_timestamps: true
             static_configs:
               - targets:
-                  - "osiris:8005"
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:8005"
           - job_name: coredns
             honor_timestamps: true
             static_configs:
               - targets:
-                  - "opnsense:9153"
+                  - "opnsense.${SECRET_PRIVATE_DOMAIN}:9153"
           - job_name: minio
             honor_timestamps: true
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
               - targets:
-                  - "osiris:9000"
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:9000"
           - job_name: node-exporter
             honor_timestamps: true
             static_configs:
               - targets:
-                  - "opnsense:9100"
-                  - "osiris:9100"
+                  - "opnsense.${SECRET_PRIVATE_DOMAIN}:9100"
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:9100"
           - job_name: postgresql
             honor_timestamps: true
             static_configs:
               - targets:
-                  - "osiris:9187"
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:9187"
           - job_name: vault
             metrics_path: /v1/sys/metrics
             params:
@@ -248,4 +248,17 @@ spec:
                 - prometheus
             static_configs:
               - targets:
-                  - "osiris:8200"
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:8200"
+          - job_name: traefik
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:7071"
+          - job_name: nexus
+            metrics_path: /service/metrics/prometheus
+            basic_auth:
+              username: "${SECRET_NEXUS_USERNAME}"
+              password: "${SECRET_NEXUS_PASSWORD}"
+            static_configs:
+              - targets:
+                  - "osiris.${SECRET_PRIVATE_DOMAIN}:8081"
