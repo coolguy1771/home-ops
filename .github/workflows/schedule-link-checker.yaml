@@ -1,3 +1,4 @@
+---
 name: Schedule - Link Checker
 
 on: # yamllint disable-line rule:truthy
