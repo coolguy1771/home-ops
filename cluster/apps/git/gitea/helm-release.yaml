@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: gitea/gitea
-      tag: 1.16.2
+      tag: 1.16.3
       pullPolicy: IfNotPresent
       rootless: true # only possible when running 1.14 or later
     ingress:
