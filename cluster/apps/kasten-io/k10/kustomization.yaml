@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - blueprints
   - monitoring
-  - profile
+  - profiles
   - backup-pvc.yaml
   - helm-release.yaml
