@@ -31,7 +31,7 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
-          ENABLE_LINTERS: >-
+          ENABLE_LINTERS: |-
             ACTION_ACTIONLINT,
             ANSIBLE_ANSIBLE_LINT,
             BASH_SHELLCHECK,
