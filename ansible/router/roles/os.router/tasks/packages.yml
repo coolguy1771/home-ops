@@ -1,4 +1,5 @@
 ---
+
 #
 # This role is not entirely idemponent
 #
@@ -12,6 +13,7 @@
 - name: Install Packages
   community.general.pkgng:
     name:
+      - archivers/p7zip
       - devel/cmake
       - devel/git
       - devel/gmake
@@ -24,6 +26,7 @@
       - security/cyrus-sasl2
       - security/cyrus-sasl2-gssapi
       - sysutils/htop
+      - sysutils/neofetch
       - sysutils/screen
       - sysutils/tmux
       - sysutils/viddy
@@ -31,6 +34,7 @@
       # - textproc/go-yq
       - textproc/jq
     state: present
+
 # # If needed these ports below take way too long to
 # # compile (or fail) and should be done manually
 # - name: Update Ports and Tools

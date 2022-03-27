@@ -19,15 +19,15 @@
     - name: Download CoreDNS
       ansible.builtin.get_url:
         url: "{{ coredns_download_url }}"
-        dest: "/tmp/coredns-{{ coredns_version }}-freebsd-amd64.tar.gz"
+        dest: "/tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64.tar.gz"
     - name: Extract CoreDNS
       ansible.builtin.shell:
         cmd: >-
-          mkdir -p /tmp/coredns-{{ coredns_version }}-freebsd-amd64;
-          tar xvf /tmp/coredns-{{ coredns_version }}-freebsd-amd64.tar.gz -C /tmp/coredns-{{ coredns_version }}-freebsd-amd64
+          mkdir -p /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64;
+          tar xvf /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64.tar.gz -C /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64
     - name: Move CoreDNS binary into place
       ansible.builtin.copy:
-        src: /tmp/coredns-{{ coredns_version }}-freebsd-amd64/coredns
+        src: /tmp/k8s_gateway_{{ coredns_version }}_freebsd_amd64/coredns
         dest: /usr/local/sbin/coredns
         mode: 0755
         remote_src: true
@@ -36,11 +36,11 @@
     or coredns_version not in coredns_version_check.stdout
   notify: Restart coredns
 
-#- name: Create CoreDNS log rotation config
-#  ansible.builtin.template:
-#    src: coredns-newsyslog.conf.j2
-#    dest: /etc/newsyslog.conf.d/coredns
-#    mode: 0755
+# - name: Create CoreDNS log rotation config
+#   ansible.builtin.template:
+#     src: coredns-newsyslog.conf.j2
+#     dest: /etc/newsyslog.conf.d/coredns
+#     mode: 0755
 
 - block:
     - name: Copy kubeconfig
