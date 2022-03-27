@@ -1,4 +1,5 @@
 ---
+
 pip_package: python3-pip
 # TODO: Renovate pip packages in storage ansible
 pip_install_packages:

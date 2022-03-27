@@ -3,17 +3,41 @@
 # SECRET* vars are encrypted with sops
 #
 
-system_base_dir: /cairo/System
-containers_base_dir: "{{ system_base_dir }}/Containers"
+# -- Base Docker Directory
+docker_base_dir: /opt/docker
+
+# -- Base ZFS Dataset
+zfs_zpool_base_dir: /cairo
 
 # -- Minio Data Directory
-minio_data_dir: /cairo/Minio
+minio_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Minio"
 
 # -- Nexus Data Directory
-nexus_data_dir: /cairo/Nexus
+nexus_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Nexus"
+
+# -- Postgresql Data Directory
+postgresql_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Postgresql"
+
+# -- Rclone Data Directory
+rclone_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Rclone"
 
 # -- Time Machine Data Directory
-time_machine_data_dir: /cairo/TimeMachine
+time_machine_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/TimeMachine"
+
+# -- Traefik Data Directory
+traefik_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Traefik"
+
+# -- Vault Data Directory
+vault_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Vault"
+
+# -- Stash Data Directory
+stash_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Stash"
+
+# -- MariaDB Data Directory
+mariadb_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Mariadb"
+
+# -- Vector Data Directory
+vector_data_dir: "{{ zfs_zpool_base_dir }}/Apps/Internal/Vector"
 
 # -- Vector Aggregator Address
 vector_aggregator_addr: "10.0.42.6"

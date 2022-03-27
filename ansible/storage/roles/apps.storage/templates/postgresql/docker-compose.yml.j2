@@ -5,7 +5,7 @@ services:
   postgresql:
     image: docker.io/library/postgres:14.2
     container_name: postgresql
-    restart: unless-stopped
+    restart: &restartPolicy unless-stopped
     network_mode: bridge
     environment:
       POSTGRES_DB: postgres
@@ -20,18 +20,19 @@ services:
   postgresql-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter:v0.10.1
     container_name: postgresql-exporter
+    restart: *restartPolicy
     network_mode: bridge
     environment:
-      DATA_SOURCE_NAME: "postgresql://{{ SECRET_POSTGRESQL_USERNAME }}:{{ SECRET_POSTGRESQL_PASSWORD }}@pgsql-server:5432/postgres?sslmode=disable"
+      DATA_SOURCE_NAME: "postgresql://{{ SECRET_POSTGRESQL_USERNAME }}:{{ SECRET_POSTGRESQL_PASSWORD }}@postgresql:5432/postgres?sslmode=disable"
     ports:
       - 9187:9187
     links:
-      - postgresql:pgsql-server
+      - postgresql:postgresql
 
   pgadmin:
     image: docker.io/dpage/pgadmin4:6.7
     container_name: postgresql-pgadmin
-    restart: unless-stopped
+    restart: *restartPolicy
     network_mode: bridge
     environment:
       PGADMIN_DEFAULT_EMAIL: "{{ SECRET_PGADMIN_USERNAME }}"
@@ -42,7 +43,7 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     links:
-      - postgresql:pgsql-server
+      - postgresql:postgresql
     depends_on:
       - postgresql
     labels:
@@ -55,10 +56,10 @@ services:
   pgbackups:
     image: docker.io/prodrigestivill/postgres-backup-local:14
     container_name: postgresql-pgbackups
-    restart: unless-stopped
+    restart: *restartPolicy
     network_mode: bridge
     environment:
-      POSTGRES_HOST: pgsql-server
+      POSTGRES_HOST: postgresql
       POSTGRES_DB: postgres
       POSTGRES_USER: "{{ SECRET_POSTGRESQL_USERNAME }}"
       POSTGRES_PASSWORD: "{{ SECRET_POSTGRESQL_PASSWORD }}"
@@ -71,7 +72,7 @@ services:
     volumes:
       - pgbackups-data:/backups
     links:
-      - postgresql:pgsql-server
+      - postgresql:postgresql
     depends_on:
       - postgresql
     healthcheck:
@@ -86,16 +87,16 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/postgresql/data"
+      device: "{{ postgresql_data_dir }}/data"
   pgadmin-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/postgresql/pgadmin"
+      device: "{{ postgresql_data_dir }}/pgadmin"
   pgbackups-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/postgresql/pgbackups"
+      device: "{{ postgresql_data_dir }}/pgbackups"

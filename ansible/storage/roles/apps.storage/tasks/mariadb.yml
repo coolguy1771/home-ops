@@ -3,20 +3,25 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: 0775
   loop:
-    - "{{ containers_base_dir }}/apps/mariadb"
-    - "{{ containers_base_dir }}/data/mariadb"
+    - "{{ docker_base_dir }}/mariadb"
 
 - block:
     - name: Create mariadb docker compose file
       ansible.builtin.template:
         src: mariadb/docker-compose.yml.j2
-        dest: "{{ containers_base_dir }}/apps/mariadb/docker-compose.yml"
-        mode: 0755
-
+        dest: "{{ docker_base_dir }}/mariadb/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: users
+        mode: 0775
     - name: Create mariadb systemd service file
       ansible.builtin.template:
         src: "docker-compose@.service.j2"
         dest: "/etc/systemd/system/docker-compose@mariadb.service"
         mode: 0644
+      vars:
+        condition_path_is_mount_point: "{{ mariadb_data_dir }}"
   notify: Restart mariadb

@@ -28,8 +28,8 @@ sops:
             WWw1VGVKWjRWdEJsMnJTTDU1aUJqS00KFPmfeX3J10uIEv9XoMuPlMRMXDhonaCA
             YX3K7cXUz/IrtkBxFef5ea5DaAGRCz4FPgY4Rc7hNz7mLZDl7xmzwQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-02-16T03:22:47Z"
-    mac: ENC[AES256_GCM,data:Bl0TADKslzQS+G+JsqnYo+6ZesreLhcNpVxtgzfaJ+OlBYbjEIvHxAGjvmTuFuYKoQGL5waZ5GtD+YCJiCMjshMmoe3eSlNFavUJU+FklKBF/NIS+Jd9Mdd2Rp8+IMBYGCnbJfT8pGzjy7TAQMdNvtPcmioJ2md6kFDnrERIbxQ=,iv:j8KzGqsOc3HEE6eznXvMg8pCfi3aXMbVJF3NEa9cLB4=,tag:OoWyJyUwbrkeDdZaKss42w==,type:str]
+    lastmodified: "2022-03-27T22:46:34Z"
+    mac: ENC[AES256_GCM,data:tKd5SBd/Oa4IQr8D3EiNdWbJYZSk6X8zbuLlCptWH3vsAdU4/cFMz+FGJI1THmQVGKn+GMcjnq/gOmFqe96f+QyKVJE77ll0E7szk3dBLpprPcwwWtx5Ehb3AfFs6HJHaUUf6yfNax4GFE3KVtKjo9tEfdXjU5x/xSDyW/QOQmw=,iv:6rLRpCUrokHd0g14lvl/HdFRVkB/scwh4y2sz5ON46w=,tag:ho08UDyGNGVnHAyQFOVeTA==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
-    version: 3.7.1
+    version: 3.7.2

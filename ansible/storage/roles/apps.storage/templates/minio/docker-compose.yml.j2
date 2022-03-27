@@ -3,9 +3,9 @@ version: "3.8"
 
 services:
   minio:
-    image: quay.io/minio/minio:RELEASE.2022-03-24T00-43-44Z
-    restart: unless-stopped
+    image: quay.io/minio/minio:RELEASE.2022-03-26T06-49-28Z
     container_name: minio
+    restart: unless-stopped
     network_mode: bridge
     environment:
       MINIO_ROOT_USER: "{{ SECRET_MINIO_ROOT_USER }}"
@@ -15,7 +15,7 @@ services:
       MINIO_PROMETHEUS_AUTH_TYPE: public
       MINIO_UPDATE: "off"
       MINIO_BROWSER_REDIRECT_URL: https://minio.{{ SECRET_PUBLIC_DOMAIN }}
-      MINIO_SERVER_URL: https://s3.286k.co
+      MINIO_SERVER_URL: https://s3.turbo.ac
       TZ: America/New_York
     command: server /data --console-address ":9001"
     ports:

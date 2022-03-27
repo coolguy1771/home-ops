@@ -23,6 +23,14 @@ zfs_filesystems:
   - name: Media
     pool: cairo
     sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=568,rw=@10.0.42.0/24,rw=@192.168.1.0/24,rw=@10.10.10.0/24,rw=@10.0.0.0/8"
+    smb_options:
+      browseable: "yes"
+      #create_directory_mask: "0755"
+      #create_mask: "0777"
+      guest_ok: "no"
+      read_only: "no"
+      writable: "yes"
+      share_name: Media
     state: present
     owner: 568
     group: 568
@@ -110,6 +118,13 @@ zfs_filesystems:
     owner: 568
     group: 568
     mountpoint: /cairo/Nexus
+  - name: Kasten
+    pool: cairo
+    sharenfs: "no_subtree_check,all_squash,anonuid=568,anongid=100rw=@192.168.1.0/24,rw=@10.0.0.0/8"
+    state: present
+    owner: 568
+    group: 568
+    mountpoint: /cairo/Kasten
 zfs_enable_monitoring: true
 zfs_monitoring_capacity_threshold: 80
 zfs_monitoring_scrub_max_age: 8
