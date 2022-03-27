@@ -5,3 +5,4 @@ resources:
   - external-snapshotter
   - kube-prometheus-stack
   - node-feature-discovery
+  - tf-controller
