@@ -15,9 +15,14 @@ spec:
         name: grafana-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/grafana
     replicas: 1
     env:
       GF_EXPLORE_ENABLED: true
@@ -39,6 +44,8 @@ spec:
         mode: console
       grafana_net:
         url: https://grafana.net
+      auth.basic:
+        disable_login_form: false
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -80,26 +87,6 @@ spec:
           gnetId: 13502
           revision: 10
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11315
-        unifi-client-insights:
-          gnetId: 11315
-          revision: 8
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11311
-        unifi-network-sites:
-          gnetId: 11311
-          revision: 4
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11314
-        unifi-uap-insights:
-          gnetId: 11314
-          revision: 9
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11312
-        unifi-usw-insights:
-          gnetId: 11312
-          revision: 8
-          datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/13665
         speedtest:
           gnetId: 13665
@@ -134,7 +121,8 @@ spec:
       hosts:
         - &host "grafana.${SECRET_PUBLIC_DOMAIN}"
       tls:
-        - hosts: *host
+        - hosts:
+            - *host
           secretName: grafana-tls
     serviceAccount:
       create: true
