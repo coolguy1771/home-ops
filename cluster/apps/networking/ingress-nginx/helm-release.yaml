@@ -84,7 +84,7 @@ spec:
         tag: 2.12.1
       extraEnvs:
         - name: TEMPLATE_NAME
-          value: ghost
+          value: connection
         - name: SHOW_DETAILS
           value: "true"
   valuesFrom:
