@@ -20,7 +20,7 @@ spec:
       repository: gitea/gitea
       tag: 1.16.5
       pullPolicy: IfNotPresent
-      rootless: false # only possible when running 1.14 or later
+      rootless: true # only possible when running 1.14 or later
     ingress:
       enabled: true
       className: nginx
@@ -89,7 +89,7 @@ spec:
           ADAPTOR: memcache
           HOST: gitea-be-memcached:11211
         attachment:
-          STORAGE_TYPE: minio
+          STORAGE_TYPE: local
           MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
           MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
           MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
@@ -102,7 +102,7 @@ spec:
           ENABLED_ISSUE_BY_LABEL: true
           ENABLED_ISSUE_BY_REPOSITORY: true
         storage:
-          STORAGE_TYPE: minio
+          STORAGE_TYPE: local
           SERVE_DIRECT: false
           MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
           MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
