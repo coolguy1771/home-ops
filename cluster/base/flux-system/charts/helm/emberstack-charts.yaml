@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: blakeshome-charts
+  name: emberstack-charts
   namespace: flux-system
 spec:
   interval: 15m
-  url: https://blakeblackshear.github.io/blakeshome-charts/
+  url: https://emberstack.github.io/helm-charts/
   timeout: 3m
