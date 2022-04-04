@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.8.7
+      version: v1.8.8
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -40,6 +40,9 @@ spec:
               - *host
             secretName: rook-tls
     cephClusterSpec:
+      # TODO: [rook-ceph] Enable host network on next rebuild
+      # network:
+      #   provider: host
       placement:
         all:
           tolerations:
@@ -49,6 +52,7 @@ spec:
               operator: Exists
       crashCollector:
         disable: false
+        daysToRetain: 7
       mgr:
         count: 2
       dashboard:
