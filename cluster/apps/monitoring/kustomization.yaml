@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - blackbox-exporter
   - grafana
-  - gotify
   - karma
   - kube-prometheus-stack
   - loki
