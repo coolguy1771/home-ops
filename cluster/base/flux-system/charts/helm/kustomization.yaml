@@ -20,3 +20,4 @@ resources:
   - rook-ceph-charts.yaml
   - stakater-charts.yaml
   - vector-charts.yaml
+  - weaveworks-kured-charts.yaml
