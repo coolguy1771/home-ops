@@ -65,8 +65,8 @@ spec:
           name: opnsense-icmp
           url: opnsense
         - module: icmp
-          name: expanse-icmp
-          url: expanse
+          name: osiris-icmp
+          url: osiris
         - module: icmp
           name: dell-idrac-0-icmp
           url: dell-idrac-0
