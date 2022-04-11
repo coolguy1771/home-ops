@@ -6,7 +6,6 @@ resources:
   - networking.yaml
   - media.yaml
   - monitoring.yaml
-  - auth.yaml
   - calico-system.yaml
   - rook-ceph.yaml
   - tools.yaml
