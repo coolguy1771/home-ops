@@ -21,3 +21,5 @@ resources:
   - stakater-charts.yaml
   - vector-charts.yaml
   - weaveworks-kured-charts.yaml
+  - falco-security-charts.yaml
+  - kyverno-charts.yaml

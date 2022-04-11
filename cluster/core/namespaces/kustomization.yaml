@@ -10,6 +10,6 @@ resources:
   - calico-system.yaml
   - rook-ceph.yaml
   - tools.yaml
-  - website.yaml
+  - security.yaml
   - git.yaml
   - kasten-io.yaml
