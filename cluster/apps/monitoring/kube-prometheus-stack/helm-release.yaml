@@ -23,7 +23,6 @@ spec:
     remediation:
       retries: 3
   values:
-    fullnameOverride: prometheus
     alertmanager:
       config:
         global:
@@ -34,21 +33,40 @@ spec:
             pushover_configs:
               - token: "${SECRET_PUSHOVER_ALERT_MANAGER_APIKEY}"
                 user_key: "${SECRET_PUSHOVER_USERKEY}"
-                priority: >-
-                  {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
                 send_resolved: true
-                # html: true
-                # title: |-
-                #   [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
-                # message: |-
-                #   {{ range .Alerts -}}
-                #   <b>Alert:</b> {{ .Annotations.title }}{{ if .Labels.severity }} - {{ .Labels.severity }}{{ end }}
-                #   <b>Description:</b> {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
-                #   <b>Details:</b>
-                #   {{ range .Labels.SortedPairs }}
-                #   • <u>{{ .Name }}:</u> `{{ .Value }}`
-                #   {{ end }}
-                #   {{ end }}
+                html: true
+                priority: |-
+                  {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
+                url_title: View alert in Karma
+                url: |-
+                  https://karma.${SECRET_PUBLIC_DOMAIN}/?q=%40receiver%3D{{ .Receiver | urlquery }}&q=%40state%3Dactive
+                title: |-
+                  [{{ .Status | toUpper -}}
+                  {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+                  ] {{ .CommonLabels.alertname }}
+                message: |-
+                  {{- range .Alerts }}
+                    {{- if ne .Labels.severity "" }}
+                      <b>Severity:</b> <i>{{ .Labels.severity }}</i>
+                    {{- else }}
+                      <b>Severity:</b> <i>N/A</i>
+                    {{- end }}
+                    {{- if ne .Annotations.description "" }}
+                      <b>Description:</b> <i>{{ .Annotations.description }}</i>
+                    {{- else if ne .Annotations.summary "" }}
+                      <b>Summary:</b> <i>{{ .Annotations.summary }}</i>
+                    {{- else if ne .Annotations.message "" }}
+                      <b>Message:</b> <i>{{ .Annotations.message }}</i>
+                    {{- else }}
+                      <b>Description:</b> <i>N/A</i>
+                    {{- end }}
+                    {{- if gt (len .Labels.SortedPairs) 0 }}
+                      <b>Details:</b>
+                      {{- range .Labels.SortedPairs }}
+                        • <b>{{ .Name }}:</b> <i>{{ .Value }}</i>
+                      {{- end }}
+                    {{- end }}
+                  {{- end }}
         route:
           group_by: ["alertname", "job"]
           group_wait: 30s
