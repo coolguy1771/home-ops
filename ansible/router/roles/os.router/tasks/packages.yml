@@ -1,5 +1,4 @@
 ---
-
 #
 # This role is not entirely idemponent
 #
@@ -34,7 +33,6 @@
       # - textproc/go-yq
       - textproc/jq
     state: present
-
 # # If needed these ports below take way too long to
 # # compile (or fail) and should be done manually
 # - name: Update Ports and Tools

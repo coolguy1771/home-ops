@@ -30,10 +30,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/mariadb/data"
+      device: "{{ docker_base_dir }}/data/mariadb/data"
   maria-config:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/mariadb/config"
+      device: "{{ docker_base_dir }}/data/mariadb/config"

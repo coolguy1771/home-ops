@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - "9999:9999"
-    # network_mode: host
+    network_mode: bridge
     environment:
       - STASH_STASH=/data/
       - STASH_GENERATED=/generated/
@@ -34,28 +34,28 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/stash/config"
+      device: "{{ docker_base_dir }}/data/stash/config"
   stash-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/stash/data"
+      device: "{{ docker_base_dir }}/data/stash/data"
   stash-metadata:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/stash/metadata"
+      device: "{{ docker_base_dir }}/data/stash/metadata"
   stash-cache:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/stash/cache"
+      device: "{{ docker_base_dir }}/data/stash/cache"
   stash-generated:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "{{ containers_base_dir }}/data/stash/generated"
+      device: "{{ docker_base_dir }}/data/stash/generated"
