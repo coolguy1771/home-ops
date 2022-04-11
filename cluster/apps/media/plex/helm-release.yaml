@@ -78,7 +78,6 @@ spec:
       transcode:
         enabled: true
         type: emptyDir
-        medium: Memory
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -88,14 +87,13 @@ spec:
                   operator: In
                   values:
                     - "true"
-
     podAnnotations:
       configmap.reloader.stakater.com/reload: "plex-promtail"
     resources:
       requests:
         gpu.intel.com/i915: 1
         cpu: 1000m
-        memory: 1000Mi
+        memory: 4000Mi
       limits:
         gpu.intel.com/i915: 1
-        memory: 16000Mi
+        memory: 10000Mi
