@@ -14,5 +14,4 @@ resources:
   - kube-system
   - rook-ceph
   - git
-  - security
   - kasten-io
