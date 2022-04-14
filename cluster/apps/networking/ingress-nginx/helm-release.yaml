@@ -63,18 +63,14 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              app.kubernetes.io/instance: ingress-nginx
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-        - effect: NoExecute
-          operator: Exists
+              app.kubernetes.io/name: ingress-nginx
+              app.kubernetes.io/component: controller
       podAnnotations:
         configmap.reloader.stakater.com/reload: "cloudflare-proxied-networks"
       resources:
         requests:
-          memory: 250Mi
           cpu: 100m
+          memory: 250Mi
         limits:
           memory: 1000Mi
     defaultBackend:
@@ -82,11 +78,28 @@ spec:
       image:
         repository: ghcr.io/tarampampam/error-pages
         tag: 2.13.0
+      replicaCount: 3
       extraEnvs:
         - name: TEMPLATE_NAME
           value: lost-in-space
         - name: SHOW_DETAILS
           value: "true"
+      affinity:
+              podAntiAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    podAffinityTerm:
+                      labelSelector:
+                        matchExpressions:
+                          - key: app.kubernetes.io/name
+                            operator: In
+                            values:
+                              - ingress-nginx
+                          - key: app.kubernetes.io/component
+                            operator: In
+                            values:
+                              - default-backend
+                      topologyKey: kubernetes.io/hostname
   valuesFrom:
     # Cloudflare Networks
     # https://www.cloudflare.com/ips/

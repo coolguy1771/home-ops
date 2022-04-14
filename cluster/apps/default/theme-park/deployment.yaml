@@ -12,7 +12,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: *app
       app.kubernetes.io/instance: *app
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
@@ -24,7 +24,7 @@ spec:
       containers:
         - name: *app
           image: ghcr.io/k8s-at-home/theme-park:v1.8.0
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - name: &port http
               containerPort: 8080
@@ -53,12 +53,11 @@ spec:
               cpu: 10m
               memory: 50Mi
             limits:
-              cpu: 100m
-              memory: 200Mi
+              memory: 150Mi
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              app.kubernetes.io/instance: *app
+              app.kubernetes.io/name: *app
