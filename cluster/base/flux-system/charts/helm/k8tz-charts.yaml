@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: kyverno-charts
+  name: k8tz-charts
   namespace: flux-system
 spec:
   interval: 15m
-  url: https://kyverno.github.io/kyverno/
+  url: https://k8tz.github.io/k8tz/
   timeout: 3m
