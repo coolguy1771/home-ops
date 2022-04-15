@@ -6,7 +6,6 @@ resources:
   - home-dns
   - intel-gpu-plugin
   - k8tz
-  - kured
   - metrics-server
   - nfs-subdir-external-provisioner
   - node-feature-discovery
