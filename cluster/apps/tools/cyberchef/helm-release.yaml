@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: mpepping/cyberchef
-      tag: v9.37.0
+      tag: v9.37.3
     nameOverride: cyberchef
     env:
     service:
