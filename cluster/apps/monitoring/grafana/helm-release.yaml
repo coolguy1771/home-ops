@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: 6.26.2
+      version: 6.26.3
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -18,18 +18,21 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
   values:
+    ​deploymentStrategy​:
+      type​: Recreate
     replicas: 1
     env:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
       GF_DATE_FORMATS_FULL_DATE: "MMM Do, YYYY hh:mm:ss a"
-    adminPassword: "${SECRET_GRAFANA_PASSWORD}"
+    admin:
+      existingSecret: grafana-admin-creds
     grafana.ini:
       server:
         root_url: "https://grafana.${SECRET_PUBLIC_DOMAIN}"
@@ -82,15 +85,10 @@ spec:
           gnetId: 7845
           revision: 4
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/7845
+        # Ref: https://grafana.com/grafana/dashboards/13502
         minio:
           gnetId: 13502
           revision: 10
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/13665
-        speedtest:
-          gnetId: 13665
-          revision: 1
           datasource: Prometheus
     sidecar:
       dashboards:
@@ -124,8 +122,6 @@ spec:
         - hosts:
             - *host
           secretName: grafana-tls
-    serviceAccount:
-      create: true
-      autoMount: true
     persistence:
-      enabled: false
+      enabled: true
+      existingClaim: grafana-config-v1
