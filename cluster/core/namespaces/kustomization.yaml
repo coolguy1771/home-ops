@@ -11,3 +11,4 @@ resources:
   - tools.yaml
   - git.yaml
   - kasten-io.yaml
+  - kyverno.yaml
