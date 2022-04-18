@@ -85,21 +85,21 @@ spec:
         - name: SHOW_DETAILS
           value: "true"
       affinity:
-              podAntiAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                  - weight: 100
-                    podAffinityTerm:
-                      labelSelector:
-                        matchExpressions:
-                          - key: app.kubernetes.io/name
-                            operator: In
-                            values:
-                              - ingress-nginx
-                          - key: app.kubernetes.io/component
-                            operator: In
-                            values:
-                              - default-backend
-                      topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - ingress-nginx
+                    - key: app.kubernetes.io/component
+                      operator: In
+                      values:
+                        - default-backend
+                topologyKey: kubernetes.io/hostname
   valuesFrom:
     # Cloudflare Networks
     # https://www.cloudflare.com/ips/
