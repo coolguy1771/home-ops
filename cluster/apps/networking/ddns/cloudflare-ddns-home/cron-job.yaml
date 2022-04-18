@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: cloudflare-ddns-home
+  name: cloudflare-ddns
   namespace: networking
 spec:
   schedule: "*/5 * * * *"
@@ -15,6 +15,7 @@ spec:
       ttlSecondsAfterFinished: 300
       template:
         spec:
+          automountServiceAccountToken: false
           restartPolicy: Never
           containers:
             - name: cloudflare-ddns
