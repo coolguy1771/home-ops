@@ -6,12 +6,12 @@ resources:
   - cert-manager
   - default
   - flux-system
+  - git
+  - kasten-io
+  - kube-system
   - media
   - monitoring
   - networking
+  - rook-ceph
   - system-upgrade
   - tools
-  - kube-system
-  - rook-ceph
-  - git
-  - kasten-io
