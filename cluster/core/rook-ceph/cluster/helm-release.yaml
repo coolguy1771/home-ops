@@ -22,6 +22,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
+    # TODO(rook-ceph): Rename dependency to rook-ceph-operator
     - name: rook-ceph
       namespace: rook-ceph
   values:
@@ -40,21 +41,11 @@ spec:
               - *host
             secretName: rook-tls
     cephClusterSpec:
-      # TODO: [rook-ceph] Enable host network on next rebuild
+      # TODO(rook-ceph): Enable host network on next rebuild
       # network:
       #   provider: host
-      placement:
-        all:
-          tolerations:
-            - effect: NoSchedule
-              operator: Exists
-            - effect: NoExecute
-              operator: Exists
       crashCollector:
         disable: false
-        daysToRetain: 7
-      mgr:
-        count: 2
       dashboard:
         enabled: true
         urlPrefix: /

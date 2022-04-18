@@ -2,6 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
+  # TODO(rook-ceph): Rename HR to rook-ceph-operator
   name: rook-ceph
   namespace: rook-ceph
 spec:
@@ -18,17 +19,19 @@ spec:
     createNamespace: true
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
+    # TODO(rook-ceph): Move installing CRDs back to Flux crds folder
     crds: CreateReplace
     remediation:
-      retries: 3
+      retries: 5
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
     - name: kyverno
       namespace: kyverno
   values:
+    # TODO(rook-ceph): Move installing CRDs back to Flux crds folder
     crds:
       enabled: true
     monitoring:
