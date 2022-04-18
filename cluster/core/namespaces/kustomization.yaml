@@ -9,7 +9,5 @@ resources:
   - calico-system.yaml
   - rook-ceph.yaml
   - tools.yaml
-  - security.yaml
   - git.yaml
   - kasten-io.yaml
-  - kyverno.yaml
