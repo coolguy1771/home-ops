@@ -9,45 +9,126 @@ spec:
   chart:
     spec:
       chart: thanos
-      version: 10.3.5
+      version: 10.3.6
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: kube-prometheus-stack
+      namespace: monitoring
   values:
     image:
       registry: public.ecr.aws
       repository: bitnami/thanos
+    objstoreConfig:
+      type: s3
+      config:
+        insecure: true
     query:
       enabled: true
+      replicaCount: 3
+      podAntiAffinityPreset: hard
       replicaLabels:
         - replica
       dnsDiscovery:
-        sidecarsService: prometheus-thanos-discovery
+        sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
       ingress:
         enabled: true
-        hostname: "thanos.${SECRET_PUBLIC_DOMAIN}"
+        hostname: &host "thanos-query.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
         tls: true
+        extraTls:
+          - hosts:
+              - *host
     queryFrontend:
       enabled: false
     bucketweb:
       enabled: true
+      replicaCount: 3
+      podAntiAffinityPreset: hard
+      ingress:
+        enabled: true
+        hostname: &host "thanos-bucketweb.${SECRET_PUBLIC_DOMAIN}"
+        ingressClassName: "nginx"
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
     compactor:
       enabled: true
-      persistence:
-        enabled: false
-    storegateway:
-      enabled: true
+      retentionResolutionRaw: 14d
+      retentionResolution5m: 30d
+      retentionResolution1h: 180d
+      ingress:
+        enabled: true
+        hostname: &host "thanos-compactor.${SECRET_PUBLIC_DOMAIN}"
+        ingressClassName: "nginx"
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
       persistence:
         enabled: true
-        size: 5Gi
+        storageClass: "ceph-block"
+        # TODO(thanos): change compactor volume to 5Gi
+        size: 8Gi
+    storegateway:
+      enabled: true
+      replicaCount: 3
+      podAntiAffinityPreset: hard
+      ingress:
+        enabled: true
+        hostname: &host "thanos-storegateway.${SECRET_PUBLIC_DOMAIN}"
+        ingressClassName: "nginx"
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
+      persistence:
+        enabled: true
+        storageClass: "ceph-block"
+        # TODO(thanos): change storegateway volume to 250Mi
+        size: 8Gi
     ruler:
-      enabled: false
+      enabled: true
+      replicaCount: 3
+      podAntiAffinityPreset: hard
+      dnsDiscovery:
+        enabled: true
+      alertmanagers:
+        - http://alertmanager-operated.monitoring:9093
+      clusterName: home-ops
+      extraFlags:
+        - "--web.prefix-header=X-Forwarded-Prefix"
+      config: |-
+        groups:
+          - name: "PrometheusWatcher"
+            rules:
+              - alert: "PrometheusDown"
+                expr: absent(up{job="kube-prometheus-stack-prometheus"})
+      ingress:
+        enabled: true
+        hostname: &host "thanos-ruler.${SECRET_PUBLIC_DOMAIN}"
+        ingressClassName: "nginx"
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
+      persistence:
+        enabled: true
+        storageClass: "ceph-block"
+        # TODO(thanos): change ruler volume to 250Mi
+        size: 8Gi
     metrics:
       enabled: true
       serviceMonitor:
