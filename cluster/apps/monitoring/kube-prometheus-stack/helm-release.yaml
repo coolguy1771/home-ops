@@ -142,12 +142,20 @@ spec:
         - 10.10.10.20
         - 10.10.10.21
         - 10.10.10.26
+      service:
+        enabled: true
+        port: 10257
+        targetPort: 10257
     kubeScheduler:
       enabled: true
       endpoints:
         - 10.10.10.20
         - 10.10.10.21
         - 10.10.10.26
+      service:
+        enabled: true
+        port: 10259
+        targetPort: 10259
     kubeProxy:
       # Enable if using kube-proxy and not eBPF
       enabled: false
