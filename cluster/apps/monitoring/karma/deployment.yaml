@@ -12,6 +12,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: *app
       app.kubernetes.io/instance: *app
+  replicas: 3
   strategy:
     type: RollingUpdate
   template:
@@ -58,5 +59,12 @@ spec:
               cpu: 10m
               memory: 50Mi
             limits:
-              cpu: 100m
               memory: 200Mi
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+
