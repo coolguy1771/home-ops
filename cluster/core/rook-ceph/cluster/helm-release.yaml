@@ -17,10 +17,10 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
   dependsOn:
     # TODO(rook-ceph): Rename dependency to rook-ceph-operator
     - name: rook-ceph
@@ -40,10 +40,20 @@ spec:
           - hosts:
               - *host
             secretName: rook-tls
+    configOverride: |
+      [global]
+      bdev_enable_discard = true
+      bdev_async_discard = true
     cephClusterSpec:
+      cephVersion:
+        image: quay.io/ceph/ceph:v17.2.0
       # TODO(rook-ceph): Enable host network on next rebuild
       # network:
       #   provider: host
+      # TODO(rook-ceph): Enable compression on next rebuild
+      # connections:
+      #   compression:
+      #     enabled: true
       crashCollector:
         disable: false
       dashboard:
