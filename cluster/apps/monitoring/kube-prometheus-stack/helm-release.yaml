@@ -228,8 +228,6 @@ spec:
           requests:
             cpu: 250m
             memory: 2000Mi
-          limits:
-            memory: 6000Mi
         additionalScrapeConfigs:
           - job_name: coredns
             honor_timestamps: true
