@@ -48,9 +48,6 @@ spec:
           - hosts:
               - *host
             secretName: "sabnzbd-tls"
-    podSecurityContext:
-      supplementalGroups:
-        - 100
     persistence:
       config:
         enabled: true
