@@ -9,6 +9,7 @@ resources:
   - qbittorrent
   - radarr
   - radarr-uhd
+  - sabnzbd
   - sonarr
   - sonarr-uhd
   - tautulli
