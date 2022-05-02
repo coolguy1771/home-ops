@@ -48,6 +48,15 @@ spec:
           - hosts:
               - *host
             secretName: "sabnzbd-tls"
+    podSecurityContext:
+      podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 100
+        - 568
     persistence:
       config:
         enabled: true
