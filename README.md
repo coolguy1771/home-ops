@@ -34,7 +34,7 @@ There's an excellent template over at [k8s-at-home/template-cluster-k3s](https:/
 
 ### Installation
 
-My cluster is [k3s](https://k3s.io/) provisioned overtop bare-metal Ubuntu 20.04 using the [Ansible](https://www.ansible.com/) galaxy role [ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s). This is a semi hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate server for (NFS) file storage.
+My cluster is [k3s](https://k3s.io/) provisioned overtop bare-metal Ubuntu 22.04 using the [Ansible](https://www.ansible.com/) galaxy role [ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s). This is a semi hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate server for (NFS) file storage.
 
 🔸 _[Click here](./ansible/) to see my Ansible playbooks and roles._
 
@@ -127,9 +127,9 @@ My home IP can change at any given time and in order to keep my WAN IP address u
 | Device                   | Count | OS Disk Size | Data Disk Size          | Ram  | Operating System | Purpose                  |
 | ------------------------ | ----- | ------------ | ----------------------- | ---- | ---------------- | ------------------------ |
 | Protectli VP2410         | 1     | 120GB NVMe   | N/A                     | 8GB  | Opnsense 22.x    | Router                   |
-| VMWare VM                | 2     | 100GB VDisk  | N/A                     | 16GB | Ubuntu 20.04     | Kubernetes (k3s) Masters |
-| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Ubuntu 20.04     | Kubernetes (k3s) Master  |
-| VMWare VM                | 3     | 100GB VDisk  | 600GB VDisk (rook-ceph) | 16GB | Ubuntu 20.04     | Kubernetes (k3s) Workers |
+| VMWare VM                | 2     | 100GB VDisk  | N/A                     | 16GB | Ubuntu 22.04     | Kubernetes (k3s) Masters |
+| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Ubuntu 22.04     | Kubernetes (k3s) Master  |
+| VMWare VM                | 3     | 100GB VDisk  | 600GB VDisk (rook-ceph) | 16GB | Ubuntu 22.04     | Kubernetes (k3s) Workers |
 | SuperMicro 6027R         | 1     | 500GB SSD    | 4x4TB RAIDz1            | 32GB | Ubuntu 21.10     | Shared file storage      |
 
 ---
