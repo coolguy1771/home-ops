@@ -8,7 +8,6 @@
     ":separatePatchReleases",
     "docker:enableMajor",
     ":enablePreCommit",
-    "github>coolguy1771/home-ops//.github/renovate/allowedVersions.json5",
     "github>coolguy1771/home-ops//.github/renovate/autoMerge.json5",
     "github>coolguy1771/home-ops//.github/renovate/labels.json5",
     "github>coolguy1771/home-ops//.github/renovate/semanticCommits.json5"
@@ -20,7 +19,7 @@
   ],
   "onboarding": false,
   "requireConfig": false,
-  "gitAuthor": "lumiere-bot <98047013+rosey-bot[bot]@users.noreply.github.com>",
+  "gitAuthor": "lumiere-bot <98047013+lumiere-bot[bot]@users.noreply.github.com>",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": [
     "prIgnoreNotification"
