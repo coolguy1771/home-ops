@@ -1,3 +1,4 @@
+
 {
   "extends": [
     ":enableRenovate",
@@ -5,10 +6,11 @@
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":separatePatchReleases",
     "docker:enableMajor",
     ":enablePreCommit",
+    "github>coolguy1771/home-ops//.github/renovate/allowedVersions.json5",
     "github>coolguy1771/home-ops//.github/renovate/autoMerge.json5",
+    "github>coolguy1771/home-ops//.github/renovate/group.json5",
     "github>coolguy1771/home-ops//.github/renovate/labels.json5",
     "github>coolguy1771/home-ops//.github/renovate/semanticCommits.json5"
   ],
@@ -62,7 +64,7 @@
     ]
   },
   "regexManagers": [
-    // Read and process GitHub Releases
+    // Read and process various deps
     {
       "fileMatch": [
         "cluster/.+\\.ya?ml$",
@@ -70,9 +72,8 @@
         "hack/.+\\.sh$"
       ],
       "matchStrings": [
-        "datasource=(?<datasource>.*?)( versioning=(?<versioning>.*?))?\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n",
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\n.*?_version: \"(?<currentValue>.*)\"\n",
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\n.*?_VERSION=\"(?<currentValue>.*)\"\n"
+        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\n.*?: \"(?<currentValue>.*)\"\n",
+        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\n.*?=\"(?<currentValue>.*)\"\n"
       ],
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
@@ -83,20 +84,9 @@
         "cluster/.+\\.ya?ml$"
       ],
       "matchStrings": [
-        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/"
+        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n"
       ],
       "datasourceTemplate": "helm"
-    },
-    // Read and process Custom Resources
-    {
-      "fileMatch": [
-        "cluster/.+\\.ya?ml$"
-      ],
-      "matchStrings": [
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)\n .*: (?<currentValue>.*=?)"
-      ],
-      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
@@ -135,57 +125,6 @@
         "ghcr.io/k8s-at-home/qbittorrent",
         "Hypfer/Valetudo"
       ]
-    },
-    // group packages
-    {
-      "groupName": "rook-ceph-suite",
-      "matchDatasources": [
-        "docker",
-        "helm"
-      ],
-      "matchPackagePatterns": [
-        "^rook.ceph"
-      ],
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
-    },
-    {
-      "groupName": "external-snapshotter-suite",
-      "matchDatasources": [
-        "docker",
-        "github-releases"
-      ],
-      "matchPackagePatterns": [
-        "external-snapshotter",
-        "snapshot-controller"
-      ],
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
-    },
-    {
-      "groupName": "system-upgrade-controller-suite",
-      "matchDatasources": [
-        "docker",
-        "github-tags"
-      ],
-      "matchPackagePatterns": [
-        "rancher/system-upgrade-controller"
-      ],
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
-    },
-    {
-      "groupName": "vector-suite",
-      "matchDatasources": [
-        "docker",
-        "github-releases",
-        "helm"
-      ],
-      "matchPackagePatterns": [
-        "vector"
-      ],
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
     }
   ]
 }
