@@ -5,24 +5,24 @@ metadata:
   name: external-snapshotter-source
   namespace: flux-system
 spec:
-  interval: 30m
-  # renovate: datasource=github-releases
+  interval: 12h
   url: https://github.com/kubernetes-csi/external-snapshotter.git
   ref:
+    # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter
     tag: v5.0.1
   ignore: |
     # exclude all
     /*
-    # include deploy crds dir
+    # include crd directory
     !/client/config/crd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: external-snapshotter-crds
+  name: crds-external-snapshotter
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 30m
   prune: false
   wait: true
   sourceRef:

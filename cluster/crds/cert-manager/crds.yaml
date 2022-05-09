@@ -51,4 +51,3 @@ spec:
           value: v1.8.0
         - op: remove
           path: /metadata/annotations
-          
