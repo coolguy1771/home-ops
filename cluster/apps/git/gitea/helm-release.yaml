@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gitea
-      version: 5.0.6
+      version: 5.0.7
       sourceRef:
         kind: HelmRepository
         name: gitea-charts
@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: gitea/gitea
-      tag: 1.16.6
+      tag: 1.16.7
       pullPolicy: IfNotPresent
       rootless: true # only possible when running 1.14 or later
     ingress:
