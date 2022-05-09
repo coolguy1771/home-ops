@@ -2,27 +2,24 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
-  name: cert-manager-source
+  name: external-dns-source
   namespace: flux-system
 spec:
   interval: 12h
-  url: https://github.com/cert-manager/cert-manager.git
+  # renovate: datasource=github-releases
+  url: https://github.com/kubernetes-sigs/external-dns.git
   ref:
-    # renovate: datasource=github-releases depName=cert-manager/cert-manager
-    tag: v1.8.0
+    tag: v0.11.0
   ignore: |
     # exclude all
     /*
-    # include crd directory
-    !/deploy/crds
-    # exclude file extensions from crd dir
-    /deploy/crds/*.md
-    /deploy/crds/*.bazel
+    # include deploy crds dir
+    !/docs/contributing/crd-source/crd-manifest.yaml
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: crds-cert-manager
+  name: external-dns-crds
   namespace: flux-system
 spec:
   interval: 30m
@@ -30,25 +27,4 @@ spec:
   wait: true
   sourceRef:
     kind: GitRepository
-    name: cert-manager-source
-  patches:
-    - target:
-        version: v1
-        kind: CustomResourceDefinition
-      patch: |-
-        - op: replace
-          path: /metadata/labels/app
-          value: cert-manager
-        - op: replace
-          path: /metadata/labels/app.kubernetes.io~1name
-          value: cert-manager
-        - op: replace
-          path: /metadata/labels/app.kubernetes.io~1instance
-          value: cert-manager
-        - op: add
-          path: /metadata/labels/app.kubernetes.io~1version
-          # renovate: datasource=github-releases depName=cert-manager/cert-manager
-          value: v1.8.0
-        - op: remove
-          path: /metadata/annotations
-          
+    name: external-dns-source
