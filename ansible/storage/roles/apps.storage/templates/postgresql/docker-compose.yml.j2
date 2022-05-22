@@ -3,7 +3,7 @@ version: "3.8"
 
 services:
   postgresql:
-    image: docker.io/library/postgres:14.2
+    image: docker.io/library/postgres:14.3
     container_name: postgresql
     restart: &restartPolicy unless-stopped
     network_mode: bridge
@@ -30,7 +30,7 @@ services:
       - postgresql:postgresql
 
   pgadmin:
-    image: docker.io/dpage/pgadmin4:6.8
+    image: docker.io/dpage/pgadmin4:6.9
     container_name: postgresql-pgadmin
     restart: *restartPolicy
     network_mode: bridge
