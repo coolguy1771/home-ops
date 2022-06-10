@@ -2,13 +2,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - cert-manager.yaml
-  - networking.yaml
-  - media.yaml
-  - monitoring.yaml
   - calico-system.yaml
-  - rook-ceph.yaml
-  - tools.yaml
+  - cert-manager.yaml
+  - flux-system.yaml
   - git.yaml
   - kasten-io.yaml
-  - kyverno.yaml
+  - kube-system.yaml
+  - media.yaml
+  - monitoring.yaml
+  - networking.yaml
+  - rook-ceph.yaml
+  - starboard-system.yaml
+  - system-upgrade.yaml
+  - tools.yaml
