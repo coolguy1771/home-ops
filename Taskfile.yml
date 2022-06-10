@@ -18,7 +18,6 @@ includes:
   terraform: .taskfiles/TerraformTasks.yml
 
 tasks:
-
   kubeconfig:
     desc: Remotely fetch kubeconfig from Kubernetes
     cmds:
