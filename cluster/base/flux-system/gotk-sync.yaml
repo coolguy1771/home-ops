@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 5m0s
   # https://github.com/k8s-at-home/template-cluster-k3s/issues/324
-  url: ssh://git@github.com/coolhuy1771/home-ops
+  url: ssh://git@github.com/coolguy1771/home-ops
   ref:
     branch: main
   secretRef:
