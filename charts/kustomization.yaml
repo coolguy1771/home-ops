@@ -24,3 +24,6 @@ resources:
   - weaveworks-kured-charts.yaml
   - falco-security-charts.yaml
   - kyverno-charts.yaml
+  - project-calico-charts.yaml
+  - aqua-charts.yaml
+  - fairwinds-charts.yaml
