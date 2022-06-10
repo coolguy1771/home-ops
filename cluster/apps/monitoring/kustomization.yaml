@@ -11,3 +11,4 @@ resources:
   - speedtest-exporter
   - thanos
   - vector
+  - vpa

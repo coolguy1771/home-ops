@@ -13,5 +13,6 @@ resources:
   - monitoring
   - networking
   - rook-ceph
+  - starboard-system
   - system-upgrade
   - tools
