@@ -10,7 +10,7 @@ terraform {
   required_providers {
     nexus = {
       source  = "datadrivers/nexus"
-      version = "1.18.0"
+      version = "1.19.0"
     }
     sops = {
       source  = "carlpett/sops"
