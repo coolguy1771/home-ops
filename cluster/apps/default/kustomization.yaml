@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - haste-server
   - vaultwarden
-  - photoprism
   - theme-park

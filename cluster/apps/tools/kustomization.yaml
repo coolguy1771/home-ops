@@ -5,5 +5,5 @@ resources:
   - cdn-nginx
   - cyberchef
   - filebrowser
-  - paperless
   - excalidraw
+  - namespace.yaml

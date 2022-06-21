@@ -2,19 +2,32 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: cdn-nginx
+  name: &cdn-nginx
   namespace: tools
 spec:
   interval: 5m
   chart:
     spec:
-      chart: /charts/kah-common/
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
+    global:
+      nameOverride: *app
+    controller:
+      replicas: 3
+      strategy: RollingUpdate
     image:
       repository: ghcr.io/coolguy1771/nginx
       tag: 1.21.5
@@ -32,10 +45,6 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sonarr/nord.css"></head>';
-            sub_filter_once on;
         hosts:
           - host: "cdn.${SECRET_PUBLIC_DOMAIN}"
             paths:

@@ -5,7 +5,7 @@ metadata:
   name: node-feature-discovery
   namespace: kube-system
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: node-feature-discovery
@@ -14,9 +14,16 @@ spec:
         kind: HelmRepository
         name: node-feature-discovery-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     nodeFeatureRule:
-      createCRD: false
+      createCRD: true
     worker:
       annotations:
         configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf

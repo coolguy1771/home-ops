@@ -3,7 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - calico-system
-  - cert-manager
   - default
   - flux-system
   - git
@@ -12,7 +11,6 @@ resources:
   - media
   - monitoring
   - networking
-  - rook-ceph
-  - starboard-system
   - system-upgrade
+  - tigera-operator
   - tools

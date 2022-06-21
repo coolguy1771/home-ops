@@ -15,6 +15,9 @@ spec:
         name: gitea-charts
         namespace: flux-system
       interval: 5m
+    install:
+
+
   values:
     image:
       repository: gitea/gitea

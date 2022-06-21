@@ -2,25 +2,32 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: &app sabnzbd
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: sabnzbd
-      version: 9.3.2
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
+    global:
+      nameOverride: *app
     image:
       repository: ghcr.io/k8s-at-home/sabnzbd
-      tag: v3.6.0
+      tag: v3.6.0@sha256:7075b2b119dbd2b3db4f2f5107b9f04c735a8791a462e9b3899e8d7752be16d4
     env:
       TZ: "${TIMEZONE}"
       HOST_WHITELIST_ENTRIES: >-
@@ -30,6 +37,11 @@ spec:
         sabnzbd.media.svc.cluster,
         sabnzbd.media.svc.cluster.local,
         sabnzbd.${SECRET_PUBLIC_DOMAIN}
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
     ingress:
       main:
         enabled: true
@@ -40,41 +52,38 @@ spec:
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sabnzbd/nord.css"></head>';
             sub_filter_once on;
         hosts:
-          - host: &host "sabnzbd.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
               - *host
-            secretName: "sabnzbd-tls"
     podSecurityContext:
-      podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 100
-        - 568
     persistence:
       config:
         enabled: true
         existingClaim: sabnzbd-config-v1
+      downloads:
+        enabled: true
+        type: nfs
+        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+        path: /share/Downloads
+        mountPath: /downloads
       media:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Media
+        type: nfs
+        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+        path: /cairo/Media
         mountPath: /media
       incomplete:
         enabled: true
         type: emptyDir
     resources:
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 250Mi
       limits:
         memory: 8000Mi

@@ -2,22 +2,32 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: echo-server
+  name: &app echo-server
   namespace: networking
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: /charts/kah-common/
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    fullnameOverride: echo-server
+    global:
+      nameOverride: *app
+    controller:
+      replicas: 3
+      strategy: RollingUpdate
     image:
       repository: docker.io/jmalloc/echo-server
       tag: 0.3.1
@@ -25,7 +35,39 @@ spec:
       main:
         ports:
           http:
-            port: 8080
+            port: &port 8080
+    probes:
+      liveness:
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness:
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      startup:
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          failureThreshold: 30
+          periodSeconds: 10
     ingress:
       main:
         enabled: true
@@ -33,15 +75,22 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-          - host: &host "echo.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "echo-server.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
               - *host
+            secretName: echo-server-tls
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: *app
     resources:
       requests:
         cpu: 10m

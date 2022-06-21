@@ -5,7 +5,7 @@ metadata:
   name: vector-aggregator
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: vector
@@ -14,9 +14,14 @@ spec:
         kind: HelmRepository
         name: vector-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   dependsOn:
     - name: loki
       namespace: monitoring
@@ -41,10 +46,19 @@ spec:
           type: syslog
           address: 0.0.0.0:5140
           mode: udp
+        vector_metrics:
+          type: internal_metrics
       #
       # Transformations
       #
       transforms:
+        kubernetes_logs_remap:
+          type: remap
+          inputs:
+            - kubernetes_logs
+          source: |
+            # Standardize 'app' index
+            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
         opnsense_filterlog_remap:
           type: remap
           inputs:
@@ -93,7 +107,7 @@ spec:
           type: loki
           inputs:
             - journal_logs
-          endpoint: http://loki:3100
+          endpoint: http://loki-gateway:80
           encoding:
             codec: json
           batch:
@@ -107,8 +121,8 @@ spec:
         loki_kubernetes:
           type: loki
           inputs:
-            - kubernetes_logs
-          endpoint: http://loki:3100
+            - kubernetes_logs_remap
+          endpoint: http://loki-gateway:80
           encoding:
             codec: json
           batch:
@@ -118,21 +132,17 @@ spec:
           remove_timestamp: true
           labels:
             app: >-
-              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
-            container: >-
-              {{`{{ kubernetes.container_name }}`}}
+              {{`{{ custom_app_name }}`}}
             namespace: >-
               {{`{{ kubernetes.pod_namespace }}`}}
             node: >-
               {{`{{ kubernetes.pod_node_name }}`}}
-            pod: >-
-              {{`{{ kubernetes.pod_name }}`}}
         loki_opnsense_filterlog:
           type: loki
           inputs:
             - opnsense_filterlog_route._unmatched
             - opnsense_filterlog_geoip
-          endpoint: http://loki:3100
+          endpoint: http://loki-gateway:80
           encoding:
             codec: json
           batch:
@@ -140,6 +150,11 @@ spec:
           out_of_order_action: accept
           labels:
             hostname: opnsense
+        prometheus_sink:
+          type: prometheus_exporter
+          inputs:
+            - vector_metrics
+          address: 0.0.0.0:9090
         # console_debug:
         #   type: console
         #   inputs:
@@ -151,7 +166,7 @@ spec:
       repository: timberio/vector
       tag: 0.22.2-debian
     role: Stateless-Aggregator
-    replicas: 1
+    replicas: 3
     # env:
     #   - name: VECTOR_LOG
     #     value: debug
@@ -162,11 +177,13 @@ spec:
       - name: geoip
         persistentVolumeClaim:
           claimName: vector-geoipupdate-config-v1
-    podMonitor:
-      enabled: true
     service:
       enabled: true
       type: LoadBalancer
+    podMonitor:
+      enabled: true
+      jobLabel: vector-aggregator
+      port: prometheus-sink
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:

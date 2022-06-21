@@ -5,7 +5,7 @@ metadata:
   name: external-dns
   namespace: networking
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: external-dns
@@ -14,11 +14,16 @@ spec:
         kind: HelmRepository
         name: external-dns-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    interval: 5m
+    interval: 15m
     logLevel: debug
     provider: cloudflare
     env:
@@ -42,8 +47,8 @@ spec:
     txtOwnerId: "default"
     domainFilters:
       - "${SECRET_PUBLIC_DOMAIN}"
-      - "${SECRET_DOMIAN_STUDIO}"
-      - "${SECRET_DOMAIN_GAMES}"
+      - "${SECRET_PUBLIC_DOMAIN_GAMES}"
+      - "${SECRET_PUBLIC_DOMAIN_STUDIO}"
     resources:
       requests:
         memory: 100Mi
