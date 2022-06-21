@@ -1,4 +1,5 @@
 ---
+
 docker_edition: ce
 docker_package: "docker-{{ docker_edition }}"
 docker_users: "{{ ansible_user }}"
