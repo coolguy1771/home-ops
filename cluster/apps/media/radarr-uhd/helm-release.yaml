@@ -27,7 +27,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/k8s-at-home/radarr-nightly
-      tag: v4.2.0.6372@sha256:2d06604e5aff02f5aaae0de49cf5eed11c111cc0b8d435be5d45d8aa00a43d69
+      tag: v4.2.0.6380@sha256:89b1427d2b663477385a59722af738c6ffbbc696f494c64299af4734fe5f5be7
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr (UHD)
