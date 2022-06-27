@@ -23,22 +23,22 @@ provider "registry.terraform.io/carlpett/sops" {
 }
 
 provider "registry.terraform.io/datadrivers/nexus" {
-  version     = "1.20.1"
-  constraints = "1.20.1"
+  version     = "1.21.0"
+  constraints = "1.21.0"
   hashes = [
-    "h1:+nGCTnfObx43xjvVFAbDYWuZYRJKlIVNWP0230MmA10=",
-    "h1:2Em5oCWGBK6nsOMZ/qnGSFQwX8hWkyBHAnLy9hvhbe8=",
-    "h1:9PCklUQOD8/kyarY6fxZCz2pX5xDfxiOwz2YqV7x/vk=",
-    "h1:DwMpOtjtClvmJ4k3a+LlvM3Hx+eLvZ3ks/JdJ9/GYJE=",
-    "h1:GBSJ0OjWOXmB0atmms0AQBUgnyguGsqCan/VSU6n3/s=",
-    "h1:ObtPz/hj6G2qfmFZEXa07D2XmPZXcLAoOLuyIvrYmUI=",
-    "h1:RKN0p4bsrpt56M3kCLbD+bGbdKKRjR0z5SpO09shEi8=",
-    "h1:a/NFX04yaXUNOoH4QtJa83NbllaoG0O1U6SJ4C3ycaw=",
-    "h1:guBKAAN0nW2SpQqnxMAhxwW3nyQy3+uZaYAzoPSrjas=",
-    "h1:htj1O2rXUdF7PWHzGwj42yxXp9zEnxXFE+BJ56JfQPY=",
-    "h1:jzqwe16AxdrGndPN0t54MNBrqSGpQ9HK8LDjXBzDGzw=",
-    "h1:ngOPJJjmVOM8vtrgJrpkBhA2OT4SGTU4z1MECbiLqOk=",
-    "h1:ySXp0UOBkaTonpnRwIU+RAP/DfUdwAQ304XkyBxtEWI=",
-    "h1:ylRIADy9OslOlTMk4LdB7r2vIOX8sSlU/BuPdKQuaKU=",
+    "h1:0s1h28p18lGrOuGUmSMXXx1u0juR6MlnQiBDVdCR2jk=",
+    "h1:1IVyzTkdP59PMqF814x87DR5DS+wE6W7Kh8fSla8t+o=",
+    "h1:2/WTGFonpCEDbICeKygE3yBiOJlUuFovHLqxGG5CA7w=",
+    "h1:9wkonHeBWNGtGKINxeRhIOZD0fO1FeEI74ZMzi8M8+g=",
+    "h1:H0YuXSUsDUWs7FF6RqcTSl68apyUFcMinOT7n1znbXg=",
+    "h1:LuHDt4YrvJ3nzHDMnKjJFCZHFQjx6Zja1p1p2/XxNt8=",
+    "h1:NsejpvuGZkoF5xe/dfe6sBW288Tc1YXVhfvTzPvnOQQ=",
+    "h1:QYdoQBJqSVHul73FZZyPwAX8VQSIbs1XjI/MSnh0viQ=",
+    "h1:ViMKu2bqlp84ZhD5amjzKU/A5HETqJRIZFoYeB8BNoI=",
+    "h1:Xek4JaBuzvqnhsWns90mTVW/xH6eydNA0w0nsNtTa5M=",
+    "h1:abbJO7W6XWE2HPMhtSTzR2tkcbukk1yGdxRc8y6pm3w=",
+    "h1:ndxqi8C2vUasx+Q4w6rYsc/5uciP7Li3du9mIxgM+48=",
+    "h1:wU+sGr5MV9h9MnQyjMdvNIqOIWpYa7xrh2BMoPLENtw=",
+    "h1:yyJ1d3ZvlCGgZdWd9AGsGcsLZbalaNq8LCwnQ5dqDjw=",
   ]
 }
