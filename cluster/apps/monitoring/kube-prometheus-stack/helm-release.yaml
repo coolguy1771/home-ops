@@ -104,8 +104,7 @@ spec:
               storageClassName: "ceph-block"
               resources:
                 requests:
-                  # TODO(kube-prometheus-stack): change alertmanager volume to 250Mi
-                  storage: 1Gi
+                  storage: 256Mi
       kube-state-metrics:
       metricLabelsAllowlist:
         - "persistentvolumeclaims=[*]"
@@ -142,7 +141,7 @@ spec:
       endpoints:
         - 10.10.10.20
         - 10.10.10.21
-        - 10.10.10.26
+        - 10.10.10.22
       service:
         enabled: true
         port: 10257
@@ -152,7 +151,7 @@ spec:
       endpoints:
         - 10.10.10.20
         - 10.10.10.21
-        - 10.10.10.26
+        - 10.10.10.22
       service:
         enabled: true
         port: 10259
@@ -163,13 +162,13 @@ spec:
       endpoints:
         - 10.10.10.20
         - 10.10.10.21
-        - 10.10.10.26
+        - 10.10.10.22
     kubeEtcd:
       enabled: true
       endpoints:
         - 10.10.10.20
         - 10.10.10.21
-        - 10.10.10.26
+        - 10.10.10.22
       service:
         enabled: true
         port: 2381
