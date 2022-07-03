@@ -66,9 +66,6 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: k8s-2
-            devices:
-              - name: sdb
           - name: k8s-3
             devices:
               - name: sdb
@@ -76,6 +73,12 @@ spec:
             devices:
               - name: sdb
           - name: k8s-5
+            devices:
+              - name: sdb
+          - name: k8s-6
+            devices:
+              - name: sdb
+          - name: k8s-7
             devices:
               - name: sdb
     cephBlockPoolsVolumeSnapshotClass:
