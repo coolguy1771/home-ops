@@ -30,8 +30,10 @@ spec:
     ingress:
       dashboard:
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           cert-manager.io/cluster-issuer: letsencrypt-production
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/server-snippet: |
+            proxy_ssl_verify off;
         host:
           name: &host "rook.${SECRET_PUBLIC_DOMAIN}"
           path: "/"
@@ -39,6 +41,7 @@ spec:
           - hosts:
               - *host
             secretName: rook-tls
+        ingressClassName: nginx
     configOverride: |
       [global]
       bdev_enable_discard = true
@@ -48,9 +51,9 @@ spec:
         image: quay.io/ceph/ceph:v17.2.1
       network:
         provider: host
-      connections:
-        compression:
-          enabled: true
+      #connections:
+      #  compression:
+      #    enabled: true
       crashCollector:
         disable: false
       dashboard:
