@@ -62,6 +62,10 @@ spec:
               - *host
             secretName: "plex-tls"
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 44
         - 109
