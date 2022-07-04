@@ -26,12 +26,12 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/radarr-nightly
-      tag: v4.2.0.6396@sha256:91d00575f409642cdfb10033f5e84e4e63231a1d058c26c1adf56567fa706e22
+      repository: ghcr.io/onedr0p/radarr-nightly
+      tag: 4.2.0.6407@sha256:b9bcf78bfb370720a1bf9174c397e0f1be616fdaceb394907cc22ea7f998602c
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 7878
+      RADARR__PORT: &port 80
       RADARR__BRANCH: nightly
       RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
       RADARR__LOG_LEVEL: info

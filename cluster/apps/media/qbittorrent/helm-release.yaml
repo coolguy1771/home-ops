@@ -26,15 +26,17 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/qbittorrent
-      tag: v4.4.3.1@sha256:5ee37a3b5510c17e10d66cb8a4aeb95644f61f7af653cfd223e7100265bd839a
+      repository: ghcr.io/onedr0p/qbittorrent
+      tag: 4.4.3.1@sha256:ef3372a7df37647c555839196883283e21d459ada9de03ed0b194f8b16d7806b
     env:
       TZ: "${TIMEZONE}"
+      QBITTORRENT__PORT: &port 80
+      QBITTORRENT__BT_PORT: &port-bt 50413
     service:
       main:
         ports:
           http:
-            port: 8080
+            port: *port
       bittorrent:
         enabled: true
         type: LoadBalancer
@@ -43,9 +45,9 @@ spec:
         ports:
           bittorrent:
             enabled: true
-            port: 50413
+            port: *port-bt
             protocol: TCP
-            targetPort: 50413
+            targetPort: *port-bt
         externalTrafficPolicy: Local
     ingress:
       main:

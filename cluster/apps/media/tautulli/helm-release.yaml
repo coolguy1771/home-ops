@@ -26,8 +26,8 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/tautulli
-      tag: v2.10.1@sha256:cf901a2714ae859e8356eaaed9edf65d892a5cc9c32b3480944c6c3f4af96bed
+      repository: ghcr.io/onedr0p/tautulli
+      tag: 2.10.2@sha256:d5dd39f14ef81ebfa70f5a82315b66b1065284cf544cbd4f7bb4de6820053717
     env:
       TZ: "${TIMEZONE}"
     service:
