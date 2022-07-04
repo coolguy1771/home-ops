@@ -62,6 +62,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: sonarr-tls
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568

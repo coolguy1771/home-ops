@@ -61,6 +61,7 @@ spec:
           - hosts:
               - *host-release
               - *host-custom
+            secretName: overseerr-tls
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568

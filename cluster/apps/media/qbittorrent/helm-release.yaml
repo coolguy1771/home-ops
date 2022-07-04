@@ -74,6 +74,7 @@ spec:
           - hosts:
               - *host-release
               - *host-custom
+            secretName: qb-tls
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
