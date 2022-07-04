@@ -32,7 +32,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/plex
-      tag: 1.27.1.5916-6b0e31a64@sha256:b4f21d2133548bb1c422c8724823a60ea46ba02268bc807cf72a7d998674ab7a
+      tag: 1.27.1.5916-6b0e31a64@sha256:6f18ae11870eb5f70a6c6a3f165598bbbc4bef12cc7054a013d1a008806a54d2
     env:
       TZ: "${TIMEZONE}"
     service:
