@@ -6,7 +6,6 @@ resources:
   - default
   - flux-system
   - git
-  - kasten-io
   - kube-system
   - media
   - monitoring
