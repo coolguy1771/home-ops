@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app sonarr-uhd
+  name: &app sonarr
   namespace: media
 spec:
   interval: 15m
@@ -26,12 +26,12 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/sonarr-develop
-      tag: v3.0.8.1538@sha256:cfdae655178b74ac3bdae19c30e0b5bb1dc5766584a497fb2abd05b444906c4d
+      repository: ghcr.io/onedr0p/sonarr-develop
+      tag: 3.0.8.1538@sha256:3e12a071ad4d733afc8fca16fb2955e28edf8cd42ecb3a8b7ce3ba5f35e76751
     env:
       TZ: "${TIMEZONE}"
-      SONARR__INSTANCE_NAME: Sonarr (UHD)
-      SONARR__PORT: &port 8989
+      SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 80
       SONARR__BRANCH: develop
       SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
       SONARR__LOG_LEVEL: info
@@ -52,7 +52,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sonarr/hotline.css"><link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/addons/sonarr/sonarr-4k-logo/sonarr-4k-logo.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sonarr/nord.css"></head>';
             sub_filter_once on;
         hosts:
           - host: *host
@@ -68,7 +68,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: sonarr-uhd-config-v1
+        existingClaim: sonarr-config-v1
       media:
         enabled: true
         type: nfs
@@ -79,7 +79,7 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Apps/External/Backups/sonarr-uhd
+        path: /cairo/Apps/External/Backups/sonarr
         mountPath: /config/Backups
         readOnly: false
       scripts:
