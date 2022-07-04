@@ -35,7 +35,7 @@ spec:
       replicaCount: 3
       podAntiAffinityPreset: hard
       replicaLabels:
-        - replica
+        - __replica__
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
@@ -83,7 +83,7 @@ spec:
       persistence:
         enabled: true
         storageClass: "ceph-block"
-        size: 20Gi
+        size: 50Gi
     storegateway:
       enabled: true
       replicaCount: 3
