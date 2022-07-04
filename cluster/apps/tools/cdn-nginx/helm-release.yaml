@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &cdn-nginx
+  name: &app cdn-nginx
   namespace: tools
 spec:
   interval: 5m
