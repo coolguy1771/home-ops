@@ -96,7 +96,7 @@ spec:
           ADAPTOR: memcache
           HOST: gitea-be-memcached:11211
         attachment:
-          STORAGE_TYPE: local
+          STORAGE_TYPE: minio
           MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
           MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
           MINIO_SECRET_ACCESS_KEY: ${SECRET_S3_SECRET_KEY}
@@ -108,7 +108,7 @@ spec:
           ENABLED_ISSUE_BY_LABEL: true
           ENABLED_ISSUE_BY_REPOSITORY: true
         storage:
-          STORAGE_TYPE: local
+          STORAGE_TYPE: minio
           SERVE_DIRECT: false
           MINIO_ENDPOINT: s3.${SECRET_PRIVATE_DOMAIN}
           MINIO_ACCESS_KEY_ID: ${SECRET_S3_ACCESS_KEY}
