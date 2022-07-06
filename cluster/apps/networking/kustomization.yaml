@@ -9,3 +9,4 @@ resources:
   - external-dns
   - ingress-nginx
   - opnsense
+  - wildcard-certificate

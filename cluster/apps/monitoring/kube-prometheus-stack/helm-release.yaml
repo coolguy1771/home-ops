@@ -89,6 +89,8 @@ spec:
         enabled: true
         pathType: Prefix
         ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
         tls:
@@ -178,6 +180,8 @@ spec:
         enabled: true
         pathType: Prefix
         ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "prometheus.${SECRET_PUBLIC_DOMAIN}"
         tls:
@@ -195,6 +199,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "thanos-sidecar.${SECRET_PUBLIC_DOMAIN}"
         tls:

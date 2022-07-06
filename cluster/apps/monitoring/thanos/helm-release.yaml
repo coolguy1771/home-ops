@@ -43,6 +43,8 @@ spec:
         enabled: true
         hostname: &host "thanos-query.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         tls: true
         extraTls:
           - hosts:
@@ -56,6 +58,8 @@ spec:
       podAntiAffinityPreset: hard
       ingress:
         enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-bucketweb.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
         tls: true
@@ -73,6 +77,8 @@ spec:
       retentionResolution1h: 14d
       ingress:
         enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-compactor.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
         tls: true
@@ -90,6 +96,8 @@ spec:
       podAntiAffinityPreset: hard
       ingress:
         enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-storegateway.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
         tls: true
@@ -120,6 +128,8 @@ spec:
                 expr: absent(up{job="kube-prometheus-stack-prometheus"})
       ingress:
         enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-ruler.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
         tls: true

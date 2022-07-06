@@ -35,6 +35,9 @@ spec:
       ingress:
         enabled: true
         ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+
         hosts:
           - host: &host "goldilocks.${SECRET_PUBLIC_DOMAIN}"
             paths:
