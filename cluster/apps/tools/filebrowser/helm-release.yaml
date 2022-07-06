@@ -26,7 +26,7 @@ spec:
     fullnameOverride: *app
     image:
       repository: docker.io/filebrowser/filebrowser
-      tag: v2.22.1
+      tag: v2.22.3
     env:
       FB_DATABASE: "/config/filebrowser.db"
       FB_ROOT: "/files"
