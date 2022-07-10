@@ -27,7 +27,7 @@ spec:
       nameOverride: *app
     image:
       repository: mpepping/cyberchef
-      tag: v9.39.1
+      tag: v9.46.0
     nameOverride: cyberchef
     env:
     service:
