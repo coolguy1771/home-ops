@@ -29,6 +29,8 @@ spec:
     ingress:
       enabled: true
       className: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
       hosts:
         - host: &host "blackbox.${SECRET_PUBLIC_DOMAIN}"
           paths:
@@ -62,16 +64,20 @@ spec:
       targets:
         - module: http_2xx
           name: opnsense-http
-          url: "https://opnsense.${SECRET_PRIVATE_DOMAIN}"
+          url: "http://opnsense.${SECRET_PRIVATE_DOMAIN}"
         - module: icmp
           name: opnsense-icmp
           url: opnsense
+        - module: icmp
         - module: icmp
           name: osiris-icmp
           url: osiris
         - module: icmp
           name: dell-idrac-0-icmp
           url: dell-idrac-0
+        - module: icmp
+          name: dell-idrac-1-icmp
+          url: dell-idrac-1
     prometheusRule:
       enabled: true
       additionalLabels:
