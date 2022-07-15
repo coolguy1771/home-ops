@@ -32,7 +32,7 @@ spec:
       - name: snmp-exporter-dell-idrac
         mountPath: /config/snmp.yaml
         subPath: snmp.yaml
-        configMap: snmp-exporter-dell-idrac
+        configMap: snmp-exporter-dell-idrac-1
         readOnly: true
         defaultMode: 420
     serviceMonitor:
