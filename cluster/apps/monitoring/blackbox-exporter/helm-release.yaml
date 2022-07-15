@@ -69,7 +69,6 @@ spec:
           name: opnsense-icmp
           url: opnsense
         - module: icmp
-        - module: icmp
           name: osiris-icmp
           url: osiris
         - module: icmp
