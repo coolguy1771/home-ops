@@ -1,10 +1,10 @@
+
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: kasten-charts
+  name: backube-charts
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://charts.kasten.io/
-  timeout: 3m
+  url: https://backube.github.io/helm-charts/
