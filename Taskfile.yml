@@ -12,8 +12,9 @@ env:
 includes:
   ansible: .taskfiles/AnsibleTasks.yml
   cluster: .taskfiles/ClusterTasks.yml
+  debug: .taskfiles/DebugTasks.yml
   format: .taskfiles/FormatTasks.yml
-  linter: .taskfiles/LintTasks.yml
+  lint: .taskfiles/AnsibleTasks.yml
   precommit: .taskfiles/PreCommitTasks.yml
   terraform: .taskfiles/TerraformTasks.yml
 
@@ -26,6 +27,6 @@ tasks:
       - sed -i '' 's/127.0.0.1/{{.K3S_LB_ADDR}}/g' "{{.CLUSTER_DIR}}/kubeconfig"
       - chmod go-r "{{.CLUSTER_DIR}}/kubeconfig"
     vars:
-      K3S_PRIMARY_MASTER_NODE_USERNAME: "ubuntu"
+      K3S_PRIMARY_MASTER_NODE_USERNAME: "root"
       K3S_PRIMARY_MASTER_NODE_ADDR: "10.10.10.20"
       K3S_LB_ADDR: "192.168.1.1"

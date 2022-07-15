@@ -2,6 +2,7 @@
 version: "3"
 
 tasks:
+
   init:
     desc: Install pre-commit hooks
     cmds:
