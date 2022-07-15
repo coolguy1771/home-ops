@@ -23,7 +23,7 @@ spec:
     remediation:
       retries: 5
   values:
-    fullnameOverride: snmp-exporter-dell-idrac
+    fullnameOverride: snmp-exporter-dell-idrac-1
     image:
       repository: quay.io/prometheus/snmp-exporter
     extraArgs:
