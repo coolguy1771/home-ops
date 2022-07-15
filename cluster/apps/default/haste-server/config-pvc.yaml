@@ -4,8 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: haste-server-config-v1
   namespace: default
-  labels:
-    kasten.io/backup-volume: "enabled"
+
 spec:
   accessModes:
     - ReadWriteOnce
