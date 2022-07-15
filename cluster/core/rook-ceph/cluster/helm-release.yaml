@@ -27,11 +27,14 @@ spec:
   values:
     monitoring:
       enabled: true
+      createPrometheusRules: true
     ingress:
       dashboard:
+        ingressClassName: "nginx"
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
           nginx.ingress.kubernetes.io/server-snippet: |
             proxy_ssl_verify off;
         host:
@@ -41,7 +44,6 @@ spec:
           - hosts:
               - *host
             secretName: rook-tls
-        ingressClassName: nginx
     configOverride: |
       [global]
       bdev_enable_discard = true
@@ -85,7 +87,7 @@ spec:
       enabled: true
       name: csi-rbdplugin-snapclass
       annotations:
-        k10.kasten.io/is-snapshot-class: "true"
+        velero.io/csi-volumesnapshot-class: "true"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
