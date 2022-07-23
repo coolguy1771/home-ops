@@ -2,24 +2,41 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Receiver
 metadata:
-  name: home-cluster
+  name: home-ops
   namespace: flux-system
 spec:
   type: github
   events:
-    - "ping"
-    - "push"
+    - ping
+    - push
   secretRef:
     name: github-webhook-token
   resources:
-    - kind: GitRepository
-      name: flux-system
-    - kind: Kustomization
+    - apiVersion: source.toolkit.fluxcd.io/v1beta2
+      kind: GitRepository
+      name: flux-cluster
+      namespace: flux-system
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
       name: apps
-      apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-    - kind: Kustomization
+      namespace: flux-system
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
+      name: charts
+      namespace: flux-system
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
+      name: config
+      namespace: flux-system
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
       name: core
-      apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-    - kind: Kustomization
+      namespace: flux-system
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
+      name: flux-cluster
+      namespace: flux-system
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
       name: crds
-      apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+      namespace: flux-system

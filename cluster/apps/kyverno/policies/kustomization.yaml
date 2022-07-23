@@ -1,0 +1,7 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - snapshot-cronjob-controller.yaml
+  - delete-cpu-limits.yaml
+  - update-internal-ingress-annotations.yaml

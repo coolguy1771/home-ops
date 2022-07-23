@@ -24,7 +24,7 @@ spec:
       retries: 5
   dependsOn:
     - name: cert-manager
-      namespace: kube-system
+      namespace: cert-manager
   values:
     controller:
       replicaCount: 3
@@ -74,10 +74,10 @@ spec:
         configmap.reloader.stakater.com/reload: "cloudflare-proxied-networks"
       resources:
         requests:
-          cpu: 100m
+          cpu: 10m
           memory: 250Mi
         limits:
-          memory: 1000Mi
+          memory: 500Mi
     defaultBackend:
       enabled: true
       image:
@@ -88,7 +88,7 @@ spec:
         - name: TEMPLATE_NAME
           value: lost-in-space
         - name: SHOW_DETAILS
-          value: "true"
+          value: "false"
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

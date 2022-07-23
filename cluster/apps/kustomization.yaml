@@ -16,3 +16,4 @@ resources:
   # https://github.com/onedr0p/home-ops/issues/3385
   - tigera-operator
   - tools
+  - trivy-system
