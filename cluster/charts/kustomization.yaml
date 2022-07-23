@@ -5,6 +5,7 @@ resources:
   - aqua-charts.yaml
   - backube-charts.yaml
   - bitnami-charts.yaml
+  - cilium-charts.yaml
   - deliveryhero-charts.yaml
   - descheduler-charts.yaml
   - emberstack-charts.yaml
