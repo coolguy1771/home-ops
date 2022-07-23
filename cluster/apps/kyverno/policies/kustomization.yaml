@@ -6,5 +6,4 @@ resources:
   - delete-cpu-limits.yaml
   - update-internal-ingress-annotations.yaml
   - https://raw.githubusercontent.com/kyverno/policies/main/best-practices/check_deprecated_apis/check_deprecated_apis.yaml
-  - https://raw.githubusercontent.com/kyverno/policies/main/best-practices/require_drop_all/require_drop_all.yaml
   - https://raw.githubusercontent.com/kyverno/policies/main/best-practices/disallow_latest_tag/disallow_latest_tag.yaml
