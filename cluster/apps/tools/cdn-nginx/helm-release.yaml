@@ -29,7 +29,7 @@ spec:
       replicas: 3
       strategy: RollingUpdate
     image:
-      repository: ghcr.io/coolguy1771/nginx-rtmp
+      repository: ghcr.io/coolguy1771/nginx-ssl
       tag: 1.23.1
     nameOverride: cdn-nginx
     service:
