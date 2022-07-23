@@ -1,5 +1,4 @@
 ---
-
 pip_package: python3-pip
 
 # renovate: datasource=pypi depName=docker versioning=pep440
