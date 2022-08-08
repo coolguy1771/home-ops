@@ -24,7 +24,7 @@
     - name: Extract CA Cert from CA
       ansible.builtin.set_fact:
         dns_certificate_authority: |-
-          {{ dns_certificate_authority_raw | json_query("data.'ca.crt'") }}
+          {{ dns_certificate_authority_raw | json_query("data.ca.crt") }}
     - name: Extract CA Token from CA
       ansible.builtin.set_fact:
         dns_certificate_authority_token: |-
