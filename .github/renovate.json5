@@ -27,14 +27,7 @@
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
   "commitBodyTable": true,
-  "ignoreDeps": [
-    "ghcr.io/fluxcd/helm-controller",
-    "ghcr.io/fluxcd/image-automation-controller",
-    "ghcr.io/fluxcd/image-reflector-controller",
-    "ghcr.io/fluxcd/kustomize-controller",
-    "ghcr.io/fluxcd/notification-controller",
-    "ghcr.io/fluxcd/source-controller"
-  ],
+  "ignorePaths": ["archive/**"],
   "docker-compose": {
     "fileMatch": ["ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$"]
   },
@@ -50,7 +43,7 @@
   "regexManagers": [
     {
       "description": "Process CRD dependencies",
-      "fileMatch": ["cluster/crds/.+\\.ya?ml$"],
+      "fileMatch": ["cluster/.+\\.ya?ml$"],
       "matchStrings": [
         // GitRepository where 'Git release/tag' matches 'Helm' version
         "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
@@ -87,11 +80,16 @@
       "matchDatasources": ["docker", "github-releases"],
       "versioning": "loose",
       "matchPackageNames": [
-        "ghcr.io/onedr0p/emby",
         "ghcr.io/onedr0p/plex",
         "ghcr.io/onedr0p/qbittorrent",
         "Hypfer/Valetudo"
       ]
+    },
+    {
+      "description": "Use custom versioning for Minio",
+      "matchDatasources": ["docker"],
+      "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
+      "matchPackageNames": ["quay.io/minio/minio"]
     }
   ]
 }
