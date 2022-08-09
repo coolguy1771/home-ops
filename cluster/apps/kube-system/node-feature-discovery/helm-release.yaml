@@ -29,10 +29,8 @@ spec:
         configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
       config:
         core:
-          sources:
-            - custom
-            - pci
-            - usb
+          labelSorces:
+            - "all"
         sources:
           usb:
             deviceClassWhitelist:
@@ -46,6 +44,17 @@ spec:
               - class
               - vendor
               - device
+          pci:
+            deviceClassWhitelist:
+              - "0200"
+              - "03"
+              - "12"
+            deviceLabelFields:
+              - "class"
+              - "vendor"
+              - "device"
+              - "subsystem_vendor"
+              - "subsystem_device"
           custom:
             - name: zwave
               matchOn:
