@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: fairwinds-charts
         namespace: flux-system
-      interval: 15m
   install:
     createNamespace: true
     remediation:
@@ -26,7 +25,6 @@ spec:
     controller:
       resources:
         requests:
-          cpu: 100m
           memory: 64M
         limits:
           memory: 250M
