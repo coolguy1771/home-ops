@@ -76,3 +76,6 @@ spec:
               matchOn:
                 - usbId:
                     vendor: ["1a6e", "18d1"]
+    tls:
+      enable: true
+      certManager: true
