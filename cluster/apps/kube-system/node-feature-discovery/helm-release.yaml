@@ -32,6 +32,11 @@ spec:
           labelSorces:
             - "all"
         sources:
+          cpu:
+            cpuid:
+              attributeBlacklist: [MMX, MMXEXT]
+          kernel:
+            configOpts: [NO_HZ, X86, DMI]
           usb:
             deviceClassWhitelist:
               - "02"
