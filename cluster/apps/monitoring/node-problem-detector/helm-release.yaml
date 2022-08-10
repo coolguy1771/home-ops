@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: deliveryhero-charts
         namespace: flux-system
-      interval: 15m
   install:
     createNamespace: true
     remediation:
@@ -23,7 +22,70 @@ spec:
     remediation:
       retries: 5
   values:
+    image:
+      repository: k8s.gcr.io/node-problem-detector/node-problem-detector
+      tag: v0.8.11
+      pullPolicy: IfNotPresent
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
+      prometheusRule:
+        enabled: true
+    settings:
+      custom_monitor_definitions:
+        health-checker-containerd.json: |
+          {
+            "plugin": "custom",
+            "pluginConfig": {
+              "invoke_interval": "10s",
+              "timeout": "3m",
+              "max_output_length": 80,
+              "concurrency": 1
+            },
+            "source": "health-checker",
+            "metricsReporting": true,
+            "conditions": [
+              {
+                "type": "ContainerRuntimeUnhealthy",
+                "reason": "ContainerRuntimeIsHealthy",
+                "message": "Container runtime on the node is functioning properly"
+              }
+            ],
+            "rules": [
+              {
+                "type": "permanent",
+                "condition": "ContainerRuntimeUnhealthy",
+                "reason": "ContainerdUnhealthy",
+                "path": "/home/kubernetes/bin/health-checker",
+                "args": [
+                  "--component=cri",
+                  "--enable-repair=true",
+                  "--cooldown-time=2m",
+                  "--health-check-timeout=60s"
+                ],
+                "timeout": "3m"
+              }
+            ]
+          }
+        network-problem-monitor.json: |
+          {
+            "plugin": "custom",
+            "pluginConfig": {
+              "invoke_interval": "30s",
+              "timeout": "5s",
+              "max_output_length": 80,
+              "concurrency": 3
+            },
+            "source": "network-custom-plugin-monitor",
+            "metricsReporting": true,
+            "conditions": [],
+            "rules": [
+              {
+                "type": "temporary",
+                "reason": "ConntrackFull",
+                "path": "./config/plugin/network_problem.sh",
+                "timeout": "3s"
+              }
+            ]
+          }
