@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: k8s.gcr.io/node-problem-detector/node-problem-detector
-      tag: v0.8.11
+      tag: v0.8.10
       pullPolicy: IfNotPresent
     metrics:
       enabled: true
