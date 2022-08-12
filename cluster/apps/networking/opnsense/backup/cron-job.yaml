@@ -5,7 +5,7 @@ metadata:
   name: &app opnsense-backup
   namespace: networking
 spec:
-  schedule: "0 */12 * * *"
+  schedule: "@daily"
   concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 5
