@@ -5,7 +5,7 @@ set -o errexit
 
 config_filename="$(date "+%Y%m%d-%H%M%S").xml"
 http_request_date=$(date -R)
-http_filepath="opnsense-backup/${config_filename}"
+http_filepath="${S3_BUCKET}/${config_filename}"
 sig="PUT\n\ntext/xml\n${http_request_date}\n/${http_filepath}"
 http_signature=$(echo -en "${sig}" | openssl sha1 -hmac "${AWS_SECRET_ACCESS_KEY}" -binary | base64)
 
