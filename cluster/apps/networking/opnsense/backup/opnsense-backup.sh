@@ -10,7 +10,7 @@ sig="PUT\n\ntext/xml\n${http_request_date}\n/${http_filepath}"
 http_signature=$(echo -en "${sig}" | openssl sha1 -hmac "${AWS_SECRET_ACCESS_KEY}" -binary | base64)
 
 echo "Download Opnsense config file ..."
-curl -fsSL \
+curl -fsSLk \
         --user "${OPNSENSE_KEY}:${OPNSENSE_SECRET}" \
         --output "${config_filename}" \
         "https://${OPNSENSE_HOST}/api/backup/backup/download"
