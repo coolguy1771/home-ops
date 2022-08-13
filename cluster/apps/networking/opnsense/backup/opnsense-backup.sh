@@ -3,26 +3,23 @@
 set -o nounset
 set -o errexit
 
-FILE_DATE=$(date "+%Y%m%d-%H%M%S")
-RESOURCE="/${S3_BUCKET}/${FILE}"
-CONTENT_TYPE="text/xml"
-DATE=$(date -R)
-_signature="PUT\n\n${CONTENT_TYPE}\n${DATE}\n${RESOURCE}"
-SIGNATURE=$(echo -en "${_signature}" | openssl sha1 -hmac "${S3_SECRET_KEY}" -binary | base64)
+config_filename="$(date "+%Y%m%d-%H%M%S").xml"
+http_request_date=$(date -R)
+http_filepath="opnsense-backup/${config_filename}"
+sig="PUT\n\ntext/xml\n${http_request_date}\n/${http_filepath}"
+http_signature=$(echo -en "${sig}" | openssl sha1 -hmac "${AWS_SECRET_ACCESS_KEY}" -binary | base64)
 
-echo "Attempting to download Opnsense config file..."
-curl --silent -k --user "${OPNSENSE_KEY}":"${OPNSENSE_SECRET}" https://"${OPNSENSE_HOST}"/api/backup/backup/download --output "opnsense-backup-${FILE_DATE}.xml"
-FILE="opnsense-backup-${FILE_DATE}.xml"
-echo "Successfully downloaded Opnsense config file to ${FILE}..."
+echo "Download Opnsense config file ..."
+curl -fsSL \
+        --user "${OPNSENSE_KEY}:${OPNSENSE_SECRET}" \
+        --output "${config_filename}" \
+        "https://${OPNSENSE_HOST}/api/backup/backup/download"
 
-echo "Uploading backup to ${S3_BUCKET} on ${S3_HOST}..."
-STATUS=$(curl --silent -X PUT -T "${FILE}" \
+echo "Upload backup to s3 bucket ..."
+curl -fsSL \
+        -X PUT -T "${config_filename}" \
         -H "Host: ${S3_ENDPOINT}" \
-        -H "Date: ${DATE}" \
-        -H "Content-Type: ${CONTENT_TYPE}" \
-        -H "Authorization: AWS ${S3_ACCESS_KEY}:${SIGNATURE}" \
-        https://"${S3_ENDPOINT}""${RESOURCE}")
-
-echo "${STATUS}" || echo "Upload Completed Successfully"
-
-echo "You have successfully backed up your Opnsense config file to ${S3_BUCKET} on ${S3_HOST}."
+        -H "Date: ${http_request_date}" \
+        -H "Content-Type: text/xml" \
+        -H "Authorization: AWS ${AWS_ACCESS_KEY_ID}:${http_signature}" \
+        "https://${S3_ENDPOINT}/${http_filepath}"
