@@ -17,6 +17,8 @@ includes:
   lint: .taskfiles/AnsibleTasks.yml
   precommit: .taskfiles/PreCommitTasks.yml
   terraform: .taskfiles/TerraformTasks.yml
+  snapshot: .taskfiles/SnapshotTasks.yml
+  rook: .taskfiles/RookTasks.yml
 
 tasks:
   kubeconfig:

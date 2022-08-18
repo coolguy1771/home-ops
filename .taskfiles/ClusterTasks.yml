@@ -2,7 +2,6 @@
 version: "3"
 
 tasks:
-
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
     cmds:
