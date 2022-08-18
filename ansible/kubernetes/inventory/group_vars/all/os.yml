@@ -14,8 +14,8 @@ packages:
   - htop
   - intel-gpu-tools
   - ipvsadm
-  - kernel-devel       # required by falco
-  - kernel-headers     # required by falco
+  - kernel-devel # required by falco
+  - kernel-headers # required by falco
   - lm_sensors
   - nano
   - nvme-cli
