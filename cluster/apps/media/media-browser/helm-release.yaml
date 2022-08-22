@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -22,8 +22,6 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
       repository: docker.io/filebrowser/filebrowser
       tag: v2.22.4
@@ -39,7 +37,7 @@ spec:
           http:
             port: &port 80
     probes:
-      liveness:
+      liveness: &probes
         enabled: true
         custom: true
         spec:
@@ -50,31 +48,13 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 1
           failureThreshold: 3
-      readiness:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
+      readiness: *probes
       startup:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          failureThreshold: 30
-          periodSeconds: 10
+        enabled: false
     ingress:
       main:
         enabled: true
         ingressClassName: "nginx"
-        cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -83,7 +63,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: media-tls
+            secretName: "{{ .Release.Name }}-tls"
     persistence:
       config:
         enabled: true

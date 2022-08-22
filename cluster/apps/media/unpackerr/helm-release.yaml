@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -22,8 +22,6 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/unpackerr
       tag: 0.10.1@sha256:ca957341bd944568679fff0121e07ddcd0e32c42b888825921cacf524d45aeb3

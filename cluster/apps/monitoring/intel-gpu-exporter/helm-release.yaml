@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -25,11 +25,8 @@ spec:
     - name: intel-gpu-plugin
       namespace: kube-system
   values:
-    global:
-      nameOverride: *app
     controller:
       type: daemonset
-      strategy: RollingUpdate
     image:
       repository: ghcr.io/onedr0p/intel-gpu-exporter
       tag: rolling@sha256:1c84020b442e0f95e2e6a46281d3bfc6199902d3d91b10515fc000e43c9a7421

@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -22,20 +22,17 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
-      repository: ghcr.io/onedr0p/radarr-nightly
-      tag: 4.2.3.6522@sha256:cd593055fb576dcbcc1c55a9a5b54585546b4e601d621dc9b75e513668b9139a
+      repository: ghcr.io/onedr0p/radarr-develop
+      tag: 4.2.2.6503@sha256:b1d020c55eafe7a8df4dab105bec61b4dbca7071f274b3975f2bcbd888538b74
     env:
       TZ: "${TIMEZONE}"
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 80
-      RADARR__BRANCH: nightly
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
-      RADARR__LOG_LEVEL: info
       PUSHOVER_DEBUG: "false"
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+      RADARR__INSTANCE_NAME: Radarr
+      RADARR__PORT: &port 80
+      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+      RADARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
           name: *app
@@ -49,7 +46,6 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/radarr/nord.css"></head>';
@@ -62,7 +58,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: sonarr-tls
+            secretName: "{{ .Release.Name }}-tls"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -80,13 +76,6 @@ spec:
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
         path: /cairo/Media
         mountPath: /media
-      backup:
-        enabled: true
-        type: nfs
-        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Apps/External/Backups/radarr
-        mountPath: /config/Backups
-        readOnly: false
       scripts:
         enabled: true
         type: configMap

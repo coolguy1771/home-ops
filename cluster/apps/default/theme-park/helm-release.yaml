@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -22,14 +22,12 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
     controller:
       replicas: 3
       strategy: RollingUpdate
     image:
-      repository: ghcr.io/k8s-at-home/theme-park
-      tag: v1.10.1@sha256:3f25592d4b89a2a1ac3e213366615aac82d039c90f48e1b6394443c3b7921592
+      repository: ghcr.io/onedr0p/theme-park
+      tag: 1.10.1@sha256:0dcde933654316b6d0f4c9c8d4130f3a95e02927d753952f5199fe348627d7b5
     service:
       main:
         ports:
@@ -40,9 +38,8 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns.home.arpa/enabled: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -51,7 +48,6 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "theme-park-tls"
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
@@ -61,7 +57,7 @@ spec:
             app.kubernetes.io/name: *app
     resources:
       requests:
-        cpu: 10m
-        memory: 50Mi
+        cpu: 5m
+        memory: 10Mi
       limits:
-        memory: 150Mi
+        memory: 50Mi
