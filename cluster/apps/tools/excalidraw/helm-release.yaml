@@ -48,7 +48,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "{.Release.Name}-tls"
+            secretName: "{{ .Release.Name }}-tls"
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
