@@ -7,6 +7,8 @@ resources:
   - bitnami-charts.yaml
   - bjw-s-charts.yaml
   - cilium-charts.yaml
+  - cloudnative-pg-charts.yaml
+  - csi-driver-nfs-charts.yaml
   - deliveryhero-charts.yaml
   - descheduler-charts.yaml
   - emberstack-charts.yaml
