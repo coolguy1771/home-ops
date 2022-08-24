@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - auth
   - default
+  - database
   - flux-system
   - kube-system
   - kyverno
