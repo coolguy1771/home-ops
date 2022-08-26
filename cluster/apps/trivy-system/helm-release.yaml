@@ -32,5 +32,11 @@ spec:
       configAuditScannerScanOnlyCurrentRevisions: true
     trivy:
       ignoreUnfixed: true
+      resources:
+      requests:
+        cpu: 100m
+        memory: 500M
+      limits:
+        memory: 500M
     serviceMonitor:
       enabled: true
