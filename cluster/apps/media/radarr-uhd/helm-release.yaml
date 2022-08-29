@@ -26,7 +26,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/radarr-nightly
-      tag: 4.2.3.6522@sha256:cd593055fb576dcbcc1c55a9a5b54585546b4e601d621dc9b75e513668b9139a
+      tag: 4.2.3.6555@sha256:63acf59467676e31f9522312c08655133cd3c0d3aa667956c74036a7fbcc6d35
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr (UHD)
