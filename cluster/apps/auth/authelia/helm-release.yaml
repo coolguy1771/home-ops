@@ -66,6 +66,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: *app-tls
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
