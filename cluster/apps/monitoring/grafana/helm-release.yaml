@@ -21,33 +21,45 @@ spec:
   upgrade:
     remediation:
       retries: 5
+  dependsOn:
+    - name: postgres
+      namespace: database
   values:
     replicas: 3
-    env:
-      GF_EXPLORE_ENABLED: true
-      GF_PANELS_DISABLE_SANITIZE_HTML: true
-      GF_LOG_FILTERS: rendering:debug
-      GF_DATE_FORMATS_FULL_DATE: "MMM Do, YYYY hh:mm:ss a"
-      GF_SECURITY_ALLOW_EMBEDDING: true
-      GF_SECURITY_COOKIE_SAMESITE: grafana
     admin:
-      existingSecret: grafana-admin-creds
+      existingSecret: grafana-admin
+    envFromSecrets:
+      - name: grafana
     grafana.ini:
-      server:
-        root_url: "https://grafana.${SECRET_PUBLIC_DOMAIN}"
-      paths:
-        data: /var/lib/grafana/data
-        logs: /var/log/grafana
-        plugins: /var/lib/grafana/plugins
-        provisioning: /etc/grafana/provisioning
-      analytics:
-        check_for_updates: false
-      log:
-        mode: console
-      grafana_net:
-        url: https://grafana.net
+      auth:
+        signout_redirect_url: "https://auth.${SECRET_PUBLIC_DOMAIN}/logout"
+        oauth_auto_login: false
+      auth.generic_oauth:
+        enabled: true
+        name: Authelia
+        client_id: grafana
+        client_secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
+        scopes: "openid profile email groups"
+        empty_scopes: false
+        auth_url: "https://auth.${SECRET_PUBLIC_DOMAIN}/api/oidc/authorization"
+        token_url: "https://auth.${SECRET_PUBLIC_DOMAIN}/api/oidc/token"
+        api_url: "https://auth.${SECRET_PUBLIC_DOMAIN}/api/oidc/userinfo"
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+      auth.generic_oauth.group_mapping:
+        role_attribute_path: |
+          contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+        org_id: 1
       auth.basic:
-        disable_login_form: false
+        enabled: false
+        # disable_login_form: false
+      auth.anonymous:
+        enabled: true
+        org_name: HomeOps
+        org_id: 1
+        org_role: Viewer
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
