@@ -6,4 +6,5 @@ resources:
   - cyberchef
   - filebrowser
   - excalidraw
+  - smtp-relay
   - namespace.yaml
