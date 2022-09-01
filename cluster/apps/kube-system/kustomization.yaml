@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - namespace.yaml
+  - cilium
   - csi-driver-nfs
   - descheduler
   - external-snapshotter
