@@ -7,4 +7,5 @@ resources:
   - filebrowser
   - excalidraw
   - smtp-relay
+  - wastebin
   - namespace.yaml
