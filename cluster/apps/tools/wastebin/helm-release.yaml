@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app excalidraw
-  namespace: wastebin
+  name: &app wastebin
+  namespace: tools
 spec:
   interval: 15m
   chart:
