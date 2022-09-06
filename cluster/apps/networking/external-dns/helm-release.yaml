@@ -22,8 +22,7 @@ spec:
     remediation:
       retries: 5
   values:
-    interval: 15m
-    logLevel: debug
+    interval: 2m
     provider: cloudflare
     env:
       - name: CF_API_EMAIL
