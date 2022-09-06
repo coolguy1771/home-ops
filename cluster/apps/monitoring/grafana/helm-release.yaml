@@ -27,7 +27,7 @@ spec:
   values:
     replicas: 3
     admin:
-      existingSecret: grafana-admin-creds
+      existingSecret: grafana-admin
     envFromSecrets:
       - name: grafana
     grafana.ini:
