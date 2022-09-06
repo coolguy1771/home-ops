@@ -48,7 +48,6 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns.home.arpa/enabled: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
