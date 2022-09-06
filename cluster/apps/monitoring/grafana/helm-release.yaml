@@ -75,7 +75,6 @@ spec:
     datasources:
       datasources.yaml:
         apiVersion: 1
-        # list of datasources that should be deleted from the database
         deleteDatasources:
           - name: Loki
             orgId: 1
@@ -83,12 +82,12 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: http://thanos-query:9090/
+            url: http://thanos-query.monitoring.svc.cluster.local:9090
             isDefault: true
           - name: Loki
             type: loki
             access: proxy
-            url: http://loki-gateway:80
+            url: http://loki-gateway.monitoring.svc.cluster.local:80
     dashboards:
       default:
         # Ref: https://grafana.com/grafana/dashboards/7845
@@ -135,9 +134,6 @@ spec:
           secretName: grafana-tls
     persistence:
       enabled: false
-      # type: statefulset
-      # storageClassName: "ceph-block"
-      # size: 10Gi
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
@@ -147,6 +143,5 @@ spec:
                 matchExpressions:
                   - key: app.kubernetes.io/name
                     operator: In
-                    values:
-                      - grafana
+                    values: ["grafana"]
               topologyKey: kubernetes.io/hostname
