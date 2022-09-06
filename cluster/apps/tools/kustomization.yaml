@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - cdn-nginx
   - cyberchef
-  - filebrowser
   - excalidraw
   - smtp-relay
   - wastebin
