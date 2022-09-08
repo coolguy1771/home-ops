@@ -32,7 +32,7 @@ spec:
       DEBUG: "true"
       SMTP_DOMAIN: "${SECRET_EMAIL_DOMAIN}"
       SMTP_SERVER: "in-v3.mailjet.com"
-      SMTP_PORT: "587"
+      SMTP_PORT: "465"
     envFrom:
       - secretRef:
           name: *app
