@@ -31,9 +31,8 @@ spec:
     env:
       DEBUG: "true"
       SMTP_DOMAIN: "${SECRET_EMAIL_DOMAIN}"
-      SMTP_SERVER: "smtp.fastmail.com"
-      SMTP_USERNAME: "twitlin@${SECRET_EMAIL_DOMAIN}"
-      SMTP_PORT: "465"
+      SMTP_SERVER: "in-v3.mailjet.com"
+      SMTP_PORT: "587"
     envFrom:
       - secretRef:
           name: *app

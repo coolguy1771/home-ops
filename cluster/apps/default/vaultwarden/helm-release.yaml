@@ -37,10 +37,9 @@ spec:
       SIGNUPS_ALLOWED: true
       SMTP_AUTH_MECHANISM: "Login"
       SMTP_SECURITY: "force_tls"
-      SMTP_HOST: "smtp.fastmail.com"
+      SMTP_HOST: "sin-v3.mailjet.com"
       SMTP_FROM: "vaultwarden@${SECRET_EMAIL_DOMAIN}"
-      SMTP_USERNAME: "twitlin@${SECRET_EMAIL_DOMAIN}"
-      SMTP_PORT: "465"
+      SMTP_PORT: "587"
       WEBSOCKET_ADDRESS: 0.0.0.0
       WEBSOCKET_ENABLED: true
       WEBSOCKET_PORT: 3012
