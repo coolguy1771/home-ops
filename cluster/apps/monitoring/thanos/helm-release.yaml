@@ -109,7 +109,7 @@ spec:
         storageClass: "ceph-block"
         size: 20Gi
     ruler:
-      enabled: true
+      enabled: false
       replicaCount: 3
       podAntiAffinityPreset: hard
       dnsDiscovery:
