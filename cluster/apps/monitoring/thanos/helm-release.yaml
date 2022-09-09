@@ -90,7 +90,7 @@ spec:
         storageClass: "ceph-block"
         size: 50Gi
     storegateway:
-      enabled: true
+      enabled: false
       replicaCount: 3
       podAntiAffinityPreset: hard
       ingress:
@@ -109,7 +109,7 @@ spec:
         storageClass: "ceph-block"
         size: 20Gi
     ruler:
-      enabled: false
+      enabled: true
       replicaCount: 3
       podAntiAffinityPreset: hard
       dnsDiscovery:
