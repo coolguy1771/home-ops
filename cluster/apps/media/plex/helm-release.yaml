@@ -50,6 +50,7 @@ spec:
         annotations:
           external-dns.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
           nginx.ingress.kubernetes.io/configuration-snippet: |
             location = / {
