@@ -1,13 +1,13 @@
-
 {
   "extends": [
-    ":enableRenovate",
     "config:base",
+    "docker:enableMajor",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    "docker:enableMajor",
     ":enablePreCommit",
+    ":automergeDigest",
+    ":automergeBranchPush",
     "github>coolguy1771/home-ops//.github/renovate/allowedVersions.json5",
     "github>coolguy1771/home-ops//.github/renovate/autoMerge.json5",
     "github>coolguy1771/home-ops//.github/renovate/commitMessage.json5",
