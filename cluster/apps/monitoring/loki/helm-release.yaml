@@ -93,7 +93,7 @@ spec:
           reporting_enabled: false
     gateway:
       enabled: true
-      replicas: 3
+      replicas: 1
       ingress:
         enabled: true
         ingressClassName: "nginx"
@@ -109,12 +109,12 @@ spec:
               - *host
             secretName: "{{ .Release.Name }}-tls"
     write:
-      replicas: 3
+      replicas: 1
       persistence:
         size: 10Gi
         storageClass: ceph-block
     read:
-      replicas: 3
+      replicas: 1
       extraVolumeMounts:
         - name: loki-rules
           mountPath: /rules/fake
