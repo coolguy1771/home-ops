@@ -25,13 +25,15 @@ spec:
     - name: loki
       namespace: monitoring
   values:
+    image:
+      repository: timberio/vector
+      tag: 0.24.0-debian
+    role: Stateless-Aggregator
+    replicas: 3
     customConfig:
       data_dir: /vector-data-dir
       api:
         enabled: false
-      #
-      # Sources
-      #
       sources:
         journal_logs:
           type: vector
@@ -45,11 +47,6 @@ spec:
           type: syslog
           address: 0.0.0.0:5140
           mode: udp
-        vector_metrics:
-          type: internal_metrics
-      #
-      # Transformations
-      #
       transforms:
         kubernetes_logs_remap:
           type: remap
@@ -98,9 +95,6 @@ spec:
           database: /geoip/GeoLite2-City.mmdb
           source: filter_source_ip
           target: geoip
-      #
-      # Sinks
-      #
       sinks:
         loki_journal:
           type: loki
@@ -149,26 +143,6 @@ spec:
           out_of_order_action: accept
           labels:
             hostname: opnsense
-        prometheus_sink:
-          type: prometheus_exporter
-          inputs:
-            - vector_metrics
-          address: 0.0.0.0:9090
-        # console_debug:
-        #   type: console
-        #   inputs:
-        #     - opnsense_filterlog_logs
-        #   target: stdout
-        #   encoding:
-        #     codec: json
-    image:
-      repository: timberio/vector
-      tag: 0.24.0-debian
-    role: Stateless-Aggregator
-    replicas: 3
-    # env:
-    #   - name: VECTOR_LOG
-    #     value: debug
     extraVolumeMounts:
       - name: geoip
         mountPath: /geoip
@@ -179,10 +153,6 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-    podMonitor:
-      enabled: true
-      jobLabel: vector-aggregator
-      port: prometheus-sink
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
@@ -192,8 +162,7 @@ spec:
                 matchExpressions:
                   - key: app.kubernetes.io/component
                     operator: In
-                    values:
-                      - Stateless-Aggregator
+                    values: ["Stateless-Aggregator"]
               topologyKey: kubernetes.io/hostname
   postRenderers:
     - kustomize:
@@ -204,8 +173,7 @@ spec:
             patch:
               - op: add
                 path: /spec/externalIPs
-                value:
-                  - "${SVC_SYSLOG_ADDR}"
+                value: ["${SVC_SYSLOG_ADDR}"]
               - op: replace
                 path: /spec/externalTrafficPolicy
                 value: Local
