@@ -93,10 +93,11 @@ spec:
           reporting_enabled: false
     gateway:
       enabled: true
-      replicas: 1
+      replicas: 3
       ingress:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
+        verboseLogging: false
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
@@ -109,12 +110,12 @@ spec:
               - *host
             secretName: "{{ .Release.Name }}-tls"
     write:
-      replicas: 1
+      replicas: 3
       persistence:
         size: 10Gi
         storageClass: ceph-block
     read:
-      replicas: 1
+      replicas: 3
       extraVolumeMounts:
         - name: loki-rules
           mountPath: /rules/fake
