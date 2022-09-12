@@ -8,8 +8,8 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: loki-simple-scalable
-      version: 1.8.11
+      chart: loki
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -107,7 +107,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: loki-tls
+            secretName: "{{ .Release.Name }}-tls"
     write:
       replicas: 3
       persistence:
