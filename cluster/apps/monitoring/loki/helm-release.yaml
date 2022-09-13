@@ -97,6 +97,9 @@ spec:
       ingress:
         enabled: true
         ingressClassName: "nginx"
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "loki.${SECRET_PUBLIC_DOMAIN}"
             paths:
