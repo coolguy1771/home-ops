@@ -92,14 +92,11 @@ spec:
         analytics:
           reporting_enabled: false
     gateway:
-      enabled: false
+      enabled: true
       replicas: 3
       ingress:
         enabled: true
-        ingressClassName: nginx
-        verboseLogging: false
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
+        ingressClassName: "nginx"
         hosts:
           - host: &host "loki.${SECRET_PUBLIC_DOMAIN}"
             paths:
