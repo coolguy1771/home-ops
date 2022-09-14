@@ -1,7 +1,7 @@
 terraform {
 
   backend "remote" {
-    organization = "coolguy1771"
+    organization = "onedr0p"
     workspaces {
       name = "home-cloudflare"
     }
@@ -10,7 +10,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "3.23.0"
+      version = "3.22.0"
     }
     http = {
       source  = "hashicorp/http"
@@ -32,8 +32,26 @@ provider "cloudflare" {
   api_key = data.sops_file.cloudflare_secrets.data["cloudflare_apikey"]
 }
 
-data "cloudflare_zones" "domain" {
+data "cloudflare_zones" "domain_xyz" {
   filter {
-    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
+    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_xyz"]
+  }
+}
+
+data "cloudflare_zones" "domain_net" {
+  filter {
+    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_net"]
+  }
+}
+
+data "cloudflare_zones" "domain_studio" {
+  filter {
+    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_studio"]
+  }
+}
+
+data "cloudflare_zones" "domain_co" {
+  filter {
+    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_co"]
   }
 }
