@@ -98,9 +98,9 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
-          - host: &host "loki.witl.xyz"
+          - host: &host "loki.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -155,4 +155,3 @@ spec:
       kind: Secret
       name: loki
       valuesKey: AWS_SECRET_ACCESS_KEY
-    -
