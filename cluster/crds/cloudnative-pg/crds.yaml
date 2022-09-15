@@ -9,22 +9,9 @@ spec:
   url: https://github.com/cloudnative-pg/charts.git
   ref:
     # renovate: datasource=github-releases depName=cloudnative-pg/charts
-    tag: cloudnative-pg-v0.15.0
+    tag: cloudnative-pg-v0.14.0
   ignore: |
     # exclude all
     /*
     # include crd directory
-    !/charts/cloudnative-pg/templates/crds/crds.yaml
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: crds-cloudnative-pg
-  namespace: flux-system
-spec:
-  interval: 30m
-  prune: false
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: cloudnative-pg-source
+    !/charts/cloudnative-pg/templates/crds
