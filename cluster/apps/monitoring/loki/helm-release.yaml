@@ -109,7 +109,7 @@ spec:
               - *host
             secretName: "loki-tls"
     write:
-      replicas: 3
+      replicas: 1
       persistence:
         size: 10Gi
         storageClass: ceph-block
