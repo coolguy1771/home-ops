@@ -22,12 +22,16 @@ spec:
     remediation:
       retries: 5
   values:
+    replicas: 3
+    pspEnabled: false
     fullnameOverride: *app
     image:
       repository: quay.io/prometheus/blackbox-exporter
     ingress:
       enabled: true
       className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
         - host: &host "blackbox.${SECRET_PUBLIC_DOMAIN}"
           paths:
@@ -36,6 +40,7 @@ spec:
       tls:
         - hosts:
             - *host
+          secretName: "blackbox-tls"
     securityContext:
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
@@ -44,7 +49,7 @@ spec:
     config:
       modules:
         http_2xx:
-          prober: http
+          prober: https
           timeout: 5s
           http:
             valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
