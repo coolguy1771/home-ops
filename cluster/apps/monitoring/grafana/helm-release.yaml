@@ -25,6 +25,8 @@ spec:
     - name: postgres
       namespace: database
   values:
+    pspEnabled: false
+    pspUseAppArmor: false
     replicas: 3
     admin:
       existingSecret: grafana-admin
