@@ -22,6 +22,7 @@ spec:
     remediation:
       retries: 5
   values:
+    pspEnabled: false
     fullnameOverride: *app
     image:
       repository: quay.io/prometheus/blackbox-exporter
@@ -36,6 +37,7 @@ spec:
       tls:
         - hosts:
             - *host
+          secretName: "{{ .Release.Name }}-tls"
     securityContext:
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
