@@ -25,8 +25,7 @@ spec:
     - name: rook-ceph-operator
       namespace: rook-ceph
   values:
-    skipUpgradeChecks: true
-    continueUpgradeAfterChecksEvenIfNotHealthy: true
+    pspEnable: false
     monitoring:
       enabled: true
       createPrometheusRules: true
@@ -35,9 +34,13 @@ spec:
         ingressClassName: "nginx"
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          nginx.ingress.kubernetes.io/rewrite-target: /ceph-dashboard/$2
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/server-snippet: |
+            proxy_ssl_verify off;
         host:
           name: &host "rook.${SECRET_PUBLIC_DOMAIN}"
-          path: "/"
+          path: "/ceph-dashboard(/|$)(.*)"
         tls:
           - hosts:
               - *host
@@ -56,6 +59,7 @@ spec:
       #    enabled: true
       crashCollector:
         disable: false
+        daysToRetain: 15
       dashboard:
         enabled: true
         urlPrefix: /
@@ -81,145 +85,9 @@ spec:
           - name: k8s-7
             devices:
               - name: "/dev/sdb"
-      resources:
-        mgr:
-          limits:
-            memory: "1Gi"
-          requests:
-            cpu: "500m"
-            memory: "512Mi"
-        mon:
-          limits:
-            memory: "2Gi"
-          requests:
-            cpu: "1000m"
-            memory: "1Gi"
-        osd:
-          limits:
-            memory: "4Gi"
-          requests:
-            cpu: "1000m"
-            memory: "4Gi"
-        prepareosd:
-          limits:
-            memory: "400Mi"
-          requests:
-            cpu: "500m"
-            memory: "50Mi"
-        mgr-sidecar:
-          limits:
-            memory: "100Mi"
-          requests:
-            cpu: "100m"
-            memory: "40Mi"
-        crashcollector:
-          limits:
-            memory: "60Mi"
-          requests:
-            cpu: "100m"
-            memory: "60Mi"
-        logcollector:
-          limits:
-            memory: "1Gi"
-          requests:
-            cpu: "100m"
-            memory: "100Mi"
-        cleanup:
-          limits:
-            memory: "1Gi"
-          requests:
-            cpu: "500m"
-            memory: "100Mi"
+    removeOSDsIfOutAndSafeToRemove: true
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-rbdplugin-snapclass
       annotations:
         velero.io/csi-volumesnapshot-class: "true"
-    cephBlockPools:
-      - name: ceph-blockpool
-        spec:
-          failureDomain: host
-          replicated:
-            size: 3
-        storageClass:
-          enabled: true
-          name: ceph-block
-          isDefault: true
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          parameters:
-            imageFormat: "2"
-            imageFeatures: layering
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
-    cephFileSystems:
-      - name: ceph-filesystem
-        spec:
-          metadataPool:
-            replicated:
-              size: 3
-          dataPools:
-            - failureDomain: host
-              replicated:
-                size: 3
-              name: data0
-          metadataServer:
-            activeCount: 1
-            activeStandby: true
-            resources:
-              requests:
-                cpu: 1000m
-                memory: 4Gi
-              limits:
-                memory: 4Gi
-        storageClass:
-          enabled: true
-          isDefault: false
-          name: ceph-filesystem
-          pool: data0
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          parameters:
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
-    cephObjectStores:
-      - name: ceph-objectstore
-        spec:
-          metadataPool:
-            failureDomain: host
-            replicated:
-              size: 3
-          dataPool:
-            failureDomain: host
-            erasureCoded:
-              dataChunks: 2
-              codingChunks: 1
-          preservePoolsOnDelete: true
-          gateway:
-            port: 80
-            resources:
-              requests:
-                cpu: 1000m
-                memory: 1Gi
-              limits:
-                memory: 2Gi
-            instances: 1
-          healthCheck:
-            bucket:
-              interval: 60s
-        storageClass:
-          enabled: true
-          name: ceph-bucket
-          reclaimPolicy: Delete
-          parameters:
-            region: us-east-1
