@@ -30,4 +30,3 @@ resources:
   - stakater-charts.yaml
   - tf-controller-charts.yaml
   - vector-charts.yaml
-  - weaveworks-kured-charts.yaml
