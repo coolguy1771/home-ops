@@ -23,7 +23,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgresql/
-      endpointURL: http://minio.minio.svc.cluster.local:9000
+      endpointURL: https://s3.${SECRET_PUBLIC_DOMAIN}
       serverName: postgres-v1
       s3Credentials:
         accessKeyId:
