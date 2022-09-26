@@ -13,7 +13,7 @@ _... managed with Flux, Renovate and GitHub Actions_ 🤖
 <div align="center">
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/k8s-at-home)
-[![Kubernetes](https://img.shields.io/badge/v1.24-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://k3s.io/)
+[![Kubernetes](https://img.shields.io/badge/v1.25-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://k3s.io/)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-blue?logo=pre-commit&logoColor=white&label&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
 [![Renovate](https://img.shields.io/github/workflow/status/coolguy1771/home-ops/Schedule%20-%20Renovate?label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/coolguy1771/home-ops/actions/workflows/schedule-renovate.yaml)
 [![LoC](https://img.shields.io/tokei/lines/github/coolguy1771/home-ops?style=for-the-badge&color=blue&label&logo=codefactor&logoColor=white)](https://github.com/coolguy1771/home-ops/graphs/contributors)
