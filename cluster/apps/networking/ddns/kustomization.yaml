@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - cloudflare-ddns-home
   - cloudflare-ddns-icb
-  - cloudflare-ddns-studio
