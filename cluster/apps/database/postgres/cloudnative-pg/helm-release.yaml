@@ -23,8 +23,8 @@ spec:
       retries: 5
   values:
     image:
-      repository: ghcr.io/cloudnative-pg/cloudnative-pg-testing
-      tag: dev-413
+      repository: ghcr.io/cloudnative-pg/cloudnative-pg
+      tag: 1.17.1
     config:
       data:
         INHERITED_ANNOTATIONS: kyverno.io/ignore
