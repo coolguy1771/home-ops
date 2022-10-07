@@ -5,7 +5,7 @@
       "groupName": "Cert-Manager",
       "matchPackagePatterns": ["cert-manager"],
       "matchDatasources": ["docker", "helm"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "group": {"commitMessageTopic": "{{{groupName}}} group"},
       "separateMinorPatch": true
     },
     {
@@ -13,7 +13,7 @@
       "groupName": "External Snapshotter",
       "matchPackagePatterns": ["external-snapshotter", "snapshot-controller"],
       "matchDatasources": ["docker", "github-tags"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "group": {"commitMessageTopic": "{{{groupName}}} group"},
       "separateMinorPatch": true
     },
     {
@@ -21,7 +21,7 @@
       "groupName": "Node Feature Discovery",
       "matchPackagePatterns": ["node-feature-discovery"],
       "matchDatasources": ["helm", "github-tags"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "group": {"commitMessageTopic": "{{{groupName}}} group"},
       "separateMinorPatch": true
     },
     {
@@ -29,7 +29,7 @@
       "groupName": "Rook-Ceph",
       "matchPackagePatterns": ["rook.ceph"],
       "matchDatasources": ["docker", "helm"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "group": {"commitMessageTopic": "{{{groupName}}} group"},
       "separateMinorPatch": true
     },
     {
@@ -38,7 +38,7 @@
       "matchPackagePatterns": ["thanos"],
       "matchDatasources": ["docker", "github-releases", "helm"],
       "matchUpdateTypes": ["minor", "patch"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "group": {"commitMessageTopic": "{{{groupName}}} group"},
       "separateMinorPatch": false
     },
     {
@@ -47,7 +47,7 @@
       "matchPackagePatterns": ["vector"],
       "matchDatasources": ["docker", "github-releases", "helm"],
       "matchUpdateTypes": ["minor", "patch"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "group": {"commitMessageTopic": "{{{groupName}}} group"},
       "separateMinorPatch": false
     }
   ]
