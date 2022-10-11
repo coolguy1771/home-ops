@@ -72,7 +72,7 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Media
+        path: /pluto/media
         mountPath: /media
     resources:
       requests:

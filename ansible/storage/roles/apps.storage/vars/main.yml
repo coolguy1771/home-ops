@@ -7,7 +7,7 @@
 docker_base_dir: /opt/docker
 
 # -- Base ZFS Dataset
-zfs_zpool_base_dir: /cairo
+zfs_zpool_base_dir: /pluto
 
 # -- Vector Aggregator Address
 vector_aggregator_addr: "10.0.42.6"

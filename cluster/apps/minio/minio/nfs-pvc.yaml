@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-    path: /cairo/Apps/External/Minio
+    path: /pluto/apps/external/minio
   mountOptions:
     - nfsvers=4.2
     - nconnect=8

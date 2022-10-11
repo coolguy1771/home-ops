@@ -61,7 +61,7 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Media/Downloads/qbittorrent/complete
+        path: /pluto/media/downloads/qbittorrent/complete
         mountPath: /complete
     podAnnotations:
       secret.reloader.stakater.com/reload: *app

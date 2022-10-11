@@ -84,14 +84,14 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Media
+        path: /pluto/media
         mountPath: /media
         readOnly: true
       backup:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Apps/External/Backups/plex
+        path: /pluto/apps/external/backups/plex
         mountPath: /config/Backups
         readOnly: false
       transcode:

@@ -63,4 +63,4 @@ spec:
         - name: dest
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Apps/External/Backups
+            path: /pluto/apps/external/backups

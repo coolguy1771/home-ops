@@ -50,7 +50,7 @@ tasks:
                   "name": "backups",
                   "nfs": {
                     "server": "{{.NAS_ADDRESS | default "osiris"}}",
-                    "path": "{{.NAS_PATH | default "/cairo/Apps/External/Backups"}}"
+                    "path": "{{.NAS_PATH | default "/pluto/apps/external/Backups"}}"
                   }
                 }
               ],

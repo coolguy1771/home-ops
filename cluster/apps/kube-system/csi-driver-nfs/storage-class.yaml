@@ -6,7 +6,7 @@ metadata:
 provisioner: nfs.csi.k8s.io
 parameters:
   server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-  share: /cairo/Apps/External/PVCs
+  share: /pluto/apps/external/pvcs
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 mountOptions:

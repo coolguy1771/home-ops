@@ -126,7 +126,7 @@ spec:
                       - name: snapshots
                         nfs:
                           server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-                          path: /cairo/Apps/External/Kopia
+                          path: /pluto/apps/external/kopia
                     affinity:
                       podAffinity:
                         requiredDuringSchedulingIgnoredDuringExecution:

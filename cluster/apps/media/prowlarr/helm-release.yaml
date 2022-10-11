@@ -75,7 +75,7 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Apps/External/Backups/prowlarr
+        path: /pluto/apps/external/backups/prowlarr
         mountPath: /config/Backups
         readOnly: false
     resources:

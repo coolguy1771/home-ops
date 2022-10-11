@@ -62,4 +62,4 @@ spec:
         volumeSpec:
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Media/cdn
+            path: /pluto/media/cdn

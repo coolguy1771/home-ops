@@ -78,13 +78,13 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Media
+        path: /pluto/media
         mountPath: /media
       backup:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Apps/External/Backups/radarr-uhd
+        path: /pluto/apps/external/backups/radarr-uhd
         mountPath: /config/Backups
         readOnly: false
       scripts:

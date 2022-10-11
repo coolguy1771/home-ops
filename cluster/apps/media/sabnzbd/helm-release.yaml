@@ -76,13 +76,13 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /share/Downloads
+        path: /share/downloads
         mountPath: /downloads
       media:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /cairo/Media
+        path: /pluto/media
         mountPath: /media
       incomplete:
         enabled: true

@@ -39,4 +39,4 @@ spec:
         - name: snapshots
           nfs:
             server: osiris
-            path: /cairo/Apps/External/Kopia
+            path: /pluto/apps/external/Kopia

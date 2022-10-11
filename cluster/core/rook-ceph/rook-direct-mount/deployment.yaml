@@ -71,7 +71,7 @@ spec:
         - name: backups
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /cairo/Apps/External/Backups
+            path: /pluto/apps/external/backups
         - name: direct-mount-backup-script
           projected:
             defaultMode: 0775
