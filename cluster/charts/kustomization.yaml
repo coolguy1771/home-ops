@@ -11,6 +11,7 @@ resources:
   - csi-driver-nfs-charts.yaml
   - deliveryhero-charts.yaml
   - descheduler-charts.yaml
+  - dysnix-charts.yaml
   - emberstack-charts.yaml
   - external-dns-charts.yaml
   - fairwinds-charts.yaml
