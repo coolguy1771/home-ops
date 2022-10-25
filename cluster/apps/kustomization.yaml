@@ -11,6 +11,7 @@ resources:
   - media
   - monitoring
   - networking
+  - storage
   - system-upgrade
   - tetragon-system
   - tools
