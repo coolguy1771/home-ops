@@ -60,10 +60,8 @@ This Git repository contains the following directories (_kustomizatons_) under [
 ```sh
 📁 cluster      # k8s cluster defined as code
 ├─📁 flux       # flux, gitops operator, loaded before everything
-├─📁 crds       # custom resources, loaded before 📁 core and 📁 apps
-├─📁 charts     # helm repos, loaded before 📁 core and 📁 apps
-├─📁 config     # cluster config, loaded before 📁 core and 📁 apps
-├─📁 core       # crucial apps, namespaced dir tree, loaded before 📁 apps
+├─📁 charts     # helm repos, loaded before 📁 apps
+├─📁 config     # cluster config, loaded before 📁 apps
 └─📁 apps       # regular apps, namespaced dir tree, loaded last
 ```
 
@@ -136,9 +134,9 @@ My home IP can change at any given time and in order to keep my WAN IP address u
 | Protectli VP2410         | 1     | 120GB NVMe   | N/A                     | 8GB  | Opnsense 22.x    | Router                   |
 | Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Fedora 36        | Kubernetes (k3s) Master  |
 | Dell Optiplex 3080 Micro | 2     | 250GB SSD    | N/A                     | 16GB | Fedora 36        | Kubernetes (k3s) Master  |
-| Lenovo M910q Tiny        | 1     | 512GB NVMe   | N/A                     | 16GB | Fedora 36        | Kubernetes (k3s) Worker  |
+| Lenovo M910q Tiny        | 2     | 512GB NVMe   | N/A                     | 16GB | Fedora 36        | Kubernetes (k3s) Worker  |
 | VMWare VM                | 3     | 100GB VDisk  | 400GB VDisk (rook-ceph) | 24GB | Fedora 36        | Kubernetes (k3s) Workers |
-| SuperMicro 6027R         | 1     | 500GB SSD    | 4x4TB RAIDz1            | 64GB | Ubuntu 22.04     | Shared file storage      |
+| SuperMicro 6027R         | 1     | 500GB SSD    | 16TB zfs mirror         | 64GB | Ubuntu 22.04     | Shared file storage      |
 
 ---
 

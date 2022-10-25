@@ -15,4 +15,4 @@ resources:
   - system-upgrade
   - tetragon-system
   - tools
-  - trivy-system
+  - namespaces.yaml

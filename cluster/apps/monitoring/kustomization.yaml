@@ -3,8 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 resources:
-  - namespace.yaml
   - blackbox-exporter
+  - cloudflare-exporter
   - generic-rules
   - goldilocks
   - grafana
@@ -14,6 +14,5 @@ resources:
   - node-problem-detector
   - snmp-exporter
   - thanos
-
   - vector
   - vpa
