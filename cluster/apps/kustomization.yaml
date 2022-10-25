@@ -9,7 +9,6 @@ resources:
   - kube-system
   - kyverno
   - media
-  - minio
   - monitoring
   - networking
   - system-upgrade
