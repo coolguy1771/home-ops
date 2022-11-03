@@ -59,7 +59,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: tautulli-config
+        existingClaim: tautulli
     resources:
       requests:
         cpu: 10m
