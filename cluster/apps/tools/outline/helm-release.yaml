@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 0.2.2
+      version: 1.0.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -36,12 +36,7 @@ spec:
     envFrom:
       - secretRef:
           name: *app
-    command:
-      [
-        "/bin/sh",
-        "-c",
-        "yarn db:migrate --env=production-ssl-disabled && yarn start --env=production-ssl-disabled",
-      ]
+    command: ["/bin/sh", "-c", "yarn db:migrate --env=production-ssl-disabled && yarn start --env=production-ssl-disabled"]
     service:
       main:
         ports:
@@ -62,7 +57,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name }}-tls"
+            secretName: *host
     podAnnotations:
       secret.reloader.stakater.com/reload: *app
     topologySpreadConstraints:

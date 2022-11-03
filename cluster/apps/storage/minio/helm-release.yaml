@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 0.2.2
+      version: 1.0.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -50,17 +50,18 @@ spec:
           api:
             enabled: true
             port: &port-api 9000
-        monitor:
-          enabled: true
-          endpoints:
-            - port: api
-              scheme: http
-              path: /minio/v2/metrics/cluster
-              interval: 1m
-              scrapeTimeout: 10s
-              bearerTokenSecret:
-                name: minio-prometheus
-                key: token
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: api
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
+            bearerTokenSecret:
+              name: minio-prometheus
+              key: token
     ingress:
       main:
         enabled: true

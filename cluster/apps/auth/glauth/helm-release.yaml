@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 0.2.2
+      version: 1.0.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -58,7 +58,7 @@ spec:
       secret.reloader.stakater.com/reload: *app
     resources:
       requests:
-        cpu: 10m
-        memory: 100Mi
+        cpu: 5m
+        memory: 10Mi
       limits:
-        memory: 200Mi
+        memory: 50Mi
