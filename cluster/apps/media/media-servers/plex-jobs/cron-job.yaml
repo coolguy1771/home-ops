@@ -1,0 +1,41 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: &name plex-off-deck
+  namespace: media
+spec:
+  schedule: "@hourly"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 3600
+      template:
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: OnFailure
+          containers:
+            - name: off-deck
+              image: ghcr.io/onedr0p/jbops:1.0.882@sha256:416f034cc686b391c04cb796c1efedf63216ffe77380c69c203c2f4d6cc9311f
+              env:
+                - name: TZ
+                  value: "${TIMEZONE}"
+                - name: JBOPS__SCRIPT_PATH
+                  value: utility/off_deck.py
+              args:
+                - /entrypoint.sh
+                - --playlists
+                - "Smart Toons"
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+          volumes:
+            - name: config
+              secret:
+                secretName: plex-jobs
+                defaultMode: 0775
+                items:
+                  - key: config.ini
+                    path: config.ini
