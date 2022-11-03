@@ -80,7 +80,7 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /pluto/downloads
+        path: /pluto/media/downloads
         mountPath: /downloads
       media:
         enabled: true
