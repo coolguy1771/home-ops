@@ -6,3 +6,4 @@ resources:
   - jellyfin
   - media-browser
   - plex
+  - plex-jobs
