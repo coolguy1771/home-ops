@@ -20,7 +20,7 @@ resources:
   - grafana-charts.yaml
   - ingress-nginx-charts.yaml
   - jetstack-charts.yaml
-  - k8s-at-home-charts.yaml
+  - kluctl-charts.yaml
   - kyverno-charts.yaml
   - metrics-server-charts.yaml
   - nfs-subdir-external-provisioner-charts.yaml
