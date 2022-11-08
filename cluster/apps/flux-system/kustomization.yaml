@@ -5,7 +5,6 @@ namespace: flux-system
 resources:
   - tf-controller
   - dashboard
-  - kluctl-controller
   - monitoring
   - notifications
   - webhook
