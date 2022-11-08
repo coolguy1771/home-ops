@@ -1,5 +1,6 @@
 ---
-- hosts:
+- name: Cluster Installation
+  hosts:
     - master
     - worker
   become: true
@@ -34,6 +35,7 @@
       ansible.builtin.template:
         src: audit-policy.yaml.j2
         dest: /var/lib/rancher/k3s/audit-policy.yaml
+        mode: 0755
 
     - name: Install Kubernetes
       ansible.builtin.include_role:
@@ -46,7 +48,7 @@
       run_once: true
       ansible.builtin.fetch:
         src: "/etc/rancher/k3s/k3s.yaml"
-        dest: "{{ playbook_dir }}/../../../cluster/kubeconfig"
+        dest: "{{ playbook_dir }}/../../../cluster/local/kubeconfig"
         flat: true
       when:
         - k3s_control_node is defined
@@ -57,7 +59,7 @@
       become: false
       run_once: true
       ansible.builtin.replace:
-        path: "{{ playbook_dir }}/../../../cluster/kubeconfig"
+        path: "{{ playbook_dir }}/../../../cluster/local/kubeconfig"
         regexp: "https://127.0.0.1:6443"
         replace: "https://{{ k3s_registration_address }}:6443"
 

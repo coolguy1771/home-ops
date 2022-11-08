@@ -16,9 +16,9 @@ services:
       - --address
       - 0.0.0.0:51515
       - --override-hostname
-      - "cairo.{{ SECRET_PRIVATE_DOMAIN }}"
+      - "osiris.{{ SECRET_PRIVATE_DOMAIN }}"
       - --override-username
-      - devin
+      - twitlin
       - --without-password
     ports:
       - 51515:51515
@@ -26,4 +26,4 @@ services:
       - "{{ docker_base_dir }}/kopia/config:/app/config"
       - "{{ docker_base_dir }}/kopia/cache:/app/cache"
       - "{{ docker_base_dir }}/kopia/logs:/app/logs"
-      - /cairo:/cairo:ro
+      - /pluto:/pluto:ro
