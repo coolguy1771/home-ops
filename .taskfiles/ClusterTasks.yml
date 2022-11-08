@@ -2,6 +2,7 @@
 version: "3"
 
 tasks:
+
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
     cmds:
@@ -11,6 +12,11 @@ tasks:
     desc: Deletes failed pods
     cmds:
       - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+
+  delete-jobs:
+    desc: Delete all jobs
+    cmds:
+      - kubectl delete job -A --all
 
   hr-restart:
     desc: Restart all failed Helm Releases
