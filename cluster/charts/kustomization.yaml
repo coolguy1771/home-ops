@@ -14,7 +14,6 @@ resources:
   - external-dns-charts.yaml
   - fairwinds-charts.yaml
   - falco-security-charts.yaml
-  - gitea-charts.yaml
   - grafana-charts.yaml
   - ingress-nginx-charts.yaml
   - jetstack-charts.yaml
@@ -22,7 +21,6 @@ resources:
   - metrics-server-charts.yaml
   - nfs-subdir-external-provisioner-charts.yaml
   - node-feature-discovery-charts.yaml
-  - project-calico-charts.yaml
   - prometheus-community-charts.yaml
   - rook-ceph-charts.yaml
   - stakater-charts.yaml
