@@ -8,11 +8,11 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 1.0.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -23,8 +23,6 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
       repository: mpepping/cyberchef
       tag: v9.48.0
