@@ -7,4 +7,4 @@ metadata:
 spec:
   interval: 1h
   url: https://charts.bitnami.com/bitnami
-  timeout: 3m
+  provider: generic

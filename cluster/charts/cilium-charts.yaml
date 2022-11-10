@@ -7,4 +7,4 @@ metadata:
 spec:
   interval: 1h
   url: https://helm.cilium.io
-  timeout: 3m
+  provider: generic
