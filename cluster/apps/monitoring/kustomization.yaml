@@ -5,7 +5,6 @@ namespace: monitoring
 resources:
   - blackbox-exporter
   - generic-rules
-  - goldilocks
   - grafana
   - intel-gpu-exporter
   - kube-prometheus-stack
