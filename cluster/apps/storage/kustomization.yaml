@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - csi-driver-nfs
   - kopia-web
-  - minio
+  #- minio
   - rook-ceph
   - smartctl-exporter
