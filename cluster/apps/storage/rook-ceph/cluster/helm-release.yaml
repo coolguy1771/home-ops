@@ -70,21 +70,15 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: k8s-3
-            devices:
-              - name: "/dev/sdb"
           - name: k8s-4
             devices:
-              - name: "/dev/sdb"
+              - name: "/dev/sda"
           - name: k8s-5
             devices:
-              - name: "/dev/sdb"
+              - name: "/dev/sda"
           - name: k8s-6
             devices:
-              - name: "/dev/sdb"
-          - name: k8s-7
-            devices:
-              - name: "/dev/sdb"
+              - name: "/dev/sda"
     removeOSDsIfOutAndSafeToRemove: true
     cephBlockPools:
       - name: ceph-blockpool
