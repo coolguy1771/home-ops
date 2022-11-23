@@ -8,4 +8,5 @@ resources:
   - echo-server
   - external-dns
   - ingress-nginx
+  - k8s-gateway
   - opnsense

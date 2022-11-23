@@ -7,6 +7,12 @@ creation_rules:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
 
+  - path_regex: hack/.*\.sops\.ya?ml
+    unencrypted_regex: "^(kind)$"
+    key_groups:
+      - age:
+          - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
+
   - path_regex: cluster/.*\.sops\.toml
     key_groups:
       - age:
