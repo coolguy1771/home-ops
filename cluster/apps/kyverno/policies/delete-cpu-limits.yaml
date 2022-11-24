@@ -1,7 +1,3 @@
-
-Raw Blame
-
- 
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
