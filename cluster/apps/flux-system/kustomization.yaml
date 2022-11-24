@@ -6,5 +6,3 @@ resources:
   - tf-controller
   - dashboard
   - monitoring
-  - notifications
-  - webhook
