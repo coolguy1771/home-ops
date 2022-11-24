@@ -73,7 +73,7 @@ spec:
           - name: k8s-4
             devices:
               - name: "/dev/sda"
-          - name: k8s-5
+          - name: k8s-3
             devices:
               - name: "/dev/sda"
           - name: k8s-6
