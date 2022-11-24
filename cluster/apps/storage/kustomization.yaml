@@ -6,4 +6,3 @@ resources:
   - kopia-web
   - minio
   - rook-ceph
-  - smartctl-exporter
