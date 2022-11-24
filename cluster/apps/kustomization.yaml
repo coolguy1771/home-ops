@@ -6,6 +6,7 @@ resources:
   - default
   - database
   - flux-system
+  - infra
   - kube-system
   - kyverno
   - media
