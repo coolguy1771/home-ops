@@ -1,4 +1,5 @@
 ---
+
 - name: Restart docker-cleanup
   ansible.builtin.systemd:
     name: "{{ item }}"
@@ -22,6 +23,14 @@
     state: restarted
     enabled: true
     daemon_reload: true
+
+- name: Restart smartctl-exporter
+  ansible.builtin.systemd:
+    name: "docker-compose@smartctl-exporter.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
 
 - name: Restart vector
   ansible.builtin.systemd:
