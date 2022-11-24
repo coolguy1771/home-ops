@@ -36,6 +36,8 @@ spec:
       tls:
         - hosts:
             - *host
+    metrics:
+      enabled: true
   valuesFrom:
     - kind: Secret
       name: weave-gitops
