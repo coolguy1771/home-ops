@@ -122,8 +122,8 @@ spec:
                           claimName: "{{ claimName }}"
                       - name: snapshots
                         nfs:
-                          server: "expanse.${SECRET_PRIVATE_DOMAIN}"
-                          path: /eros/Apps/Kopia
+                          server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+                          path: /pluto/apps/kopia
                     affinity:
                       podAffinity:
                         requiredDuringSchedulingIgnoredDuringExecution:
