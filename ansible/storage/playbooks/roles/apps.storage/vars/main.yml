@@ -4,7 +4,7 @@
 #
 
 # -- Base Docker Directory
-docker_base_dir: /opt/docker
+podman_base_dir: /opt/podman
 
 # -- Base ZFS Dataset
 zfs_zpool_base_dir: /pluto

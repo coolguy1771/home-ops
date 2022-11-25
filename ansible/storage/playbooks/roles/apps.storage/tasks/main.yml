@@ -7,18 +7,22 @@
     group: users
     mode: 0775
   loop:
-    - "{{ docker_base_dir }}"
+    - "{{ podman_base_dir }}"
   tags:
     - always
 
-# Manage Docker installation
-- name: Deploy Docker
-  ansible.builtin.import_tasks: docker.yml
+# Install podman
+- name: Install podman
+  ansible.builtin.package:
+    name: podman
+    state: present
+  tags:
+    - always
 
 # Manage applications
 
-# - name: Deploy Kopia
-#   ansible.builtin.import_tasks: kopia.yml
+- name: Deploy Kopia
+  ansible.builtin.import_tasks: kopia.yml
 
 - name: Deploy Node Exporter
   ansible.builtin.import_tasks: node-exporter.yml
@@ -28,3 +32,6 @@
 
 - name: Deploy Vector
   ansible.builtin.import_tasks: vector.yml
+
+- name: Deploy netbootxyz
+  ansible.builtin.import_tasks: netbootxyz.yml
