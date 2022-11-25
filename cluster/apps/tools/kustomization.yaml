@@ -6,5 +6,6 @@ resources:
   - cdn-nginx
   - cyberchef
   - excalidraw
+  - outline
   - smtp-relay
   - wastebin

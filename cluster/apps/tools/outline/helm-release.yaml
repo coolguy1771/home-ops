@@ -26,6 +26,13 @@ spec:
       namespace: database
     - name: redis
       namespace: database
+    - name: ingress-nginx
+      namespace: networking
+    - name: external-dns
+      namespace: networking
+    - name: minio
+      namespace: storage
+
   values:
     controller:
       replicas: 3
