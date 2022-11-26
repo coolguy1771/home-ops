@@ -28,9 +28,11 @@ spec:
     env:
       TZ: "${TIMEZONE}"
       UN_SONARR_0_URL: http://sonarr
-      UN_SONARR_0_PATHS_0: /complete/sonarr
+      UN_SONARR_0_PATHS_0: /downloads/sabnzbd/complete/sonarr
+      UN_SONARR_0_PATHS_1: /downloads/qbittorrent/complete/tv-sonarr
       UN_RADARR_0_URL: http://radarr
-      UN_RADARR_0_PATHS_0: /complete/radarr
+      UN_RADARR_0_PATHS_0: /downloads/sabnzbd/complete/radarr
+      UN_RADARR_0_PATHS_1: /downloads/qbittorrent/complete/radarr
     envFrom:
       - secretRef:
           name: *app
