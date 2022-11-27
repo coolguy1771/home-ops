@@ -26,3 +26,8 @@
     restart_policy: unless-stopped
     recreate: true
     privileged: true
+    generate_systemd:
+      path: /etc/systemd/system
+      restart_policy: always
+      names: true
+      new: true

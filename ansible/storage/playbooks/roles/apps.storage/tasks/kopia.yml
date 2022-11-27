@@ -18,7 +18,7 @@
     recreate: true
     privileged: false
     state: started
-    image: ghcr.io/onedr0p/kopia:0.12.1
+    image: docker.io/kopia/kopia:0.12.1
     restart_policy: unless-stopped
     env:
       KOPIA_PASSWORD: "{{ SECRET_KOPIA_PASSWORD }}"
@@ -40,3 +40,8 @@
       - "{{ podman_base_dir }}/kopia/cache:/app/cache"
       - "{{ podman_base_dir }}/kopia/logs:/app/logs"
       - /pluto:/pluto:ro
+    generate_systemd:
+      restart_policy: always
+      names: true
+      path: /etc/systemd/system
+      new: true

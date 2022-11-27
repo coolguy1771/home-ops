@@ -20,6 +20,7 @@
         owner: "{{ ansible_user }}"
         group: users
         mode: 0775
+
     - name: Create vector container
       containers.podman.podman_container:
         name: vector
@@ -35,3 +36,8 @@
           - "{{ podman_base_dir }}/vector/config/vector.yaml:/etc/vector/vector.yaml:ro"
           - "{{ podman_base_dir }}/vector/data:/vector-data-dir"
           - /var/log:/var/log:ro
+        generate_systemd:
+          path: /etc/systemd/system
+          restart_policy: always
+          names: true
+          new: true

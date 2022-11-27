@@ -36,3 +36,8 @@
           - /dev:/hostdev
         ports:
           - 9633:9633
+        generate_systemd:
+          path: /etc/systemd/system
+          restart_policy: always
+          names: true
+          new: true

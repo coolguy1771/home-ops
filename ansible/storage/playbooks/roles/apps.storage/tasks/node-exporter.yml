@@ -28,3 +28,8 @@
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro,rslave
+    generate_systemd:
+      path: /etc/systemd/system
+      restart_policy: always
+      names: true
+      new: true
