@@ -9,13 +9,5 @@ collections:
   - name: community.sops
     version: 1.4.1
 roles:
-  - src: geerlingguy.pip
-    version: 2.2.0
-  - src: geerlingguy.docker
-    version: 6.0.3
   - src: xanmanning.k3s
     version: v3.3.1
-  - src: https://github.com/mrlesmithjr/ansible-zfs.git
-    scm: git
-    name: mrlesmithjr.zfs
-    version: b80e84d6938eb7730faeffc7ff7d8aa06ad5bef7
