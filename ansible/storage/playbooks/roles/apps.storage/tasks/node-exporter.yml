@@ -16,7 +16,7 @@
     privileged: true
     state: started
     restart_policy: unless-stopped
-    image: quay.io/prometheus/node-exporter:v1.4.0
+    image: quay.io/prometheus/node-exporter:v1.5.0
     ports:
       - 9100:9100
     command:
