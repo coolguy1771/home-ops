@@ -48,3 +48,9 @@
           restart_policy: always
           names: true
           new: true
+
+- name: Enable smartctl-exporter container
+  ansible.builtin.systemd:
+    name: container-smartctl-exporter.service
+    state: started
+    enabled: true

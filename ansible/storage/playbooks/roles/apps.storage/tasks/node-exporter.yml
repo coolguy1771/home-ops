@@ -41,3 +41,9 @@
       restart_policy: always
       names: true
       new: true
+
+- name: Enable node-exporter container
+  ansible.builtin.systemd:
+    name: container-node-exporter.service
+    state: started
+    enabled: true

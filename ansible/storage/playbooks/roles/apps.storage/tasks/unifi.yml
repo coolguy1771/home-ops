@@ -47,3 +47,9 @@
       names: true
       path: /etc/systemd/system
       new: true
+
+- name: Enable unifi container
+  ansible.builtin.systemd:
+    name: container-unifi.service
+    state: started
+    enabled: true

@@ -38,3 +38,9 @@
       restart_policy: always
       names: true
       new: true
+
+- name: Enable netbootxyz container
+  ansible.builtin.systemd:
+    name: container-netboot-xyz.service
+    state: started
+    enabled: true

@@ -52,3 +52,9 @@
       names: true
       path: /etc/systemd/system
       new: true
+
+- name: Enable kopia container
+  ansible.builtin.systemd:
+    name: container-kopia.service
+    state: started
+    enabled: true
