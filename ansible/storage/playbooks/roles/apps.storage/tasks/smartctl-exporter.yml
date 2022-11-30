@@ -10,6 +10,13 @@
     - "{{ podman_base_dir }}/smartctl-exporter"
     - "{{ podman_base_dir }}/smartctl-exporter/config"
 
+# Disable running container if it is already running in systemd
+- name: Disable smartctl-exporter container
+  ansible.builtin.systemd:
+    name: container-smartctl-exporter.service
+    state: stopped
+    enabled: false
+
 - name: Deploy smartctl-exporter
   block:
     - name: Create smartctl-exporter config

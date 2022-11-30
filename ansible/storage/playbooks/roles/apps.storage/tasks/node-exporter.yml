@@ -9,6 +9,14 @@
   loop:
     - "{{ podman_base_dir }}/node-exporter"
 
+
+# Disable running container if it is already running in systemd
+- name: Disable node-exporter container
+  ansible.builtin.systemd:
+    name: container-node-exporter.service
+    state: stopped
+    enabled: false
+
 - name: Create node-exporter container
   containers.podman.podman_container:
     name: node-exporter

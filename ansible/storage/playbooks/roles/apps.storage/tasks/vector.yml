@@ -11,6 +11,13 @@
     - "{{ podman_base_dir }}/vector/config"
     - "{{ podman_base_dir }}/vector/data"
 
+# Disable running container if it is already running in systemd
+- name: Disable vector container
+  ansible.builtin.systemd:
+    name: container-vector.service
+    state: stopped
+    enabled: false
+
 - name: Deploy Vector
   block:
     - name: Create vector config

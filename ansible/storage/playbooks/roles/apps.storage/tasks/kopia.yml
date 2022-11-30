@@ -12,6 +12,13 @@
     - "{{ podman_base_dir }}/kopia/config"
     - "{{ podman_base_dir }}/kopia/logs"
 
+# Disable running container if it is already running in systemd
+- name: Disable kopia container
+  ansible.builtin.systemd:
+    name: container-kopia.service
+    state: stopped
+    enabled: false
+
 - name: Create kopia container
   containers.podman.podman_container:
     name: kopia
