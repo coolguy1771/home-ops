@@ -32,11 +32,6 @@ spec:
       MINIO_PROMETHEUS_JOB_ID: minio
       MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_PUBLIC_DOMAIN}"
       MINIO_SERVER_URL: "https://s3.${SECRET_PUBLIC_DOMAIN}"
-      # MINIO_IDENTITY_OPENID_CONFIG_URL: "https://auth.${SECRET_PUBLIC_DOMAIN}/.well-known/openid-configuration"
-      # MINIO_IDENTITY_OPENID_CLIENT_ID: minio
-      # MINIO_IDENTITY_OPENID_CLIENT_SECRET: "${SECRET_MINIO_OAUTH_CLIENT_SECRET}"
-      # MINIO_IDENTITY_OPENID_SCOPES: "openid,profile,email,groups"
-      # MINIO_IDENTITY_OPENID_REDIRECT_URI: "https://minio.${SECRET_PUBLIC_DOMAIN}/oauth_callback"
     envFrom:
       - secretRef:
           name: *app
@@ -66,6 +61,20 @@ spec:
       main:
         enabled: true
         ingressClassName: "nginx"
+        hosts:
+          - host: &host-console "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  port: *port-console
+        tls:
+          - hosts:
+              - *host-console
+            secretName: minio-console-tls
+      s3:
+        enabled: true
+        ingressClassName: "nginx"
         annotations:
           external-dns.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
@@ -74,12 +83,6 @@ spec:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             chunked_transfer_encoding off;
         hosts:
-          - host: &host-console "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  port: *port-console
           - host: &host-api "s3.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
@@ -88,9 +91,8 @@ spec:
                   port: *port-api
         tls:
           - hosts:
-              - *host-console
               - *host-api
-            secretName: minio-tls
+            secretName: minio-api-tls
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -107,7 +109,7 @@ spec:
       secret.reloader.stakater.com/reload: *app
     resources:
       requests:
-        memory: 500m
+        memory: 100Mi
         cpu: 100m
       limits:
-        memory: 3Gi
+        memory: 750Mi
