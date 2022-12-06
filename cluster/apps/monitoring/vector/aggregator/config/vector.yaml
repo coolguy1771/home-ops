@@ -5,7 +5,7 @@ api:
   address: 0.0.0.0:8686
 
 enrichment_tables:
-  geoip:
+  geoip_table:
     type: geoip
     path: /geoip/GeoLite2-City.mmdb
 
@@ -67,10 +67,10 @@ transforms:
     type: remap
     inputs:
       - opnsense_route.pass_action
-    source: |-
-      .geoip = get_enrichment_table_record!("geoip",
+    source: |
+      .geoip = get_enrichment_table_record!("geoip_table",
         {
-          "ip": .ip_address
+          "ip": .filter_source_ip
         })
 
 sinks:
