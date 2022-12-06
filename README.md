@@ -140,7 +140,7 @@ Thanks to all the people who donate their time to the [Kubernetes @Home](https:/
 
 ## 📜 Changelog
 
-See [commit history](https://github.com/coolgiy1771/home-ops/commits/main)
+See [commit history](https://github.com/coolguy1771/home-ops/commits/main)
 
 ---
 
