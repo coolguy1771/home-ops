@@ -3,8 +3,8 @@ data_dir: /vector-data-dir
 api:
   enabled: true
 enrichment_tables:
-  type: geoip
   geoip:
+    type: geoip
     path: /geoip/GeoLite2-City.mmdb
 
 
