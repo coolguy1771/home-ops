@@ -38,6 +38,7 @@ spec:
         ingressClassName: "nginx"
         annotations:
           external-dns.home.arpa/enabled: "true"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/tautulli/nord.css"></head>';

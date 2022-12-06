@@ -89,6 +89,8 @@ spec:
         enabled: true
         pathType: Prefix
         ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
         tls:
@@ -169,6 +171,8 @@ spec:
         enabled: true
         pathType: Prefix
         ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - &host "prometheus.${SECRET_PUBLIC_DOMAIN}"
         tls:
