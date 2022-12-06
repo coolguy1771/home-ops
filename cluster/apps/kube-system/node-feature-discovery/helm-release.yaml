@@ -23,17 +23,19 @@ spec:
       retries: 5
   values:
     nodeFeatureRule:
-      createCRD: false
+      createCRD: true
     worker:
       annotations:
         configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
       config:
         core:
-          labelSorces:
-            - "all"
+          sources:
+            - custom
+            - pci
+            - usb
         sources:
-          kernel:
-            configOpts: [NO_HZ, X86, DMI]
           usb:
             deviceClassWhitelist:
               - "02"
@@ -46,17 +48,6 @@ spec:
               - class
               - vendor
               - device
-          pci:
-            deviceClassWhitelist:
-              - "0200"
-              - "03"
-              - "12"
-            deviceLabelFields:
-              - "class"
-              - "vendor"
-              - "device"
-              - "subsystem_vendor"
-              - "subsystem_device"
           custom:
             - name: zwave
               matchOn:
@@ -73,6 +64,3 @@ spec:
               matchOn:
                 - usbId:
                     vendor: ["1a6e", "18d1"]
-    tls:
-      enable: true
-      certManager: true
