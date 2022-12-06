@@ -2,6 +2,11 @@
 data_dir: /vector-data-dir
 api:
   enabled: true
+enrichment_tables:
+  type: geoip
+  geoip:
+    path: /geoip/GeoLite2-City.mmdb
+
 
 sinks:
   loki_journal:
@@ -76,12 +81,8 @@ transforms:
     type: remap
     inputs:
       - opnsense_filterlog_route.pass_action
-    enrichment_tables:
-      type: geoip
-      geoip:
-        path: /geoip/GeoLite2-City.mmdb
-    source: filter_source_ip
-    target: geoip
+    source: |
+      .geoip = lookup_geoip!(.source_ip)
   opnsense_filterlog_remap:
     type: remap
     inputs:
