@@ -67,8 +67,7 @@ transforms:
     type: remap
     inputs:
       - opnsense_route.pass_action
-    source: |
-      source: |-
+    source: |-
       .geoip = get_enrichment_table_record!("geoip",
         {
           "ip": .ip_address
