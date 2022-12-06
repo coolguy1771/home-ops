@@ -3,15 +3,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 resources:
-  - blackbox-exporter
-  - generic-rules
-  - grafana
-  - intel-gpu-exporter
-  - kube-prometheus-stack
-  - loki
-  - node-problem-detector
-  - smartctl-exporter
-  - snmp-exporter
-  - thanos
-  - vector
-  - vpa
+  - ./blackbox-exporter
+
+  - ./grafana
+  - ./intel-gpu-exporter
+  - ./kube-prometheus-stack
+  - ./loki
+  - ./smartctl-exporter
+  - ./snmp-exporter
+  - ./thanos
+  - ./vector
+  - ./zfs
