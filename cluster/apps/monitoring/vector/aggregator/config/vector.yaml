@@ -1,7 +1,7 @@
 ---
 data_dir: /vector-data-dir
 api:
-  enabled: false
+  enabled: true
   address: 0.0.0.0:8686
 
 enrichment_tables:
@@ -72,7 +72,6 @@ transforms:
         {
           "ip": .filter_source_ip
         })
-
 sinks:
   journald:
     type: loki
