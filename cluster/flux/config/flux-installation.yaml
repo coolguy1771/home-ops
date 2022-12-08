@@ -16,8 +16,8 @@ metadata:
   name: cluster-flux-manifests
   namespace: flux-system
 spec:
-  interval: 30m
-  path: ./flux-system
+  interval: 10m
+  path: ./
   prune: true
   wait: true
   sourceRef:
