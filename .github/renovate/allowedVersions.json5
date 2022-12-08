@@ -2,7 +2,7 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["docker.io/kopia/kopia"],
+      "matchPackagePatterns": ["immich", "kopia"],
       "allowedVersions": "<10"
     }
   ]
