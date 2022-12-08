@@ -56,18 +56,6 @@ resource "cloudflare_page_rule" "public_domain_plex_bypass" {
   }
 }
 
-resource "cloudflare_page_rule" "public_domain_plex_bypass" {
-  zone_id  = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  target   = "plex.${var.cloudflare_domain_public_name}/*"
-  status   = "active"
-  priority = 1
-
-  actions {
-    cache_level = "bypass"
-  }
-}
-
-
 resource "cloudflare_zone_settings_override" "public_domain_settings" {
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
   settings {
