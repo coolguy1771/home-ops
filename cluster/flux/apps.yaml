@@ -6,9 +6,6 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  dependsOn:
-    - name: cluster-flux-manifests
-    - name: flux-cluster
   path: ./cluster/apps
   prune: true
   sourceRef:
