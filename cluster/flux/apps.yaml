@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 10m
   dependsOn:
-    - name: flux-installation
+    - name: cluster-flux-manifests
     - name: flux-cluster
   path: ./cluster/apps
   prune: true
