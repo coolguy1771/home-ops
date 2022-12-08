@@ -7,6 +7,6 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: oci://ghcr.io/onedr0p/terraform-minio-oci
+  url: oci://ghcr.io/coolguy1771/terraform-minio-oci
   ref:
     tag: main
