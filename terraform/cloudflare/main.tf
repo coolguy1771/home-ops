@@ -1,12 +1,11 @@
 terraform {
-
-  backend "remote" {
+  cloud {
+    hostname     = "app.terraform.io"
     organization = "onedr0p"
     workspaces {
-      name = "home-cloudflare"
+      name = "arpa-home-cloudflare"
     }
   }
-
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -16,42 +15,11 @@ terraform {
       source  = "hashicorp/http"
       version = "3.2.1"
     }
-    sops = {
-      source  = "carlpett/sops"
-      version = "0.7.1"
-    }
   }
-}
-
-data "sops_file" "cloudflare_secrets" {
-  source_file = "secret.sops.yaml"
+  required_version = ">= 1.3.0"
 }
 
 provider "cloudflare" {
-  email   = data.sops_file.cloudflare_secrets.data["cloudflare_email"]
-  api_key = data.sops_file.cloudflare_secrets.data["cloudflare_apikey"]
-}
-
-data "cloudflare_zones" "domain_xyz" {
-  filter {
-    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_xyz"]
-  }
-}
-
-data "cloudflare_zones" "domain_net" {
-  filter {
-    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_net"]
-  }
-}
-
-data "cloudflare_zones" "domain_studio" {
-  filter {
-    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_studio"]
-  }
-}
-
-data "cloudflare_zones" "domain_co" {
-  filter {
-    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_co"]
-  }
+  email   = var.cloudflare_email
+  api_key = var.cloudflare_apikey
 }
