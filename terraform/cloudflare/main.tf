@@ -1,7 +1,7 @@
 terraform {
   cloud {
     hostname     = "app.terraform.io"
-    organization = "onedr0p"
+    organization = "coolguy1771"
     workspaces {
       name = "arpa-home-cloudflare"
     }
