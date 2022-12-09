@@ -22,6 +22,14 @@ spec:
     remediation:
       retries: 5
   values:
+    rbac:
+      create: true
+      impersonationResourceNames: ["wego-admin", "wego-team-a-admin", "wego-readonly"]
+      impersonationResources: ["groups"]
+      additionalRules:
+        - apiGroups: ["infra.contrib.fluxcd.io"]
+          resources: ["terraforms"]
+          verbs: [ "get", "list", "patch" ]
     adminUser:
       create: true
       username: admin
