@@ -2,7 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./csi-driver-nfs
-  - ./kopia-web
-  - ./minio
-  - ./rook-ceph
+  - ./csi-driver-nfs/ks.yaml
+  - ./kopia-web/ks.yaml
+  - ./minio/ks.yaml
