@@ -2,8 +2,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: node-feature-discovery
+  name: metrics-server
   namespace: flux-system
 spec:
-  interval: 1h
-  url: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+  interval: 2h
+  url: https://kubernetes-sigs.github.io/metrics-server
