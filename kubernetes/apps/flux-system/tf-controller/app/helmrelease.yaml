@@ -8,17 +8,22 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: ./charts/tf-controller
+      chart: tf-controller
+      version: 0.9.6
       sourceRef:
-        kind: GitRepository
+        kind: HelmRepository
         name: tf-controller
         namespace: flux-system
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
   values:
-    installCRDs: false
+    installCRDs: true
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true

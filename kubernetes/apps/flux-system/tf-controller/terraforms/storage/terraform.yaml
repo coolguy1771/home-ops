@@ -1,16 +1,27 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: terraform-minio
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: oci://ghcr.io/coolguy1771/terraform-storage-oci
+  ref:
+    tag: main
+---
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
-  name: cloudflare
+  name: minio
   namespace: flux-system
 spec:
   approvePlan: auto
   interval: 12h
-  path: ./terraform/cloudflare
+  path: ./terraform/minio
   sourceRef:
     kind: OCIRepository
-    name: terraform-cloudflare-oci
+    name: terraform-minio
     namespace: flux-system
   backendConfig:
     disable: true
@@ -18,6 +29,6 @@ spec:
     name: tfe-cli-config
   varsFrom:
     - kind: Secret
-      name: cloudflare-vars
+      name: minio-vars
   writeOutputsToSecret:
-    name: cloudflare-outputs
+    name: minio-outputs
