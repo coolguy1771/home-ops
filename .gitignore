@@ -1,35 +1,21 @@
-# Editors
-.vscode/
-.idea/
-# Trash
+# trash
 .DS_Store
 Thumbs.db
-# Binaries
-bin
-/flux
-*.iso
-# Temp folders
-.temp*
+# temp folders
 .private/
-.logs/
-.task/
-# Ansible
+# ansible
 xanmanning.k3s*
-mrlesmithjr.zfs*
-geerlingguy.docker*
-geerlingguy.pip*
-# Terraform
+# terraform
 .terraform
-.terraform.tfstate*
-terraform.tfstate*
-# Sops
+*.tfvars
+# sops
 .decrypted~*
 *.agekey
-# Kubernetes
+*.pub
+*.key
+*.pem
+# kubernetes
 kubeconfig*
-talosconfig
-# NAS
-secrets.json
-# Other
-report.html
-local
+kubernetes/local
+# extras
+config.xml

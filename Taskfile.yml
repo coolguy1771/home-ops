@@ -5,17 +5,16 @@ vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
   ANSIBLE_DIR: "{{.PROJECT_DIR}}/ansible"
-  CLUSTER_DIR: "{{.PROJECT_DIR}}/cluster"
+  CLUSTER_DIR: "{{.PROJECT_DIR}}/kubernetes"
 
 env:
-  KUBECONFIG: "{{.ANSIBLE_DIR}}/local/kubeconfig"
+  KUBECONFIG: "{{.ANSIBLE_DIR}}/kubernetes/kubeconfig"
 
 includes:
   cluster: .taskfiles/ClusterTasks.yml
   debug: .taskfiles/DebugTasks.yml
   rook: .taskfiles/RookTasks.yml
-
-  snapshot: .taskfiles/SnapshotTasks.yml
+  volsync: .taskfiles/VolSync/Tasks.yml
 
 tasks:
   kubeconfig:

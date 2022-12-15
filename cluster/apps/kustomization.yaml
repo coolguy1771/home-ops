@@ -12,7 +12,6 @@ resources:
   - ./monitoring
   - ./networking
   - ./storage
-  - ./system-upgrade
   - ./tetragon-system
   - ./tools
   - ./namespaces.yaml

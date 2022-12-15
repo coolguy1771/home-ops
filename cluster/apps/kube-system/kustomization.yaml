@@ -3,9 +3,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kube-system
 resources:
-  - ./cilium
-  - ./descheduler
-  - ./intel-gpu-plugin
-  - ./metrics-server
-  - ./node-feature-discovery
-  - ./reloader
+  - ./cilium/ks.yaml
+  - ./descheduler/ks.yaml
+  - ./intel-gpu-plugin/ks.yaml
+  - ./metrics-server/ks.yaml
+  - ./node-feature-discovery/ks.yaml
+  - ./reloader/ks.yaml

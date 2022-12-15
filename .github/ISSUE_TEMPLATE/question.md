@@ -1,6 +1,6 @@
 ---
 name: Question
-about: Ask a question to the maintainer
+about: Ask a question
 title: ""
 labels: kind/question
 assignees: ""
@@ -11,8 +11,7 @@ assignees: ""
 **Ask your question:**
 
 <!--
-Besides asking here, you can also ask in the following Discussion board or Discord
-Discussion board: https://github.com/k8s-at-home/organization/discussions
+Besides asking here, you may also ask in our Discord community
 Discord: https://discord.gg/k8s-at-home
 -->
 

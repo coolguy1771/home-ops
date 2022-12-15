@@ -36,5 +36,5 @@
 - name: Deploy netbootxyz
   ansible.builtin.import_tasks: netbootxyz.yml
 
-- name: Deploy Unifi controller
+- name: Deploy Unifi Controller
   ansible.builtin.import_tasks: unifi.yml

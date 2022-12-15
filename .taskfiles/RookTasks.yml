@@ -2,6 +2,7 @@
 version: "3"
 
 tasks:
+
   toolbox:
     desc: Open a shell to debug ceph via the toolbox
     interactive: true

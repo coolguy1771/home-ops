@@ -6,7 +6,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "cluster/**.yaml"
+      - "kubernetes/**.yaml"
 
 env:
   # Currently no way to detect automatically
@@ -28,11 +28,11 @@ jobs:
           list-files: json
           filters: |
             yaml:
-              - added|modified: "**/helm-release.yaml"
+              - added|modified: "**/helmrelease.yaml"
     outputs:
       yaml_files: ${{ steps.filter.outputs.yaml_files }}
 
-  helm-release-differ:
+  helmrelease-differ:
     name: Helm Release Differ
     runs-on: ubuntu-latest
     needs: detect-file-changes
@@ -57,7 +57,7 @@ jobs:
           path: default
 
       - name: Install Helm
-        uses: azure/setup-helm@f382f75448129b3be48f8121b9857be18d815a82 # renovate: tag=v3.4
+        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
         with:
           version: latest
 

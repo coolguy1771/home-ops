@@ -1,0 +1,15 @@
+defaults
+auth off
+tls  off
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile /var/log/msmtp
+
+account        smtp-relay
+host           10.0.42.7
+port           2525
+from           osiris@{{ SECRET_PUBLIC_DOMAIN }}
+tls_starttls   off
+
+account default: smtp-relay
+
+aliases /etc/aliases

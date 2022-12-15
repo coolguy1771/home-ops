@@ -2,6 +2,7 @@
 version: "3"
 
 tasks:
+
   network:
     desc: Create a netshoot container for debugging
     cmds:
@@ -31,10 +32,6 @@ tasks:
                     {
                       "name": "config",
                       "mountPath": "/data/config"
-                    },
-                    {
-                      "name": "backups",
-                      "mountPath": "/data/backups"
                     }
                   ]
                 }
@@ -44,13 +41,6 @@ tasks:
                   "name": "config",
                   "persistentVolumeClaim": {
                     "claimName": "{{.PVC}}"
-                  }
-                },
-                {
-                  "name": "backups",
-                  "nfs": {
-                    "server": "{{.NAS_ADDRESS | default "osiris"}}",
-                    "path": "{{.NAS_PATH | default "/pluto/apps/external/Backups"}}"
                   }
                 }
               ],

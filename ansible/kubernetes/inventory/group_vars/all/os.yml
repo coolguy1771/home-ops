@@ -5,9 +5,6 @@ public_ssh_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnKXgEGczcu8lGs+DEvRWgI4cSYHkAyTAU6/SMAHjL4 twitlin@mbp16inch2021.3520.dhcp.asu.edu"
 
 packages:
-  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-  - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-  - dnf-automatic
   - dnf-plugin-system-upgrade
   - dnf-utils
   - fish
@@ -18,5 +15,7 @@ packages:
   - lm_sensors
   - nano
   - nvme-cli
+  - python3-kubernetes
   - python3-libselinux
+  - python3-pyyaml
   - socat

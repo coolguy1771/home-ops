@@ -7,11 +7,11 @@
   any_errors_fatal: true
   roles:
     - name: Deploy Adguard Home
-      role: "adguardhome.router"
-      tags: [adguardhome]
+      role: "adguard_home.router"
+      tags: [adguard_home]
     - name: Deploy k8s_gateway
-      role: "coredns.router"
-      tags: [coredns]
+      role: "k8s_gateway.router"
+      tags: [k8s_gateway]
     - name: Deploy FRR Exporter
       role: "frr_exporter.router"
       tags: [frr_exporter]
