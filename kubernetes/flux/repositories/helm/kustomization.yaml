@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -19,6 +20,7 @@ resources:
   - ./kyverno.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
+  - ./postfinance.yaml
   - ./prometheus-community.yaml
   - ./rook-ceph.yaml
   - ./stakater.yaml
