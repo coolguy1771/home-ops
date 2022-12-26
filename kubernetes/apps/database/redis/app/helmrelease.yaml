@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app redis
+  name: redis
   namespace: database
 spec:
   interval: 15m
@@ -17,18 +18,20 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     global:
-      imageRegistry: public.ecr.aws
+      # imageRegistry: public.ecr.aws
       storageClass: ceph-block
     auth:
       enabled: false
       sentinel: false
-      # existingSecret: *app
     sentinel:
       enabled: true
       masterSet: redis-master

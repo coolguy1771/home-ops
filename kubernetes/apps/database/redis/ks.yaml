@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1beta2.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
@@ -7,7 +8,8 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  dependsOn:
+    - name: cluster-apps-rook-ceph-cluster
   path: ./kubernetes/apps/database/redis/app
   prune: true
   sourceRef:
@@ -18,4 +20,6 @@ spec:
       kind: HelmRelease
       name: redis
       namespace: database
-  timeout: 2m
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
