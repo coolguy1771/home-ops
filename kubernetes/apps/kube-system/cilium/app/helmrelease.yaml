@@ -22,9 +22,11 @@ spec:
     remediation:
       retries: 5
   values:
+    securityContext:
+      privileged: true
     autoDirectNodeRoutes: true
     cluster:
-      id: 0
+      id: 1
       name: home
     bgp:
       enabled: true
