@@ -1,13 +1,13 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1beta2.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: cluster-apps-csi-driver-nfs-app
+  name: cluster-apps-csi-driver-nfs
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
   path: ./kubernetes/apps/storage/csi-driver-nfs/app
   prune: true
   sourceRef:
@@ -18,4 +18,6 @@ spec:
       kind: HelmRelease
       name: csi-driver-nfs
       namespace: storage
-  timeout: 2m
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m

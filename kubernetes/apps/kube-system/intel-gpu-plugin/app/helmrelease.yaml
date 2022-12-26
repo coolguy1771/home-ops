@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app intel-gpu-plugin
+  name: intel-gpu-plugin
   namespace: kube-system
 spec:
   interval: 15m
@@ -17,10 +18,10 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
   dependsOn:
     - name: node-feature-discovery
       namespace: kube-system
@@ -32,12 +33,11 @@ spec:
       repository: docker.io/intel/intel-gpu-plugin
       tag: 0.25.1
     args:
-      - -shared-dev-num
+      - "-shared-dev-num"
       - "4"
     service:
       main:
         enabled: false
-    # TODO(intel-gpu-plugin): Write probes to check for something to tell if it's working
     probes:
       liveness:
         enabled: false

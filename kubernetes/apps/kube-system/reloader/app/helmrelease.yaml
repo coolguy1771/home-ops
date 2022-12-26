@@ -1,9 +1,10 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: reloader
-  namespace: kube-system
+  namespace: &namespace kube-system
 spec:
   interval: 15m
   chart:
@@ -17,14 +18,18 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
   values:
     fullnameOverride: reloader
     reloader:
+      enableHA: true
+      deployment:
+        replicas: 3
       reloadStrategy: annotations
+      reloadOnCreate: false
       podMonitor:
         enabled: true
-        namespace: kube-system
+        namespace: *namespace
