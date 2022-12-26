@@ -10,7 +10,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-node-feature-discovery
-  path: ./kubernetes/apps/kube-system/intel-gpu/plugin
+  path: ./kubernetes/apps/kube-system/intel-gpu-plugin/app
   prune: true
   sourceRef:
     kind: GitRepository
