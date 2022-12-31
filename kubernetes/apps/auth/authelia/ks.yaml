@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1beta2.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
@@ -7,7 +8,11 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  dependsOn:
+    - name: cluster-apps-cloudnative-pg-app
+    - name: cluster-apps-glauth
+    - name: cluster-apps-redis-app
+    - name: cluster-apps-smtp-relay
   path: ./kubernetes/apps/auth/authelia/app
   prune: true
   sourceRef:
@@ -18,4 +23,6 @@ spec:
       kind: HelmRelease
       name: authelia
       namespace: auth
-  timeout: 2m
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
