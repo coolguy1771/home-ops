@@ -4,9 +4,7 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - ./blackbox-exporter
-
   - ./grafana
-  - ./intel-gpu-exporter
   - ./kube-prometheus-stack
   - ./loki
   - ./smartctl-exporter
