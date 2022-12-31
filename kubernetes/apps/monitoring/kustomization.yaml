@@ -5,7 +5,7 @@ namespace: monitoring
 resources:
   - ./blackbox-exporter
   - ./grafana
-  - ./kube-prometheus-stack
+  - ./kube-prometheus-stack/ks.yaml
   - ./loki
   - ./smartctl-exporter
   - ./snmp-exporter
