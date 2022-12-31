@@ -6,7 +6,6 @@ resources:
   - ./auth
   - ./cert-manager
   - ./database
-  - ./external-secrets
   - ./flux-system
   - ./kube-system
   - ./kyverno
