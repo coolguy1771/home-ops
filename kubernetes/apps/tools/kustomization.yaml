@@ -6,7 +6,7 @@ resources:
   - cdn-nginx
   - cyberchef
   - excalidraw
-  - kubernetes-schemas
+  - kubernetes-schemas/ks.yaml
   - outline
   - smtp-relay
   - wastebin
