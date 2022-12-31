@@ -6,6 +6,7 @@ resources:
   - cdn-nginx
   - cyberchef
   - excalidraw
+  - kubernetes-schemas
   - outline
   - smtp-relay
   - wastebin
