@@ -1,4 +1,6 @@
+
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -14,12 +16,13 @@ spec:
           cloudflare:
             email: "${SECRET_EMAIL}"
             apiKeySecretRef:
-              name: cloudflare-token-secret
-              key: cloudflare-token
+              name: cloudflare-secret
+              key: CLOUDFLARE_APIKEY
         selector:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN}"
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -35,8 +38,8 @@ spec:
           cloudflare:
             email: "${SECRET_EMAIL}"
             apiKeySecretRef:
-              name: cloudflare-token-secret
-              key: cloudflare-token
+              name: cloudflare-secret
+              key: CLOUDFLARE_APIKEY
         selector:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN}"
