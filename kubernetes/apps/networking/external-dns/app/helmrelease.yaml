@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,13 +15,17 @@ spec:
         kind: HelmRepository
         name: external-dns
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     interval: 2m
     # logLevel: debug
@@ -29,30 +34,25 @@ spec:
       - name: CF_API_EMAIL
         valueFrom:
           secretKeyRef:
-            name: external-dns
+            name: externaldns-secret
             key: email
       - name: CF_API_KEY
         valueFrom:
           secretKeyRef:
-            name: external-dns
+            name: externaldns-secret
             key: api-key
     extraArgs:
       - --cloudflare-proxied
       - --annotation-filter=external-dns.home.arpa/enabled in (true)
     policy: sync
-    sources:
-      - ingress
-    txtPrefix: "k8s."
-    txtOwnerId: "default"
+    sources: ["ingress"]
+    txtPrefix: k8s.
+    txtOwnerId: default
     domainFilters:
       - "${SECRET_PUBLIC_DOMAIN}"
       - "${SECRET_PRIVATE_DOMAIN}"
       - "${SECRET_DOMAIN_GAMES}"
     serviceMonitor:
       enabled: true
-    resources:
-      requests:
-        memory: 100Mi
-        cpu: 25m
-      limits:
-        memory: 250Mi
+    podAnnotations:
+      secret.reloader.stakater.com/reload: externaldns-secret
