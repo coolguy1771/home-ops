@@ -17,4 +17,5 @@ resources:
   - ./storage
   - ./tetragon-system
   - ./tools
+  - ./volsync
   - ./namespaces.yaml
