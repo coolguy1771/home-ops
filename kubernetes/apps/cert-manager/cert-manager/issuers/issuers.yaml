@@ -21,6 +21,7 @@ spec:
         selector:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN}"
+            - "${SECRET_DOMAIN_GAMES}"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
@@ -43,3 +44,4 @@ spec:
         selector:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN}"
+            - "${SECRET_DOMAIN_GAMES}"
