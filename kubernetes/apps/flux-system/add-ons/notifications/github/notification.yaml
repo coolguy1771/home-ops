@@ -1,5 +1,6 @@
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta1
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/provider_v1beta2.json
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
 kind: Provider
 metadata:
   name: github
@@ -7,10 +8,12 @@ metadata:
 spec:
   type: github
   address: https://github.com/coolguy1771/home-ops
+  interval: 10m
   secretRef:
-    name: github-token
+    name: github-token-secret
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta1
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/alert_v1beta2.json
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
 kind: Alert
 metadata:
   name: github

@@ -71,19 +71,3 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ["https://gitops.${SECRET_PUBLIC_DOMAIN}/oauth2/callback"]
         userinfo_signing_algorithm: none
-      # - id: gitea
-      #   secret: "${SECRET_GITEA_OAUTH_CLIENT_SECRET}"
-      #   public: false
-      #   authorization_policy: two_factor
-      #   scopes: ["openid", "profile", "groups", "email"]
-      #   redirect_uris: ["https://gitea.${SECRET_PUBLIC_DOMAIN}/user/oauth2/authelia/callback"]
-      #   userinfo_signing_algorithm: none
-      # - id: minio
-      #   description: Minio
-      #   secret: "${SECRET_MINIO_OAUTH_CLIENT_SECRET}"
-      #   public: false
-      #   authorization_policy: two_factor
-      #   pre_configured_consent_duration: 1y
-      #   scopes: ["openid", "profile", "groups", "email"]
-      #   redirect_uris: ["https://minio.${SECRET_PUBLIC_DOMAIN}/oauth_callback"]
-      #   userinfo_signing_algorithm: none
