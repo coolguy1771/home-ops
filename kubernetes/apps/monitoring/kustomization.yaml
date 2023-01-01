@@ -1,14 +1,18 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: monitoring
 resources:
-  - ./blackbox-exporter
-  - ./grafana
+  # Pre Flux-Kustomizations
+  - ./namespace.yaml
+  # Flux-Kustomizations
+  - ./blackbox-exporter/ks.yaml
+  - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
-  - ./loki
-  - ./smartctl-exporter
-  - ./snmp-exporter
-  - ./thanos
-  - ./vector
-  - ./zfs
+  - ./loki/ks.yaml
+  - ./smartctl-exporter/ks.yaml
+  - ./snmp-exporter/ks.yaml
+  - ./thanos/ks.yaml
+  - ./vector/ks.yaml
+  # Standard Resources
+  - ./rules
