@@ -118,7 +118,7 @@ spec:
                   port: *api-port
         tls:
           - hosts:
-              - *api-host
+              - *host-api
             secretName: minio-api-tls
     podSecurityContext:
       runAsUser: 568
