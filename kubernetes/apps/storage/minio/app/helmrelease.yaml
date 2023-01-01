@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app minio
+  name: minio
   namespace: storage
 spec:
   interval: 15m
@@ -14,37 +15,44 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: quay.io/minio/minio
       tag: RELEASE.2022-12-12T19-27-27Z
     env:
-      TZ: "America/New_York"
+      TZ: America/New_York
       MINIO_UPDATE: "off"
       MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
       MINIO_PROMETHEUS_JOB_ID: minio
-      MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_PUBLIC_DOMAIN}"
-      MINIO_SERVER_URL: "https://s3.${SECRET_PUBLIC_DOMAIN}"
+      MINIO_BROWSER_REDIRECT_URL: https://minio.${SECRET_PUBLIC_DOMAIN}
+      MINIO_SERVER_URL: https://s3.${SECRET_PUBLIC_DOMAIN}
     envFrom:
       - secretRef:
-          name: *app
+          name: minio-secret
     args: ["server", "/data", "--console-address", ":9001"]
     service:
       main:
         enabled: true
         ports:
           http:
-            port: &port-console 9001
+            port: &console-port 9001
           api:
             enabled: true
-            port: &port-api 9000
+            port: &api-port 9000
     serviceMonitor:
       main:
         enabled: true
@@ -55,46 +63,62 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
             bearerTokenSecret:
-              name: minio-prometheus
-              key: token
+              name: minio-secret
+              key: MINIO_PROMETHEUS_TOKEN
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /minio/health/live
+            port: *api-port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hajimari.io/icon: mdi:pail
         hosts:
-          - host: &host-console "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+          - host: &console-host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
                 service:
-                  port: *port-console
+                  port: *console-port
         tls:
           - hosts:
-              - *host-console
+              - *console-host
             secretName: minio-console-tls
       s3:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
           external-dns.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
-          nginx.ingress.kubernetes.io/proxy-body-size: 5000m
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
           nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             chunked_transfer_encoding off;
+          hajimari.io/enable: "false"
         hosts:
           - host: &host-api "s3.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
                 service:
-                  port: *port-api
+                  port: *api-port
         tls:
           - hosts:
-              - *host-api
+              - *api-host
             secretName: minio-api-tls
     podSecurityContext:
       runAsUser: 568
@@ -108,8 +132,6 @@ spec:
         enabled: true
         existingClaim: minio-nfs
         mountPath: /data
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *app
     resources:
       requests:
         memory: 100Mi
