@@ -1,4 +1,5 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base",
     "docker:enableMajor",
@@ -20,7 +21,7 @@
   "username": "lumiere-bot[bot]",
   "repositories": ["coolguy1771/home-ops"],
   "onboarding": false,
-  "requireConfig": false,
+  "requireConfig": "optional",
   "gitAuthor": "lumiere-bot <98047013+lumiere-bot[bot]@users.noreply.github.com>",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
@@ -54,7 +55,7 @@
       "description": "Loose versioning for non-semver packages",
       "matchDatasources": ["docker"],
       "versioning": "loose",
-      "matchPackagePatterns": ["immich", "plex", "qbittorrent"]
+      "matchPackagePatterns": ["changedetection", "immich", "plex", "qbittorrent"]
     },
     {
       "description": "Use custom versioning for Minio",

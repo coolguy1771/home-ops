@@ -1,10 +1,10 @@
 ---
-name: "Meta: Labeler"
+name: "Meta Labeler"
 
-on: # yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
 
 jobs:
   labeler:
