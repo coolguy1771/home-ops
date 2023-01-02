@@ -5,7 +5,7 @@ namespace: tools
 resources:
   #- cdn-nginx
   #- cyberchef
-  #- excalidraw
+  - excalidraw/ks.yaml
   - kubernetes-schemas/ks.yaml
   #- outline
   - smtp-relay/ks.yaml
