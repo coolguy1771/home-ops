@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,17 +15,23 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       replicas: 3
       strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/foxcpp/maddy
       tag: 0.6.2
@@ -35,12 +42,11 @@ spec:
       SMTP_PORT: "465"
     envFrom:
       - secretRef:
-          name: *app
+          name: smtp-relay-secret
     service:
       main:
         type: LoadBalancer
-        externalIPs:
-          - "${SVC_SMTP_RELAY_ADDR}"
+        externalIPs: ["${SVC_SMTP_RELAY_ADDR}"]
         externalTrafficPolicy: Local
         ports:
           http:
@@ -48,11 +54,20 @@ spec:
           metrics:
             enabled: true
             port: 9749
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
       config:
         enabled: true
         type: configMap
-        name: *app
+        name: smtp-relay-configmap
         subPath: maddy.conf
         mountPath: /data/maddy.conf
         readOnly: true
@@ -62,9 +77,6 @@ spec:
         medium: Memory
         sizeLimit: 1Gi
         mountPath: /dev/shm
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: *app
-      secret.reloader.stakater.com/reload: *app
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname

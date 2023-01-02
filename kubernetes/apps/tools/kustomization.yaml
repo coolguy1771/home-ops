@@ -8,5 +8,5 @@ resources:
   - excalidraw
   - kubernetes-schemas/ks.yaml
   - outline
-  - smtp-relay
+  - smtp-relay/ks.yaml
   - wastebin
