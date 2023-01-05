@@ -33,6 +33,8 @@ spec:
       announce:
         loadbalancerIP: true
         podCIDR: true
+    bpf:
+      lbExternalClusterIP: true
     containerRuntime:
       integration: containerd
     endpointRoutes:
