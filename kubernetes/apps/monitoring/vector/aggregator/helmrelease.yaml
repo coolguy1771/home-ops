@@ -39,7 +39,7 @@ spec:
     service:
       main:
         type: LoadBalancer
-        externalIPs: ["${SVC_SYSLOG_ADDR}"]
+        loadBalancerIP: "${SVC_SYSLOG_ADDR}"
         externalTrafficPolicy: Local
         ports:
           http:
