@@ -19,6 +19,15 @@ access_control:
   rules:
     - domain: ["grafana.witl.xyz"]
       policy: bypass
+    - domain: ["letsblockit.witl.xyz"]
+      resources: ["^/lists.*$"]
+      policy: bypass
+    - domain: ["navidrome.witl.xyz"]
+      resources: ["^/rest.*$"]
+      policy: bypass
+    - domain: ["navidrome.witl.xyz"]
+      resources: ["^/metrics.*$"]
+      policy: deny
 
 identity_providers:
   oidc:
@@ -28,7 +37,7 @@ identity_providers:
     clients:
       - id: grafana
         description: Grafana
-        secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
+        secret: "${GRAFANA_OAUTH_CLIENT_SECRET}"
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
@@ -37,7 +46,7 @@ identity_providers:
         userinfo_signing_algorithm: none
       - id: immich
         description: Immich
-        secret: "${SECRET_IMMICH_OAUTH_CLIENT_SECRET}"
+        secret: "${IMMICH_OAUTH_CLIENT_SECRET}"
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
@@ -46,10 +55,17 @@ identity_providers:
         userinfo_signing_algorithm: none
       - id: weave-gitops
         description: Weave GitOps
-        secret: "${SECRET_WEAVEGITOPS_OAUTH_CLIENT_SECRET}"
+        secret: "${WEAVEGITOPS_OAUTH_CLIENT_SECRET}"
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ["https://gitops.witl.xyz/oauth2/callback"]
         userinfo_signing_algorithm: none
+      # - id: gitea
+      #   secret: "${GITEA_OAUTH_CLIENT_SECRET}"
+      #   public: false
+      #   authorization_policy: two_factor
+      #   scopes: ["openid", "profile", "groups", "email"]
+      #   redirect_uris: ["https://gitea.witl.xyz/user/oauth2/authelia/callback"]
+      #   userinfo_signing_algorithm: none
