@@ -15,16 +15,17 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  uninstall:
+    keepHistory: false
   values:
     global:
       # imageRegistry: public.ecr.aws
