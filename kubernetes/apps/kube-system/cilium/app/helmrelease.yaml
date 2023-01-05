@@ -110,3 +110,7 @@ spec:
       # -- Enable IPv6 support.
       enabled: false
     #enableIPv6BIGTCP: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    k8sServiceHost: 192.168.1.1
+    k8sServicePort: 6443
+    kubeProxyReplacement: strict
