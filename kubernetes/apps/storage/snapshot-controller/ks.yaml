@@ -17,11 +17,11 @@ spec:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
       name: snapshot-controller
-      namespace: kube-system
+      namespace: storage
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
       name: snapshot-validation-webhook
-      namespace: kube-system
+      namespace: storage
   interval: 30m
   retryInterval: 1m
   timeout: 3m
