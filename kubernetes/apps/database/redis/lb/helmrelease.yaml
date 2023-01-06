@@ -38,7 +38,7 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: ["${SVC_REDIS_ADDR}"]
+        loadBalancerIP: "${SVC_REDIS_ADDR}"
         externalTrafficPolicy: Local
         ports:
           http:
