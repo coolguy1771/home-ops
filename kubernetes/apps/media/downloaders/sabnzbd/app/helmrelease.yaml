@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sabnzbd
+  namespace: media
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: statefulset
+    image:
+      repository: ghcr.io/onedr0p/sabnzbd
+      tag: 3.7.1@sha256:e1a805ab246712b2c9a834b88ffefd77aba89b2ffcfdf1a9535333fcb4a60f91
+    env:
+      TZ: America/New_York
+      SABNZBD__PORT: &port 80
+      SABNZBD__HOST_WHITELIST_ENTRIES: >-
+        sabnzbd,
+        sabnzbd.media,
+        sabnzbd.media.svc,
+        sabnzbd.media.svc.cluster,
+        sabnzbd.media.svc.cluster.local,
+        sabnzbd.${SECRET_PUBLIC_DOMAIN}
+    envFrom:
+      - secretRef:
+          name: sabnzbd-secret
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sabnzbd/nord.css"></head>';
+            sub_filter_once on;
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+        labels:
+          snapshot.home.arpa/enabled: "true"
+    persistence:
+      downloads:
+        enabled: true
+        type: nfs
+        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+        path: /pluto/media/downloads
+        mountPath: /downloads
+      media:
+        enabled: true
+        type: nfs
+        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+        path: /pluto/media
+        mountPath: /media
+      incomplete:
+        enabled: true
+        type: emptyDir
+    nodeSelector:
+      node-role.kubernetes.io/worker: "true"
+    resources:
+      requests:
+        cpu: 10m
+        memory: 250Mi
+      limits:
+        memory: 8000Mi
