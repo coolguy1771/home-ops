@@ -30,13 +30,16 @@ spec:
     objstoreConfig:
       type: s3
       config:
+        endpoint: minio.default.svc.cluster.local:9000
+        bucket: thanos
         insecure: true
+    queryFrontend:
+      enabled: false
     query:
       enabled: true
       replicaCount: 3
       podAntiAffinityPreset: hard
-      replicaLabel:
-        - __replica__
+      replicaLabel: ["__replica__"]
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
@@ -59,10 +62,10 @@ spec:
       podAntiAffinityPreset: hard
       ingress:
         enabled: true
+        ingressClassName: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-bucketweb.${SECRET_PUBLIC_DOMAIN}"
-        ingressClassName: "nginx"
         tls: true
         extraTls:
           - hosts:
@@ -70,18 +73,16 @@ spec:
             secretName: thanos-bucketweb-tls
     compactor:
       enabled: true
-      extraFlags:
-        - "--compact.concurrency"
-        - "4"
-      retentionResolutionRaw: 14d
+      extraFlags: ["--compact.concurrency", "4"]
+      retentionResolutionRaw: 7d
       retentionResolution5m: 14d
-      retentionResolution1h: 14d
+      retentionResolution1h: 30d
       ingress:
         enabled: true
+        ingressClassName: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-compactor.${SECRET_PUBLIC_DOMAIN}"
-        ingressClassName: "nginx"
         tls: true
         extraTls:
           - hosts:
@@ -89,26 +90,25 @@ spec:
             secretName: thanos-compactor-tls
       persistence:
         enabled: true
-        storageClass: "ceph-block"
-        size: 50Gi
+        storageClass: ceph-block
+        size: 20Gi
     storegateway:
-      enabled: false
+      enabled: true
       replicaCount: 3
       podAntiAffinityPreset: hard
       ingress:
         enabled: true
+        ingressClassName: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-storegateway.${SECRET_PUBLIC_DOMAIN}"
-        ingressClassName: "nginx"
         tls: true
         extraTls:
           - hosts:
               - *host
-            secretName: thanos-storegateway-tls
       persistence:
         enabled: true
-        storageClass: "ceph-block"
+        storageClass: ceph-block
         size: 20Gi
     ruler:
       enabled: true
@@ -116,11 +116,9 @@ spec:
       podAntiAffinityPreset: hard
       dnsDiscovery:
         enabled: true
-      alertmanagers:
-        - http://kube-prometheus-stack-alertmanager.monitoring:9093
+      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring:9093"]
       clusterName: home-ops
-      extraFlags:
-        - "--web.prefix-header=X-Forwarded-Prefix"
+      extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:
           - name: "PrometheusWatcher"
@@ -129,10 +127,10 @@ spec:
                 expr: absent(up{job="kube-prometheus-stack-prometheus"})
       ingress:
         enabled: true
+        ingressClassName: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: &host "thanos-ruler.${SECRET_PUBLIC_DOMAIN}"
-        ingressClassName: "nginx"
         tls: true
         extraTls:
           - hosts:
@@ -140,30 +138,18 @@ spec:
             secretName: thanos-ruler-tls
       persistence:
         enabled: true
-        storageClass: "ceph-block"
+        storageClass: ceph-block
         size: 20Gi
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
   valuesFrom:
-    - targetPath: objstoreConfig.config.bucket
-      kind: ConfigMap
-      name: thanos-bucket
-      valuesKey: BUCKET_NAME
-    - targetPath: objstoreConfig.config.endpoint
-      kind: ConfigMap
-      name: thanos-bucket
-      valuesKey: BUCKET_HOST
-    - targetPath: objstoreConfig.config.region
-      kind: ConfigMap
-      name: thanos-bucket
-      valuesKey: BUCKET_REGION
     - targetPath: objstoreConfig.config.access_key
       kind: Secret
-      name: thanos-bucket
+      name: thanos-secret
       valuesKey: AWS_ACCESS_KEY_ID
     - targetPath: objstoreConfig.config.secret_key
       kind: Secret
-      name: thanos-bucket
+      name: thanos-secret
       valuesKey: AWS_SECRET_ACCESS_KEY
