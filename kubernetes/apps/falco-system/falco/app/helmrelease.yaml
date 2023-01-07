@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: falco
+  namespace: falco-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: falco
+      version: 2.4.3
+      sourceRef:
+        kind: HelmRepository
+        name: falco
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    driver:
+      enabled: true
+      kind: epbf
+    collectors:
+      docker:
+        enabled: false
+      crio:
+        enabled: false
+      containerd:
+        enabled: true
+      kubernetes:
+        enabled: true
+    falcosidekick:
+      enabled: true
+      config:
+        alertmanager:
+          hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
+          endpoint: "/api/v2/alerts"
+          minimumpriority: "error"
+    falco:
+      time_format_iso_8601: true
+      json_output: true
