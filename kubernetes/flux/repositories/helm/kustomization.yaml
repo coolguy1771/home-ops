@@ -14,6 +14,7 @@ resources:
   - ./dysnix.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
+  - ./falco.yaml
   - ./grafana.yaml
   - ./ingress-nginx.yaml
   - ./intel.yaml
