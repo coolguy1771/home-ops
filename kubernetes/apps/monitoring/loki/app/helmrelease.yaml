@@ -62,7 +62,7 @@ spec:
           storage:
             s3:
               s3: null
-              endpoint: minio.default.svc.cluster.local:9000
+              endpoint: minio.storage.svc.cluster.local:9000
               bucketnames: loki
               insecure: true
               s3forcepathstyle: true
