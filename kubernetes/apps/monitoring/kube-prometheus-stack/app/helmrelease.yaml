@@ -38,8 +38,8 @@ spec:
           - name: "pushover"
             pushover_configs:
               - url_title: View in Alert Manager
-              - token: "${SECRET_PUSHOVER_ALERT_MANAGER_APIKEY}"
-                user_key: "${SECRET_PUSHOVER_USERKEY}"
+                token: "${SECRET_ALERTMANAGER_PUSHOVER_TOKEN}"
+                user_key: "${SECRET_ALERTMANAGER_PUSHOVER_USER_KEY}"
                 send_resolved: true
                 html: true
                 sound: gamelan
@@ -158,9 +158,7 @@ spec:
     kubeProxy:
       enabled: true
       endpoints:
-        - 10.10.10.20
-        - 10.10.10.21
-        - 10.10.10.22
+        - 192.168.1.1
     kubeEtcd:
       enabled: true
       endpoints:
@@ -169,8 +167,8 @@ spec:
         - 10.10.10.22
       service:
         enabled: true
-        port: 2381
-        targetPort: 2381
+        port: 2379
+        targetPort: 2379
     prometheus:
       ingress:
         enabled: true
@@ -183,25 +181,12 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: prometheus-tls
+            secretName:
+              -
       thanosService:
         enabled: true
       thanosServiceMonitor:
         enabled: true
-      thanosIngress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-        hosts:
-          - &host thanos-sidecar.${SECRET_PUBLIC_DOMAIN}
-        tls:
-          - hosts:
-              - *host
-            secretName: thanos-sidecar-tls
       prometheusSpec:
         replicas: 3
         replicaExternalLabelName: __replica__
@@ -211,13 +196,16 @@ spec:
           image: quay.io/thanos/thanos:v0.30.1
           # renovate: datasource=docker depName=quay.io/thanos/thanos
           version: "v0.30.1"
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
         podAntiAffinity: hard
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        retention: 14d
-        retentionSize: 45GB
+        retention: 2d
+        retentionSize: 6GB
         enableAdminAPI: true
         walCompression: true
         storageSpec:
