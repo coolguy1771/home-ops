@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -87,7 +87,7 @@ spec:
         type: emptyDir
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
-      intel.feature.node.kubernetes.io/gpu: "true"
+      feature.node.kubernetes.io/pci-0300_8086.present=true: "true"
     resources:
       requests:
         gpu.intel.com/i915: 1
