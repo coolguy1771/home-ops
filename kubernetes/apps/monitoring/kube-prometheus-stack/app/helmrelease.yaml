@@ -254,3 +254,7 @@ spec:
             honor_timestamps: true
             static_configs:
               - targets: ["osiris.${SECRET_PRIVATE_DOMAIN}:9633"]
+          - job_name: valheim
+            static_configs:
+            - targets: ['10.10.10.7:3000']
+
