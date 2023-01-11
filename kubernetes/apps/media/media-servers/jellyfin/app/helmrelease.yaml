@@ -57,6 +57,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: "{{ .Release.Name }}-tls"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -87,7 +88,7 @@ spec:
         type: emptyDir
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
-      feature.node.kubernetes.io/pci-0300_8086.present=true: "true"
+      feature.node.kubernetes.io/pci-0300_8086.present: "true"
     resources:
       requests:
         gpu.intel.com/i915: 1
