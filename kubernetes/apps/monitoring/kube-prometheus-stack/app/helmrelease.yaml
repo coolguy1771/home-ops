@@ -257,4 +257,7 @@ spec:
           - job_name: valheim
             static_configs:
             - targets: ['10.10.10.7:3000']
+          - job_name: icb_cadvisor
+            static_configs:
+              - targets: ['10.10.10.7:8080']
 
