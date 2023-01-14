@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/runnerdeployment_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/runnerdeployment_v1alpha1.json
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
@@ -8,7 +8,7 @@ metadata:
 spec:
   template:
     spec:
-      image: ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind:ubuntu-22.04@sha256:86dfb6336146d239a34c530e89468effb0c3ec518fa35c350b9dee49bb574736
+      image: ghcr.io/actions/actions-runner-controller/actions-runner:v2.299.1-ubuntu-20.04@sha256:69e3b023ecdb34313935952c4375a75414db79f177353123c774290028b3bb3a
       imagePullPolicy: Always
       dockerdWithinRunnerContainer: true
       ephemeral: true
@@ -27,7 +27,7 @@ spec:
           persistentVolumeClaim:
             claimName: actions-runner-controller-cache
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/horizontalrunnerautoscaler_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/horizontalrunnerautoscaler_v1alpha1.json
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
 metadata:
