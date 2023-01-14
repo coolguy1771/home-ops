@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   #- cdn-nginx
-  - ./dufs.yaml
+  - ./dufs/ks.yaml
   - excalidraw/ks.yaml
   - kubernetes-schemas/ks.yaml
   #- outline
