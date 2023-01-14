@@ -71,7 +71,7 @@ spec:
         volumeSpec:
           nfs:
             server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-            path: /pluto/media/cdn
+            path: /pluto/icb
     resources:
       requests:
         cpu: 5m
