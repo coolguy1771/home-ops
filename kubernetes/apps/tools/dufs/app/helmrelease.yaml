@@ -33,7 +33,7 @@ spec:
     image:
       repository: docker.io/sigoden/dufs
       tag: v0.31.0
-    args: ["--allow-search", "--allow-symlink", "--port", "80", "--render-spa", "/data"]
+    args: ["--allow-search", "--allow-symlink", "--port", "80", "/data"]
     service:
       main:
         ports:
