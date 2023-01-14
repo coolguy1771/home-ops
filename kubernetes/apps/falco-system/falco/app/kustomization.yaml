@@ -6,4 +6,3 @@ namespace: falco-system
 resources:
   # Flux-Kustomizations
   - ./helmrelease.yaml
-  - ./rules
