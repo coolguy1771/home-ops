@@ -1,34 +1,53 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/ocirepository_v1beta2.json
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: terraform-minio
+  name: terraform-storage
   namespace: flux-system
 spec:
   interval: 1m
   url: oci://ghcr.io/coolguy1771/terraform-storage-oci
   ref:
     tag: main
+  verify:
+    provider: cosign
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/terraform_v1alpha1.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
-  name: minio
+  name: storage
   namespace: flux-system
 spec:
   approvePlan: auto
   interval: 12h
-  path: ./terraform/minio
+  path: ./
   sourceRef:
     kind: OCIRepository
-    name: terraform-minio
+    name: terraform-storage
     namespace: flux-system
   backendConfig:
     disable: true
   cliConfigSecretRef:
-    name: tfe-cli-config
-  varsFrom:
-    - kind: Secret
-      name: minio-vars
+    name: tf-controller-tfrc-secret
   writeOutputsToSecret:
-    name: minio-outputs
+    name: storage-outputs
+  runnerPodTemplate:
+    spec:
+      env:
+        - name: OP_CONNECT_HOST
+          value: http://onepassword-connect.kube-system.svc.cluster.local:8080
+        - name: OP_CONNECT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: tf-controller-op-secret
+              key: OP_CONNECT_TOKEN
+      volumeMounts:
+        - name: sops
+          mountPath: /home/runner/.config/sops/age/keys.txt
+          subPath: keys.txt
+      volumes:
+        - name: sops
+          secret:
+            secretName: tf-controller-sops-secret

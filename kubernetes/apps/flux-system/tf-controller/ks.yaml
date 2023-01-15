@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1beta2.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
@@ -7,6 +8,9 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/flux-system/tf-controller/app
   prune: true
   sourceRef:
@@ -17,10 +21,11 @@ spec:
       kind: HelmRelease
       name: tf-controller
       namespace: flux-system
-  interval: 10m
-  retryInterval: 2m
-  timeout: 1m
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1beta2.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
@@ -30,13 +35,14 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
+    - name: cluster-apps-external-secrets
+    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-tf-controller
   path: ./kubernetes/apps/flux-system/tf-controller/terraforms
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  wait: true
-  interval: 10m
-  retryInterval: 2m
-  timeout: 1m
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
