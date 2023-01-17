@@ -48,7 +48,7 @@ spec:
       tls:
         - hosts:
             - *host
-          secretName: "{{ .Release.Name }}-tls"
+          secretName: "weave-tls"
     networkPolicy:
       create: false
     metrics:
