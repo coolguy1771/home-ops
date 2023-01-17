@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,15 +15,19 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     crds: CreateReplace
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     image:
       repository: ghcr.io/actions-runner-controller/actions-runner-controller
@@ -44,7 +49,7 @@ spec:
         annotations:
           external-dns.home.arpa/enabled: "true"
           hajimari.io/enable: "false"
-        ingressClassName: "nginx"
+        ingressClassName: nginx
         hosts:
           - host: &host "arc-webhook.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -59,10 +64,14 @@ spec:
       port: 8080
       proxy:
         enabled: false
-    # actionsMetricsServer:
-    #   enabled: true
-    # actionsMetrics:
-    #   serviceMonitor: true
-    #   port: 8080
-    #   proxy:
-    #     enabled: false
+    actionsMetricsServer:
+      enabled: true
+      secret:
+        enabled: true
+        create: false
+        name: *secret
+    actionsMetrics:
+      serviceMonitor: true
+      port: 8080
+      proxy:
+        enabled: false
