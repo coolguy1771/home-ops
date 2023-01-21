@@ -9,4 +9,3 @@ resources:
   - ./opnsense-frr-exporter.yaml
   - ./opnsense-haproxy.yaml
   - ./opnsense-node-exporter.yaml
-  - ./pikvm-node-exporter.yaml
