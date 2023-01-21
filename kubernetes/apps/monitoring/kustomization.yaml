@@ -15,4 +15,4 @@ resources:
   - ./thanos/ks.yaml
   - ./vector/ks.yaml
   # Standard Resources
-  - ./rules
+  - ./miscellaneous

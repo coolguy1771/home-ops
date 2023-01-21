@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -35,8 +35,12 @@ spec:
         global:
           resolve_timeout: 5m
         receivers:
-          - name: "null"
-          - name: "pushover"
+          - name: heartbeat
+            webhook_configs:
+              - url: "https://heartbeat.uptimerobot.com/${SECRET_ALERTMANAGER_UPTIMEROBOT_HEARTBEAT_TOKEN}"
+                send_resolved: true
+          - name: "null" # quote
+          - name: pushover
             pushover_configs:
               - url_title: View in Alert Manager
                 token: "${SECRET_ALERTMANAGER_PUSHOVER_TOKEN}"
@@ -75,13 +79,19 @@ spec:
           group_by: ["alertname", "job"]
           group_wait: 30s
           group_interval: 5m
-          repeat_interval: 6h
-          receiver: "pushover"
+          repeat_interval: 12h
+          receiver: pushover
           routes:
-            - receiver: "null"
+            - receiver: heartbeat
+              group_wait: 0s
+              group_interval: 2m
+              repeat_interval: 2m
               matchers:
-                - alertname =~ "InfoInhibitor|Watchdog"
-            - receiver: "pushover"
+                - alertname =~ "Watchdog"
+            - receiver: "null" # quote
+              matchers:
+                - alertname =~ "InfoInhibitor"
+            - receiver: pushover
               matchers:
                 - severity = "critical"
               continue: true
@@ -96,7 +106,8 @@ spec:
         pathType: Prefix
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hajimari.io/appName: "Alert Manager"
+          hajimari.io/icon: mdi:alert-decagram-outline
         hosts:
           - &host alert-manager.${SECRET_PUBLIC_DOMAIN}
         tls:
@@ -113,19 +124,6 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    kube-state-metrics:
-      metricLabelsAllowlist:
-        - "persistentvolumeclaims=[*]"
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -139,43 +137,44 @@ spec:
       serviceMonitor:
         metricRelabelings:
           - action: replace
-            sourceLabels:
-              - node
+            sourceLabels: ["node"]
             targetLabel: instance
+    kube-state-metrics:
+      metricLabelsAllowlist: ["persistentvolumeclaims=[*]"]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
     kubeApiServer:
       enabled: true
     kubeControllerManager:
       enabled: true
-      endpoints:
-        - 10.10.10.20
-        - 10.10.10.21
-        - 10.10.10.22
+      endpoints: ["10.10.10.20", "10.10.10.21", "10.10.10.22"]
     kubeScheduler:
       enabled: true
-      endpoints:
-        - 10.10.10.20
-        - 10.10.10.21
-        - 10.10.10.22
+      endpoints: ["10.10.10.20", "10.10.10.21", "10.10.10.22"]
     kubeProxy:
-      enabled: true
-      endpoints:
-        - 192.168.1.1
+      enabled: false # Enable if not using eBPF
+      # endpoints: ["10.10.10.20", "10.10.10.21", "10.10.10.22"]
     kubeEtcd:
       enabled: true
-      endpoints:
-        - 10.10.10.20
-        - 10.10.10.21
-        - 10.10.10.22
+      endpoints: ["10.10.10.20", "10.10.10.21", "10.10.10.22"]
       service:
         enabled: true
-        port: 2379
-        targetPort: 2379
+        port: 2381
+        targetPort: 2381
     prometheus:
       ingress:
         enabled: true
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hajimari.io/appName: Prometheus
+          hajimari.io/icon: simple-icons:prometheus
         pathType: Prefix
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}
@@ -189,9 +188,10 @@ spec:
         enabled: true
       prometheusSpec:
         replicas: 3
-        replicaExternalLabelName: __replica__
-        externalLabels:
-          cluster: home-ops
+        replicaExternalLabelName: __replica__ # must match with thanos value `.query.replicaLabel[0]`
+        # Breaks any metric that has an existing "cluster" label on a metric
+        # externalLabels:
+        #   cluster: home # must match with thanos value `.ruler.clusterName`
         thanos:
           image: quay.io/thanos/thanos:v0.30.1
           # renovate: datasource=docker depName=quay.io/thanos/thanos
@@ -214,46 +214,14 @@ spec:
               storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 20Gi
         resources:
           requests:
-            cpu: 10m
+            cpu: 150m
             memory: 2000Mi
           limits:
-            memory: 8000Mi
+            memory: 7000Mi
         additionalScrapeConfigs:
-          - job_name: haproxy
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets: ["opnsense.${SECRET_PRIVATE_DOMAIN}:8404"]
-          - job_name: coredns
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets: ["opnsense.${SECRET_PRIVATE_DOMAIN}:9153"]
-          - job_name: frr-exporter
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets: ["opnsense.${SECRET_PRIVATE_DOMAIN}:9342"]
-          - job_name: node-exporter
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets:
-                  - osiris.${SECRET_PRIVATE_DOMAIN}:9100
-                  - opnsense.${SECRET_PRIVATE_DOMAIN}:9100
-          - job_name: smartctl-exporter
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets: ["osiris.${SECRET_PRIVATE_DOMAIN}:9633"]
           - job_name: valheim
             static_configs:
             - targets: ['10.10.10.7:3000']
