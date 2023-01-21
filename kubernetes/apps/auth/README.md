@@ -41,7 +41,7 @@ Below are the decrypted versions of the sops encrypted toml files.
     debug = true
     [ldap]
         enabled = true
-        listen = "0.0.0.0:389"
+        listen = "0.0.0.0:3389"
     [ldaps]
         enabled = false
     [api]

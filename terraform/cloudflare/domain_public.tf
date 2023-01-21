@@ -4,7 +4,7 @@ data "http" "ipv4" {
 
 data "cloudflare_zones" "public_domain" {
   filter {
-    name = var.cloudflare_domain_public_name
+    name = data.sops_file.secrets.data["cloudflare_public_domain"]
   }
 }
 
@@ -18,9 +18,9 @@ resource "cloudflare_record" "public_domain_apex" {
 }
 
 resource "cloudflare_record" "public_domain_root" {
-  name    = var.cloudflare_domain_public_name
+  name    = "witl.xyz"
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  value   = "ipv4.${var.cloudflare_domain_public_name}"
+  value   = "ipv4.witl.xyz"
   proxied = true
   type    = "CNAME"
   ttl     = 1
@@ -29,27 +29,46 @@ resource "cloudflare_record" "public_domain_root" {
 resource "cloudflare_record" "public_domain_www" {
   name    = "www"
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  value   = "ipv4.${var.cloudflare_domain_public_name}"
+  value   = "ipv4.witl.xyz"
   proxied = true
   type    = "CNAME"
   ttl     = 1
 }
 
 resource "cloudflare_record" "public_domain_public_cname" {
-  name    = var.cloudflare_domain_public_unproxied_cname
+  name    = data.sops_file.secrets.data["cloudflare_unproxied_cname"]
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  value   = "ipv4.${var.cloudflare_domain_public_name}"
+  value   = "ipv4.witl.xyz"
   proxied = false
   type    = "CNAME"
   ttl     = 1
 }
 
+resource "cloudflare_record" "public_domain_uptimerobot" {
+  name    = "status"
+  zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
+  value   = "stats.uptimerobot.com"
+  proxied = false
+  type    = "CNAME"
+  ttl     = 1
+}
 
 resource "cloudflare_page_rule" "public_domain_plex_bypass" {
   zone_id  = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  target   = "plex.${var.cloudflare_domain_public_name}/*"
+  target   = "plex.witl.xyz/*"
   status   = "active"
   priority = 1
+
+  actions {
+    cache_level = "bypass"
+  }
+}
+
+resource "cloudflare_page_rule" "public_domain_home_assistant_bypass" {
+  zone_id  = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
+  target   = "hass.witl.xyz/*"
+  status   = "active"
+  priority = 2
 
   actions {
     cache_level = "bypass"

@@ -1,6 +1,6 @@
 
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/clusterissuer_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -23,7 +23,7 @@ spec:
             - "${SECRET_PUBLIC_DOMAIN}"
             - "${SECRET_DOMAIN_GAMES}"
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/clusterissuer_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:

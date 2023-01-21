@@ -9,9 +9,8 @@ k3s_server:
   node-ip: "{{ ansible_host }}"
   tls-san:
     - "{{ k3s_registration_address }}"
+    - osiris.286k.co
   docker: false
-  disable:
-    - servicelb
   disable-network-policy: true
   disable-cloud-controller: true
   cluster-cidr: "10.42.0.0/16"

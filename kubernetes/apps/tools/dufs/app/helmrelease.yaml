@@ -31,14 +31,13 @@ spec:
       replicas: 3
       strategy: RollingUpdate
     image:
-      repository: docker.io/sigoden/dufs
-      tag: v0.31.0
-    args: ["--allow-search", "--allow-symlink", "--port", "80", "/data"]
+      repository: ghcr.io/coolguy1771/docker-nginx-ssl
+      tag: v1.23.1
     service:
       main:
         ports:
           http:
-            port: 80
+            port: 8080
     ingress:
       main:
         enabled: true

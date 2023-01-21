@@ -5,24 +5,39 @@ metadata:
     name: sops-age
     namespace: flux-system
 stringData:
-    age.agekey: ENC[AES256_GCM,data:NJ8nmyK2jf0pWnw5yAQbPtsLSEqrDDaccXPfn8sZXni1JGAn9wxPjZf6fLk3pFeJ9kaEyIdPt2olLxU/wYog/2XRvIuFX4sxv1M=,iv:sbI3+h5v4Smp5BJLb2LhyVoHwakviYlI02xOnHa9vJg=,tag:Jq1fIMJNM5JQkmibLPNtbQ==,type:str]
+    age.agekey: ENC[AES256_GCM,data:s+zzuMKHcPjyND88/APcFeQZq+iM9anwOedOhem0wg8SXv+lpfcYcipfK/bYgiCs5lAPwOHGsr79Gdryt7Sdjq95zu9z9J/eCWk=,iv:sbI3+h5v4Smp5BJLb2LhyVoHwakviYlI02xOnHa9vJg=,tag:5ueDFpPGvpjrNsRS6jCb8A==,type:str]
 sops:
     kms: []
     gcp_kms: []
-    azure_kv: []
+    azure_kv:
+        - vault_url: https://pandora-kv.vault.azure.net
+          name: sops-key
+          version: 5bfd9be92646457cabe67631e8273c74
+          created_at: "2022-12-31T19:39:34Z"
+          enc: Kz9fKq2dbVcKhq6dpIHZn6Yp0GD_-VgCA6qTAJ6XbhJPYZDjofMoEQQj5tk5-WzjWDEahq_fqCBbtN6NvAjCThWgM1Igbz4t-oBPMJqyxyU29yb01wlyCSSiL06bbYKOrAOJXftUVozlAVqDlwfrvQfIjxyEz3PvORIBT7ojsmWeOPh2sn93LXVklxPaECVN6asQkbA1gCy0tDQbAPnQxkPNlIfPv5_ACTIqp2HIHfgWGzdvK8Zk8CWtaieqLCwXopQHw3Q_bePv-QaBNkHAf84dV5x3RMKLAXIvxLO-cMQMFNOdOXN58vRN-Qrbenr-T1IrcJAoFF0qoRfxwjqqzQ
+        - vault_url: https://pandora-kv.vault.azure.net
+          name: sops-key
+          version: 5bfd9be92646457cabe67631e8273c74
+          created_at: "2022-12-31T19:42:31Z"
+          enc: pwMcNZfAYoM3Qi9uvUf8gOs6cn8mXEM5YIaZTZ935dEz5aw5YG1m65IXjQ8ED2c9b_8dA7MD1k9bFNeqz4RUDPTNktS2ZmlS67_b5BQ0rxcU_z1_kZftWwwTJxhTFTZf5IdutJoW-7-syEQXIfTt-NViVsOhjMEjoT61UHNqpxw6YRW4qi5dtyPm7rFyVgHsCsQvVMGqgEhM5lSTRTQ4_Z_R_iZDPWBS2ry8ydRIo_Huaoof9nyF4GFnmRz76C1kfcQ4l2i_vmTZWgcL7qEe4zXsLYwBotsoxWQ3r4P7j_pn9dE2pYISfJNeYYix9hTOUNjNrS-JZ2zxk2Dj0AqKAQ
+        - vault_url: https://pandora-kv.vault.azure.net
+          name: sops-key
+          version: 5bfd9be92646457cabe67631e8273c74
+          created_at: "2022-12-31T19:42:39Z"
+          enc: LQ3WrkAsQA-apouFjuqsboeYFt0y1NKySLIi5sG2oR8ogJFXhIugVOGA3xIE0JrDfFglV5wxjyh2y5H7aQfeYiFL4-gUsAx31MMmsgmvXiG8kidIDUuGOsO32le84uKiffsxIh2jP7Hz7KCbEEeQPxwYm9zWYj5g9zpyVOBLxmk-sB2H_IgYgBAfeD8erpXex_z-fUNc5K3STuTU6YcQ9yukNdaMxCEerwDWoIZlPdwPFZK5zsos99j-2JHBhpic2nJNnVYTauDbg-cpCFrcu-Pz1jdXC2iEj3Xa9xSN6kbXwZWNPKUkEipAj7KQp96BSFiBxsOVI0gKva33Ld_jSg
     hc_vault: []
     age:
         - recipient: age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEY3VDVmtvSG9Gdm1jWlNH
-            c3ZzS3ZWZXFVZUdTYkZCMHFKL3dCTlREL3d3CnlNaU5nNHkzbjk2L09Gamhmb0pI
-            Z3dkTUlVRnduRWpOUlRTS1daVVFNKzAKLS0tIEVLQ2pWL2VjdXFsU1hMTmkzbytG
-            M1p3RUhtQ3g3UXVxc3lDWHl6ckVqdkUKL+a2w88jiXE7oohXG+U1mGmwIo5gi4QC
-            TYjOswwR4yp6i2QwiEwrEcXBsTC+CgA/M7+edPuIUIOXvPceMTedBQ==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVQ29ZaklmSjdlWkJEd0NP
+            Y1Z1M3pudGp0b1JhSTJLaWsrenIzWEovUzI4ClkvOVRJRzBHREJOeS9vQ3VVUFhF
+            ZkJodWJIQmt6K0NTaUF2MzM5OFZUTVUKLS0tIHFieVQvbkJQSFBBOFhLRmJESlp3
+            YUVxZkFRUFhhM1JJQm9LZU8raVovbkkK2+frej9yXZntTYJnnm0a5s2rV+S9xTgf
+            btxGGEPNZXfIOQaLbuG9WB4f0urN65LQpnkzZbsxiTdzsAn4LJ5NuQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-11-23T22:31:23Z"
-    mac: ENC[AES256_GCM,data:acRA6ju6WHdM2UCo5jwh2knfegPw3kYmCWBfrzsq99x78BKjT3nYDi1xcP9JlDHIRKIPfzA72TtysJshWoAexm/PMRE1lLzC+2o0CXItWpz5jw8fiJwxyatrcPrzBUKE6xFzdqEsjTxNmCbgdKeHrzt03lZFKBrucWy7ki3P4pE=,iv:IqhLGyB1qbJ7ulgsjMwnK3viG6mDHa0PkSsxS/rOIKA=,tag:wjot3alORvic0AMfF6VjcA==,type:str]
+    lastmodified: "2022-12-31T19:42:40Z"
+    mac: ENC[AES256_GCM,data:RzBWW2pBFDohM/op5wAermzr9l1E6IAe0R1yTPe+VTu4GmrFnlE4xC+YtDB1fouwlzpqNfmYHjg/j78u2uKktJ6kYEfBXJmn1BO76jqN69mmmaEzzP5IsgA2tznC8SsU08g955+V6+lJeOZ0dDUjqBBbXMmJVRgbgVVDUUB6Y3o=,iv:AnuMZXmVvJW/Wvhn1FkEMa1WxRxFEq+1uvODOivHSwA=,tag:fb/L4IUEtc5/bcBFDSYHbQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3

@@ -7,15 +7,18 @@ creation_rules:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
 
+
   - path_regex: kubernetes/.*\.sops\.toml
     key_groups:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
 
+
   - path_regex: kubernetes/.*\.sops\.ini
     key_groups:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
+
 
   - path_regex: kubernetes/.*\.ya?ml
     encrypted_regex: "^(data|stringData)$"
@@ -23,8 +26,10 @@ creation_rules:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
 
+
   - path_regex: terraform/.*\.sops\.ya?ml
     unencrypted_regex: "^(kind)$"
     key_groups:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
+
