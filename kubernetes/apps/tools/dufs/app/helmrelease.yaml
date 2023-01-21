@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app dufs
+  name: &app nginx
   namespace: tools
 spec:
   interval: 15m
@@ -65,7 +65,7 @@ spec:
       data:
         enabled: true
         type: custom
-        mountPath: /data
+        mountPath: /var/www/html
         readOnly: true
         volumeSpec:
           nfs:
