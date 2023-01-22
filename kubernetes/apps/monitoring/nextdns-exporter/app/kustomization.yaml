@@ -9,7 +9,7 @@ resources:
 configMapGenerator:
   - name: nextdns-dashboard
     files:
-      - nextdns-dashboard.json=./dashboard/dashboard.json
+      - nextdns-dashboard.json=https://raw.githubusercontent.com/raylas/nextdns-exporter/main/grafana/dashboards/nextdns.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
