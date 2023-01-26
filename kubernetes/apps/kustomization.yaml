@@ -15,6 +15,5 @@ resources:
   - ./networking
   - ./rook-ceph
   - ./storage
-  - ./tracee-system
   - ./tools
   - ./volsync
