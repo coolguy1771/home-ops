@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: redis
-  namespace: database
+  namespace: default
 spec:
   interval: 15m
   chart:
@@ -27,8 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    global:
-      imageRegistry: public.ecr.aws
     auth:
       enabled: false
       sentinel: false
