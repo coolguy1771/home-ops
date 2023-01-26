@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   values:
     postee:
-      enabled: true
+      enabled: false
       replicaCount: 3
       posteUi:
         existingSecret:
