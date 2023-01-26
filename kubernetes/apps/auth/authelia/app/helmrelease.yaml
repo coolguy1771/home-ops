@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -30,6 +30,7 @@ spec:
     initContainers:
       init-db:
         image: ghcr.io/onedr0p/postgres-initdb:14.6
+        imagePullPolicy: IfNotPresent
         envFrom:
           - secretRef:
               name: authelia-secret
@@ -40,7 +41,8 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/authelia/authelia
-      tag: master # TODO https://github.com/authelia/authelia/pull/4515
+      # TODO Switch to Authelia release tag on next release
+      tag: master@sha256:12d6b70fd0611b6dcd9d941abb623280b6986ac26d52090895bad28d8213a8b8
     args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
     envFrom:
       - secretRef:
@@ -50,10 +52,25 @@ spec:
       main:
         ports:
           http:
-            port: 8001
+            port: &port 80
           metrics:
             enabled: true
             port: 8080
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     serviceMonitor:
       main:
         enabled: true
