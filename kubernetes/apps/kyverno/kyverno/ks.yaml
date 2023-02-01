@@ -21,24 +21,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1beta2.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: cluster-apps-cluster-policies
-  namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
-spec:
-  dependsOn:
-    - name: cluster-apps-kyverno
-  path: ./kubernetes/apps/kyverno/kyverno/policies
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops-kubernetes
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
