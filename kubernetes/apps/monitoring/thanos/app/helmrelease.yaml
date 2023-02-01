@@ -52,7 +52,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
           hajimari.io/enable: "false"
-        hostname: &host thanos-query.devbu.io
+        hostname: &host "thanos-query.{SECRET_PUBLIC_DOMAIN}"
         tls: true
         extraTls:
           - hosts:
@@ -69,7 +69,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
           cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host thanos-bucketweb.{SECRET_PUBLIC_DOMAIN}
+        hostname: &host "thanos-bucketweb.{SECRET_PUBLIC_DOMAIN}"
         tls: true
         extraTls:
           - hosts:
@@ -88,7 +88,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
           cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host thanos-compactor.{SECRET_PUBLIC_DOMAIN}
+        hostname: &host "thanos-compactor.{SECRET_PUBLIC_DOMAIN}"
         tls: true
         extraTls:
           - hosts:
@@ -108,7 +108,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
           cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host thanos-storegateway.{SECRET_PUBLIC_DOMAIN}
+        hostname: &host "thanos-storegateway.{SECRET_PUBLIC_DOMAIN}"
         tls: true
         extraTls:
           - hosts:
