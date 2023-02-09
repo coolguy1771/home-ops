@@ -28,7 +28,7 @@ metadata:
     jobLabel: node-exporter
 spec:
   type: ExternalName
-  externalName: expanse.turbo.ac.
+  externalName: osiris.286k.co
   ports:
     - name: metrics
       port: &port 9100

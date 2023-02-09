@@ -25,7 +25,7 @@ metadata:
     app.kubernetes.io/instance: *app
 spec:
   type: ExternalName
-  externalName: opnsense.turbo.ac.
+  externalName: opnsense.286k.co
   ports:
     - name: metrics
       port: &port 9153
