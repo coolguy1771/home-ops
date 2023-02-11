@@ -8,8 +8,9 @@ metadata:
 spec:
   template:
     spec:
-      image: ghcr.io/actions/actions-runner-controller/actions-runner:v2.299.1-ubuntu-20.04@sha256:69e3b023ecdb34313935952c4375a75414db79f177353123c774290028b3bb3a
-      dockerdWithinRunnerContainer: false
+      image: ghcr.io/actions/actions-runner-controller/actions-runner-dind:v2.299.1-ubuntu-22.04
+      imagePullPolicy: IfNotPresent
+      dockerdWithinRunnerContainer: true
       ephemeral: true
       repository: coolguy1771/home-ops
       containers:
@@ -24,11 +25,12 @@ spec:
           persistentVolumeClaim:
             claimName: actions-runner-controller-cache
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/horizontalrunnerautoscaler_v1alpha1.json
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
 metadata:
-  name: home-ops-autoscaler
-  namespace: dev
+  name: home-ops
+  namespace: actions-runner-system
 spec:
   scaleTargetRef:
     name: home-ops
@@ -36,7 +38,7 @@ spec:
     - githubEvent:
         workflowJob: {}
       amount: 1
-      duration: "1m"
+      duration: 30m
   minReplicas: 1
   maxReplicas: 3
   metrics:

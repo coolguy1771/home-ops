@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: actions-runner-system
 resources:
   - ./home-ops.yaml
-  - ./pvc.yaml
+
