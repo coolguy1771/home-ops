@@ -24,7 +24,7 @@ spec:
   values:
     initContainers:
       wait-for-repo:
-        image: ghcr.io/onedr0p/kopia:0.12.1@sha256:614f4064ee37c8967440a63061f536ca52d3e62f955eb9362a93f7fb8b3953bf
+        image: ghcr.io/onedr0p/kopia:0.12.1@sha256:494d0f0aad9fac9f3efa881c2f2d842578f484daaf4816064fd0a783de281a51
         command:
           - /bin/bash
           - -c
@@ -38,7 +38,7 @@ spec:
             mountPath: /snapshots
     image:
       repository: ghcr.io/onedr0p/kopia
-      tag: 0.12.1@sha256:614f4064ee37c8967440a63061f536ca52d3e62f955eb9362a93f7fb8b3953bf
+      tag: 0.12.1@sha256:494d0f0aad9fac9f3efa881c2f2d842578f484daaf4816064fd0a783de281a51
     env:
       TZ: "${TIMEZONE}"
       KOPIA_PASSWORD: "none"
