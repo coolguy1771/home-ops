@@ -1,6 +1,12 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./issuers.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: cert-manager-issuers
+      app.kubernetes.io/instance: cert-manager-issuers
+      app.kubernetes.io/part-of: cert-manager

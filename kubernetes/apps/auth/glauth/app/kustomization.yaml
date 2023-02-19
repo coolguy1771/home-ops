@@ -13,3 +13,7 @@ secretGenerator:
       - users.toml=./config/users.sops.toml
 generatorOptions:
   disableNameSuffixHash: true
+labels:
+  - pairs:
+      app.kubernetes.io/name: glauth
+      app.kubernetes.io/instance: glauth
