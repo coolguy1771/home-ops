@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 4.5.1
+      version: 4.6.1
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -101,15 +101,13 @@ spec:
     gateway:
       replicas: 3
       # TODO: https://github.com/grafana/loki/pull/8187
-      image:
-        registry: ghcr.io
-        repository: nginxinc/nginx-unprivileged
-        tag: 1.23-alpine
       ingress:
         enabled: true
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          nginx.ingress.kubernetes.io/whitelist-source-range: |
+            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+          hajimari.io/enable: "false"
         hosts:
           - host: &host loki.${SECRET_PUBLIC_DOMAIN}
             paths:
@@ -121,14 +119,22 @@ spec:
             secretName: loki-tls
     read:
       replicas: 3
+      persistence:
+        storageClass: local-path
+      extraVolumeMounts:
+        - name: rules
+          mountPath: /rules
+      extraVolumes:
+        - name: rules
+          emptyDir: {}
     write:
       replicas: 3
       persistence:
-        storageClass: ceph-block
+        storageClass: local-path
     backend:
       replicas: 3
       persistence:
-        storageClass: ceph-block
+        storageClass: local-path
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
