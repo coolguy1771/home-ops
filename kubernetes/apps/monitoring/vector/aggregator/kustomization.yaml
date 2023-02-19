@@ -6,11 +6,14 @@ namespace: monitoring
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-patchesStrategicMerge:
-  - ./patches/geoip.yaml
 configMapGenerator:
   - name: vector-aggregator-configmap
     files:
       - vector.yaml=./config/vector.yaml
-generatorOptions:
-  disableNameSuffixHash: true
+configurations:
+  - ./patches/kustomizeconfig.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: vector-aggregator
+      app.kubernetes.io/instance: vector-aggregator
+      app.kubernetes.io/part-of: vector

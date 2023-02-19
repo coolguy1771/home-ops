@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.3.2
+      version: 1.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -31,7 +31,8 @@ spec:
       type: daemonset
       strategy: RollingUpdate
     image:
-      repository: docker.io/timberio/vector
+      # https://github.com/vectordotdev/vector/issues/6715
+      repository: ghcr.io/onedr0p/vector
       tag: 0.27.0-debian
     args: ["--config", "/etc/vector/vector.yaml"]
     env:
@@ -71,7 +72,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: vector-agent-configmap
+        name: vector-agent-configmap # overriden by kustomizeconfig
         subPath: vector.yaml
         mountPath: /etc/vector/vector.yaml
         readOnly: true
