@@ -14,10 +14,23 @@ enrichment_tables:
 #
 
 sources:
-  journald_source:
-    type: vector
-    version: "2"
-    address: 0.0.0.0:6000
+  talos_kernel_logs:
+    address: 0.0.0.0:6050
+    type: socket
+    mode: udp
+    max_length: 102400
+    decoding:
+      codec: json
+    host_key: __host
+
+  talos_service_logs:
+    address: 0.0.0.0:6051
+    type: socket
+    mode: udp
+    max_length: 102400
+    decoding:
+      codec: json
+    host_key: __host
 
   kubernetes_source:
     type: vector
@@ -34,6 +47,30 @@ sources:
 #
 
 transforms:
+  talos_kernel_logs_xform:
+    type: remap
+    inputs:
+      - talos_kernel_logs
+    source: |-
+      .__host = replace!(.__host, "10.10.10.20, "k8s-0")
+      .__host = replace(.__host, "10.10.10.10.21", "k8s-1")
+      .__host = replace(.__host, "10.10.10.22", "k8s-2")
+      .__host = replace(.__host, "10.10.10.23", "k8s-3")
+      .__host = replace(.__host, "10.10.10.24", "k8s-4")
+      .__host = replace(.__host, "10.10.10.25", "k8s-5")
+      .__host = replace(.__host, "10.10.10.26", "k8s-6")
+  talos_service_logs_xform:
+    type: remap
+    inputs:
+      - talos_service_logs
+    source: |-
+      .__host = replace!(.__host, "10.10.10.20, "k8s-0")
+      .__host = replace(.__host, "10.10.10.10.21", "k8s-1")
+      .__host = replace(.__host, "10.10.10.22", "k8s-2")
+      .__host = replace(.__host, "10.10.10.23", "k8s-3")
+      .__host = replace(.__host, "10.10.10.24", "k8s-4")
+      .__host = replace(.__host, "10.10.10.25", "k8s-5")
+      .__host = replace(.__host, "10.10.10.26", "k8s-6")
   kubernetes_remap:
     type: remap
     inputs: ["kubernetes_source"]
@@ -58,6 +95,37 @@ transforms:
 #
 
 sinks:
+  talos_kernel:
+    type: loki
+    inputs:
+      - talos_kernel_logs_xform
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields:
+        - __host
+    batch:
+      max_bytes: 1048576
+    out_of_order_action: rewrite_timestamp
+    labels:
+      hostname: '{{ __host }}'
+      service: '{{ facility }}'
+  talos_service:
+    type: loki
+    inputs:
+      - talos_service_logs_xform
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields:
+        - __host
+    batch:
+      max_bytes: 524288
+    out_of_order_action: rewrite_timestamp
+    labels:
+      hostname: '{{ __host }}'
+      service: "talos-service"
+      namespace: "talos:service"
   journald:
     type: loki
     batch:
