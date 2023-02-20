@@ -22,7 +22,7 @@ sinks:
   talos_kernel_sink:
     type: vector
     compression: true
-    inputs: ["talos_kernel_logs"]
+    inputs: ["talos_kernel_source"]
     address: "vector-aggregator.monitoring:6050"
     version: "2"
   talos_service_sink:
