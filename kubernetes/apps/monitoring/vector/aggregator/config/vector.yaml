@@ -42,6 +42,11 @@ sources:
     version: "2"
     address: 0.0.0.0:6020
 
+  journald_source:
+    type: vector
+    version: "2"
+    address: 0.0.0.0:6000
+
 #
 # Transforms
 #
@@ -49,8 +54,7 @@ sources:
 transforms:
   talos_kernel_logs_xform:
     type: remap
-    inputs:
-      - talos_kernel_logs
+    inputs: ["talos_kernel_logs"]
     source: |-
       .__host = replace!(.__host, "10.10.10.20, "k8s-0")
       .__host = replace(.__host, "10.10.10.10.21", "k8s-1")
@@ -61,8 +65,7 @@ transforms:
       .__host = replace(.__host, "10.10.10.26", "k8s-6")
   talos_service_logs_xform:
     type: remap
-    inputs:
-      - talos_service_logs
+    inputs: ["talos_service_logs"]
     source: |-
       .__host = replace!(.__host, "10.10.10.20, "k8s-0")
       .__host = replace(.__host, "10.10.10.10.21", "k8s-1")
@@ -90,35 +93,79 @@ transforms:
       .geoip = get_enrichment_table_record!("geoip_table", {
           "ip": .message.SRC
         })
-#
 # Sinks
-#
-
 sinks:
-  talos_kernel:
+  kubernetes:
     type: loki
     inputs:
-      - talos_kernel_logs_xform
+      - kubernetes_source
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
-      except_fields:
-        - __host
+    batch:
+      max_bytes: 2049000
+    out_of_order_action: rewrite_timestamp
+    remove_label_fields: true
+    remove_timestamp: true
+    labels:
+      k8s_app: '{{ custom_app_name }}'
+      k8s_container: '{{ kubernetes.container_name }}'
+      k8s_filename: '{{ kubernetes.file }}'
+      k8s_instance: '{{ kubernetes.pod_labels."app.kubernetes.io/instance" }}'
+      k8s_namespace: '{{ kubernetes.pod_namespace }}'
+      k8s_node: '{{ kubernetes.pod_node_name }}'
+      k8s_pod: '{{ kubernetes.pod_name }}'
+
+  vyos:
+    type: loki
+    inputs:
+      - vyos_geoip
+      - vyos_route._unmatched
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+    batch:
+      max_bytes: 400000
+    out_of_order_action: rewrite_timestamp
+    labels:
+      hostname: '{{ host }}'
+      syslog_identifier: '{{SYSLOG_IDENTIFIER }}'
+
+  journal:
+    type: loki
+    inputs: ["journald_source"]
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+    batch:
+      max_bytes: 2049000
+    out_of_order_action: accept
+    remove_label_fields: true
+    remove_timestamp: true
+    labels:
+      hostname: '{{ host }}'
+
+  talos_kernel:
+    type: loki
+    inputs: ["talos_kernel_logs_xform"]
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields: ["__host"]
     batch:
       max_bytes: 1048576
     out_of_order_action: rewrite_timestamp
     labels:
       hostname: '{{ __host }}'
       service: '{{ facility }}'
+
   talos_service:
     type: loki
-    inputs:
-      - talos_service_logs_xform
+    inputs: ["talos_service_logs_xform"]
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
-      except_fields:
-        - __host
+      except_fields: ["__host"]
     batch:
       max_bytes: 524288
     out_of_order_action: rewrite_timestamp
@@ -126,31 +173,3 @@ sinks:
       hostname: '{{ __host }}'
       service: "talos-service"
       namespace: "talos:service"
-  kubernetes:
-    type: loki
-    batch:
-      max_bytes: 2049000
-    encoding:
-      codec: json
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
-    inputs: ["kubernetes_remap"]
-    labels:
-      app: '{{ custom_app_name }}'
-      namespace: '{{ kubernetes.pod_namespace }}'
-      node: '{{ kubernetes.pod_node_name }}'
-    out_of_order_action: accept
-    remove_label_fields: true
-    remove_timestamp: true
-
-  vyos:
-    type: loki
-    inputs: ["vyos_geoip", "vyos_route._unmatched"]
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
-    encoding:
-      codec: json
-    batch:
-      max_bytes: 2049000
-    out_of_order_action: accept
-    labels:
-      hostname: '{{ host }}'
-      syslog_identifier: '{{ SYSLOG_IDENTIFIER }}'
