@@ -126,20 +126,6 @@ sinks:
       hostname: '{{ __host }}'
       service: "talos-service"
       namespace: "talos:service"
-  journald:
-    type: loki
-    batch:
-      max_bytes: 2049000
-    encoding:
-      codec: json
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
-    inputs: ["journald_source"]
-    labels:
-      hostname: '{{ host }}'
-    out_of_order_action: accept
-    remove_label_fields: true
-    remove_timestamp: true
-
   kubernetes:
     type: loki
     batch:
