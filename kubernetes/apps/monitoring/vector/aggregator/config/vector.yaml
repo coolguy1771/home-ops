@@ -1,5 +1,5 @@
 ---
-data_dir: /vector-data-dir
+data_dir: ./vector-data-dir
 api:
   enabled: true
   address: 0.0.0.0:8686
@@ -52,28 +52,28 @@ sources:
 #
 
 transforms:
-  talos_kernel_logs_xform:
-    type: remap
-    inputs: ["talos_kernel_logs"]
-    source: |-
-      .__host = replace!(.__host, "10.10.10.20, "k8s-0")
-      .__host = replace(.__host, "10.10.10.21", "k8s-1")
-      .__host = replace(.__host, "10.10.10.22", "k8s-2")
-      .__host = replace(.__host, "10.10.10.23", "k8s-3")
-      .__host = replace(.__host, "10.10.10.24", "k8s-4")
-      .__host = replace(.__host, "10.10.10.25", "k8s-5")
-      .__host = replace(.__host, "10.10.10.26", "k8s-6")
-  talos_service_logs_xform:
-    type: remap
-    inputs: ["talos_service_logs"]
-    source: |-
-      .__host = replace!(.__host, "10.10.10.20, "k8s-0")
-      .__host = replace(.__host, "10.10.10.21", "k8s-1")
-      .__host = replace(.__host, "10.10.10.22", "k8s-2")
-      .__host = replace(.__host, "10.10.10.23", "k8s-3")
-      .__host = replace(.__host, "10.10.10.24", "k8s-4")
-      .__host = replace(.__host, "10.10.10.25", "k8s-5")
-      .__host = replace(.__host, "10.10.10.26", "k8s-6")
+  # talos_kernel_logs_xform:
+  #   type: remap
+  #   inputs: ["talos_kernel_logs"]
+  #   source: |
+  #     .__host = replace(".__host", "10.10.10.20, "k8s-0")
+  #     .__host = replace(".__host", "10.10.10.21", "k8s-1")
+  #     .__host = replace(".__host", "10.10.10.22", "k8s-2")
+  #     .__host = replace(".__host", "10.10.10.23", "k8s-3")
+  #     .__host = replace(".__host", "10.10.10.24", "k8s-4")
+  #     .__host = replace(".__host", "10.10.10.25", "k8s-5")
+  #     .__host = replace(".__host", "10.10.10.26", "k8s-6")
+  # talos_service_logs_xform:
+  #   type: remap
+  #   inputs: ["talos_service_logs"]
+  #   source: |
+  #     .__host = replace(".__host", "10.10.10.20, "k8s-0")
+  #     .__host = replace(".__host", "10.10.10.21", "k8s-1")
+  #     .__host = replace(".__host", "10.10.10.22", "k8s-2")
+  #     .__host = replace(".__host", "10.10.10.23", "k8s-3")
+  #     .__host = replace(".__host", "10.10.10.24", "k8s-4")
+  #     .__host = replace(".__host", "10.10.10.25", "k8s-5")
+  #     .__host = replace(".__host", "10.10.10.26", "k8s-6")
   kubernetes_remap:
     type: remap
     inputs: ["kubernetes_source"]
@@ -97,8 +97,7 @@ transforms:
 sinks:
   kubernetes:
     type: loki
-    inputs:
-      - kubernetes_source
+    inputs: ["kubernetes_remap"]
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
@@ -147,7 +146,7 @@ sinks:
 
   talos_kernel:
     type: loki
-    inputs: ["talos_kernel_logs_xform"]
+    inputs: ["talos_kernel_logs"]
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
@@ -161,7 +160,7 @@ sinks:
 
   talos_service:
     type: loki
-    inputs: ["talos_service_logs_xform"]
+    inputs: ["talos_service_logs"]
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
