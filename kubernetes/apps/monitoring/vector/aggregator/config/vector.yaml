@@ -57,7 +57,7 @@ transforms:
     inputs: ["talos_kernel_logs"]
     source: |-
       .__host = replace!(.__host, "10.10.10.20, "k8s-0")
-      .__host = replace(.__host, "10.10.10.10.21", "k8s-1")
+      .__host = replace(.__host, "10.10.10.21", "k8s-1")
       .__host = replace(.__host, "10.10.10.22", "k8s-2")
       .__host = replace(.__host, "10.10.10.23", "k8s-3")
       .__host = replace(.__host, "10.10.10.24", "k8s-4")
@@ -68,7 +68,7 @@ transforms:
     inputs: ["talos_service_logs"]
     source: |-
       .__host = replace!(.__host, "10.10.10.20, "k8s-0")
-      .__host = replace(.__host, "10.10.10.10.21", "k8s-1")
+      .__host = replace(.__host, "10.10.10.21", "k8s-1")
       .__host = replace(.__host, "10.10.10.22", "k8s-2")
       .__host = replace(.__host, "10.10.10.23", "k8s-3")
       .__host = replace(.__host, "10.10.10.24", "k8s-4")
