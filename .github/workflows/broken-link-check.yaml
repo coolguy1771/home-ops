@@ -4,7 +4,7 @@ name: "Broken Link Check"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 0 * * 0"
 
 jobs:
   check:
@@ -23,13 +23,6 @@ jobs:
         with:
           token: "${{ steps.generate-token.outputs.token }}"
 
-      - name: Restore lychee cache
-        uses: actions/cache@69d9d449aced6a2ede0bc19182fadc3a0a42d2b0 # v3.2.6
-        with:
-          path: .lycheecache
-          key: cache-lychee-${{ github.sha }}
-          restore-keys: cache-lychee-
-
       - name: Scan for broken links
         uses: lycheeverse/lychee-action@9ace499fe66cee282a29eaa628fdac2c72fa087f # v1.6.1
         id: lychee
@@ -37,8 +30,6 @@ jobs:
           GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
         with:
           args: >
-            --cache
-            --max-cache-age 1d
             --verbose
             --no-progress
             --exclude-mail
