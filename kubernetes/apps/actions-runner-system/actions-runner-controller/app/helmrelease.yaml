@@ -64,6 +64,7 @@ spec:
       port: 8080
       proxy:
         enabled: false
+    logFormat: json
     actionsMetricsServer:
       enabled: true
       secret:
