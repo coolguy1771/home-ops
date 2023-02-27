@@ -71,7 +71,7 @@ spec:
         enabled: true
         type: nfs
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /pluto/media/downloads/qbittorrent/complete
+        path: /pluto/media/downloads/complete
         mountPath: /complete
     resources:
       requests:
