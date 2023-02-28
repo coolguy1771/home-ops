@@ -38,6 +38,7 @@ spec:
       ingressClassResource:
         default: true
       config:
+        use-proxy-protocol: "true"
         client-body-buffer-size: "100M"
         client-body-timeout: 120
         client-header-timeout: 120
