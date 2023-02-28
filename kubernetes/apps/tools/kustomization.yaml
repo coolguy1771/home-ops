@@ -4,10 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  #- cdn-nginx
-  - ./dufs/ks.yaml
+  - cdn-nginx/ks.yaml
   - excalidraw/ks.yaml
   - kubernetes-schemas/ks.yaml
-  #- outline
-  - ./smtp-relay/ks.yaml
   #- wastebin

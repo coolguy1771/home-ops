@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app nginx
+  name: &app cdn-nginx
   namespace: tools
 spec:
   interval: 15m
@@ -43,7 +43,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
-          external-dns.home.arpa/enabled: "true"
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - host: &host "cdn.${SECRET_PUBLIC_DOMAIN}"
@@ -53,7 +53,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "dufs-tls"
+            secretName: "cdn-nginx-tls"
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
