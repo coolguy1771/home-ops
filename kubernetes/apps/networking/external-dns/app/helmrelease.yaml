@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -34,16 +34,16 @@ spec:
       - name: CF_API_EMAIL
         valueFrom:
           secretKeyRef:
-            name: externaldns-secret
+            name: external-dns-secret
             key: email
       - name: CF_API_KEY
         valueFrom:
           secretKeyRef:
-            name: externaldns-secret
+            name: external-dns-secret
             key: api-key
     extraArgs:
       - --cloudflare-proxied
-      - --annotation-filter=external-dns.home.arpa/enabled in (true)
+      - --annotation-filter=external-dns.alpha.kubernetes.io/target
     policy: sync
     sources: ["ingress"]
     txtPrefix: k8s.
@@ -55,4 +55,4 @@ spec:
     serviceMonitor:
       enabled: true
     podAnnotations:
-      secret.reloader.stakater.com/reload: externaldns-secret
+      secret.reloader.stakater.com/reload: external-dns-secret
