@@ -38,7 +38,7 @@ spec:
       ingressClassResource:
         default: true
       config:
-        use-proxy-protocol: "true"
+        whitelist-source-range: "0.0.0.0/0,::/0"
         client-body-buffer-size: "100M"
         client-body-timeout: 120
         client-header-timeout: 120
