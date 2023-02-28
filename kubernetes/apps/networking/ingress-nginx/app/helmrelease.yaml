@@ -38,15 +38,15 @@ spec:
       ingressClassResource:
         default: true
       config:
-        client-body-buffer-size: "100M"
-        client-body-timeout: 120
-        client-header-timeout: 120
+        # client-body-buffer-size: "100M"
+        # client-body-timeout: 120
+        # client-header-timeout: 120
         enable-brotli: "true"
-        enable-real-ip: "true"
-        forwarded-for-header: "CF-Connecting-IP"
-        hsts-max-age: "31449600"
-        keep-alive-requests: 10000
-        keep-alive: 120
+        # enable-real-ip: "true"
+        # forwarded-for-header: "CF-Connecting-IP"
+        # hsts-max-age: "31449600"
+        # keep-alive-requests: 10000
+        # keep-alive: 120
         log-format-escape-json: "true"
         log-format-upstream: >
           {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
@@ -59,7 +59,7 @@ spec:
         proxy-body-size: 0
         proxy-buffer-size: "16k"
         ssl-protocols: "TLSv1.3 TLSv1.2"
-        use-forwarded-headers: "true"
+        # use-forwarded-headers: "true"
       metrics:
         enabled: true
         serviceMonitor:
@@ -111,10 +111,10 @@ spec:
                       operator: In
                       values: ["default-backend"]
                 topologyKey: kubernetes.io/hostname
-  valuesFrom:
-    # Cloudflare Networks
-    # https://www.cloudflare.com/ips/
-    - targetPath: controller.config.proxy-real-ip-cidr
-      kind: ConfigMap
-      name: cloudflare-networks
-      valuesKey: cloudflare-networks.txt
+  # valuesFrom:
+  #   # Cloudflare Networks
+  #   # https://www.cloudflare.com/ips/
+  #   - targetPath: controller.config.proxy-real-ip-cidr
+  #     kind: ConfigMap
+  #     name: cloudflare-networks
+  #     valuesKey: cloudflare-networks.txt
