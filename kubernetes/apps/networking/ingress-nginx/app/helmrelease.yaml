@@ -37,7 +37,9 @@ spec:
         externalTrafficPolicy: Local
       ingressClassResource:
         default: true
+      enableTopologyAwareRouting: true
       config:
+        custom-http-errors: 404,401,403,500,503
         client-body-buffer-size: "100M"
         client-body-timeout: 120
         client-header-timeout: 120
