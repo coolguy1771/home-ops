@@ -29,7 +29,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/unpackerr
-      tag: 0.11.1@sha256:42227013bd5de1094e8c11f3aa1cb9a71900b9751b8bb7bf8e351829468de149
+      tag: 0.11.1@sha256:ca063470ef91f422247512bede9e0682b005b7a64811c55fe144dc4fadad8613
     env:
       TZ: America/New_York
       UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local
