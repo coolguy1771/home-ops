@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.3.1
+      version: 1.3.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   values:
     initContainers:
-      init-geoip:
+      01-init-geoip:
         # https://github.com/maxmind/geoipupdate/issues/202
         image: ghcr.io/onedr0p/geoipupdate:v4.10
         imagePullPolicy: IfNotPresent
@@ -54,8 +54,10 @@ spec:
     service:
       main:
         type: LoadBalancer
+        annotations:
+          coredns.io/hostname: vector.286k.co
         loadBalancerIP: "${SVC_VECTOR_ADDR}"
-        # externalTrafficPolicy: Local
+        externalTrafficPolicy: Local
         ports:
           http:
             port: 8686
@@ -68,6 +70,15 @@ spec:
           vyos:
             enabled: true
             port: 6020
+            protocol: TCP
+          talos_kernel:
+            enabled: true
+            port: 6050
+            protocol: UDP
+          talos_service:
+            enabled: true
+            port: 6051
+            protocol: UDP
     persistence:
       config:
         enabled: true
