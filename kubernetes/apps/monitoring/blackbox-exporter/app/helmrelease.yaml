@@ -72,12 +72,9 @@ spec:
         interval: 2m
         scrapeTimeout: 30s
       targets:
-        - name: opnsense-icmp
+        - name: vyos-icmp
           module: icmp
-          url: opnsense
-        - name: opnsense-http
-          module: http_2xx
-          url: opnsense
+          url: vyos
         - name: dell-idrac-0-http
           module: http_2xx
           url: dell-idrac-0
