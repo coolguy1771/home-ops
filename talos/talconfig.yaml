@@ -6,8 +6,9 @@ talosVersion: v1.3.5
 kubernetesVersion: v1.26.1
 allowSchedulingOnMasters: true
 additionalMachineCertSans:
-  - 192.168.1.1
-endpoint: https://192.168.1.1:6443
+  - 10.10.254.3
+  - k8s-lb.286k.co
+endpoint: https://10.10.254.3:6443
 domain: cluster.local
 clusterPodNets:
   - "10.42.0.0/16"
@@ -63,7 +64,7 @@ nodes:
     cluster:
       etcd:
         extraArgs:
-          listen-metrics-urls: 10.10.10.21
+          listen-metrics-urls: 10.10.10.22
   - hostname: k8s-3
     ipAddress: 10.10.10.23
     controlPlane: false
