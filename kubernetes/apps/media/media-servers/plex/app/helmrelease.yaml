@@ -58,7 +58,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name }}-tls"
+            secretName: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
