@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: radarr
+  name: bazarr
   namespace: media
 spec:
   interval: 15m
@@ -27,44 +27,31 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # initContainers:
+    #   01-init-db:
+    #     image: ghcr.io/onedr0p/postgres-initdb:14.7
+    #     imagePullPolicy: IfNotPresent
+    #     envFrom:
+    #       - secretRef:
+    #           name: bazarr-secret
     controller:
       type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: ghcr.io/onedr0p/radarr-develop
-      tag: 4.4.2.6956@sha256:900277ef469bcb21cf24963c39b17e0f1a5e64a445b8a9d6ee80750807911339
+      repository: ghcr.io/onedr0p/bazarr
+      tag: 1.2.0@sha256:5e2fb884452dbfafba155a6aea6c0d0274905d159456cf6d733637b5ed9e1c13
     env:
       TZ: America/New_York
-      PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 80
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
-      RADARR__LOG_LEVEL: info
-    envFrom:
-      - secretRef:
-          name: radarr-secret
+    # Bazarr does not support setting env for postgres settings
+    # envFrom:
+    #   - secretRef:
+    #       name: bazarr-secret
     service:
       main:
         ports:
           http:
-            port: *port
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+            port: 6767
     ingress:
       main:
         enabled: true
@@ -72,13 +59,13 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/radarr/nord.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/bazarr/nord.css"></head>';
             sub_filter_once on;
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-          hajimari.io/icon: mdi:filmstrip
+          hajimari.io/icon: mdi:subtitles-outline
         hosts:
-          - host: *host
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -95,26 +82,34 @@ spec:
       - name: config
         mountPath: /config
         accessMode: ReadWriteOnce
-        size: 15Gi
+        size: 1Gi
         storageClass: ceph-block
     persistence:
       media:
         enabled: true
         type: nfs
-        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
+        server: osiris.286k.co
         path: /pluto/media
         mountPath: /media
-      scripts:
+      add-ons:
         enabled: true
-        type: configMap
-        name: radarr-configmap
-        subPath: pushover-notify.sh
-        mountPath: /scripts/pushover-notify.sh
-        defaultMode: 0775
-        readOnly: true
+        type: emptyDir
+        mountPath: /add-ons
     resources:
       requests:
         cpu: 10m
         memory: 250Mi
       limits:
         memory: 2000Mi
+    sidecars:
+      subcleaner:
+        image: k8s.gcr.io/git-sync/git-sync:v3.6.4
+        imagePullPolicy: IfNotPresent
+        args:
+          - --repo=https://github.com/KBlixt/subcleaner.git
+          - --branch=master
+          - --depth=1
+          - --wait=21600 # 6 hours
+          - --root=/add-ons/subcleaner
+        volumeMounts:
+          - { name: add-ons, mountPath: /add-ons }

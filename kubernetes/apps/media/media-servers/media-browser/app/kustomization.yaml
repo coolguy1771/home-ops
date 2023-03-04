@@ -5,3 +5,7 @@ kind: Kustomization
 namespace: media
 resources:
   - ./helmrelease.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: media-browser
+      app.kubernetes.io/instance: media-browser

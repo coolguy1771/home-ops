@@ -5,4 +5,8 @@ kind: Kustomization
 namespace: media
 resources:
   - ./helmrelease.yaml
-  - ./backups
+  - ./volsync.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: jellyfin
+      app.kubernetes.io/instance: jellyfin
