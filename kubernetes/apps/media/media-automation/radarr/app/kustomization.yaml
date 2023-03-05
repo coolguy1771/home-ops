@@ -6,7 +6,7 @@ namespace: media
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./backups
+  - ./volsync.yaml
 configMapGenerator:
   - name: radarr-configmap
     files:
@@ -15,3 +15,7 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+labels:
+  - pairs:
+      app.kubernetes.io/name: radarr
+      app.kubernetes.io/instance: radarr

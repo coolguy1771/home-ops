@@ -6,4 +6,8 @@ namespace: media
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./backups
+  - ./volsync.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: sabnzbd
+      app.kubernetes.io/instance: sabnzbd

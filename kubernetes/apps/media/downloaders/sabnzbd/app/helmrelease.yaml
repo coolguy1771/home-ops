@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -29,6 +29,8 @@ spec:
   values:
     controller:
       type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/sabnzbd
       tag: 3.7.2@sha256:1650ac838f239899cb3701fd28ffb551e2abdc6b3001d6c19bd80dca0564ec2a
@@ -50,16 +52,33 @@ spec:
         ports:
           http:
             port: *port
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api?mode=version
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sabnzbd/nord.css"></head>';
             sub_filter_once on;
+          nginx.ingress.kubernetes.io/whitelist-source-range: |
+            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+          hajimari.io/icon: mdi:download
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -72,24 +91,16 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: [10000]
     volumeClaimTemplates:
       - name: config
         mountPath: /config
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
-        labels:
-          snapshot.home.arpa/enabled: "true"
+    # Note: If downloading very large nzbs it might be worth using NFS for your download directory.
     persistence:
-      downloads:
-        enabled: true
-        type: nfs
-        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /pluto/media/downloads
-        mountPath: /downloads
       media:
         enabled: true
         type: nfs
