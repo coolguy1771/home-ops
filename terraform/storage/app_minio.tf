@@ -57,7 +57,7 @@ resource "kubernetes_stateful_set_v1" "minio" {
           }
           env {
             name  = "MINIO_PROMETHEUS_URL"
-            value = "https://prometheus.devbu.io"
+            value = "https://prometheus.witl.xyz"
           }
           env {
             name  = "MINIO_PROMETHEUS_AUTH_TYPE"
