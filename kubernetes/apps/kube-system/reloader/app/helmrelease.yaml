@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,21 +15,20 @@ spec:
         kind: HelmRepository
         name: stakater
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     fullnameOverride: reloader
     reloader:
-      enableHA: true
-      deployment:
-        replicas: 3
-      reloadStrategy: annotations
-      reloadOnCreate: false
       podMonitor:
-        enabled: true
+        enabled: false
         namespace: *namespace
