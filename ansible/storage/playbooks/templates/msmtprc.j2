@@ -4,12 +4,12 @@ tls  off
 tls_trust_file /etc/ssl/certs/ca-certificates.crt
 logfile /var/log/msmtp
 
-account        postfix
-host           opnsense.286k.co
+account        maddy
+host           smtp-relay.286k.co
 port           25
 from           osiris@286k.co
 tls_starttls   off
 
-account default: postfix
+account default: maddy
 
 aliases /etc/aliases
