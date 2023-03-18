@@ -3,7 +3,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: dockerhub-rules
+  name: miscellaneous-rules
   namespace: monitoring
   labels:
     prometheus: k8s
@@ -17,6 +17,17 @@ spec:
             summary: Kubernetes cluster at risk of being rate limited by dockerhub on bootstrap
           expr: |
             count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
+          for: 15m
+          labels:
+            severity: critical
+    - name: zfs.rules
+      rules:
+        - alert: ZfsOfflinePool
+          annotations:
+            summary: ZFS zpool {{$labels.zpool}} on {{$labels.instance}}
+              is in a unexpected state {{$labels.state}}
+          expr: |
+            node_zfs_zpool_state{state!="online"} > 0
           for: 15m
           labels:
             severity: critical
