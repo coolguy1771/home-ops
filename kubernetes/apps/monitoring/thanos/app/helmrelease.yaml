@@ -36,15 +36,8 @@ spec:
       config:
         insecure: true
     queryFrontend:
-      enabled: false
-    query:
       enabled: true
       replicaCount: 3
-      podAntiAffinityPreset: hard
-      replicaLabel: ["__replica__"] # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
-      dnsDiscovery:
-        sidecarsService: kube-prometheus-stack-thanos-discovery
-        sidecarsNamespace: monitoring
       ingress:
         enabled: true
         ingressClassName: nginx
@@ -57,42 +50,25 @@ spec:
         extraTls:
           - hosts:
               - *host
-            secretName: thanos-query-tls
+            secretName: thanos-query-frontend-tls
+    query:
+      enabled: true
+      replicaCount: 3
+      replicaLabel: ["__replica__"]
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: monitoring
     bucketweb:
       enabled: true
       replicaCount: 3
-      podAntiAffinityPreset: hard
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: |
-            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host "thanos-bucketweb.${SECRET_PUBLIC_DOMAIN}"
-        tls: true
-        extraTls:
-          - hosts:
-              - *host
-            secretName: thanos-bucketweb-tls
     compactor:
       enabled: true
-      extraFlags: ["--compact.concurrency", "4"]
-      retentionResolutionRaw: 7d
+      extraFlags:
+        - --compact.concurrency=4
+        - --delete-delay=30m
+      retentionResolutionRaw: 14d
       retentionResolution5m: 14d
-      retentionResolution1h: 30d
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: |
-            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host "thanos-compactor.${SECRET_PUBLIC_DOMAIN}"
-        tls: true
-        extraTls:
-          - hosts:
-              - *host
+      retentionResolution1h: 14d
       persistence:
         enabled: true
         storageClass: local-path
@@ -100,19 +76,6 @@ spec:
     storegateway:
       enabled: true
       replicaCount: 3
-      podAntiAffinityPreset: hard
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: |
-            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host "thanos-storegateway.${SECRET_PUBLIC_DOMAIN}"
-        tls: true
-        extraTls:
-          - hosts:
-              - *host
       persistence:
         enabled: true
         storageClass: local-path
@@ -120,32 +83,20 @@ spec:
     ruler:
       enabled: true
       replicaCount: 3
-      podAntiAffinityPreset: hard
-      dnsDiscovery:
-        enabled: true
-      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring:9093"]
-      # Breaks any metric that has an existing "cluster" label on a metric
-      # clusterName: home # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
+      replicaLabel: __replica__
+      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"]
       extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:
-          - name: "PrometheusWatcher"
+          - name: PrometheusWatcher
             rules:
-              - alert: "PrometheusDown"
+              - alert: PrometheusDown
+                annotations:
+                  summary: A Prometheus has disappeared from Prometheus target discovery
                 expr: absent(up{job="kube-prometheus-stack-prometheus"})
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: |
-            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: &host thanos-ruler.${SECRET_PUBLIC_DOMAIN}
-        tls: true
-        extraTls:
-          - hosts:
-              - *host
-            secretName: thanos-ruler-tls
+                for: 5m
+                labels:
+                  severity: critical
       persistence:
         enabled: true
         storageClass: local-path
