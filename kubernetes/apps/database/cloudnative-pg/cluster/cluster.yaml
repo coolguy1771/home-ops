@@ -29,7 +29,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgresql/
-      endpointURL: http://minio.storage.svc.cluster.local:9000
+      endpointURL: http://s3.286k.co
       serverName: postgres-v3
       s3Credentials:
         accessKeyId:
@@ -46,7 +46,7 @@ spec:
           compression: bzip2
           maxParallel: 8
         destinationPath: s3://postgresql/
-        endpointURL: http://minio.storage.svc.cluster.local:9000
+        endpointURL: http://s3.286k.co
         s3Credentials:
           accessKeyId:
             name: cloudnative-pg-secret
