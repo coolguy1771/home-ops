@@ -34,7 +34,7 @@ spec:
         envFrom:
           - secretRef:
               name: grafana-secret
-    replicas: 2
+    replicas: 3
     rbac:
       pspEnabled: false
     testFramework:
@@ -117,12 +117,12 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: http://thanos-query.monitoring.svc.cluster.local:9090
+            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
             isDefault: true
           - name: Loki
             type: loki
             access: proxy
-            url: http://loki-gateway.monitoring.svc.cluster.local:80
+            url: http://loki-gateway.monitoring.svc.cluster.local
           - name: Alertmanager
             type: alertmanager
             access: proxy
@@ -139,12 +139,12 @@ spec:
         # Ref: https://grafana.com/grafana/dashboards/13502-minio-dashboard/
         minio:
           gnetId: 13502
-          revision: 10
+          revision: 21
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
         node-exporter-full:
           gnetId: 1860
-          revision: 29
+          revision: 30
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/763-redis-dashboard-for-prometheus-redis-exporter-1-x/
         redis:
@@ -168,6 +168,9 @@ spec:
           datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          datasource: Prometheus
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
@@ -229,7 +232,7 @@ spec:
           secretName: grafana-tls
     imageRenderer:
       enabled: true
-      replicas: 2
+      replicas: 3
       networkPolicy:
         limitIngress: false
       serviceMonitor:
