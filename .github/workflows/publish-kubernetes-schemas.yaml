@@ -4,7 +4,7 @@ name: "Publish Kubernetes Schemas"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 0"
   push:
     branches: ["main"]
     paths: [".github/workflows/publish-kubernetes-schemas.yaml"]
@@ -22,6 +22,7 @@ jobs:
         with:
           setup-tools: |
             kubectl
+
       - name: Setup Flux
         uses: fluxcd/flux2/action@865f172e33d141c25d1c2816c377b6db9358f26a # v0.41.1
 
@@ -54,6 +55,7 @@ jobs:
       - name: Extract crd-extractor
         run: |
           unzip -j $GITHUB_WORKSPACE/crd-extractor.zip -d $GITHUB_WORKSPACE
+
       - name: Write kubeconfig
         id: kubeconfig
         uses: timheuer/base64-to-file@48657ba25c726c2e3dcf02efa3639fff9b3d587e # renovate: tag=v1.2
@@ -66,12 +68,14 @@ jobs:
           KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
         run: |
           bash $GITHUB_WORKSPACE/crd-extractor.sh
+
       - name: Publish schemas as OCI
         run: |
           flux push artifact oci://ghcr.io/onedr0p/kubernetes-schemas-oci:latest \
               --path="/home/runner/.datree/crdSchemas" \
               --source="${{ github.repositoryUrl }}" \
               --revision="main"
+
       - name: Write nginx-unprivileged Dockerfile
         run: |
           cat <<EOF > /home/runner/.datree/crdSchemas/Dockerfile
@@ -79,6 +83,7 @@ jobs:
           COPY --chown=nginx:nginx --chmod=755 . /usr/share/nginx/html
           USER nginx
           EOF
+
       - name: Publish schemas as web container
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
         with:

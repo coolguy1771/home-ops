@@ -30,6 +30,7 @@ jobs:
         with:
           setup-tools: |
             yq
+
       - name: Setup Flux
         uses: fluxcd/flux2/action@865f172e33d141c25d1c2816c377b6db9358f26a # v0.41.1
 
@@ -46,6 +47,7 @@ jobs:
         with:
           files: |
             kubernetes/**/helmrelease.yaml
+
       - name: Sync HelmRepository
         env:
           KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
@@ -60,6 +62,7 @@ jobs:
           for repo in ${repos[@]}; do
             flux --namespace "${repo##*:}" reconcile source helm "${repo%%:*}"
           done
+
       - name: Sync HelmRepository
         if: ${{ github.event.inputs.repoName != '' }}
         env:
