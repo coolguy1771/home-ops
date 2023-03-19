@@ -29,8 +29,7 @@ spec:
   values:
     initContainers:
       01-init-geoip:
-        # https://github.com/maxmind/geoipupdate/issues/202
-        image: ghcr.io/onedr0p/geoipupdate:v4.11
+        image: ghcr.io/maxmind/geoipupdate:v4.11.1
         imagePullPolicy: IfNotPresent
         env:
           - { name: GEOIPUPDATE_EDITION_IDS, value: GeoLite2-City }
@@ -42,7 +41,7 @@ spec:
         volumeMounts:
           - { name: geoip, mountPath: /usr/share/GeoIP }
     controller:
-      replicas: 2
+      replicas: 3
       strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
@@ -70,15 +69,7 @@ spec:
           vyos:
             enabled: true
             port: 6020
-            protocol: TCP
-          talos-kernel:
-            enabled: true
-            port: 6050
-            protocol: UDP
-          talos-service:
-            enabled: true
-            port: 6051
-            protocol: UDP
+            # protocol: UDP
     persistence:
       config:
         enabled: true
