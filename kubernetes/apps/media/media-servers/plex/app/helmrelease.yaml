@@ -79,7 +79,7 @@ spec:
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
         path: /pluto/media
         mountPath: /media
-        readOnly: true
+        readOnly: false
       transcode:
         enabled: true
         type: emptyDir
