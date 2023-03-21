@@ -36,9 +36,6 @@ spec:
       TZ: America/New_York
     service:
       main:
-        type: LoadBalancer
-        loadBalancerIP: "${SVC_PLEX_ADDR}"
-        externalTrafficPolicy: Local
         ports:
           http:
             port: 32400
@@ -79,7 +76,7 @@ spec:
         server: "osiris.${SECRET_PRIVATE_DOMAIN}"
         path: /pluto/media
         mountPath: /media
-        readOnly: false
+        readOnly: true
       transcode:
         enabled: true
         type: emptyDir
