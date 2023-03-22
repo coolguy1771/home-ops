@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-lb
+  namespace: database
+  annotations:
+    coredns.io/hostname: postgres.${SECRET_PUBLIC_DOMAIN}
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  externalIPs: ["${SVC_POSTGRES_ADDR}"]
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    postgresql: postgres
+    role: primary
