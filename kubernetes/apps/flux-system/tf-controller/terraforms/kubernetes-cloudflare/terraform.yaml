@@ -3,34 +3,36 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: terraform-storage
+  name: kubernetes-cloudflare
   namespace: flux-system
 spec:
   interval: 1m
-  url: oci://ghcr.io/coolguy1771/terraform-storage-oci
+  url: oci://ghcr.io/coolguy1771/provision-kubernetes-oci
   ref:
     tag: main
+  # Note: This is not ready for primetime
+  # verify:
+  #   provider: cosign
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/terraform_v1alpha1.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
-  name: storage
+  name: cloudflare
   namespace: flux-system
 spec:
+  suspend: false
   approvePlan: auto
   interval: 12h
-  path: ./
+  path: ./cloudflare
   sourceRef:
     kind: OCIRepository
-    name: terraform-storage
+    name: kubernetes-cloudflare
     namespace: flux-system
   backendConfig:
     disable: true
   cliConfigSecretRef:
     name: tf-controller-tfrc-secret
-  writeOutputsToSecret:
-    name: storage-outputs
   runnerPodTemplate:
     spec:
       env:
