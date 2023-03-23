@@ -1,7 +1,7 @@
 terraform {
   cloud {
     hostname     = "app.terraform.io"
-    organization = "onedr0p"
+    organization = "coolguy1771"
     workspaces {
       name = "arpa-home-cloudflare"
     }
@@ -9,7 +9,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.1.0"
+      version = "4.2.0"
     }
     http = {
       source  = "hashicorp/http"

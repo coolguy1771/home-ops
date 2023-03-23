@@ -18,9 +18,9 @@ resource "cloudflare_record" "public_domain_apex" {
 }
 
 resource "cloudflare_record" "public_domain_root" {
-  name    = "witl.xyz"
+  name    = data.sops_file.secrets.data["cloudflare_public_domain"]
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  value   = "ipv4.witl.xyz"
+  value   = "ipv4.${data.sops_file.secrets.data["cloudflare_public_domain"]}"
   proxied = true
   type    = "CNAME"
   ttl     = 1
@@ -29,7 +29,7 @@ resource "cloudflare_record" "public_domain_root" {
 resource "cloudflare_record" "public_domain_www" {
   name    = "www"
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  value   = "ipv4.witl.xyz"
+  value   = "ipv4.${data.sops_file.secrets.data["cloudflare_public_domain"]}"
   proxied = true
   type    = "CNAME"
   ttl     = 1
@@ -38,7 +38,7 @@ resource "cloudflare_record" "public_domain_www" {
 resource "cloudflare_record" "public_domain_public_cname" {
   name    = data.sops_file.secrets.data["cloudflare_unproxied_cname"]
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  value   = "ipv4.witl.xyz"
+  value   = "ipv4.${data.sops_file.secrets.data["cloudflare_public_domain"]}"
   proxied = false
   type    = "CNAME"
   ttl     = 1
@@ -55,25 +55,17 @@ resource "cloudflare_record" "public_domain_uptimerobot" {
 
 resource "cloudflare_page_rule" "public_domain_plex_bypass" {
   zone_id  = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  target   = "plex.witl.xyz/*"
+  target   = "https://plex.${data.sops_file.secrets.data["cloudflare_public_domain"]}./*"
   status   = "active"
   priority = 1
 
   actions {
-    cache_level = "bypass"
+    cache_level              = "bypass"
+    rocket_loader            = "off"
+    automatic_https_rewrites = "on"
   }
 }
 
-resource "cloudflare_page_rule" "public_domain_home_assistant_bypass" {
-  zone_id  = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
-  target   = "hass.witl.xyz/*"
-  status   = "active"
-  priority = 2
-
-  actions {
-    cache_level = "bypass"
-  }
-}
 
 resource "cloudflare_zone_settings_override" "public_domain_settings" {
   zone_id = lookup(data.cloudflare_zones.public_domain.zones[0], "id")
@@ -95,7 +87,7 @@ resource "cloudflare_zone_settings_override" "public_domain_settings" {
       js   = "on"
       html = "on"
     }
-    rocket_loader       = "on"
+    rocket_loader       = "off"
     always_online       = "off"
     development_mode    = "off"
     http3               = "on"
@@ -109,10 +101,10 @@ resource "cloudflare_zone_settings_override" "public_domain_settings" {
     server_side_exclude = "on"
     hotlink_protection  = "off"
     security_header {
-      enabled = true
-      preload = true
+      enabled            = true
+      preload            = true
       include_subdomains = true
-      nosniff = true
+      nosniff            = true
     }
   }
 }
