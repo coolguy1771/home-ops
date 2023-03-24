@@ -39,6 +39,9 @@ spec:
     command: ["/app/glauth", "-c", "/config"]
     service:
       main:
+        type: LoadBalancer
+        loadBalancerIP: "${SVC_GLAUTH_ADDR}"
+        externalTrafficPolicy: Local
         ports:
           http:
             port: 5555
