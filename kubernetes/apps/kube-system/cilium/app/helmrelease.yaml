@@ -23,8 +23,16 @@ spec:
       retries: 5
   values:
     securityContext:
-      privileged: true
+      privileged: false
+      capabilities:
+        ciliumAgent:
+          - PERFMON
+          - BPF
+        cleanCiliumState:
+          - PERFMON
+          - BPF
     autoDirectNodeRoutes: true
+    annotateK8sNode: true
     cluster:
       id: 1
       name: home
@@ -33,14 +41,22 @@ spec:
       announce:
         loadbalancerIP: true
         podCIDR: true
+    pmtuDiscovery:
+      enabled: true
     bpf:
+      clockProbe: true
       lbExternalClusterIP: true
+      masquerade: true
     containerRuntime:
       integration: containerd
     endpointRoutes:
       enabled: true
+    enableCiliumEndpointSlice: true
     hubble:
       enabled: true
+      enableOpenMetrics: true
+      dashboards:
+        enabled: true
       metrics:
         enabled:
           - dns:query;ignoreAAAA
@@ -69,6 +85,14 @@ spec:
         enabled: true
         rollOutPods: true
         replicas: 2
+        backend:
+          image:
+            repository: "quay.io/cilium/hubble-ui-backend"
+            tag: v0.11.0@sha256:14c04d11f78da5c363f88592abae8d2ecee3cbe009f443ef11df6ac5f692d839
+        frontend:
+          image:
+            repository: "quay.io/cilium/hubble-ui"
+            tag: "v0.11.0@sha256:bcb369c47cada2d4257d63d3749f7f87c91dde32e010b223597306de95d1ecc8"
         ingress:
           enabled: true
           annotations:
@@ -82,8 +106,6 @@ spec:
               hosts:
                 - *host
     rollOutCiliumPods: true
-    annotateK8sNode: true
-    enableCiliumEndpointSlice: true
     externalIPs: true
     ipam:
       mode: kubernetes
@@ -114,3 +136,5 @@ spec:
     k8sServiceHost: 10.10.254.3
     k8sServicePort: 6443
     kubeProxyReplacement: strict
+    logOptions:
+      format: json
