@@ -59,7 +59,7 @@ spec:
           - dns:query;ignoreAAAA
           - drop
           - tcp
-          - flow
+          #- flow
           - port-distribution
           - icmp
           - http
