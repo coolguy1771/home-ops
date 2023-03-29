@@ -65,9 +65,9 @@ spec:
           - http
         serviceMonitor:
           enabled: true
-      enableOpenMetrics: true
-      dashboards:
-        enabled: true
+        enableOpenMetrics: true
+        dashboards:
+          enabled: true
       tls:
         enabled: true
         auto:
