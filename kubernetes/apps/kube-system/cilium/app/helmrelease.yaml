@@ -65,7 +65,7 @@ spec:
           - http
         serviceMonitor:
           enabled: true
-        enableOpenMetrics: true
+        enableOpenMetrics: false
         dashboards:
           enabled: true
           labelValue: "true"
