@@ -63,9 +63,13 @@ spec:
           - port-distribution
           - icmp
           - http
+          - httpV2:exemplars=true
+          - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+          - "kafka:labelsContext=source_namespace,source_workload,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+          - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
         serviceMonitor:
           enabled: true
-        enableOpenMetrics: false
+        enableOpenMetrics: true
         dashboards:
           enabled: true
           labelValue: "true"
