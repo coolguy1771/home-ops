@@ -54,9 +54,6 @@ spec:
     enableCiliumEndpointSlice: true
     hubble:
       enabled: true
-      enableOpenMetrics: true
-      dashboards:
-        enabled: true
       metrics:
         enabled:
           - dns:query;ignoreAAAA
@@ -68,6 +65,9 @@ spec:
           - http
         serviceMonitor:
           enabled: true
+      enableOpenMetrics: true
+      dashboards:
+        enabled: true
       tls:
         enabled: true
         auto:
