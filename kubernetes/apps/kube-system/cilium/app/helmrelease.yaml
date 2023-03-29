@@ -23,7 +23,7 @@ spec:
       retries: 5
   values:
     securityContext:
-      privileged: false
+      privileged: true
       capabilities:
         ciliumAgent:
           - PERFMON
