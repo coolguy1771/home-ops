@@ -197,6 +197,15 @@ spec:
         kubernetes-pods:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
           datasource: Prometheus
+        cilium-operator:
+          url: https://raw.githubusercontent.com/cilium/cilium/master/install/kubernetes/cilium/files/cilium-operator/dashboards/cilium-operator-dashboard.json
+          datasource: Prometheus
+        cilium-agent:
+          url: https://raw.githubusercontent.com/cilium/cilium/master/install/kubernetes/cilium/files/cilium-agent/dashboards/cilium-dashboard.json
+          datasource: Prometheus
+        hubble:
+          url: https://raw.githubusercontent.com/cilium/cilium/master/install/kubernetes/cilium/files/hubble/dashboards/hubble-dashboard.json
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
