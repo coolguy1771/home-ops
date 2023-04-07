@@ -141,11 +141,11 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 
 Over WAN, I have port forwarded ports `80` and `443` to the load balancer IP of my ingress controller that's running in my Kubernetes cluster.
 
-[Cloudflare](https://www.cloudflare.com/) works as a proxy to hide my homes WAN IP and also as a firewall. When not on my home network, all the traffic coming into my ingress controller on port `80` and `443` comes from Cloudflare. In `Opnsense` I block all IPs not originating from the [Cloudflares list of IP ranges](https://www.cloudflare.com/ips/).
+[Cloudflare](https://www.cloudflare.com/) works as a proxy to hide my homes WAN IP and also as a firewall. When not on my home network, all the traffic coming into my ingress controller on port `80` and `443` comes from Cloudflare. In `Vyos` I block all IPs not originating from the [Cloudflares list of IP ranges](https://www.cloudflare.com/ips/).
 
 ### Internal DNS
 
-[CoreDNS](https://github.com/coredns/coredns) is deployed on my `Opnsense` router and listening on `:53`. All DNS queries for _**my**_ domains are forwarded to [k8s_gateway](https://github.com/ori-edge/k8s_gateway) that is running in my cluster. With this setup `k8s_gateway` has direct access to my clusters ingresses and services and serves DNS for them in my internal network. One additional thing is that I have `dnsmasq` running on `Opnsense` on port `5353` to only have it provide a host file for `CoreDNS`, this way I can have DNS for devices on my network.
+[CoreDNS](https://github.com/coredns/coredns) is deployed on my `Vyos` router and listening on `:53`. All DNS queries for _**my**_ domains are forwarded to [k8s_gateway](https://github.com/ori-edge/k8s_gateway) that is running in my cluster. With this setup `k8s_gateway` has direct access to my clusters ingresses and services and serves DNS for them in my internal network.
 
 ### Ad Blocking
 
@@ -167,11 +167,11 @@ My home IP can change at any given time and in order to keep my WAN IP address u
 
 | Device                   | Count | OS Disk Size | Data Disk Size          | Ram  | Operating System | Purpose                  |
 | ------------------------ | ----- | ------------ | ----------------------- | ---- | ---------------- | ------------------------ |
-| Protectli VP2410         | 1     | 120GB NVMe   | N/A                     | 8GB  | Opnsense 23.x    | Router                   |
-| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Fedora 37        | Kubernetes (k3s) Master  |
-| Dell Optiplex 3080 Micro | 2     | 250GB SSD    | N/A                     | 16GB | Fedora 37        | Kubernetes (k3s) Master  |
-| Lenovo M910q Tiny        | 2     | 512GB NVMe   | 500Gb SSD (rook-ceph)   | 16GB | Fedora 37        | Kubernetes (k3s) Worker  |
-| HP EliteDesk 800 G4 SFF  | 2     | 240GB NVMe   | 500Gb SSD (rook-ceph)   | 16GB | Fedora 37        | Kubernetes (k3s) Worker  |
+| Supermicro SYS-510T-ML   | 1     | 256GB NVMe   | N/A                     | 8GB  | Vyos             | Router                   |
+| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Talos            | Kubernetes (k3s) Master  |
+| Dell Optiplex 3080 Micro | 2     | 250GB SSD    | N/A                     | 16GB | Talos            | Kubernetes (k3s) Master  |
+| Lenovo M910q Tiny        | 2     | 512GB NVMe   | 500Gb SSD (rook-ceph)   | 16GB | Talos            | Kubernetes (k3s) Worker  |
+| HP EliteDesk 800 G4 SFF  | 2     | 240GB NVMe   | 500Gb SSD (rook-ceph)   | 16GB | Talos            | Kubernetes (k3s) Worker  |
 | HP DL160 G10             | 1     | 500GB SSD    | 16TB zfs mirror         | 64GB | Ubuntu 22.04     | Shared file storage      |
 
 ---
@@ -180,7 +180,7 @@ My home IP can change at any given time and in order to keep my WAN IP address u
 
 <div align="center">
 
-[![Star History Chart](https://api.star-history.com/svg?repos=onedr0p/home-ops&type=Date)](https://star-history.com/#onedr0p/home-ops&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=coolguy1771/home-ops&type=Date)](https://star-history.com/#coolguy1771/home-ops&Date)
 
 </div>
 
@@ -194,7 +194,7 @@ Thanks to all the people who donate their time to the [Kubernetes @Home](https:/
 
 ## 📜 Changelog
 
-See my _awful_ [commit history](https://github.com/onedr0p/home-ops/commits/main)
+See my _awful_ [commit history](https://github.com/coolguy1771/home-ops/commits/main)
 
 ---
 
