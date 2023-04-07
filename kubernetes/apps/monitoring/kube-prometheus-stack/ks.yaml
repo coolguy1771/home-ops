@@ -1,15 +1,16 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: cluster-apps-kube-prometheus-stack
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-local-path-provisioner
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-thanos
   path: ./kubernetes/apps/monitoring/kube-prometheus-stack/app
   prune: true
   sourceRef:
@@ -23,4 +24,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-

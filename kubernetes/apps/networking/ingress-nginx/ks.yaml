@@ -1,12 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: cluster-apps-ingress-nginx-certificates
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-cert-manager-issuers
@@ -20,17 +18,15 @@ spec:
   retryInterval: 1m
   timeout: 3m
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: cluster-apps-ingress-nginx
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
-    - name: cluster-apps-kyverno
+    - name: cluster-apps-ingress-nginx-certificates
   path: ./kubernetes/apps/networking/ingress-nginx/app
   prune: true
   sourceRef:
