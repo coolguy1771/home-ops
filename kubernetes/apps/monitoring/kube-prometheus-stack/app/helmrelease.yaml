@@ -205,7 +205,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: nfs-client
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 20Gi
