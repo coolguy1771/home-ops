@@ -1,6 +1,6 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/provider_v1beta2.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/provider_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Provider
 metadata:
   name: github
@@ -12,8 +12,8 @@ spec:
   secretRef:
     name: github-token-secret
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/alert_v1beta2.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/alert_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Alert
 metadata:
   name: github
