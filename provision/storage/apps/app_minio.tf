@@ -36,12 +36,12 @@ resource "kubernetes_stateful_set_v1" "minio" {
             value = "America/New_York"
           }
           env {
-            name = "MINIO_ROOT_USER"
-            value = "${data.sops_file.secrets.data["minio_root_user"]}"
+            name  = "MINIO_ROOT_USER"
+            value = data.sops_file.secrets.data["minio_root_user"]
           }
           env {
-            name = "MINIO_ROOT_PASSWORD"
-            value = "${data.sops_file.secrets.data["minio_root_password"]}"
+            name  = "MINIO_ROOT_PASSWORD"
+            value = data.sops_file.secrets.data["minio_root_password"]
           }
           env {
             name  = "MINIO_API_CORS_ALLOW_ORIGIN"
@@ -116,9 +116,9 @@ resource "kubernetes_stateful_set_v1" "minio" {
           }
         }
         security_context {
-          run_as_user = 568
-          run_as_group = 568
-          fs_group = 568
+          run_as_user            = 568
+          run_as_group           = 568
+          fs_group               = 568
           fs_group_change_policy = "OnRootMismatch"
           supplemental_groups = [
             100

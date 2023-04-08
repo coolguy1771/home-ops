@@ -39,7 +39,7 @@ resource "kubernetes_daemon_set_v1" "vector_agent" {
       }
       spec {
         container {
-          name              = "main"
+          name = "main"
           # https://github.com/vectordotdev/vector/issues/6715
           image             = "ghcr.io/onedr0p/vector:0.28.1-debian"
           image_pull_policy = "IfNotPresent"

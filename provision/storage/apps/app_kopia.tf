@@ -40,7 +40,7 @@ resource "kubernetes_stateful_set_v1" "kopia" {
       }
       spec {
         init_container {
-          name = "config"
+          name  = "config"
           image = "public.ecr.aws/docker/library/busybox:latest"
           command = [
             "/bin/sh",
