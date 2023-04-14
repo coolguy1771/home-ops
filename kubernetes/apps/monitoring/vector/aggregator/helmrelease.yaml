@@ -54,7 +54,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          coredns.io/hostname: vector.286k.co
+          coredns.io/hostname: vector.${SECRET_PUBLIC_DOMAIN}
         loadBalancerIP: "${SVC_VECTOR_ADDR}"
         externalTrafficPolicy: Local
         ports:
