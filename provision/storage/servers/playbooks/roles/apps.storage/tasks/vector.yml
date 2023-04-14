@@ -34,7 +34,7 @@
         recreate: true
         privileged: true
         state: started
-        image: docker.io/timberio/vector:0.28.2-debian
+        image: docker.io/timberio/vector:0.29.0-debian
         restart_policy: unless-stopped
         network_mode: host
         command:
