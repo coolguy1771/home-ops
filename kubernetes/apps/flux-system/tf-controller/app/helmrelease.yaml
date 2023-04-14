@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,16 +15,27 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    image:
+      tag: upgrade-to-flux-2-rc-1-d3949b9e
+    runner:
+      image:
+        tag: upgrade-to-flux-2-rc-1-d3949b9e
     installCRDs: true
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
+        endpoint:
+          interval: 1m
