@@ -42,6 +42,18 @@
       ],
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "description": "Process custom dependencies",
+      "fileMatch": [
+        "talos/.+\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "# renovate: image( versioning=(?<versioning>.+=?))?\n.*[:|=] \"?(?<depName>.+?):(?<currentValue>[^\"\n]+=?)\"?",
+        "# renovate: image depName=(?<depName>.+=?)( versioning=(?<versioning>.+=?))?\n.*[:|=] \"?(?<currentValue>[^\"\n]+=?)\"?"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ],
   "packageRules": [
