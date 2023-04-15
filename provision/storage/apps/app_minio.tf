@@ -173,7 +173,6 @@ resource "kubernetes_ingress_v1" "minio" {
   metadata {
     name      = "minio-console"
     namespace = "default"
-    ingress_class_name = "cilium"
     annotations = {
 
     }
