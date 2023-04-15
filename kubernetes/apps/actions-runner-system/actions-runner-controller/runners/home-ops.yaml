@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/runnerdeployment_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/runnerdeployment_v1alpha1.json
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
@@ -14,7 +14,7 @@ spec:
       repository: coolguy1771/home-ops
       containers:
         - name: docker
-          image: docker:23.0.0-beta.1-dind@sha256:e8fe2e72b5714832e8cbfe3ecbcd830d51c6a91ad1476a322861da969eea8792
+          image: docker:23.0.3-dind@sha256:a2e34bde4cb23eaef4f3d5016c78f4a7ee06b65f80d07c7ba69a1e262977a97a
       labels: ["self-hosted"]
       volumeMounts:
         - name: cache-volume
@@ -24,7 +24,7 @@ spec:
           persistentVolumeClaim:
             claimName: actions-runner-controller-cache
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/horizontalrunnerautoscaler_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/horizontalrunnerautoscaler_v1alpha1.json
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
 metadata:
