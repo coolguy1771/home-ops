@@ -181,7 +181,7 @@ resource "kubernetes_ingress_v1" "minio" {
     }
   }
   spec {
-    ingress_class_name = "cilium"
+    ingress_class_name = "nginx"
     rule {
       host = "minio.286k.co"
       http {
@@ -213,7 +213,7 @@ resource "kubernetes_ingress_v1" "s3" {
     }
   }
   spec {
-    ingress_class_name = "cilium"
+    ingress_class_name = "nginx"
     rule {
       host = "s3.286k.co"
       http {
