@@ -235,7 +235,7 @@ resource "kubernetes_ingress_v1" "kopia" {
     }
   }
   spec {
-    ingress_class_name = "nginx"
+    ingress_class_name = "cilium"
     rule {
       host = "kopia.286k.co"
       http {
