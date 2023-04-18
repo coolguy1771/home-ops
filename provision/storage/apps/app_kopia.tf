@@ -228,14 +228,14 @@ resource "kubernetes_ingress_v1" "kopia" {
     name      = "kopia"
     namespace = "default"
     annotations = {
-
+      "traefik.ingress.kubernetes.io/router.entrypoints" = "web"
     }
     labels = {
       "app.arpa.home/name" = "kopia"
     }
   }
   spec {
-    ingress_class_name = "cilium"
+    ingress_class_name = "traefik"
     rule {
       host = "kopia.286k.co"
       http {

@@ -174,14 +174,14 @@ resource "kubernetes_ingress_v1" "minio" {
     name      = "minio-console"
     namespace = "default"
     annotations = {
-
+      "traefik.ingress.kubernetes.io/router.entrypoints" = "web"
     }
     labels = {
       "app.arpa.home/name" = "minio"
     }
   }
   spec {
-    ingress_class_name = "cilium"
+    ingress_class_name = "traefik"
     rule {
       host = "minio.286k.co"
       http {
@@ -207,13 +207,14 @@ resource "kubernetes_ingress_v1" "s3" {
     name      = "minio-s3"
     namespace = "default"
     annotations = {
+      "traefik.ingress.kubernetes.io/router.entrypoints" = "web"
     }
     labels = {
       "app.arpa.home/name" = "minio"
     }
   }
   spec {
-    ingress_class_name = "cilium"
+    ingress_class_name = "traefik"
     rule {
       host = "s3.286k.co"
       http {
