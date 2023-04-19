@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -9,7 +10,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 1.13.2
+      version: 1.13.1
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -62,7 +63,6 @@ spec:
           - port-distribution
           - icmp
           - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
-          - "kafka:labelsContext=source_namespace,source_workload,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
           - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
         serviceMonitor:
           enabled: true
