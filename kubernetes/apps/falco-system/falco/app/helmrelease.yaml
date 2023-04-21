@@ -1,0 +1,158 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app falco
+  namespace: falco-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: *app
+      version: 0.26.1
+      sourceRef:
+        kind: HelmRepository
+        name: falco
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    securityContext:
+      privileged: false
+      capabilities:
+        add:
+          - BPF
+          - SYS_RESOURCE
+          - PERFMON
+          - SYS_PTRACE
+
+    # Driver settings (scenario requirement)
+    driver:
+      # -- Set it to false if you want to deploy Falco without the drivers.
+      # Always set it to false when using Falco with plugins.
+      enabled: true
+      # -- Tell Falco which driver to use. Available options: module (kernel driver), ebpf (eBPF probe), modern-bpf (modern eBPF probe).
+      kind: modern-bpf
+      # -- Configuration section for ebpf driver.
+      ebpf:
+        leastPrivileged: true
+    # Collectors for data enrichment (scenario requirement)
+    collectors:
+      # -- Enable/disable all the metadata collectors.
+      enabled: true
+      docker:
+        enabled: false
+      containerd:
+        # -- Enable ContainerD support.
+        enabled: true
+      crio:
+        enabled: false
+
+    # -- For configuration values, see https://github.com/falcosecurity/charts/blob/master/falcosidekick/values.yaml
+    falcosidekick:
+      # -- Enable falcosidekick deployment.
+      enabled: true
+      ingress:
+        # -- Whether to create the ingress
+        enabled: true
+        # -- Ingress annotations
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          # kubernetes.io/tls-acme: "true"
+        # -- Ingress hosts
+        hosts:
+          - host: falcosidekick.${SECRET_PUBLIC_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+
+        # -- Ingress TLS configuration
+        tls:
+          - secretName: falcosidekick-tls
+            hosts:
+              - falcosidekick.${SECRET_PUBLIC_DOMAIN}
+      webui:
+        enabled: true
+        allowcors: true
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-production
+          hosts:
+            - host: falcosidekick-ui.${SECRET_PUBLIC_DOMAIN}
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: falcosidekick-ui-tls
+              hosts:
+                - falcosidekick-ui.${SECRET_PUBLIC_DOMAIN}
+        redis:
+          storageClass: "ceph-block"
+      config:
+        # -- List of indexes that falcoctl downloads and uses to locate and download artiafcts. For more info see:
+        # https://github.com/falcosecurity/falcoctl/blob/main/proposals/20220916-rules-and-plugin-distribution.md#index-file-overview
+        indexes:
+        - name: falcosecurity
+          url: https://falcosecurity.github.io/falcoctl/index.yaml
+        # -- Configuration used by the artifact commands.
+        artifact:
+          # -- List of artifact types that falcoctl will handle. If the configured refs resolves to an artifact whose type is not contained
+          # in the list it will refuse to downloade and install that artifact.
+          allowedTypes:
+            - rulesfile
+            - plugin
+          install:
+            # -- Do not resolve the depenencies for artifacts. By default is true, but for our use case we disable it.
+            resolveDeps: true
+            # -- List of artifacts to be installed by the falcoctl init container.
+            refs: [falco-rules:0, k8saudit-rules:0.5,]
+          follow:
+          # -- List of artifacts to be followed by the falcoctl sidecar container.
+            refs: [falco-rules:0, k8saudit-rules:0.5]
+            every: 6h
+    falco:
+      rules_file:
+        - /etc/falco/falco_rules.yaml
+        - /etc/falco/k8s_audit_rules.yaml
+        - /etc/falco/falco_rules.local.yaml
+        - /etc/falco/rules.d
+      plugins:
+        - name: k8saudit
+          library_path: libk8saudit.so
+          init_config:
+          #   maxEventSize: 262144
+          #   webhookMaxBatchSize: 12582912
+          #   sslCertificate: /etc/falco/falco.pem
+          open_params: "http://:9765/k8s-audit"
+        - name: cloudtrail
+          library_path: libcloudtrail.so
+          # see docs for init_config and open_params:
+          # https://github.com/falcosecurity/plugins/blob/master/plugins/cloudtrail/README.md
+        - name: json
+          library_path: libjson.so
+          init_config: ""
+      load_plugins: [k8saudit, json]
+      time_format_iso_8601: true
+      json_output: true
+      stdout_output:
+        # -- Enable stdout output for security notifications.
+        enabled: true
+
+      webserver:
+        # -- Enable Falco embedded webserver.
+        enabled: true
+
+      # -- gRPC server using an unix socket
+      grpc:
+        # -- Enable the Falco gRPC server.
+        enabled: true
+        # -- Bind address for the grpc server.
+        bind_address: "unix:///run/falco/falco.sock"

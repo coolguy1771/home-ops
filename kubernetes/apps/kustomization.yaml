@@ -8,6 +8,7 @@ resources:
   - ./cert-manager
   - ./database
   - ./flux-system
+  - ./falco-system
   - ./kube-system
   - ./kyverno
   - ./media
