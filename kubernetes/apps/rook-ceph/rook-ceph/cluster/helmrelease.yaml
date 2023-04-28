@@ -56,14 +56,13 @@ spec:
         provider: host
         connections:
           compression:
-            # TODO: Test out enabling this on next cluster rebuild
             enabled: true
       crashCollector:
         disable: false
       dashboard:
         enabled: true
         urlPrefix: /
-        ssl: true
+        ssl: false
       storage:
         useAllNodes: false
         useAllDevices: false
