@@ -25,7 +25,7 @@
     recreate: true
     privileged: false
     state: started
-    image: docker.io/kopia/kopia:0.12.1
+    image: docker.io/kopia/kopia:0.13.0
     restart_policy: unless-stopped
     env:
       KOPIA_PASSWORD: "{{ SECRET_KOPIA_PASSWORD }}"
