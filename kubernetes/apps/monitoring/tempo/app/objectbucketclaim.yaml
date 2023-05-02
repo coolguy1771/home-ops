@@ -6,5 +6,5 @@ metadata:
   name: tempo-bucket-v1
   namespace: monitoring
 spec:
-  bucketName: tempo-v1
+  bucketName: tempo-bucket
   storageClassName: ceph-bucket
