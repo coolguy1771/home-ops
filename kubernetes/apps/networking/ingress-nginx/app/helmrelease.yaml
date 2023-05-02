@@ -38,12 +38,14 @@ spec:
       ingressClassResource:
         default: true
       enableTopologyAwareRouting: true
+      opentelemetry:
+        enabled: true
       config:
         enable-opentelemetry: "true"
-        otlp-collector-host: "tempo.monitoring"
         opentelemetry-config: "/etc/nginx/opentelemetry.toml"
         opentelemetry-operation-name: "HTTP $request_method $service_name $uri"
         opentelemetry-trust-incoming-span: "true"
+        otlp-collector-host: "tempo.monitoring.svc"
         otlp-collector-port: "4317"
         otel-max-queuesize: "2048"
         otel-schedule-delay-millis: "5000"
