@@ -30,6 +30,13 @@ spec:
     crds:
       install: true
     replicaCount: 3
+    extraArgs:
+      # enable tracing
+      - --enableTracing
+      # tempo backend url
+      - --tracingAddress=tempo.monitoring
+      # tempo backend port for opentelemetry traces
+      - --tracingPort=4317
     grafana:
       enabled: true
     serviceMonitor:
@@ -40,6 +47,13 @@ spec:
         enabled: true
         interval: 1m
     cleanupController:
+      tracing:
+        # enable tracing
+        enabled: true
+        # tempo backend url
+        address: tempo.monitoring
+        # tempo backend port for opentelemetry traces
+        port: 4317
       serviceMonitor:
         enabled: true
         interval: 1m
