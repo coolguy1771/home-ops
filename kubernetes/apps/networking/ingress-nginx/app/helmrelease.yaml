@@ -39,19 +39,19 @@ spec:
         default: true
       enableTopologyAwareRouting: true
       config:
-        # enable-opentelemetry: "true"
-        # otlp-collector-host: "http://tempo.monitoring.svc.cluster.local"
-        # opentelemetry-config: "/etc/nginx/opentelemetry.toml"
-        # opentelemetry-operation-name: "HTTP $request_method $service_name $uri"
-        # opentelemetry-trust-incoming-span: "true"
-        # otlp-collector-port: "4317"
-        # otel-max-queuesize: "2048"
-        # otel-schedule-delay-millis: "5000"
-        # otel-max-export-batch-size: "512"
-        # otel-service-name: "nginx-proxy" # Opentelemetry resource name
-        # otel-sampler: "AlwaysOn" # Also: AlwaysOff, TraceIdRatioBased
-        # otel-sampler-ratio: "1.0"
-        # otel-sampler-parent-based: "false"
+        enable-opentelemetry: "true"
+        otlp-collector-host: "tempo.monitoring"
+        opentelemetry-config: "/etc/nginx/opentelemetry.toml"
+        opentelemetry-operation-name: "HTTP $request_method $service_name $uri"
+        opentelemetry-trust-incoming-span: "true"
+        otlp-collector-port: "4317"
+        otel-max-queuesize: "2048"
+        otel-schedule-delay-millis: "5000"
+        otel-max-export-batch-size: "512"
+        otel-service-name: "nginx-proxy" # Opentelemetry resource name
+        otel-sampler: "AlwaysOn" # Also: AlwaysOff, TraceIdRatioBased
+        otel-sampler-ratio: "1.0"
+        otel-sampler-parent-based: "false"
         custom-http-errors: 404,401,403,500,503
         client-body-buffer-size: "100M"
         client-body-timeout: 120
