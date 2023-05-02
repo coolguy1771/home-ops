@@ -128,6 +128,34 @@ spec:
             url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+          - name: Tempo
+            type: tempo
+            access: proxy
+            url: http://tempo.monitoring.svc.cluster.local:3100
+            jsonData:
+              tracesToLogsV2:
+                datasourceUid: 'loki'
+                spanStartTimeShift: '1h'
+                spanEndTimeShift: '-1h'
+                tags: ['job', 'instance', 'pod', 'namespace']
+                filterByTraceID: true
+                filterBySpanID: true
+              tracesToMetrics:
+                datasourceUid: 'prom'
+                spanStartTimeShift: '1h'
+                spanEndTimeShift: '-1h'
+                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+              serviceMap:
+                datasourceUid: 'prometheus'
+              nodeGraph:
+                enabled: true
+              search:
+                hide: false
+              lokiSearch:
+                datasourceUid: 'loki'
+              spanBar:
+                type: 'Tag'
+                tag: 'http.path'
     dashboards:
       default:
         # Ref: https://grafana.com/grafana/dashboards/7845-zfs/
