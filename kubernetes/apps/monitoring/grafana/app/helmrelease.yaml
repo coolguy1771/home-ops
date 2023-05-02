@@ -134,25 +134,21 @@ spec:
             url: http://tempo.monitoring.svc.cluster.local:3100
             jsonData:
               tracesToLogsV2:
-                datasourceUid: 'loki'
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
+                datasourceUid: 'Loki'
                 tags: ['job', 'instance', 'pod', 'namespace']
                 filterByTraceID: true
                 filterBySpanID: true
               tracesToMetrics:
-                datasourceUid: 'prom'
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
+                datasourceUid: 'Prometheus'
                 tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
               serviceMap:
-                datasourceUid: 'prometheus'
+                datasourceUid: 'Prometheus'
               nodeGraph:
                 enabled: true
               search:
                 hide: false
               lokiSearch:
-                datasourceUid: 'loki'
+                datasourceUid: 'Loki'
               spanBar:
                 type: 'Tag'
                 tag: 'http.path'
