@@ -29,6 +29,7 @@ spec:
   values:
     fullnameOverride: *app
     provider: cloudflare
+    logLevel: debug
     env:
       - name: CF_API_EMAIL
         valueFrom:
