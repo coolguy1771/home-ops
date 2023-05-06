@@ -255,7 +255,7 @@ spec:
       enabled: true
       ingressClassName: nginx
       annotations:
-        external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_PUBLIC_DOMAIN}
+        external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
         - &host grafana.${SECRET_PUBLIC_DOMAIN}

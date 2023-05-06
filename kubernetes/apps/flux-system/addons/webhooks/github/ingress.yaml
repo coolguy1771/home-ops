@@ -5,7 +5,7 @@ metadata:
   name: webhook-receiver
   namespace: flux-system
   annotations:
-    external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_PUBLIC_DOMAIN}
+    external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
     cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
   ingressClassName: nginx
