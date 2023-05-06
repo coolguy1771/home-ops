@@ -6,13 +6,3 @@ namespace: networking
 resources:
   - ./dashboard
   - ./helmrelease.yaml
-configMapGenerator:
-  - name: cloudflare-networks
-    files:
-      - ./cloudflare-networks.txt
-generatorOptions:
-  disableNameSuffixHash: true
-labels:
-  - pairs:
-      app.kubernetes.io/name: ingress-nginx
-      app.kubernetes.io/instance: ingress-nginx

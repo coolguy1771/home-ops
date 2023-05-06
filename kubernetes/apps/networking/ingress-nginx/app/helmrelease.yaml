@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: ingress-nginx
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -29,11 +29,10 @@ spec:
   values:
     controller:
       replicaCount: 2
-      extraEnvs:
-        - name: TZ
-          value: America/New_York
       service:
-        loadBalancerIP: "${SVC_NGINX_ADDR}"
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: ingress.${SECRET_PUBLIC_DOMAIN}
+        loadBalancerIP: ${SVC_NGINX_ADDR}
         externalTrafficPolicy: Local
       ingressClassResource:
         default: true
@@ -54,29 +53,17 @@ spec:
         otel-sampler: "AlwaysOn" # Also: AlwaysOff, TraceIdRatioBased
         otel-sampler-ratio: "1.0"
         otel-sampler-parent-based: "false"
-        custom-http-errors: 404,401,403,500,503
-        client-body-buffer-size: "100M"
+        client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
         enable-brotli: "true"
         enable-real-ip: "true"
-        forwarded-for-header: "CF-Connecting-IP"
-        hsts-max-age: "31449600"
+        hsts-max-age: 31449600
         keep-alive-requests: 10000
         keep-alive: 120
-        log-format-escape-json: "true"
-        log-format-upstream: >
-          {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
-          "x_forwarded_for": "$proxy_add_x_forwarded_for", "request_id": "$req_id",
-          "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
-          "status": $status, "vhost": "$host", "request_proto": "$server_protocol",
-          "path": "$uri", "request_query": "$args", "request_length": $request_length,
-          "duration": $request_time,"method": "$request_method", "http_referrer": "$http_referer",
-          "http_user_agent": "$http_user_agent"}
         proxy-body-size: 0
-        proxy-buffer-size: "16k"
-        ssl-protocols: "TLSv1.3 TLSv1.2"
-        use-forwarded-headers: "true"
+        proxy-buffer-size: 16k
+        ssl-protocols: TLSv1.3 TLSv1.2
       metrics:
         enabled: true
         serviceMonitor:
@@ -95,11 +82,9 @@ spec:
             matchLabels:
               app.kubernetes.io/name: ingress-nginx
               app.kubernetes.io/component: controller
-      podAnnotations:
-        configmap.reloader.stakater.com/reload: "cloudflare-networks"
       resources:
         requests:
-          cpu: 10m
+          cpu: 100m
           memory: 250Mi
         limits:
           memory: 500Mi
@@ -108,30 +93,6 @@ spec:
       image:
         repository: ghcr.io/tarampampam/error-pages
         tag: 2.24.0
-      replicaCount: 2
       extraEnvs:
-        - name: TEMPLATE_NAME
-          value: orient
-        - name: SHOW_DETAILS
-          value: "false"
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values: ["ingress-nginx"]
-                    - key: app.kubernetes.io/component
-                      operator: In
-                      values: ["default-backend"]
-                topologyKey: kubernetes.io/hostname
-  valuesFrom:
-    # Cloudflare Networks
-    # https://www.cloudflare.com/ips/
-    - targetPath: controller.config.proxy-real-ip-cidr
-      kind: ConfigMap
-      name: cloudflare-networks
-      valuesKey: cloudflare-networks.txt
+        - { name: TEMPLATE_NAME, value: "orient" }
+        - { name: SHOW_DETAILS, value: "false" }
