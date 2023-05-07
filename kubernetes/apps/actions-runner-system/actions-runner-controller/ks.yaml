@@ -23,7 +23,7 @@ spec:
       namespace: actions-runner-system
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 30s
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -44,4 +44,4 @@ spec:
   wait: true
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 30s
