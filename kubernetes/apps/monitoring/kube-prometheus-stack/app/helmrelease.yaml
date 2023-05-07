@@ -206,15 +206,9 @@ spec:
                 requests:
                   storage: 20Gi
         additionalScrapeConfigs:
-          - job_name: coredns
-            static_configs:
-              - targets: ["10.10.254.2:9153"] # router
-          - job_name: frr-exporter
-            static_configs:
-              - targets: ["vyos.286k.co:9342"]
           - job_name: gatus
             static_configs:
-              - targets: ["10.10.254.5"] # router
+              - targets: ["status.286k.co"] # router
           - job_name: k8s-lb
             static_configs:
               - targets: ["10.10.254.3:8080"] # router
