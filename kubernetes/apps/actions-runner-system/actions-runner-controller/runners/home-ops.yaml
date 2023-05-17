@@ -14,7 +14,7 @@ spec:
       repository: coolguy1771/home-ops
       containers:
         - name: docker
-          image: docker:23.0.6-dind@sha256:d8dfdb733748109806968a94095412310232988a20046ea57fb6d68ccd94036a
+          image: docker:23.0.6-dind@sha256:d9a1c228debaf2dc84e07a0aad72a9b8dd1645442d05ece950507e0a8838fcb1
       labels: ["self-hosted"]
       volumeMounts:
         - name: cache-volume
