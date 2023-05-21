@@ -21,6 +21,7 @@
   "requireConfig": "optional",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
+  "ignorePaths": ["archive/**"],
   "flux": {
     "fileMatch": ["kubernetes/.+\\.ya?ml$"]
   },
@@ -31,6 +32,16 @@
     "fileMatch": ["kubernetes/.+\\.ya?ml$"]
   },
   "regexManagers": [
+    {
+      "description": "Process Tekton dependencies",
+      "fileMatch": [
+        "kubernetes/.+\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "depName=(?<depName>\\S+)?\n.*?(?<currentValue>v\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
     {
       "description": "Process custom dependencies",
       "fileMatch": [
@@ -44,16 +55,15 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
     {
-      "description": "Process custom dependencies",
+      "description": "Process imageName values",
       "fileMatch": [
-        "talos/.+\\.ya?ml$"
+        "kubernetes/.+\\.ya?ml$"
       ],
       "matchStrings": [
-        "# renovate: image( versioning=(?<versioning>.+=?))?\n.*[:|=] \"?(?<depName>.+?):(?<currentValue>[^\"\n]+=?)\"?",
-        "# renovate: image depName=(?<depName>.+=?)( versioning=(?<versioning>.+=?))?\n.*[:|=] \"?(?<currentValue>[^\"\n]+=?)\"?"
+        "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
       ],
       "datasourceTemplate": "docker",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+      "versioningTemplate": "redhat"
     }
   ],
   "packageRules": [
