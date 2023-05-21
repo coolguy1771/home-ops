@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -54,8 +54,8 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          coredns.io/hostname: vector.${SECRET_PUBLIC_DOMAIN}
-        loadBalancerIP: "${SVC_VECTOR_ADDR}"
+          external-dns.alpha.kubernetes.io/hostname: vector.devbu.io
+        externalIPs: ["192.168.69.111"]
         externalTrafficPolicy: Local
         ports:
           http:

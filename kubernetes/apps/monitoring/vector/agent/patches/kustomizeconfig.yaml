@@ -5,3 +5,4 @@ nameReference:
     fieldSpecs:
       - path: spec/values/persistence/config/name
         kind: HelmRelease
+  
