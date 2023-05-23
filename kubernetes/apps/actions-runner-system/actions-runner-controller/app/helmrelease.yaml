@@ -9,13 +9,13 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: actions-runner-controller
-      version: 0.23.3
+      chart: actions-runner-controller-charts/gha-runner-scale-set-controller
+      version: 0.4.0
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     crds: CreateReplace
@@ -29,52 +29,4 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/actions-runner-controller/actions-runner-controller
-    authSecret:
-      create: false
-      name: &secret actions-runner-controller-secret
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
-    githubWebhookServer:
-      enabled: true
-      syncPeriod: 10m
-      secret:
-        create: false
-        name: *secret
-      podAnnotations:
-        secret.reloader.stakater.com/reload: *secret
-      ingress:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
-          hajimari.io/enable: "false"
-          #ingress.annotations.nginx.ingress.kubernetes.io/whitelist-source-range: |-
-          #  192.30.252.0/22,185.199.108.0/22,140.82.112.0/20,143.55.64.0/20,2a0a:a440::/29,2606:50c0::/32
-        ingressClassName: nginx
-        hosts:
-          - host: &host "arc-webhook.${SECRET_PUBLIC_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-            secretName: *host
-    metrics:
-      serviceMonitor: true
-      port: 8080
-      proxy:
-        enabled: false
-    logFormat: json
-    actionsMetricsServer:
-      enabled: true
-      secret:
-        enabled: true
-        create: false
-        name: *secret
-    actionsMetrics:
-      serviceMonitor: true
-      port: 8080
-      proxy:
-        enabled: false
+    fullnameOverride: gha-runner-scale-set-controller
