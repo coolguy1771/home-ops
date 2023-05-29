@@ -19,3 +19,4 @@ kubeconfig*
 kubernetes/schemas
 # extras
 config.xml
+charts/

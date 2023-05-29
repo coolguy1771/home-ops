@@ -1,9 +1,9 @@
 ---
 clusterName: home-cluster
-# renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.3.6
-# renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.26.2
+# renovate: image depName=ghcr.io/siderolabs/installer
+talosVersion: v1.4.0
+# renovate: image depName=registry.k8s.io/kube-apiserver
+kubernetesVersion: v1.27.1
 allowSchedulingOnMasters: true
 additionalMachineCertSans:
   - 10.10.254.3
@@ -25,16 +25,6 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
-    patches:
-      - |-
-        cluster:
-          etcd:
-            extraArgs:
-              listen-metrics-urls: 10.10.10.20
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
@@ -43,16 +33,6 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
-    patches:
-      - |-
-        cluster:
-          etcd:
-            extraArgs:
-              listen-metrics-urls: 10.10.10.21
   - hostname: k8s-2
     ipAddress: 10.10.10.22
     controlPlane: true
@@ -61,16 +41,6 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
-    patches:
-      - |-
-        cluster:
-          etcd:
-            extraArgs:
-              listen-metrics-urls: 10.10.10.22
   - hostname: k8s-3
     ipAddress: 10.10.10.23
     controlPlane: false
@@ -79,10 +49,6 @@ nodes:
       - interface: eno1
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
   - hostname: k8s-4
     ipAddress: 10.10.10.24
     controlPlane: false
@@ -91,10 +57,6 @@ nodes:
       - interface: eno1
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
   - hostname: k8s-5
     ipAddress: 10.10.10.25
     controlPlane: false
@@ -103,10 +65,6 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
   - hostname: k8s-6
     ipAddress: 10.10.10.26
     controlPlane: false
@@ -115,10 +73,6 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    kernelModules:
-      - name: br_netfilter
-        parameters:
-          - nf_conntrack_max=131072
 controlPlane:
   patches:
     - |-
@@ -126,10 +80,10 @@ controlPlane:
         allowSchedulingOnMasters: true
         apiServer:
           extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
         controllerManager:
           extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
             bind-address: 0.0.0.0
         discovery:
           registries:
@@ -139,11 +93,12 @@ controlPlane:
           disabled: true
         scheduler:
           extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
             bind-address: 0.0.0.0
         etcd:
           extraArgs:
             metrics: extensive
+            listen-metrics-urls: http://0.0.0.0:2381
       machine:
         files:
           - content: |
@@ -156,14 +111,15 @@ controlPlane:
             op: create
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true,CronJobTimeZone=true
+            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
             - "talos.logging.kernel=udp://10.42.0.6:6050/"
             - "cpufreq.default_governor=performance"
           extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20230210
+            - image: ghcr.io/siderolabs/i915-ucode:20230310
+            - image: ghcr.io/siderolabs/intel-ucode:20230214
         logging:
           destinations:
             - endpoint: "udp://10.0.42.6:6051/"
@@ -174,9 +130,7 @@ controlPlane:
         time:
           disabled: false
           servers:
-            - time-a-g.nist.gov
-            - time-b-g.nist.gov
-            - time-d-g.nist.gov
+            - 10.10.0.1
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
@@ -186,19 +140,10 @@ worker:
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true,CronJobTimeZone=true
+          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
           rotate-server-certificates: "true"
-      - op: add
-        path: /machine/install/extraKernelArgs
-        value:
-          - "talos.logging.kernel=udp://10.0.42.6:6050/"
-          - "cpufreq.default_governor=performance"
     - |-
       machine:
-        logging:
-          destinations:
-            - endpoint: "udp://10.0.42.6:6051/"
-              format: json_lines
         files:
           - content: |
               [plugins."io.containerd.grpc.v1.cri"]
@@ -208,12 +153,21 @@ worker:
                 address = "0.0.0.0:11234"
             path: /etc/cri/conf.d/20-customization.part
             op: create
+        install:
+          extraKernelArgs:
+            - "talos.logging.kernel=udp://10.42.0.6:6050/"
+            - "cpufreq.default_governor=performance"
+          extensions:
+            - image: ghcr.io/siderolabs/i915-ucode:20230310
+            - image: ghcr.io/siderolabs/intel-ucode:20230214
+        logging:
+          destinations:
+            - endpoint: "udp://10.0.42.6:6051/"
+              format: json_lines
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
         time:
           disabled: false
           servers:
-            - time-a-g.nist.gov
-            - time-b-g.nist.gov
-            - time-d-g.nist.gov
-        install:
-          extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20221214
+            - 10.10.0.1

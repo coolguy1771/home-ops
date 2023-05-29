@@ -1,5 +1,5 @@
 ---
-name: "Publish Kubernetes Schemas"
+name: "Publish Schemas"
 
 on:
   workflow_dispatch:
@@ -7,12 +7,12 @@ on:
     - cron: "0 0 * * 0"
   push:
     branches: ["main"]
-    paths: [".github/workflows/publish-kubernetes-schemas.yaml"]
+    paths: [".github/workflows/publish-schemas.yaml"]
 
 jobs:
-  publish-oci:
-    name: Publish Kubernetes Schemas
-    runs-on: ["self-hosted"]
+  publish-manifests:
+    name: Publish Manifests
+    runs-on: ["arc-runner-set-home-ops"]
     steps:
       - name: Setup Flux
         uses: fluxcd/flux2/action@dbda8fbdb8b58ed1ee69343025a6091eae0d1828 # v0.41.2
@@ -44,7 +44,7 @@ jobs:
 
       - name: Write kubeconfig
         id: kubeconfig
-        uses: timheuer/base64-to-file@48657ba25c726c2e3dcf02efa3639fff9b3d587e # renovate: tag=v1.2
+        uses: timheuer/base64-to-file@ca9e30baf83f7f26708fb0059af9a0973fe5f27e # v1.2
         with:
           encodedString: ${{ secrets.KUBECONFIG }}
           fileName: kubeconfig
@@ -56,16 +56,24 @@ jobs:
           unzip -j $GITHUB_WORKSPACE/crd-extractor.zip -d $GITHUB_WORKSPACE
           bash $GITHUB_WORKSPACE/crd-extractor.sh
 
-      - name: Publish schemas as OCI
+      - name: Generate tag
+        id: generate-tag
+        run: echo "tag=ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:$(git rev-parse --short HEAD)" >> "${GITHUB_OUTPUT}"
+
+      - name: Publish manifests
         run: |
-          flux push artifact oci://ghcr.io/${{ github.repository_owner }}/kubernetes-schemas-oci:$(git rev-parse --short HEAD) \
+          flux push artifact oci://${{ steps.generate-tag.outputs.tag }} \
               --path="/home/runner/.datree/crdSchemas" \
               --source="${{ github.repositoryUrl }}" \
               --revision="${{ github.ref_name }}@sha1:$(git rev-parse HEAD)"
 
+      - name: Tag manifests
+        run: flux tag artifact oci://${{ steps.generate-tag.outputs.tag }} --tag main
+
   publish-web:
+    name: Publish Web
     runs-on: ubuntu-latest
-    needs: ["publish-oci"]
+    needs: ["publish-manifests"]
     steps:
       - name: Setup Flux
         uses: fluxcd/flux2/action@dbda8fbdb8b58ed1ee69343025a6091eae0d1828 # v0.41.2
@@ -84,10 +92,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull schemas as OCI
+      - name: Pull manifests
         run: |
           mkdir -p /home/runner/crdSchemas
-          flux pull artifact oci://ghcr.io/${{ github.repository_owner }}/kubernetes-schemas-oci:$(git rev-parse --short HEAD) --output /home/runner/crdSchemas
+          flux pull artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:$(git rev-parse --short HEAD) --output /home/runner/crdSchemas
 
       - name: Write nginx-unprivileged Dockerfile
         run: |
@@ -97,7 +105,7 @@ jobs:
           USER nginx
           EOF
 
-      - name: Publish schemas as web container
+      - name: Publish web container
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
         with:
           context: /home/runner/crdSchemas
@@ -105,7 +113,7 @@ jobs:
           file: /home/runner/crdSchemas/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/kubernetes-schemas-web:latest
+            ghcr.io/${{ github.repository_owner }}/kubernetes-schemas:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           labels: |
