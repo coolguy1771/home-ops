@@ -13,7 +13,7 @@ spec:
       version: 3.1.5
       sourceRef:
         kind: HelmRepository
-        name: falco
+        name: falco-security
         namespace: flux-system
   install:
     createNamespace: true
@@ -146,11 +146,9 @@ spec:
       stdout_output:
         # -- Enable stdout output for security notifications.
         enabled: true
-
       webserver:
         # -- Enable Falco embedded webserver.
         enabled: true
-
       # -- gRPC server using an unix socket
       grpc:
         # -- Enable the Falco gRPC server.
