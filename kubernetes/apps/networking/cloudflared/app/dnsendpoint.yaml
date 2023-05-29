@@ -11,4 +11,4 @@ spec:
   endpoints:
     - dnsName: ingress.${SECRET_PUBLIC_DOMAIN}
       recordType: CNAME
-      targets: ["eebc7cde-6d81-440b-9e15-84e574762367.cfargotunnel.com"]
+      targets: ["${CLUSTER_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]

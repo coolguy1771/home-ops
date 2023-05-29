@@ -6,20 +6,14 @@ metadata:
   name: cluster-apps-external-dns
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/networking/external-dns/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: external-dns-cloudflare
-      namespace: networking
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: external-dns-bind
-      namespace: networking
-  interval: 15m
+  wait: true
+  interval: 30m
   retryInterval: 1m
-  timeout: 30s
+  timeout: 5m

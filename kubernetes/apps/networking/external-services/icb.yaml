@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &app icb-01
+  namespace: networking
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
+spec:
+  type: ExternalName
+  externalName: icb-01.286k.co.
+  ports:
+    - name: http
+      port: &port 9090
+      protocol: TCP
+      targetPort: *port
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app icb-01
+  namespace: networking
+  annotations:
+    #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    external-dns.alpha.kubernetes.io/target: ingress.icbplays.net
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: &host icb-01.icbplays.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: *app
+                port:
+                  number: 9090
+  tls:
+    - hosts:
+        - *host
+      secretName: icb-01-tls-icb

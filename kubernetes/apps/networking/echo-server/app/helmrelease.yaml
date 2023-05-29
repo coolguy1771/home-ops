@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app glauth
-  namespace: auth
+  name: &app echo-server
+  namespace: networking
 spec:
   interval: 30m
   chart:
@@ -30,44 +30,44 @@ spec:
     controller:
       replicas: 2
       strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
     image:
-      # https://github.com/glauth/glauth/issues/298
-      repository: ghcr.io/onedr0p/glauth
-      tag: v2.2.0-rc1
-    command: ["/app/glauth", "-c", "/config"]
+      repository: docker.io/jmalloc/echo-server
+      tag: 0.3.5
     service:
       main:
-        type: LoadBalancer
-        loadBalancerIP: "${SVC_GLAUTH_ADDR}"
-        externalTrafficPolicy: Local
         ports:
           http:
-            port: 5555
-          ldap:
-            enabled: true
-            port: 389
-    # serviceMonitor:
-    #   main:
-    #     enabled: true
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-    persistence:
-      config:
+            port: &port 8080
+    probes:
+      liveness: &probes
         enabled: true
-        type: secret
-        name: glauth-secret
-        items:
-          - key: server.toml
-            path: server.toml
-          - key: groups.toml
-            path: groups.toml
-          - key: users.toml
-            path: users.toml
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
+          hajimari.io/icon: mdi:video-input-antenna
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname

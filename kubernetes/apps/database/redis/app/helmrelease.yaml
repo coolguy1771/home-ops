@@ -6,7 +6,8 @@ metadata:
   name: redis
   namespace: database
 spec:
-  interval: 15m
+  interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: redis
@@ -15,7 +16,7 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -48,3 +49,4 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
+        interval: 1m

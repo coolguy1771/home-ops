@@ -6,7 +6,7 @@ metadata:
   name: &app external-dns-cloudflare
   namespace: networking
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: external-dns
@@ -29,7 +29,6 @@ spec:
   values:
     fullnameOverride: *app
     provider: cloudflare
-    logLevel: debug
     env:
       - name: CF_API_EMAIL
         valueFrom:
