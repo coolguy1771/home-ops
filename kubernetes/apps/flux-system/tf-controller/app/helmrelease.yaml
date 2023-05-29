@@ -6,7 +6,7 @@ metadata:
   name: tf-controller
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: tf-controller
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -27,11 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      tag: upgrade-to-flux-2-rc-1-d3949b9e
-    runner:
-      image:
-        tag: upgrade-to-flux-2-rc-1-d3949b9e
     installCRDs: true
     metrics:
       enabled: true

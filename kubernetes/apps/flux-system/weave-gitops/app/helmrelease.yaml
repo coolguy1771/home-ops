@@ -1,73 +1,21 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/external-secrets.io/externalsecret_v1beta1.json
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
   name: weave-gitops
   namespace: flux-system
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: weave-gitops
-      version: 4.0.22
-      sourceRef:
-        kind: HelmRepository
-        name: weave-gitops
-        namespace: flux-system
-  maxHistory: 3
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
-  values:
-    adminUser:
-      create: true
-      username: admin
-    # oidcSecret:
-    #   create: true
-    #   clientID: weave-gitops
-    #   issuerURL: https://auth.devbu.io
-    #   redirectURL: https://gitops.devbu.io/oauth2/callback
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
-      hosts:
-        - host: &host "gitops.${SECRET_PUBLIC_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - *host
-          secretName: "weave-tls"
-    networkPolicy:
-      create: false
-    metrics:
-      enabled: true
-    rbac:
-      create: true
-      impersonationResourceNames: ["admin"]
-      additionalRules:
-        - apiGroups: ["infra.contrib.fluxcd.io"]
-          resources: ["terraforms"]
-          verbs: ["get", "list", "patch"]
-    podAnnotations:
-      secret.reloader.stakater.com/reload: weave-gitops-secret
-  valuesFrom:
-    - kind: Secret
-      name: weave-gitops-secret
-      valuesKey: adminPassword
-      targetPath: adminUser.passwordHash
-    # - kind: Secret
-    #   name: weave-gitops-secret
-    #   valuesKey: WEAVEGITOPS_OAUTH_CLIENT_SECRET
-    #   targetPath: oidcSecret.clientSecret
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: weave-gitops-secret
+    creationPolicy: Owner
+  dataFrom:
+    - extract:
+        key: weave-gitops
+        property: adminPassword
+    - extract:
+        key: authelia
+        property: WEAVEGITOPS_OAUTH_CLIENT_SECRET

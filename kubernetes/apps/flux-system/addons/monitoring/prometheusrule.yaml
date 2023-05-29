@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/prometheusrule_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/prometheusrule_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: flux
+  name: flux-rules
   namespace: flux-system
 spec:
   groups:
