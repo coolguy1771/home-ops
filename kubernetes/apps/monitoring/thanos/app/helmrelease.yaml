@@ -6,7 +6,8 @@ metadata:
   name: thanos
   namespace: monitoring
 spec:
-  interval: 15m
+  interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: thanos
@@ -15,7 +16,7 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -43,8 +44,7 @@ spec:
         ingressClassName: nginx
         annotations:
           hajimari.io/enable: "false"
-        hosts:
-          - &host thanos-query-frontend.${SECRET_PUBLIC_DOMAIN}
+        hostname: &host thanos-query-frontend.${SECRET_PUBLIC_DOMAIN}
         tls: true
         extraTls:
           - hosts:

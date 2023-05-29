@@ -30,10 +30,10 @@ spec:
     replicas: 2
     tempo:
       reportingEnabled: false
-      # storage:
-      #   trace:
-      #     backend: s3
-      #     insecure: true
+      storage:
+        trace:
+          backend: s3
+          insecure: true
     persistence:
       enabled: true
       storageClassName: local-path
@@ -51,20 +51,20 @@ spec:
               - *host
     serviceMonitor:
       enabled: true
-  # valuesFrom:
-  #   - targetPath: tempo.storage.trace.s3.bucket
-  #     kind: ConfigMap
-  #     name: tempo-bucket
-  #     valuesKey: BUCKET_NAME
-  #   - targetPath: tempo.storage.trace.s3.endpoint
-  #     kind: ConfigMap
-  #     name: tempo-bucket
-  #     valuesKey: BUCKET_HOST
-  #   - targetPath: tempo.storage.trace.s3.access_key_id
-  #     kind: Secret
-  #     name: tempo-bucket
-  #     valuesKey: AWS_ACCESS_KEY_ID
-  #   - targetPath: tempo.storage.trace.s3.secret_access_key
-  #     kind: Secret
-  #     name: tempo-bucket
-  #     valuesKey: AWS_SECRET_ACCESS_KEY
+  valuesFrom:
+    - targetPath: tempo.storage.trace.s3.bucket
+      kind: ConfigMap
+      name: tempo-bucket
+      valuesKey: BUCKET_NAME
+    - targetPath: tempo.storage.trace.s3.endpoint
+      kind: ConfigMap
+      name: tempo-bucket
+      valuesKey: BUCKET_HOST
+    - targetPath: tempo.storage.trace.s3.access_key_id
+      kind: Secret
+      name: tempo-bucket
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: tempo.storage.trace.s3.secret_access_key
+      kind: Secret
+      name: tempo-bucket
+      valuesKey: AWS_SECRET_ACCESS_KEY

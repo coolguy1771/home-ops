@@ -131,6 +131,7 @@ transforms:
               "ip": .message.SRC
           }
       )
+
 # Sinks
 sinks:
   kubernetes:
