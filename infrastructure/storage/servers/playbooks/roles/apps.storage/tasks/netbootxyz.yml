@@ -1,0 +1,46 @@
+---
+- name: Create netbootxyz directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: 0775
+  loop:
+    - "{{ podman_base_dir }}/netbootxyz"
+    - "{{ podman_base_dir }}/netbootxyz/config"
+    - "{{ podman_base_dir }}/netbootxyz/assets"
+
+# Disable running container if it is already running in systemd
+- name: Disable netbootxyz container
+  ansible.builtin.systemd:
+    name: container-netboot-xyz.service
+    state: stopped
+    enabled: false
+
+- name: Create netbootxyz container
+  containers.podman.podman_container:
+    name: netboot-xyz
+    image: ghcr.io/netbootxyz/netbootxyz:0.6.7-nbxyz20
+    state: started
+    ports:
+      - "8081:8080"
+      - "69:69/udp"
+      - "3000:3000"
+    volumes:
+      - "{{ podman_base_dir }}/netbootxyz/config:/config"
+      - "{{ podman_base_dir }}/netbootxyz/assets:/assets"
+    restart_policy: unless-stopped
+    recreate: true
+    privileged: true
+    generate_systemd:
+      path: /etc/systemd/system
+      restart_policy: always
+      names: true
+      new: true
+
+- name: Enable netbootxyz container
+  ansible.builtin.systemd:
+    name: container-netboot-xyz.service
+    state: started
+    enabled: true

@@ -1,0 +1,40 @@
+---
+- name: Create default directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: 0775
+  loop:
+    - "{{ podman_base_dir }}"
+  tags:
+    - always
+
+# Install podman
+- name: Install podman
+  ansible.builtin.package:
+    name: podman
+    state: present
+  tags:
+    - always
+
+# Manage applications
+
+- name: Deploy Kopia
+  ansible.builtin.import_tasks: kopia.yml
+
+- name: Deploy Node Exporter
+  ansible.builtin.import_tasks: node-exporter.yml
+
+- name: Deploy Smartctl Exporter
+  ansible.builtin.import_tasks: smartctl-exporter.yml
+
+- name: Deploy Vector
+  ansible.builtin.import_tasks: vector.yml
+
+- name: Deploy netbootxyz
+  ansible.builtin.import_tasks: netbootxyz.yml
+
+- name: Deploy Unifi Controller
+  ansible.builtin.import_tasks: unifi.yml
