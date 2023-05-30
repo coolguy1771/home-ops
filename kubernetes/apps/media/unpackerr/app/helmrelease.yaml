@@ -65,7 +65,7 @@ spec:
         enabled: true
         type: nfs
         server: osiris.286k.co
-        path: /eros/media/downloads/qbittorrent/complete
+        path: /pluto/media/downloads/qbittorrent/complete
         mountPath: /complete
     resources:
       requests:
