@@ -6,3 +6,4 @@ resources:
   # Post flux
   - ./authelia/ks.yaml
   - ./glauth/ks.yaml
+  - ./lldap/ks.yaml
