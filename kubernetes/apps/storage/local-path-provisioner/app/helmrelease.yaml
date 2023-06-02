@@ -4,9 +4,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: local-path-provisioner
-  namespace: kube-system
+  namespace: storage
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: ./deploy/chart/local-path-provisioner
@@ -14,7 +14,7 @@ spec:
         kind: GitRepository
         name: local-path-provisioner
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -52,8 +52,8 @@ spec:
                 ;;
             esac
         done
-        mkdir -m 0777 -p $${absolutePath}
-        chmod 701 $${absolutePath}/..
+        mkdir -m 0777 -p ${absolutePath}
+        chmod 701 ${absolutePath}/..
       teardown: |-
         #!/bin/sh
         while getopts "m:s:p:" opt
@@ -70,4 +70,4 @@ spec:
                 ;;
             esac
         done
-        rm -rf $${absolutePath}
+        rm -rf ${absolutePath}
