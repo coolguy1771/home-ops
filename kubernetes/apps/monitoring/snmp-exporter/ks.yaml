@@ -3,15 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-snmp-exporter-dell-idrac
+  name: cluster-apps-snmp-exporter
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/monitoring/snmp-exporter/dell-idrac
+  path: ./kubernetes/apps/monitoring/snmp-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  wait: true
+  wait: false # no flux ks dependents
   interval: 30m
   retryInterval: 1m
   timeout: 5m

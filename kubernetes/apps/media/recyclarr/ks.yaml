@@ -8,15 +8,12 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-radarr
-    - name: cluster-apps-sonarr
-    - name: cluster-apps-volsync
   path: ./kubernetes/apps/media/recyclarr/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  wait: true
+  wait: false # no flux ks dependents
   interval: 30m
   retryInterval: 1m
   timeout: 5m

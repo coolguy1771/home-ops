@@ -5,16 +5,18 @@ kind: Kustomization
 metadata:
   name: cluster-apps-bazarr
   namespace: flux-system
+  labels:
+    app.home.arpa/postgres: "true"
+    app.home.arpa/rook: "true"
 spec:
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: cluster-apps-cloudnative-pg-cluster
   path: ./kubernetes/apps/media/bazarr/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  wait: true
+  wait: false # no flux ks dependents
   interval: 30m
   retryInterval: 1m
   timeout: 5m

@@ -26,6 +26,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     replicas: 2
     tempo:
@@ -38,8 +41,7 @@ spec:
           s3:
             insecure: true                                 # optional. enable if endpoint is http
     persistence:
-      enabled: true
-      storageClassName: local-path
+      enabled: false
     tempoQuery:
       ingress:
         enabled: true
