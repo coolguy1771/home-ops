@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-cdn-nginx
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/tools/cdn-ndginx/app
+  path: ./kubernetes/apps/tools/cdn-nginx/app
   prune: true
   sourceRef:
     kind: GitRepository
