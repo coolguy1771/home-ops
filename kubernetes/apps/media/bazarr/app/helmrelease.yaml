@@ -4,9 +4,12 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: bazarr
-  namespace: media
+  namespace: default
+  labels:
+    app.home.arpa/postgres: "true"
+    app.home.arpa/rook: "true"
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,7 +18,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -26,14 +29,19 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync
   values:
-    # initContainers:
-    #   01-init-db:
-    #     image: ghcr.io/onedr0p/postgres-initdb:14.7
-    #     imagePullPolicy: IfNotPresent
-    #     envFrom:
-    #       - secretRef:
-    #           name: bazarr-secret
+    initContainers:
+      01-init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.8
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: bazarr-secret
     controller:
       type: statefulset
       annotations:
@@ -43,10 +51,7 @@ spec:
       tag: 1.2.1@sha256:70a27cdd489f69d0ab08212482459a19214dc0d1a70428dd89083215aa4c1b95
     env:
       TZ: America/New_York
-    # Bazarr does not support setting env for postgres settings
-    # envFrom:
-    #   - secretRef:
-    #       name: bazarr-secret
+    envFrom: *envFrom
     service:
       main:
         ports:
@@ -57,11 +62,8 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/bazarr/nord.css"></head>';
-            sub_filter_once on;
           hajimari.io/icon: mdi:subtitles-outline
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -70,6 +72,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: "{{ .Release.Name }}-tls"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -104,10 +107,9 @@ spec:
         image: registry.k8s.io/git-sync/git-sync:v3.6.6
         imagePullPolicy: IfNotPresent
         args:
-          - --repo=https://github.com/KBlixt/subcleaner.git
+          - --repo=https://github.com/KBlixt/subcleaner
           - --branch=master
-          - --depth=1
-          - --wait=21600 # 6 hours
-          - --root=/add-ons/subcleaner
+          - --wait=86400 # 1 day
+          - --root=/add-ons
         volumeMounts:
           - { name: add-ons, mountPath: /add-ons }
