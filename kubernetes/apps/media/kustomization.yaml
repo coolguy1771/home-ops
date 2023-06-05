@@ -12,6 +12,7 @@ resources:
   - ./midarr/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
+  - ./plex-auto-languages/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
