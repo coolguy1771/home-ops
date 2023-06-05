@@ -1,12 +1,12 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app kubernetes-schemas
   namespace: tools
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,20 +15,24 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
-      replicas: 3
+      replicas: 2
       strategy: RollingUpdate
     image:
-      repository: ghcr.io/onedr0p/kubernetes-schemas-web
-      tag: latest@sha256:8df72bf8f4ebb70bce9109885cf586d82a3fa6608442f22ba528036b7836cb27
+      repository: ghcr.io/onedr0p/kubernetes-schemas
+      tag: latest@sha256:4af1b4642027bcb0a1b35e52f757b6c089de8877deeb71037e2339e99bbffd1f
     service:
       main:
         ports:
