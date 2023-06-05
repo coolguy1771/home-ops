@@ -26,9 +26,18 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync
   values:
     controller:
       type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/plex
       tag: 1.32.2.7100-248a2daf0@sha256:24b39030607af2ac007d48d508acdb136a925c1c66c2b495e18989eb857082ed
@@ -79,6 +88,10 @@ spec:
       transcode:
         enabled: true
         type: emptyDir
+      local:
+        enabled: true
+        type: emptyDir
+        mountPath: /.local
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
       intel.feature.node.kubernetes.io/gpu: "true"
@@ -90,3 +103,15 @@ spec:
       limits:
         gpu.intel.com/i915: 1
         memory: 10000Mi
+    sidecars:
+      auto-languages:
+        image: docker.io/remirigal/plex-auto-languages:v1.2.1
+        imagePullPolicy: IfNotPresent
+        env:
+          - { name: PLEX_URL, value: http://localhost:32400 }
+          - { name: REFRESH_LIBRARY_ON_SCAN, value: "false" }
+        envFrom:
+          - secretRef:
+              name: plex-auto-languages-secret
+        volumeMounts:
+          - { name: local, mountPath: /.local }
