@@ -1,9 +1,9 @@
 ---
 clusterName: home-cluster
-# renovate: image depName=ghcr.io/siderolabs/installer
-talosVersion: v1.4.0
-# renovate: image depName=registry.k8s.io/kube-apiserver
-kubernetesVersion: v1.27.1
+# renovate: datasource=github-releases depName=siderolabs/talos
+talosVersion: v1.4.5
+# renovate: datasource=github-releases depName=kubernetes/kubernetes
+kubernetesVersion: v1.27.2
 allowSchedulingOnMasters: true
 additionalMachineCertSans:
   - 10.10.254.3
