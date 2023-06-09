@@ -30,5 +30,4 @@ resources:
   - ./rook-ceph.yaml
   - ./stakater.yaml
   - ./stevehipwell.yaml
-  - ./tf-controller.yaml
-  - ./weave-gitops.yaml
+  - ./weaveworks.yaml
