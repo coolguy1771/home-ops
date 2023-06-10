@@ -49,6 +49,14 @@ identity_providers:
         scopes: ["openid", "profile", "email"]
         redirect_uris: ["https://photos.witl.xyz/auth/login", "app.immich:/"]
         userinfo_signing_algorithm: none
+      - id: cloudflare
+        description: Cloudflare ZeroTrust
+        secret: "${CLOUDFLARE_OAUTH_CLIENT_SECRET}"
+        public: false
+        authorization_policy: two_factor
+        scopes: ["openid", "profile", "email"]
+        userinfo_signing_algorithm: none
+        redirect_uris: ["https://blackelement.cloudflareaccess.com/cdn-cgi/access/callback"]
       # - id: weave-gitops
       #   description: Weave GitOps
       #   secret: "${WEAVEGITOPS_OAUTH_CLIENT_SECRET}"
