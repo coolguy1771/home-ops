@@ -57,6 +57,11 @@ identity_providers:
         scopes: ["openid", "profile", "email"]
         userinfo_signing_algorithm: none
         redirect_uris: ["https://blackelement.cloudflareaccess.com/cdn-cgi/access/callback"]
+      - id: tailscale
+        description: Tailscale SSO
+        secret: "${CLOUDFLARE_OAUTH_CLIENT_SECRET}"
+        redirect_uris: ["https://login.tailscale.com/a/oauth_response"]
+        scopes: ["openid", "profile", "email"]
       # - id: weave-gitops
       #   description: Weave GitOps
       #   secret: "${WEAVEGITOPS_OAUTH_CLIENT_SECRET}"
