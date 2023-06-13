@@ -12,6 +12,16 @@ session:
         - host: redis-node-2.redis-headless.database.svc.cluster.local
           port: 26379
 
+password_policy:
+  standard:
+    enabled: true
+    min_length: 8
+    max_length: 0
+    require_uppercase: true
+    require_lowercase: true
+    require_number: true
+    require_special: true
+
 access_control:
   default_policy: two_factor
   networks:

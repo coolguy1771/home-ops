@@ -62,12 +62,13 @@ spec:
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS: ldap://lldap.auth.svc.cluster.local:389
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER: uid=admin,ou=people,dc=home,dc=arpa
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERNAME_ATTRIBUTE: uid
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: (&({username_attribute}={input})(objectClass=person))
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
       AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "false"
       AUTHELIA_AUTHENTICATION_BACKEND_REFRESH_INTERVAL: 1m
       AUTHELIA_DEFAULT_REDIRECTION_URL: https://auth.${SECRET_PUBLIC_DOMAIN}
       AUTHELIA_DUO_API_DISABLE: "true"
       AUTHELIA_LOG_LEVEL: info
+      AUTHELIA_LOG_FORMAT: json
       AUTHELIA_NOTIFIER_DISABLE_STARTUP_CHECK: "true"
       AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
       AUTHELIA_NOTIFIER_SMTP_HOST: smtp-relay.286k.co
@@ -83,7 +84,7 @@ spec:
       AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
       AUTHELIA_THEME: dark
       AUTHELIA_TOTP_ISSUER: authelia.com
-      AUTHELIA_WEBAUTHN_DISABLE: "false"
+      AUTHELIA_WEBAUTHN_DISABLE: "true"
     envFrom:
       - secretRef:
           name: authelia-secret
