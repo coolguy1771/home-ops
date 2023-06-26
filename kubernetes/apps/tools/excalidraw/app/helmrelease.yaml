@@ -32,7 +32,7 @@ spec:
       strategy: RollingUpdate
     image:
       repository: docker.io/excalidraw/excalidraw
-      tag: latest@sha256:ee7e91bf1ffafa39c47923871109b637fbc00fd9743184cb1d7b2a1cc0324051
+      tag: latest@sha256:52aafb7f23fb61864f5c6f752cf2f85ca0283416352589ea5d9998e6a5808e13
     service:
       main:
         ports:
