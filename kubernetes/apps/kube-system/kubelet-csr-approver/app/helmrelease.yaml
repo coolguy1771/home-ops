@@ -25,5 +25,5 @@ spec:
     # Required configuration item
     providerRegex: "^k8s-[0-9]"
     namespace: "kube-system"
-    # set this parameter to true to ignore mismatching DNS name and hostname
-    bypassHostnameCheck: true
+    allowedDnsNames: 3
+    bypassDnsResolution: true
