@@ -1,14 +1,14 @@
 ---
 clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.4.5
+talosVersion: v1.4.6
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.27.2
+kubernetesVersion: v1.27.3
 allowSchedulingOnMasters: true
 additionalMachineCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
-endpoint: https://10.10.254.3:6443
+endpoint: https://k8s-lb.286k.co:6443
 domain: cluster.local
 clusterPodNets:
   - "10.42.0.0/16"
