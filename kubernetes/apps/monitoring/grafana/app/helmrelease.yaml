@@ -113,6 +113,45 @@ spec:
             url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+          - name: Tempo
+            type: tempo
+            url: http://tempo.monitoring.svc.cluster.local:3100
+            access: proxy
+            jsonData:
+              tracesToLogsV2:
+                # Field with an internal link pointing to a logs data source in Grafana.
+                # datasourceUid value must match the uid value of the logs data source.
+                datasourceUid: 'Loki'
+                spanStartTimeShift: '1h'
+                spanEndTimeShift: '-1h'
+                tags: ['job', 'instance', 'pod', 'namespace']
+                filterByTraceID: true
+                filterBySpanID: true
+                customQuery: true
+                query: 'method="${__span.tags.method}"'
+              tracesToMetrics:
+                datasourceUid: 'Prometheus'
+                spanStartTimeShift: '1h'
+                spanEndTimeShift: '-1h'
+                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+                queries:
+                  - name: 'Sample query'
+                    query: 'sum(rate(traces_spanmetrics_latency_bucket{$__tags}[5m]))'
+              serviceMap:
+                datasourceUid: 'Prometheus'
+              nodeGraph:
+                enabled: true
+              search:
+                hide: false
+              lokiSearch:
+                datasourceUid: 'Loki'
+              traceQuery:
+                timeShiftEnabled: true
+                spanStartTimeShift: '1h'
+                spanEndTimeShift: '-1h'
+              spanBar:
+                type: 'Tag'
+                tag: 'http.path'
     dashboards:
       default:
         # Ref: https://grafana.com/grafana/dashboards/11312-unifi-poller-usw-insights-prometheus/
