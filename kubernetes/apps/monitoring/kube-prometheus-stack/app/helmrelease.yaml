@@ -88,8 +88,8 @@ spec:
           routes:
             - receiver: heartbeat
               group_wait: 0s
-              group_interval: 2m
-              repeat_interval: 2m
+              group_interval: 5m
+              repeat_interval: 5m
               matchers:
                 - alertname =~ "Watchdog"
             - receiver: "null" # quote
@@ -206,9 +206,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
-        annotations:
-          hajimari.io/appName: Prometheus
-          hajimari.io/icon: simple-icons:prometheus
         pathType: Prefix
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}
@@ -239,7 +236,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-path
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 20Gi
