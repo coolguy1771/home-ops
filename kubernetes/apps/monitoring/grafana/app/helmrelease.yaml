@@ -119,8 +119,6 @@ spec:
             access: proxy
             jsonData:
               tracesToLogsV2:
-                # Field with an internal link pointing to a logs data source in Grafana.
-                # datasourceUid value must match the uid value of the logs data source.
                 datasourceUid: 'Loki'
                 spanStartTimeShift: '1h'
                 spanEndTimeShift: '-1h'
@@ -128,7 +126,7 @@ spec:
                 filterByTraceID: true
                 filterBySpanID: true
                 customQuery: true
-                query: 'method="${__span.tags.method}"'
+                query: method="${__span.tags.method}"
               tracesToMetrics:
                 datasourceUid: 'Prometheus'
                 spanStartTimeShift: '1h'
