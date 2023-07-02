@@ -120,18 +120,13 @@ spec:
             jsonData:
               tracesToLogsV2:
                 datasourceUid: 'Loki'
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
                 tags: ['job', 'instance', 'pod', 'namespace']
                 filterByTraceID: true
                 filterBySpanID: true
                 customQuery: true
-              #  query: method="${__span.tags.method}"
               tracesToMetrics:
                 datasourceUid: 'Prometheus'
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
-              #  tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
               serviceMap:
                 datasourceUid: 'Prometheus'
               nodeGraph:
@@ -142,8 +137,6 @@ spec:
                 datasourceUid: 'Loki'
               traceQuery:
                 timeShiftEnabled: true
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
               spanBar:
                 type: 'Tag'
                 tag: 'http.path'
