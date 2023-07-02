@@ -59,6 +59,8 @@ spec:
           name: lldap-secret
     service:
       main:
+        loadBalancerIP: "${SVC_LLDAP_ADDR}"
+        externalTrafficPolicy: Local
         ports:
           http:
             port: *http-port
