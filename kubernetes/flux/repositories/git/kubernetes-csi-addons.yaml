@@ -3,15 +3,17 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: local-path-provisioner
+  name: kubernetes-csi-addons
   namespace: flux-system
 spec:
   interval: 30m
-  url: https://github.com/rancher/local-path-provisioner
+  url: https://github.com/csi-addons/kubernetes-csi-addons
   ref:
-    tag: v0.0.24
+    tag: v0.7.0
   ignore: |
     # exclude all
     /*
-    # include kubernetes directory
-    !/deploy/chart/local-path-provisioner
+    # include files
+    !/deploy/controller/crds.yaml
+    !/deploy/controller/rbac.yaml
+    !/deploy/controller/setup-controller.yaml

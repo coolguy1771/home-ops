@@ -112,7 +112,7 @@ spec:
           annotations:
             # kubernetes.io/tls-acme: "true"
             cert-manager.io/cluster-issuer: letsencrypt-production
-          className: "nginx"
+          ingressClassName: internal
           hosts:
             - &host hubble.${SECRET_PUBLIC_DOMAIN}
           tls:

@@ -242,9 +242,9 @@ spec:
       enabled: true
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: external
       annotations:
-        external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
         hajimari.io/icon: simple-icons:grafana
       hosts:
         - &host grafana.${SECRET_PUBLIC_DOMAIN}

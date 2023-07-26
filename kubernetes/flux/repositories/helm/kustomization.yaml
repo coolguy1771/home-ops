@@ -22,8 +22,10 @@ resources:
   - ./jetstack.yaml
   - ./kubernetes-dashboard.yaml
   - ./kyverno.yaml
+  - ./kepler.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
+  - ./nvidia.yaml
   - ./piraeus.yaml
   - ./postfinance.yaml
   - ./prometheus-community.yaml

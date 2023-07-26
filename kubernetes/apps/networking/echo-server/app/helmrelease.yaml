@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -56,10 +55,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
-          hajimari.io/icon: mdi:video-input-antenna
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:

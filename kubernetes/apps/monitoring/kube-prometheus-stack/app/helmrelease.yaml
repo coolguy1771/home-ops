@@ -108,7 +108,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           hajimari.io/appName: "Alert Manager"
           hajimari.io/icon: mdi:alert-decagram-outline
@@ -205,7 +205,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         pathType: Prefix
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}

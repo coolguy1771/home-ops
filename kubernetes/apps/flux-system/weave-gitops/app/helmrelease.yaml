@@ -33,7 +33,7 @@ spec:
       username: admin
     ingress:
       enabled: true
-      className: nginx
+      ingressClassName: internal
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
       hosts:

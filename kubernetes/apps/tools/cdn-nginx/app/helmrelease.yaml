@@ -41,9 +41,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_PUBLIC_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - host: &host "cdn.${SECRET_PUBLIC_DOMAIN}"
