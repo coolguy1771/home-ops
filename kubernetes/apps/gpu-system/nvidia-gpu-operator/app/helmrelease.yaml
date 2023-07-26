@@ -1,0 +1,288 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nvidia-gpu-operator
+  namespace: gpu-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: nvidia-gpu-operator
+      version: 23.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: nvidia
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    nfd:
+      enabled: false
+      nodefeaturerules: true
+    psa:
+      enabled: true
+    cdi:
+      enabled: true
+      default: true
+
+    sandboxWorkloads:
+      enabled: false
+      defaultWorkload: "container"
+
+    operator:
+      repository: nvcr.io/nvidia
+      image: gpu-operator
+      # If version is not specified, then default is to use chart.AppVersion
+      #version: ""
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      priorityClassName: system-node-critical
+      defaultRuntime: docker
+      runtimeClass: nvidia
+      use_ocp_driver_toolkit: false
+      # cleanup CRD on chart un-install
+      cleanupCRD: false
+      # upgrade CRD on chart upgrade, requires --disable-openapi-validation flag
+      # to be passed during helm upgrade.
+      upgradeCRD: false
+      initContainer:
+        image: cuda
+        repository: nvcr.io/nvidia
+        version: 12.2.0-base-ubi8
+        imagePullPolicy: IfNotPresent
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Equal"
+        value: ""
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Equal"
+        value: ""
+        effect: "NoSchedule"
+      annotations:
+        openshift.io/scc: restricted-readonly
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: "node-role.kubernetes.io/master"
+                    operator: In
+                    values: [""]
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: "node-role.kubernetes.io/control-plane"
+                    operator: In
+                    values: [""]
+      logging:
+        # Zap time encoding (one of 'epoch', 'millis', 'nano', 'iso8601', 'rfc3339' or 'rfc3339nano')
+        timeEncoding: rfc3339nano
+        # Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error', or any integer value > 0 which corresponds to custom debug levels of increasing verbosity
+        level: info
+
+    mig:
+      strategy: mixed
+
+    driver:
+      enabled: true
+      # use pre-compiled packages for NVIDIA driver installation.
+      # only supported for as a tech-preview feature on ubuntu22.04 kernels.
+      usePrecompiled: false
+      repository: nvcr.io/nvidia
+      image: driver
+      version: "525.105.17"
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      startupProbe:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        # nvidia-smi can take longer than 30s in some cases
+        # ensure enough timeout is set
+        timeoutSeconds: 60
+        failureThreshold: 120
+      rdma:
+        enabled: false
+        useHostMofed: false
+      upgradePolicy:
+        # global switch for automatic upgrade feature
+        # if set to false all other options are ignored
+        autoUpgrade: true
+        # how many nodes can be upgraded in parallel
+        # 0 means no limit, all nodes will be upgraded in parallel
+        maxParallelUpgrades: 1
+        # maximum number of nodes with the driver installed, that can be unavailable during
+        # the upgrade. Value can be an absolute number (ex: 5) or
+        # a percentage of total nodes at the start of upgrade (ex:
+        # 10%). Absolute number is calculated from percentage by rounding
+        # up. By default, a fixed value of 25% is used.'
+        maxUnavailable: 25%
+        # options for waiting on pod(job) completions
+        waitForCompletion:
+          timeoutSeconds: 0
+          podSelector: ""
+        # options for gpu pod deletion
+        gpuPodDeletion:
+          force: false
+          timeoutSeconds: 300
+          deleteEmptyDir: false
+        # options for node drain (`kubectl drain`) before the driver reload
+        # this is required only if default GPU pod deletions done by the operator
+        # are not sufficient to re-install the driver
+        drain:
+          enable: false
+          force: false
+          podSelector: ""
+          # It's recommended to set a timeout to avoid infinite drain in case non-fatal error keeps happening on retries
+          timeoutSeconds: 300
+          deleteEmptyDir: false
+      manager:
+        image: k8s-driver-manager
+        repository: nvcr.io/nvidia/cloud-native
+        version: v0.6.2
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ENABLE_GPU_POD_EVICTION
+            value: "true"
+          - name: ENABLE_AUTO_DRAIN
+            value: "false"
+          - name: DRAIN_USE_FORCE
+            value: "false"
+          - name: DRAIN_POD_SELECTOR_LABEL
+            value: ""
+          - name: DRAIN_TIMEOUT_SECONDS
+            value: "0s"
+          - name: DRAIN_DELETE_EMPTYDIR_DATA
+            value: "false"
+
+    toolkit:
+      enabled: true
+      repository: nvcr.io/nvidia/k8s
+      image: container-toolkit
+      version: v1.13.4-ubuntu20.04
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      env: []
+      resources: {}
+      installDir: "/usr/local/nvidia"
+
+    devicePlugin:
+      enabled: true
+      repository: nvcr.io/nvidia
+      image: k8s-device-plugin
+      version: v0.14.1-ubi8
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      args: []
+      env:
+        - name: PASS_DEVICE_SPECS
+          value: "true"
+        - name: FAIL_ON_INIT_ERROR
+          value: "true"
+        - name: DEVICE_LIST_STRATEGY
+          value: envvar
+        - name: DEVICE_ID_STRATEGY
+          value: uuid
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: all
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: all
+      resources:
+      # Plugin configuration
+      # Use "name" to either point to an existing ConfigMap or to create a new one with a list of configurations(i.e with create=true).
+      # Use "data" to build an integrated ConfigMap from a set of configurations as
+      # part of this helm chart. An example of setting "data" might be:
+        config:
+          name: device-plugin-config
+          create: true
+          data:
+            default: |-
+              version: v1
+              flags:
+                migStrategy: none
+            mig-single: |-
+              version: v1
+              flags:
+                migStrategy: single
+            mig-mixed: |-
+              version: v1
+              flags:
+                migStrategy: mixed
+
+    migManager:
+      enabled: true
+      repository: nvcr.io/nvidia/cloud-native
+      image: k8s-mig-manager
+      version: v0.5.3-ubuntu20.04
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      env:
+        - name: WITH_REBOOT
+          value: "false"
+      resources: {}
+      config:
+        name: "default-mig-parted-config"
+        default: "all-disabled"
+      gpuClientsConfig:
+        name: ""
+
+    nodeStatusExporter:
+      enabled: true
+
+    gds:
+      enabled: false
+      repository: nvcr.io/nvidia/cloud-native
+      image: nvidia-fs
+      version: "2.15.1"
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      env: []
+      args: []
+
+
+
+    vfioManager:
+      enabled: true
+      repository: nvcr.io/nvidia
+      image: cuda
+      version: 12.2.0-base-ubi8
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      env: []
+      resources: {}
+      driverManager:
+        image: k8s-driver-manager
+        repository: nvcr.io/nvidia/cloud-native
+        version: v0.6.2
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ENABLE_GPU_POD_EVICTION
+            value: "false"
+          - name: ENABLE_AUTO_DRAIN
+            value: "false"
+
+    ccManager:
+      enabled: false
+      defaultMode: "off"
+      repository: nvcr.io/nvidia/cloud-native
+      image: k8s-cc-manager
+      version: v0.1.0
+      imagePullPolicy: IfNotPresent
+      imagePullSecrets: []
+      env:
+        - name: CC_CAPABLE_DEVICE_IDS
+          value: "0x2339,0x2331,0x2330,0x2324,0x2322,0x233d"
+      resources: {}
