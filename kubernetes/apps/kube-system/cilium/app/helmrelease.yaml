@@ -74,6 +74,11 @@ spec:
       loadbalancerMode: dedicated
     gatewayAPI:
       enabled: false
+    l2announcements:
+      enabled: true
+      leaseDuration: 120s
+      leaseRenewDeadline: 60s
+      leaseRetryPeriod: 1s
     hubble:
       enabled: true
       metrics:
