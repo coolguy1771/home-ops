@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 1.13.4
+      version: 1.14.0-rc.1
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -44,7 +44,7 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
-    autoDirectNodeRoutes: false
+    autoDirectNodeRoutes: true
     annotateK8sNode: true
     cluster:
       id: 1
@@ -91,6 +91,8 @@ spec:
         dashboards:
           enabled: true
           labelValue: "true"
+          annotations:
+            grafana_folder: Cilium
       tls:
         enabled: true
         auto:
@@ -142,7 +144,7 @@ spec:
       enabled: true
     ipam:
       mode: kubernetes
-    ipv4NativeRoutingCIDR: "10.10.10.0/24"
+    ipv4NativeRoutingCIDR: "10.42.0.0/16"
     #ipv6NativeRoutingCIDR: "fd00:42::/64"
     monitor:
       enabled: true
@@ -150,7 +152,7 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-    tunnel: vxlan
+    tunnel: disabled
     operator:
       enabled: true
       rollOutPods: true
@@ -161,7 +163,7 @@ spec:
           enabled: true
     loadBalancer:
       algorithm: maglev
-      mode: snat
+      mode: dsr
       serviceTopology: true
       l7:
         backend: envoy
