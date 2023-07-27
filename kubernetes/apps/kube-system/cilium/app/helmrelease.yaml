@@ -150,7 +150,7 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-    tunnel: vxlan
+    tunnel: disabled
     operator:
       enabled: true
       rollOutPods: true
