@@ -64,6 +64,8 @@ spec:
       integration: containerd
     endpointRoutes:
       enabled: true
+    nodePort:
+      enabled: true
     enableCiliumEndpointSlice: true
     enableK8sEndpointSlice: true
     enableIdentityMark: true
@@ -118,6 +120,7 @@ spec:
           enabled: true
           annotations:
             # kubernetes.io/tls-acme: "true"
+            kubernetes.io/ingress.class: cilium
             cert-manager.io/cluster-issuer: letsencrypt-production
           ingressClassName: cilium
           hosts:
@@ -135,6 +138,8 @@ spec:
       enabled: true
     socketLB:
       enabled: true
+    wellKnownIdentities:
+      enabled: true
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "10.10.10.0/24"
@@ -145,7 +150,7 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-    tunnel: "disabled"
+    tunnel: vxlan
     operator:
       enabled: true
       rollOutPods: true
@@ -157,6 +162,10 @@ spec:
     loadBalancer:
       algorithm: maglev
       mode: dsr
+      serviceTopology: true
+      l7:
+        backend: envoy
+        algorithm: least_request
     localRedirectPolicy: true
     #enableIPv6BIGTCP: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
