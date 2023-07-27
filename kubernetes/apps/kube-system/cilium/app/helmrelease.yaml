@@ -73,7 +73,7 @@ spec:
       enabled: true
       loadbalancerMode: dedicated
     gatewayAPI:
-      enabled: true
+      enabled: false
     hubble:
       enabled: true
       metrics:
