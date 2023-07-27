@@ -44,7 +44,7 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
-    autoDirectNodeRoutes: true
+    autoDirectNodeRoutes: false
     annotateK8sNode: true
     cluster:
       id: 1
@@ -150,7 +150,7 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-    tunnel: disabled
+    tunnel: vxlan
     operator:
       enabled: true
       rollOutPods: true
