@@ -49,11 +49,11 @@ spec:
     cluster:
       id: 1
       name: home
-    bgp:
+    bandwidthManager:
+      # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
       enabled: true
-      announce:
-        loadbalancerIP: true
-        podCIDR: true
+      # -- Activate BBR TCP congestion control for Pods
+      bbr: true
     pmtuDiscovery:
       enabled: true
     bpf:
@@ -65,6 +65,13 @@ spec:
     endpointRoutes:
       enabled: true
     enableCiliumEndpointSlice: true
+    enableK8sEndpointSlice: true
+    enableIdentityMark: true
+    ingressController:
+      enabled: true
+      loadbalancerMode: dedicated
+    gatewayAPI:
+      enabled: true
     hubble:
       enabled: true
       metrics:
@@ -112,7 +119,7 @@ spec:
           annotations:
             # kubernetes.io/tls-acme: "true"
             cert-manager.io/cluster-issuer: letsencrypt-production
-          ingressClassName: internal
+          ingressClassName: cilium
           hosts:
             - &host hubble.${SECRET_PUBLIC_DOMAIN}
           tls:
@@ -120,9 +127,17 @@ spec:
               hosts:
                 - *host
     rollOutCiliumPods: true
-    externalIPs: true
+    externalIPs:
+      enabled: true
+    hostFirewall:
+      enabled: true
+    hostPort:
+      enabled: true
+    socketLB:
+      enabled: true
     ipam:
       mode: kubernetes
+    ipv4NativeRoutingCIDR: "10.10.10.0/24"
     #ipv6NativeRoutingCIDR: "fd00:42::/64"
     monitor:
       enabled: true
@@ -143,9 +158,6 @@ spec:
       algorithm: maglev
       mode: dsr
     localRedirectPolicy: true
-    ipv6:
-      # -- Enable IPv6 support.
-      enabled: false
     #enableIPv6BIGTCP: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     k8sServiceHost: 10.10.254.3
