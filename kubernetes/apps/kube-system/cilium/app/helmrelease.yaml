@@ -140,7 +140,7 @@ spec:
     ipv4NativeRoutingCIDR: "10.10.10.0/24"
     #ipv6NativeRoutingCIDR: "fd00:42::/64"
     monitor:
-      enabled: true
+      enabled: false
     prometheus:
       enabled: true
       serviceMonitor:
