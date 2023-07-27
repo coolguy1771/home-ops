@@ -161,7 +161,7 @@ spec:
           enabled: true
     loadBalancer:
       algorithm: maglev
-      mode: dsr
+      mode: snat
       serviceTopology: true
       l7:
         backend: envoy
