@@ -6,7 +6,7 @@ resources:
   - ./actions-runner-system
   - ./auth
   - ./cert-manager
-  - ./csi-addons-system
+  #- ./csi-addons-system
   - ./database
   - ./flux-system
   - ./falco-system
