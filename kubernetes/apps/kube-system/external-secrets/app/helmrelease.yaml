@@ -1,12 +1,12 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.witl.xyz/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: external-secrets
   namespace: kube-system
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: external-secrets
@@ -15,9 +15,8 @@ spec:
         kind: HelmRepository
         name: external-secrets
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -28,13 +27,15 @@ spec:
     keepHistory: false
   values:
     installCRDs: true
-    replicaCount: 3
-    leaderElect: true
+    replicaCount: 2
     serviceMonitor:
       enabled: true
+      interval: 1m
     webhook:
       serviceMonitor:
         enabled: true
+        interval: 1m
     certController:
       serviceMonitor:
         enabled: true
+        interval: 1m
