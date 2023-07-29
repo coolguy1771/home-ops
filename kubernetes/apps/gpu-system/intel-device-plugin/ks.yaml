@@ -3,12 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-nvidia-gpu-operator
+  name: cluster-apps-intel-device-plugin
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-apps-node-feature-discovery
-  path: ./kubernetes/apps/gpu-system/nvidia-gpu-operator/app
+  path: ./kubernetes/apps/gpu-system/intel-device-plugin/app
   prune: true
   sourceRef:
     kind: GitRepository

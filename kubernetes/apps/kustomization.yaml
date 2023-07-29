@@ -10,6 +10,7 @@ resources:
   - ./database
   - ./flux-system
   - ./falco-system
+  - ./gpu-system
   - ./kube-system
   - ./kyverno
   - ./media
