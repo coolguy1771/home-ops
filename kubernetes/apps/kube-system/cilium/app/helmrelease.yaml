@@ -16,7 +16,6 @@ spec:
         name: cilium
         namespace: flux-system
   install:
-    createNamespace: true
     remediation:
       retries: 5
   upgrade:
@@ -74,8 +73,10 @@ spec:
       loadbalancerMode: dedicated
     gatewayAPI:
       enabled: false
-    l2announcements:
+    bgpControlPlane:
       enabled: true
+    l2announcements:
+      enabled: false
       leaseDuration: 120s
       leaseRenewDeadline: 60s
       leaseRetryPeriod: 1s
