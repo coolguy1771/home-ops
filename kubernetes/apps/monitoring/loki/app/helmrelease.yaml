@@ -110,7 +110,7 @@ spec:
       replicas: 3
       ingress:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: cilium
         annotations:
           hajimari.io/enable: "false"
         hosts:

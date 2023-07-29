@@ -58,7 +58,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: cilium
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:

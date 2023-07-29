@@ -33,7 +33,7 @@ spec:
       username: admin
     ingress:
       enabled: true
-      ingressClassName: internal
+      ingressClassName: cilium
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
       hosts:

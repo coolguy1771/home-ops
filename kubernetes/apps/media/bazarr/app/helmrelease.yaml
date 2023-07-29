@@ -60,7 +60,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: cilium
         annotations:
           hajimari.io/icon: mdi:subtitles-outline
           cert-manager.io/cluster-issuer: letsencrypt-production
