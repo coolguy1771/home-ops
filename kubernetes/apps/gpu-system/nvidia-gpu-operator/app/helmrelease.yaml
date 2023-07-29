@@ -36,11 +36,9 @@ spec:
     cdi:
       enabled: true
       default: true
-
     sandboxWorkloads:
       enabled: false
       defaultWorkload: "container"
-
     operator:
       repository: nvcr.io/nvidia
       image: gpu-operator
@@ -53,7 +51,7 @@ spec:
       runtimeClass: nvidia
       use_ocp_driver_toolkit: false
       # cleanup CRD on chart un-install
-      cleanupCRD: false
+      cleanupCRD: true
       # upgrade CRD on chart upgrade, requires --disable-openapi-validation flag
       # to be passed during helm upgrade.
       upgradeCRD: false
@@ -251,8 +249,6 @@ spec:
       imagePullSecrets: []
       env: []
       args: []
-
-
 
     vfioManager:
       enabled: true
