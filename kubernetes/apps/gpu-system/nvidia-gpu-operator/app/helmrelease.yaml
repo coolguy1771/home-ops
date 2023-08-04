@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: gpu-operator
-      version: 23.3.2
+      version: v23.6.0
       sourceRef:
         kind: HelmRepository
         name: nvidia
