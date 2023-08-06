@@ -71,6 +71,8 @@ spec:
     ingressController:
       enabled: true
       loadbalancerMode: dedicated
+      defaultSecretName: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
+      defaultSecretNamespace: networking
     gatewayAPI:
       enabled: false
     bgpControlPlane:
@@ -186,3 +188,107 @@ spec:
       hostRooot: /sys/fs/cgroup
       autoMount:
         enabled: false
+    envoyConfig:
+      # -- Enable CiliumEnvoyConfig CRD
+      # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
+      enabled: true
+
+    # authentication:
+    #   # -- Enable authentication processing and garbage collection.
+    #   # Note that if disabled, policy enforcement will still block requests that require authentication.
+    #   # But the resulting authentication requests for these requests will not be processed, therefore the requests not be allowed.
+    #   enabled: true
+    #   # -- Buffer size of the channel Cilium uses to receive authentication events from the signal map.
+    #   queueSize: 1024
+    #   # -- Buffer size of the channel Cilium uses to receive certificate expiration events from auth handlers.
+    #   rotatedIdentitiesQueueSize: 1024
+    #     # -- Interval for garbage collection of auth map entries.
+    #   gcInterval: "5m0s"
+    #   # Configuration for Cilium's service-to-service mutual authentication using TLS handshakes.
+    #   # Note that this is not full mTLS support without also enabling encryption of some form.
+    #   # Current encryption options are Wireguard or IPSec, configured in encryption block above.
+    #   mutual:
+    #     # -- Port on the agent where mutual authentication handshakes between agents will be performed
+    #     port: 4250
+    #     # Settings for SPIRE
+    #     spire:
+    #       # -- Enable SPIRE integration (beta)
+    #       enabled: true
+    #       # Settings to control the SPIRE installation and configuration
+    #       install:
+    #         # -- Enable SPIRE installation.
+    #         # This will only take effect only if authentication.mutual.spire.enabled is true
+    #         enabled: true
+    #         # -- SPIRE namespace to install into
+    #         namespace: cilium-spire
+    #         # SPIRE agent configuration
+    #         agent:
+    #           # -- SPIRE agent image
+    #           image: ghcr.io/spiffe/spire-agent:1.6.3@sha256:8eef9857bf223181ecef10d9bbcd2f7838f3689e9bd2445bede35066a732e823
+    #           # -- SPIRE agent service account
+    #           serviceAccount:
+    #             create: true
+    #             name: spire-agent
+    #           # -- SPIRE agent annotations
+    #           annotations: { }
+    #           # -- SPIRE agent labels
+    #           labels: { }
+    #           # -- SPIRE Workload Attestor kubelet verification.
+    #           skipKubeletVerification: true
+    #         server:
+    #           # -- SPIRE server image
+    #           image: ghcr.io/spiffe/spire-server:1.6.3@sha256:f4bc49fb0bd1d817a6c46204cc7ce943c73fb0a5496a78e0e4dc20c9a816ad7f
+    #           # -- SPIRE server service account
+    #           serviceAccount:
+    #             create: true
+    #             name: spire-server
+    #           # -- SPIRE server init containers
+    #           initContainers: []
+    #           # -- SPIRE server annotations
+    #           annotations: {}
+    #           # -- SPIRE server labels
+    #           labels: {}
+    #           # SPIRE server service configuration
+    #           service:
+    #             # -- Service type for the SPIRE server service
+    #             type: ClusterIP
+    #             # -- Annotations to be added to the SPIRE server service
+    #             annotations: {}
+    #             # -- Labels to be added to the SPIRE server service
+    #             labels: {}
+    #           # SPIRE server datastorage configuration
+    #           dataStorage:
+    #             # -- Enable SPIRE server data storage
+    #             enabled: true
+    #             # -- Size of the SPIRE server data storage
+    #             size: 1Gi
+    #             # -- Access mode of the SPIRE server data storage
+    #             accessMode: ReadWriteOnce
+    #             # -- StorageClass of the SPIRE server data storage
+    #             storageClass: null
+    #           # SPIRE CA configuration
+    #           ca:
+    #             # -- SPIRE CA key type
+    #             # AWS requires the use of RSA. EC cryptography is not supported
+    #             keyType: "rsa-4096"
+    #             # -- SPIRE CA Subject
+    #             subject:
+    #               country: "US"
+    #               organization: "SPIRE"
+    #               commonName: "Cilium SPIRE CA"
+    #       # -- SPIRE server address used by Cilium Operator
+    #       #
+    #       # If k8s Service DNS along with port number is used (e.g. <service-name>.<namespace>.svc(.*):<port-number> format),
+    #       # Cilium Operator will resolve its address by looking up the clusterIP from Service resource.
+    #       #
+    #       # Example values: 10.0.0.1:8081, spire-server.cilium-spire.svc:8081
+    #       serverAddress: ~
+    #       # -- SPIFFE trust domain to use for fetching certificates
+    #       trustDomain: spiffe.cilium
+    #       # -- SPIRE socket path where the SPIRE delegated api agent is listening
+    #       adminSocketPath: /run/spire/sockets/admin.sock
+    #       # -- SPIRE socket path where the SPIRE workload agent is listening.
+    #       # Applies to both the Cilium Agent and Operator
+    #       agentSocketPath: /run/spire/sockets/agent/agent.sock
+    #       # -- SPIRE connection timeout
+    #       connectionTimeout: 30s
