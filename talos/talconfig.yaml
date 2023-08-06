@@ -1,19 +1,18 @@
 ---
 clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.4.6
+talosVersion: v1.4.7
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.27.3
-allowSchedulingOnMasters: true
+kubernetesVersion: v1.27.4
 additionalMachineCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
-endpoint: https://k8s-lb.286k.co:6443
+endpoint: https://10.10.254.3:6443
 domain: cluster.local
 clusterPodNets:
-  - "10.42.0.0/16"
+  - 10.244.0.0/16
 clusterSvcNets:
-  - "10.43.0.0/16"
+  - 10.96.0.0/12
 cniConfig:
   name: none
 nodes:
@@ -25,6 +24,15 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
@@ -33,6 +41,15 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
   - hostname: k8s-2
     ipAddress: 10.10.10.22
     controlPlane: true
@@ -41,6 +58,15 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
   - hostname: k8s-3
     ipAddress: 10.10.10.23
     controlPlane: false
@@ -49,6 +75,17 @@ nodes:
       - interface: eno1
         mtu: 1500
         dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
   - hostname: k8s-4
     ipAddress: 10.10.10.24
     controlPlane: false
@@ -57,6 +94,16 @@ nodes:
       - interface: eno1
         mtu: 1500
         dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
   - hostname: k8s-5
     ipAddress: 10.10.10.25
     controlPlane: false
@@ -65,6 +112,17 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
   - hostname: k8s-6
     ipAddress: 10.10.10.26
     controlPlane: false
@@ -73,11 +131,77 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
+  - hostname: k8s-7
+    ipAddress: 10.10.10.27
+    controlPlane: false
+    installDisk: /dev/nvme0n1
+    networkInterfaces:
+      - interface: enp0s31f6
+        mtu: 1500
+        dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/amd-ucode:20230625
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
+  - hostname: k8s-8
+    ipAddress: 10.10.10.28
+    controlPlane: false
+    installDisk: /dev/nvme0n1
+    networkInterfaces:
+      - interface: enp0s31f6
+        mtu: 1500
+        dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/amd-ucode:20230625
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
+  - hostname: k8s-9
+    ipAddress: 10.10.10.29
+    controlPlane: false
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata1/host0/target0:0:0/0:0:0:0/
+    networkInterfaces:
+      - interface: eth0
+        mtu: 1500
+        dhcp: true
+    nodeLabels:
+      node-role.kubernetes.io/worker: true
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230214
+              - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
 controlPlane:
   patches:
     - |-
       cluster:
-        allowSchedulingOnMasters: true
         apiServer:
           extraArgs:
             feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
@@ -109,6 +233,12 @@ controlPlane:
                 address = "0.0.0.0:11234"
             path: /etc/cri/conf.d/20-customization.part
             op: create
+          - path: /var/etc/nut/upsmon.conf
+            permissions: 0o600
+            op: create
+            content: |-
+              MONITOR ${SECRET_UPSMON_HOST} 1 remote ${SECRET_UPSMON_PASSWORD} slave
+              SHUTDOWNCMD "/sbin/poweroff"
         kubelet:
           extraArgs:
             feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
@@ -117,9 +247,6 @@ controlPlane:
           extraKernelArgs:
             - "talos.logging.kernel=udp://10.42.0.6:6050/"
             - "cpufreq.default_governor=performance"
-          extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20230310
-            - image: ghcr.io/siderolabs/intel-ucode:20230214
         logging:
           destinations:
             - endpoint: "udp://10.0.42.6:6051/"
@@ -153,13 +280,16 @@ worker:
                 address = "0.0.0.0:11234"
             path: /etc/cri/conf.d/20-customization.part
             op: create
+          - path: /var/etc/nut/upsmon.conf
+            permissions: 0o600
+            op: create
+            content: |-
+              MONITOR ${SECRET_UPSMON_HOST} 1 remote ${SECRET_UPSMON_PASSWORD} slave
+              SHUTDOWNCMD "/sbin/poweroff"
         install:
           extraKernelArgs:
             - "talos.logging.kernel=udp://10.42.0.6:6050/"
             - "cpufreq.default_governor=performance"
-          extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20230310
-            - image: ghcr.io/siderolabs/intel-ucode:20230214
         logging:
           destinations:
             - endpoint: "udp://10.0.42.6:6051/"
