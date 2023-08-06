@@ -45,8 +45,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName:
-              - alertmanager-tls
+            secretName: alertmanager-tls
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true
