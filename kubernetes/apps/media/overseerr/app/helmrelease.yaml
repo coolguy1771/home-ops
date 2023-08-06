@@ -52,6 +52,7 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          policy.cilium.io/proxy-visibility: "<Egress/53/UDP/DNS>,<Egress/80/TCP/HTTP>"
           cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - host: &host "requests.${SECRET_PUBLIC_DOMAIN}"

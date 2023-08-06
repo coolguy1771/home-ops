@@ -7,7 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./autobrr/ks.yaml
-  #- ./bazarr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./midarr/ks.yaml
   - ./overseerr/ks.yaml
@@ -20,5 +19,6 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
+  - ./theme-park/ks.yaml
   - ./unpackerr/ks.yaml
 

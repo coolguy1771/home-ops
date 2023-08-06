@@ -55,6 +55,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          policy.cilium.io/proxy-visibility: "<Egress/53/UDP/DNS>,<Egress/80/TCP/HTTP>"
           hajimari.io/icon: mdi:plex
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
