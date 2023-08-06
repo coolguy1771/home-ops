@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -30,3 +29,23 @@ spec:
     manageCRDs: true
     metrics:
       disableAuth: true
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: volsync
+            spec:
+              template:
+                spec:
+                  containers:
+                    - name: manager
+                      volumeMounts:
+                        - name: tz-config
+                          mountPath: /etc/localtime
+                  volumes:
+                    - name: tz-config
+                      hostPath:
+                        path: /usr/share/zoneinfo/America/New_York
+                        type: File
