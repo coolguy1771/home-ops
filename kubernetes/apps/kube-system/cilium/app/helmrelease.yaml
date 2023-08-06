@@ -59,6 +59,7 @@ spec:
       clockProbe: true
       lbExternalClusterIP: true
       masquerade: true
+      tproxy: true
     containerRuntime:
       integration: containerd
     endpointRoutes:
@@ -150,6 +151,10 @@ spec:
       enabled: true
     wellKnownIdentities:
       enabled: true
+    enableCnpStatusUpdates: true
+    endpointStatus:
+      enabled: true
+      status: "policy"
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "10.42.0.0/16"
@@ -173,9 +178,7 @@ spec:
       algorithm: maglev
       mode: dsr
       serviceTopology: true
-      l7:
-        backend: envoy
-        algorithm: least_request
+    l7Proxy: true
     localRedirectPolicy: true
     #enableIPv6BIGTCP: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
