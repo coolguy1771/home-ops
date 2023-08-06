@@ -195,7 +195,7 @@ spec:
     envoy:
       enabled: true
       rollOutPods: true
-        securityContext:
+      securityContext:
         # -- User to run the pod with
         # runAsUser: 0
         # -- Run the pod with elevated privileges
