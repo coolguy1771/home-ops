@@ -192,6 +192,25 @@ spec:
       # -- Enable CiliumEnvoyConfig CRD
       # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
       enabled: true
+    envoy:
+      enabled: true
+      rollOutPods: true
+        securityContext:
+        # -- User to run the pod with
+        # runAsUser: 0
+        # -- Run the pod with elevated privileges
+        privileged: true
+        prometheus:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+        capabilities:
+          # -- Capabilities for the `cilium-envoy` container
+          envoy:
+            # Used since cilium proxy uses setting IPPROTO_IP/IP_TRANSPARENT
+            - NET_ADMIN
+            - PERFMON
+            - BPF
 
     # authentication:
     #   # -- Enable authentication processing and garbage collection.
