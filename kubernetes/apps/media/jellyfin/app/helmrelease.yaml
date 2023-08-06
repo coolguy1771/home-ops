@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -40,6 +39,10 @@ spec:
       repository: ghcr.io/onedr0p/jellyfin
       tag: 10.8.10@sha256:1ef614db6a4c589777eb48bc9004d573b9c09f0d6d573a509041c6060f3a956b
     env:
+      DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+      JELLYFIN_FFmpeg__probesize: 50000000
+      JELLYFIN_FFmpeg__analyzeduration: 50000000
+      JELLYFIN_PublishedServerUrl: "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
       TZ: America/New_York
     service:
       main:
@@ -88,7 +91,7 @@ spec:
       runAsGroup: 568
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [44, 109, 10000]
+      supplementalGroups: [44, 105, 10000]
     volumeClaimTemplates:
       - name: config
         mountPath: /config

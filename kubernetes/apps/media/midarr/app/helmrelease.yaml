@@ -60,7 +60,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/icon: mdi:play-circle-outline
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -69,7 +69,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: midarr-tls
+            secretName: "{{ .Release.Name }}-tls"
     persistence:
       media:
         enabled: true

@@ -35,7 +35,7 @@ spec:
       enabled: true
       ingressClassName: cilium
       annotations:
-        hajimari.io/icon: mdi:sawtooth-wave
+        cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
         - host: &host gitops.{SECRET_PUBLIC_DOMAIN}
           paths:

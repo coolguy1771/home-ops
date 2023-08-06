@@ -84,7 +84,7 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/prowlarr/nord.css"></head>';
             sub_filter_once on;
-          hajimari.io/icon: mdi:movie-search
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -93,7 +93,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name}}-tls"
+            secretName: "{{ .Release.Name }}-tls"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
