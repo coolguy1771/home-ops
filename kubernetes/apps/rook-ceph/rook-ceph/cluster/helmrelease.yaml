@@ -69,15 +69,22 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: k8s-4
-            devices:
-              - name: "/dev/sda"
           - name: k8s-3
             devices:
-              - name: "/dev/sda"
+              - name: "/dev/disk/by-id/ata-Samsung_SSD_870_EVO_500GB_S6PXNZ0T762854V"
+          - name: k8s-4
+            devices:
+              - name: "/dev/disk/by-id/ata-Samsung_SSD_870_EVO_500GB_S6PXNM0T518232K"
+          - name: k8s-5
+            devices:
+              - name: "/dev/disk/by-id/ata-Samsung_SSD_860_EVO_1TB_S5JANJ0N216928R"
           - name: k8s-6
             devices:
-              - name: "/dev/sda"
+              - name: "/dev/disk/by-id/ata-Samsung_SSD_870_EVO_500GB_S6PXNZ0T762234X"
+          - name: k8s-9
+            devices:
+              - name: "/dev/disk/by-id/ata-HGST_HUS726060ALE610_K8GEAJHD"
+              - name: "/dev/disk/by-id/ata-HGST_HUS726060ALE610_K8GEBVED"
     cephBlockPools:
       - name: ceph-blockpool
         spec:

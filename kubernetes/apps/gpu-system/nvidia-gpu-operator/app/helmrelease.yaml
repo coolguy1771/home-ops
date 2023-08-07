@@ -47,7 +47,7 @@ spec:
       imagePullPolicy: IfNotPresent
       imagePullSecrets: []
       priorityClassName: system-node-critical
-      defaultRuntime: docker
+      defaultRuntime: containerd
       runtimeClass: nvidia
       use_ocp_driver_toolkit: false
       # cleanup CRD on chart un-install
@@ -198,27 +198,27 @@ spec:
           value: all
         - name: NVIDIA_DRIVER_CAPABILITIES
           value: all
-      resources:
+      resources: {}
       # Plugin configuration
       # Use "name" to either point to an existing ConfigMap or to create a new one with a list of configurations(i.e with create=true).
       # Use "data" to build an integrated ConfigMap from a set of configurations as
       # part of this helm chart. An example of setting "data" might be:
-        config:
-          name: device-plugin-config
-          create: true
-          data:
-            default: |-
-              version: v1
-              flags:
-                migStrategy: none
-            mig-single: |-
-              version: v1
-              flags:
-                migStrategy: single
-            mig-mixed: |-
-              version: v1
-              flags:
-                migStrategy: mixed
+      config:
+        name: device-plugin-config
+        create: true
+        data:
+          default: |-
+            version: v1
+            flags:
+              migStrategy: none
+          mig-single: |-
+            version: v1
+            flags:
+              migStrategy: single
+          mig-mixed: |-
+            version: v1
+            flags:
+              migStrategy: mixed
 
     migManager:
       enabled: true
