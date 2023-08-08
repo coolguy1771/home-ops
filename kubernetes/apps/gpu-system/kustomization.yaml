@@ -6,5 +6,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./intel-device-plugin/ks.yaml
-  - ./nvidia-gpu-operator/ks.yaml
+  #- ./nvidia-gpu-operator/ks.yaml
 
