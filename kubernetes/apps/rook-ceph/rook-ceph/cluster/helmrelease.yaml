@@ -66,8 +66,6 @@ spec:
       storage:
         useAllNodes: false
         useAllDevices: false
-        config:
-          osdsPerDevice: "1"
         nodes:
           - name: k8s-3
             devices:
