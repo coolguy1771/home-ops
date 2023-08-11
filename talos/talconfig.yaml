@@ -19,7 +19,7 @@ nodes:
   - hostname: k8s-0
     ipAddress: 10.10.10.20
     controlPlane: true
-    installDisk: /dev/sda
+    installDisk: /dev/disk/by-id/ata-CT240BX500SSD1_2206E60A4A88
     networkInterfaces:
       - interface: eth0
         mtu: 1500
@@ -36,7 +36,7 @@ nodes:
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
-    installDisk: /dev/sda
+    installDisk: /dev/disk/by-id/ata-CT240BX500SSD1_2148E5EA7AA5
     networkInterfaces:
       - interface: eth0
         mtu: 1500
@@ -53,7 +53,7 @@ nodes:
   - hostname: k8s-2
     ipAddress: 10.10.10.22
     controlPlane: true
-    installDisk: /dev/sda
+    installDisk: /dev/disk/by-id/ata-WD_easystore_240GB_20215C802161
     networkInterfaces:
       - interface: eth0
         mtu: 1500
@@ -70,7 +70,7 @@ nodes:
   - hostname: k8s-3
     ipAddress: 10.10.10.23
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/disk/by-id/nvme-WD_Blue_SN570_250GB_223960805185
     networkInterfaces:
       - interface: eno1
         mtu: 1500
@@ -89,7 +89,7 @@ nodes:
   - hostname: k8s-4
     ipAddress: 10.10.10.24
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/disk/by-id/nvme-WD_Blue_SN570_250GB_223960805195
     networkInterfaces:
       - interface: eno1
         mtu: 1500
@@ -104,10 +104,11 @@ nodes:
               - image: ghcr.io/siderolabs/i915-ucode:20230310
               - image: ghcr.io/siderolabs/intel-ucode:20230214
               - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+
   - hostname: k8s-5
     ipAddress: 10.10.10.25
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB512HAJQ-000L7_S3TNNE0JC71391
     networkInterfaces:
       - interface: enp0s31f6
         mtu: 1500
@@ -126,7 +127,7 @@ nodes:
   - hostname: k8s-6
     ipAddress: 10.10.10.26
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB512HAJQ-000L7_S3TNNE0JC70877
     networkInterfaces:
       - interface: enp0s31f6
         mtu: 1500
@@ -145,7 +146,7 @@ nodes:
   - hostname: k8s-7
     ipAddress: 10.10.10.27
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/disk/by-id/nvme-WDC_PC_SN730_SDBQNTY-256G-1001_2017B6801388
     networkInterfaces:
       - interface: enp0s31f6
         mtu: 1500
@@ -163,7 +164,7 @@ nodes:
   - hostname: k8s-8
     ipAddress: 10.10.10.28
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB256HBHQ-000L7_S4ELNX4N714860
     networkInterfaces:
       - interface: enp0s31f6
         mtu: 1500
@@ -181,10 +182,9 @@ nodes:
   - hostname: k8s-9
     ipAddress: 10.10.10.29
     controlPlane: false
-    installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata1/host0/target0:0:0/0:0:0:0/
+    installDisk: /dev/disk/by-id/ata-HRAA2S0512ZILM2_6G000SJA
     networkInterfaces:
-      - interface: eth0
+      - interface: eth2
         mtu: 1500
         dhcp: true
     nodeLabels:
@@ -197,6 +197,31 @@ nodes:
               - image: ghcr.io/siderolabs/i915-ucode:20230310
               - image: ghcr.io/siderolabs/intel-ucode:20230214
               - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
+              - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.54.03-v1.13.5
+          files:
+            - content: |
+                [plugins."io.containerd.grpc.v1.cri"]
+                  [plugins."io.containerd.grpc.v1.cri".containerd]
+                    default_runtime_name = "nvidia"
+
+                    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+                      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
+                        privileged_without_host_devices = false
+                        runtime_engine = ""
+                        runtime_root = ""
+                        runtime_type = "io.containerd.runc.v2"
+                        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
+                          BinaryName = "/usr/bin/nvidia-container-runtime"
+              path: /etc/cri/conf.d/30-customization.part
+              op: create
+          kernel:
+            modules:
+              - name: nvidia
+              - name: nvidia_uvm
+              - name: nvidia_drm
+              - name: nvidia_modeset
+          sysctls:
+            net.core.bpf_jit_harden: 1
 
 controlPlane:
   patches:
