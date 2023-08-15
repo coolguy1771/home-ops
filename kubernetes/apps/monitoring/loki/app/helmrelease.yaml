@@ -124,7 +124,7 @@ spec:
             secretName: loki.${SECRET_PUBLIC_DOMAIN}
     read:
       persistence:
-        storageClass: local-path
+        storageClass: ceph-block
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
@@ -133,10 +133,10 @@ spec:
           emptyDir: {}
     write:
       persistence:
-        storageClass: local-path
+        storageClass: ceph-block
     backend:
       persistence:
-        storageClass: local-path
+        storageClass: ceph-block
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
