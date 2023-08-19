@@ -52,7 +52,7 @@ spec:
             - dell_idrac
           target: dell-idrac-1.286k.co
       path: /snmp
-      scrapeTimeout: 10s
+      scrapeTimeout: 30s
       relabelings:
         - sourceLabels: [__param_target]
           targetLabel: instance
