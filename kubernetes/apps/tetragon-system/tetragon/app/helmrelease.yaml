@@ -23,6 +23,7 @@ spec:
     remediation:
       retries: 5
   values:
+    tetragon:
       # Allowlist for JSON export. For example, to export only process_connect events from
       # the default namespace:
       #
