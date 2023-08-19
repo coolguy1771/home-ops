@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app tetragon
+  namespace: tetragon-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: *app
+      version: 0.10.0
+      sourceRef:
+        kind: HelmRepository
+        name: cilum
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+      # Allowlist for JSON export. For example, to export only process_connect events from
+      # the default namespace:
+      #
+      # exportAllowList: |
+      #   {"namespace":["default"],"event_set":["PROCESS_EXEC"]}
+      exportAllowList: |-
+        {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE", "PROCESS_UPROBE"]}
+      exportDenyList: |-
+        {"health_check":true}
+        {"namespace":[""]}
+      # Filters to include or exclude fields from Tetragon events. Without any filters, all
+      # fields are included by default. The presence of at least one inclusion filter implies
+      # default-exclude (i.e. any fields that don't match an inclusion filter will be
+      # excluded). Field paths are expressed using dot notation like "a.b.c" and multiple
+      # field paths can be separated by commas like "a.b.c,d,e.f". An optional "event_set" may
+      # be specified to apply the field filter to a specific set of events.
+      #
+      # For example, to exclude the "parent" field from all events and include the "process"
+      # field in PROCESS_KPROBE events while excluding all others:
+      #
+      # fieldFilters: |
+      #   {"fields": "parent", "action": "EXCLUDE"}
+      #   {"event_set": ["PROCESS_KPROBE"], "fields": "process", "action": "INCLUDE"}
+      #
+      fieldFilters: |-
+        {}
+      # Access Kubernetes API to associate Tetragon events with Kubernetes pods.
+      enableK8sAPI: true
+      # Access Cilium API to associate Tetragon events with Cilium endpoints and DNS cache.
+      enableCiliumAPI: true
+      # enableProcessCred enables Capabilities visibility in exec and kprobe events.
+      enableProcessCred: true
+      # enableProcessNs enables Namespaces visibility in exec and kprobe events.
+      enableProcessNs: true
+    podWatcher:
+      enabled: false
+    tetragonOperator:
+      # -- Enable the tetragon-operator component (required).
+      enabled: true
+      # -- tetragon-operator image.
+      image:
+        override: ~
+        repository: quay.io/cilium/tetragon-operator
+        tag: v0.10.0
+        # tetragon-operator image-digest
+        suffix: ""
+      # Skip CRD creation.
+      skipCRDCreation: false
+    export:
+      # "stdout". "" to disable.
+      mode: "stdout"
+      resources: {}
+      securityContext: {}
+      # filenames defines list of files for fluentd to tail and export.
+      filenames:
+        - tetragon.log
+      # stdout specific exporter settings
+      stdout:
+        extraEnv: []
+        # extraEnv:
+        #   - name: foo
+        #     value: bar
+
+        # * When enabledCommand=true and commandOverride is not set, the command inserted will be hubble-export-stdout.
+        #   This supports the default for the current deployment instructions to deploy stdout-export sidecar container.
+        # * When enabledCommand=true and commandOverride override is set, the command inserted will be the value of commandOverride.
+        #   This is useful for inserting another sidecar container that requires a command override.
+        # * When enabledCommand=false, no command will be specified in the manifest and container's default command will take over.
+        enabledCommand: true
+        # * When enabledArgs=true and argsOverride is not set, the args inserted will be the default ones for export-stdout.
+        # * When enabledArgs=true and argsOverride override is set, the args value inserted will be the value of argsOverride.
+        #   This is useful for inserting another sidecar container that requires args override.
+        # * When enabledArgs=false, no command will be specified in the manifest and container's default args value will take over.
+        enabledArgs: true
+        # specific manifest command to use
+        commandOverride: []
+        # specific manifest args to use
+        argsOverride: []
+        # Extra volume mounts to add to stdout export pod
+        extraVolumeMounts: []
+        image:
+          override: ~
+          repository: quay.io/cilium/hubble-export-stdout
+          tag: v1.0.3

@@ -9,7 +9,6 @@ resources:
   - ./csi-addons-system
   - ./database
   - ./flux-system
-  #- ./falco-system
   - ./gpu-system
   - ./kube-system
   - ./kyverno
@@ -18,5 +17,6 @@ resources:
   - ./networking
   - ./rook-ceph
   - ./storage
+  - ./tetragon-system
   - ./tools
   - ./volsync
