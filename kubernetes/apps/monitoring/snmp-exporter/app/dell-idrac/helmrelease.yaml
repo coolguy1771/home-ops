@@ -45,12 +45,12 @@ spec:
       params:
         - name: dell-idrac-0
           module:
-            - dell
-          target: dell-idrac-0
+            - dell_idrac
+          target: dell-idrac-0.286k.co
         - name: dell-idrac-1
           module:
-            - dell
-          target: dell-idrac-1
+            - dell_idrac
+          target: dell-idrac-1.286k.co
       path: /snmp
       scrapeTimeout: 10s
       relabelings:
