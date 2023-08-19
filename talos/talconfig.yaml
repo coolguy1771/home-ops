@@ -1,7 +1,7 @@
 ---
 clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.4.7
+talosVersion: v1.5.0
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 kubernetesVersion: v1.27.4
 additionalMachineCertSans:
@@ -197,34 +197,31 @@ nodes:
               - image: ghcr.io/siderolabs/i915-ucode:20230310
               - image: ghcr.io/siderolabs/intel-ucode:20230214
               - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
-              - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.54.03-v1.13.5
-          files:
-            - content: |
-                [plugins."io.containerd.grpc.v1.cri"]
-                  [plugins."io.containerd.grpc.v1.cri".containerd]
-                    default_runtime_name = "nvidia"
-
-                    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
-                      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
-                        privileged_without_host_devices = false
-                        runtime_engine = ""
-                        runtime_root = ""
-                        runtime_type = "io.containerd.runc.v2"
-                        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
-                          BinaryName = "/usr/bin/nvidia-container-runtime"
-              path: /etc/cri/conf.d/30-customization.part
-              op: create
-          kernel:
+              - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.54.03-v1.5.0
+      - |-
+        - op: add
+          path: /machine/kernel
+          value:
             modules:
               - name: nvidia
               - name: nvidia_uvm
               - name: nvidia_drm
               - name: nvidia_modeset
-          sysctls:
+      - |-
+        - op: add
+          path: /machine/sysctls
+          value:
             net.core.bpf_jit_harden: 1
+
 
 controlPlane:
   patches:
+    - |-
+      - op: add
+        path: /machine/features/kubePrism
+        value:
+          enabled: true
+          port: 7445
     - |-
       cluster:
         apiServer:
@@ -249,6 +246,13 @@ controlPlane:
             metrics: extensive
             listen-metrics-urls: http://0.0.0.0:2381
       machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+            - os:etcd:backup
+            allowedKubernetesNamespaces:
+            - default
         files:
           - content: |
               [plugins."io.containerd.grpc.v1.cri"]
@@ -294,6 +298,12 @@ worker:
         value:
           feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
           rotate-server-certificates: "true"
+    - |-
+      - op: add
+        path: /machine/features/kubePrism
+        value:
+          enabled: true
+          port: 7445
     - |-
       machine:
         files:

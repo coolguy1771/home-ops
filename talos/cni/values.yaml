@@ -1,0 +1,101 @@
+securityContext:
+  privileged: true
+  capabilities:
+    ciliumAgent:
+      - PERFMON
+      - BPF
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUI
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+autoDirectNodeRoutes: true
+annotateK8sNode: true
+cluster:
+  id: 1
+  name: home
+bandwidthManager:
+  # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
+  enabled: true
+  # -- Activate BBR TCP congestion control for Pods
+  bbr: false
+pmtuDiscovery:
+  enabled: true
+bpf:
+  clockProbe: true
+  masquerade: true
+containerRuntime:
+  integration: containerd
+endpointRoutes:
+  enabled: true
+nodePort:
+  enabled: true
+enableCiliumEndpointSlice: true
+enableK8sEndpointSlice: true
+enableIdentityMark: true
+ingressController:
+  enabled: false
+  loadbalancerMode: dedicated
+gatewayAPI:
+  enabled: false
+bgpControlPlane:
+  enabled: true
+l2announcements:
+  enabled: false
+  leaseDuration: 120s
+  leaseRenewDeadline: 60s
+  leaseRetryPeriod: 1s
+hubble:
+  enabled: false
+rollOutCiliumPods: true
+externalIPs:
+  enabled: true
+hostFirewall:
+  enabled: true
+hostPort:
+  enabled: true
+socketLB:
+  enabled: true
+wellKnownIdentities:
+  enabled: true
+ipam:
+  mode: kubernetes
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+monitor:
+  enabled: true
+prometheus:
+  enabled: false
+tunnel: disabled
+operator:
+  enabled: true
+  rollOutPods: true
+  replicas: 2
+loadBalancer:
+  algorithm: maglev
+  mode: dsr
+  serviceTopology: true
+  l7:
+    backend: envoy
+    algorithm: least_request
+localRedirectPolicy: true
+#enableIPv6BIGTCP: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+k8sServiceHost: localhost
+k8sServicePort: 7445
+kubeProxyReplacement: strict
+logOptions:
+  format: json
+cgroup:
+  hostRooot: /sys/fs/cgroup
+  autoMount:
+    enabled: false

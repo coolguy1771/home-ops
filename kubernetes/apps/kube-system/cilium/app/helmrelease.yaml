@@ -182,8 +182,8 @@ spec:
     localRedirectPolicy: true
     #enableIPv6BIGTCP: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    k8sServiceHost: 10.10.254.3
-    k8sServicePort: 6443
+    k8sServiceHost: localhost
+    k8sServicePort: 7445
     kubeProxyReplacement: strict
     logOptions:
       format: json
