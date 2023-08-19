@@ -31,5 +31,6 @@ spec:
     csi:
       csiAddons:
         enabled: true
+      cephFSKernelMountOptions: ms_mode=secure
     monitoring:
       enabled: true
