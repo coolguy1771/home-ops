@@ -27,8 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: local-path-provisioner
-      namespace: storage
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
@@ -38,8 +36,9 @@ spec:
     alertmanager:
       ingress:
         enabled: true
-        pathType: Prefix
         ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host alertmanager.${SECRET_PUBLIC_DOMAIN}
         tls:
@@ -121,7 +120,8 @@ spec:
       ingress:
         enabled: true
         ingressClassName: cilium
-        pathType: Prefix
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}
         tls:
