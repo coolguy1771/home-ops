@@ -113,7 +113,7 @@ spec:
             replicated:
               size: 3
           dataPools:
-            - failureDomain: host
+            - failureDomain: osd
               replicated:
                 size: 3
               name: data0
@@ -145,11 +145,11 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: host
+            failureDomain: osd
             replicated:
               size: 3
           dataPool:
-            failureDomain: host
+            failureDomain: osd
             erasureCoded:
               dataChunks: 2
               codingChunks: 1
