@@ -28,6 +28,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    prometheus:
+      enable: true
+    tls:
+      enable: true
+      certManager: true
+    master:
+      config:
+        extraLabelNs: ["nvidia.com"]
     worker:
       config:
         core:
@@ -36,3 +44,6 @@ spec:
           usb:
             deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
             deviceLabelFields: ["class", "vendor", "device"]
+          pci:
+            deviceClassWhitelist: ["02", "0200", "0207", "0300", "0302"]
+            deviceLabelFields: ["vendor"]

@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nvidia-device-plugin
+  namespace: gpu-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: nvidia-device-plugin
+      version: v23.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: nvidia
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    config:
+      map:
+        default: |-
+          version: v1
+          flags:
+            migStrategy: none
+        mig-single: |-
+          version: v1
+          flags:
+            migStrategy: single
+        mig-mixed: |-
+          version: v1
+          flags:
+            migStrategy: mixed
+      # Default config name within the ConfigMap
+      default: "default"
+      # List of fallback strategies to attempt if no config is selected and no default is provided
+      fallbackStrategies: ["named" , "single"]
+
+    runtimeClassName: null
+
+    # Subcharts
+    nfd: {}
+    gfd:
+      enabled: true
