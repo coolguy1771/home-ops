@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: ghcr.io/buroa/qbittools
-      tag: v0.5.1
+      tag: v0.8.0
     args:
       - reannounce
       - -s
