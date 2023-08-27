@@ -32,7 +32,7 @@
         recreate: true
         privileged: true
         state: started
-        image: quay.io/prometheuscommunity/smartctl-exporter:v0.10.0
+        image: quay.io/prometheuscommunity/smartctl-exporter:v0.11.0
         restart_policy: unless-stopped
         command:
           - --smartctl.path=/usr/sbin/smartctl
