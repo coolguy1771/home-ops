@@ -107,12 +107,13 @@ spec:
         analytics:
           reporting_enabled: false
     gateway:
-      replicas: 3
+      replicas: 2
       ingress:
         enabled: true
         ingressClassName: cilium
         annotations:
           hajimari.io/enable: "false"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host loki.${SECRET_PUBLIC_DOMAIN}
             paths:
