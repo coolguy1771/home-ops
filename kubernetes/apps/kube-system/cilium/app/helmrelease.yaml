@@ -131,7 +131,6 @@ spec:
         ingress:
           enabled: true
           annotations:
-            # kubernetes.io/tls-acme: "true"
             kubernetes.io/ingress.class: cilium
             cert-manager.io/cluster-issuer: letsencrypt-production
           ingressClassName: cilium
@@ -159,7 +158,6 @@ spec:
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "10.42.0.0/16"
-    #ipv6NativeRoutingCIDR: "fd00:42::/64"
     monitor:
       enabled: false
     prometheus:
@@ -181,11 +179,10 @@ spec:
       serviceTopology: true
     l7Proxy: true
     localRedirectPolicy: true
-    #enableIPv6BIGTCP: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     k8sServiceHost: localhost
     k8sServicePort: 7445
-    kubeProxyReplacement: strict
+    kubeProxyReplacement: true
     logOptions:
       format: json
     cgroup:
