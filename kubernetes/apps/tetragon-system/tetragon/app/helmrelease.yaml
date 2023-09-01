@@ -67,7 +67,7 @@ spec:
       image:
         override: ~
         repository: quay.io/cilium/tetragon-operator
-        tag: v0.10.0
+        tag: v0.11.0
         # tetragon-operator image-digest
         suffix: ""
       # Skip CRD creation.
