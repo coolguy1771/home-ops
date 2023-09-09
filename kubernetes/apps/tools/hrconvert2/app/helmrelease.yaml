@@ -32,8 +32,8 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: docker.io/dwaaan/hrconvert2-docker@sha256:b893624e4b4dad46469b30a1d094557670db1af3374394b4a4a60324df570652
-      tag: v1.23.1
+      repository: docker.io/dwaaan/hrconvert2-docker
+      tag: latest@sha256:b893624e4b4dad46469b30a1d094557670db1af3374394b4a4a60324df570652
     service:
       main:
         ports:
