@@ -66,7 +66,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: hrconvert2-configmap # overriden by kustomizeconfig
+        name: hrconvert2-config-configmap # overriden by kustomizeconfig
         subPath: config.php
         mountPath: /var/www/html/HRProprietary/HRConvert2/config.php
         readOnly: true
