@@ -3,7 +3,7 @@ clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: v1.5.0
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.27.4
+kubernetesVersion: v1.28.1
 additionalMachineCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
@@ -198,15 +198,16 @@ nodes:
               - image: ghcr.io/siderolabs/intel-ucode:20230214
               - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
               - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.54.03-v1.5.0
-      - |-
-        - op: add
-          path: /machine/kernel
-          value:
-            modules:
-              - name: nvidia
-              - name: nvidia_uvm
-              - name: nvidia_drm
-              - name: nvidia_modeset
+              - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.54.03-v1.13.5
+      # - |-
+      #   - op: add
+      #     path: /machine/kernel
+      #     value:
+      #       modules:
+      #         - name: nvidia
+      #         - name: nvidia_uvm
+      #         - name: nvidia_drm
+      #         - name: nvidia_modeset
       - |-
         - op: add
           path: /machine/sysctls
@@ -274,7 +275,7 @@ controlPlane:
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
-            - "talos.logging.kernel=udp://10.42.0.6:6050/"
+            - "talos.logging.kernel=udp://10.0.42.6:6050/"
             - "cpufreq.default_governor=performance"
         logging:
           destinations:
@@ -323,7 +324,7 @@ worker:
               SHUTDOWNCMD "/sbin/poweroff"
         install:
           extraKernelArgs:
-            - "talos.logging.kernel=udp://10.42.0.6:6050/"
+            - "talos.logging.kernel=udp://10.0.42.6:6050/"
             - "cpufreq.default_governor=performance"
         logging:
           destinations:
