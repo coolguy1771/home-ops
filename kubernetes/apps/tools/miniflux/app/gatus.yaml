@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: miniflux-gatus-ep
-  namespace: default
+  namespace: tools
   labels:
     gatus.io/enabled: "true"
 data:
