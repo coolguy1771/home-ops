@@ -24,7 +24,9 @@ spec:
               values: ["will-match-and-announce-all-services"],
             }
       neighbors:
-        - peerAddress: "10.10.0.1/32" # unlike bgp-config ConfigMap, peerAddress needs to be in CIDR notation
+        - peerAddress: "10.1.237.1/32" # unlike bgp-config ConfigMap, peerAddress needs to be in CIDR notation
+          peerASN: 64512
+        - peerAddress: "10.1.237.4/32" # unlike bgp-config ConfigMap, peerAddress needs to be in CIDR notation
           peerASN: 64512
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/cilium.io/ciliumloadbalancerippool_v2alpha1.json

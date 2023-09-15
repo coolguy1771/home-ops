@@ -52,7 +52,7 @@ spec:
       # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
       enabled: true
       # -- Activate BBR TCP congestion control for Pods
-      bbr: false
+      bbr: true
     pmtuDiscovery:
       enabled: true
     bpf:
@@ -75,7 +75,7 @@ spec:
       defaultSecretName: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
       defaultSecretNamespace: networking
     gatewayAPI:
-      enabled: false
+      enabled: true
     bgpControlPlane:
       enabled: true
     l2announcements:
@@ -157,7 +157,7 @@ spec:
       status: "policy"
     ipam:
       mode: kubernetes
-    ipv4NativeRoutingCIDR: "10.42.0.0/16"
+    ipv4NativeRoutingCIDR: "10.96.0.0/12"
     monitor:
       enabled: false
     prometheus:
