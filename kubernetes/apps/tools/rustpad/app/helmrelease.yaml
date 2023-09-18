@@ -36,7 +36,7 @@ spec:
       tag: latest@sha256:f4c51a674c21e764d7ab9a77294359cce239d4b714bedcfe039a75087d0c4a83
     env:
       EXPIRY_DAYS: 5
-      SQLITE_URI: file:/db/db.sqlite;Version=3;
+      #SQLITE_URI: file:/db/db.sqlite;Version=3;
     service:
       main:
         ports:
