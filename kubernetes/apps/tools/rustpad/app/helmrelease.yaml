@@ -46,6 +46,7 @@ spec:
       db:
       # -- Enables or disables the persistence item
         enabled: true
+        accessMode: ReadWriteOnce
         type: pvc
         size: 10Gi
     ingress:
