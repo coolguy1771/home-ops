@@ -45,9 +45,9 @@ spec:
     persistence:
       db:
       # -- Enables or disables the persistence item
-      enabled: true
-      type: pvc
-      size: 10Gi
+        enabled: true
+        type: pvc
+        size: 10Gi
     ingress:
       main:
         enabled: true
