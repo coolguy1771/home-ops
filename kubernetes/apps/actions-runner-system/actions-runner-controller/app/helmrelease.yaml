@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
@@ -28,5 +27,3 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
-    fullnameOverride: gha-runner-scale-set-controller

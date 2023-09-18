@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controllerServiceAccount:
+      name: actions-runner-controller-gha-rs-controller
     runnerScaleSetName: arc-runner-set-home-ops
     githubConfigUrl: https://github.com/coolguy1771/home-ops
     minRunners: 1
