@@ -8,3 +8,4 @@ resources:
   - ./excalidraw/ks.yaml
   - ./kubernetes-schemas/ks.yaml
   - ./miniflux/ks.yaml
+  - ./rustpad/ks.yaml
