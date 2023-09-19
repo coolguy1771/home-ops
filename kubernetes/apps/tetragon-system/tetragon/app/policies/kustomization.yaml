@@ -3,5 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./policies
-  - ./helmrelease.yaml
+  - ./cve-2023-2640-overlayfs-ubuntu.yaml
+  - ./monitor-kernel-modules.yaml
+  - ./monitor-signed-kernel-modules.yaml
