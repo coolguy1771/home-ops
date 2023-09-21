@@ -262,7 +262,7 @@ spec:
               tolerations: []
             server:
               # -- SPIRE server image
-              image: ghcr.io/spiffe/spire-server:1.7.2@sha256:4685437eb7c285390f729463107cb5824906111844d49c149659b44e766380cd
+              image: ghcr.io/spiffe/spire-server:1.8.0@sha256:91d3572a18c04abb4b117b8401548998c126330f169d3d283e1b613d4c0eb040
               # -- SPIRE server service account
               serviceAccount:
                 create: true
