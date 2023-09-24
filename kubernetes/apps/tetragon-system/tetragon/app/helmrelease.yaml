@@ -23,6 +23,7 @@ spec:
     remediation:
       retries: 5
   values:
+    hostNetwork: true
     tetragon:
       # Allowlist for JSON export. For example, to export only process_connect events from
       # the default namespace:
@@ -31,9 +32,15 @@ spec:
       #   {"namespace":["default"],"event_set":["PROCESS_EXEC"]}
       exportAllowList: |-
         {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE", "PROCESS_UPROBE"]}
+      # Denylist for JSON export. For example, to exclude exec events that look similar to
+      # Kubernetes health checks and all the events from kube-system namespace and the host:
+      #
+      # exportDenyList: |
+      #   {"health_check":true}
+      #   {"namespace":["kube-system",""]}
+      #
       exportDenyList: |-
         {"health_check":true}
-        {"namespace":[""]}
       # Filters to include or exclude fields from Tetragon events. Without any filters, all
       # fields are included by default. The presence of at least one inclusion filter implies
       # default-exclude (i.e. any fields that don't match an inclusion filter will be
@@ -58,5 +65,47 @@ spec:
       enableProcessCred: true
       # enableProcessNs enables Namespaces visibility in exec and kprobe events.
       enableProcessNs: true
-    podWatcher:
-      enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          # -- Whether to create a 'ServiceMonitor' resource targeting the 'tetragon' pods.
+      # Enable policy filter. This is required for K8s namespace filtering.
+      # NB: this is currently a beta feature
+      enablePolicyFilter: true
+      # Enable policy filter debug messages.
+      enablePolicyFilterDebug: true
+      # Enable latency monitoring in message handling
+      enableMsgHandlingLatency: true
+    tetragonOperator:
+      podInfo:
+        # -- Enables the PodInfo CRD and the controller that reconciles PodInfo
+        # custom resources.
+        enabled: true
+    export:
+      stdout:
+        extraEnv: []
+        # extraEnv:
+        #   - name: foo
+        #     value: bar
+
+        # * When enabledCommand=true and commandOverride is not set, the command inserted will be hubble-export-stdout.
+        #   This supports the default for the current deployment instructions to deploy stdout-export sidecar container.
+        # * When enabledCommand=true and commandOverride override is set, the command inserted will be the value of commandOverride.
+        #   This is useful for inserting another sidecar container that requires a command override.
+        # * When enabledCommand=false, no command will be specified in the manifest and container's default command will take over.
+        enabledCommand: true
+        # * When enabledArgs=true and argsOverride is not set, the args inserted will be the default ones for export-stdout.
+        # * When enabledArgs=true and argsOverride override is set, the args value inserted will be the value of argsOverride.
+        #   This is useful for inserting another sidecar container that requires args override.
+        # * When enabledArgs=false, no command will be specified in the manifest and container's default args value will take over.
+        enabledArgs: true
+        # specific manifest command to use
+        commandOverride: []
+        # specific manifest args to use
+        argsOverride: []
+        # Extra volume mounts to add to stdout export pod
+        extraVolumeMounts: []
+        image:
+          override: ~
+          repository: quay.io/cilium/hubble-export-stdout
+          tag: v1.0.3
