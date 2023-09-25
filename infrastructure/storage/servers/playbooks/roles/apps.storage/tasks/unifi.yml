@@ -23,7 +23,7 @@
     recreate: true
     privileged: false
     state: started
-    image: docker.io/linuxserver/unifi-controller:7.5.174
+    image: docker.io/linuxserver/unifi-controller:7.5.176
     restart_policy: unless-stopped
     env:
       PUID: 1000
