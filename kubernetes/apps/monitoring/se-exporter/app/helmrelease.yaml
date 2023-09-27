@@ -35,12 +35,12 @@ spec:
     image:
       repository: ghcr.io/coolguy1771/se-exporter
       tag: rolling@sha256:ebc28611864e5587591f4daa8b198eecb79941dda787ccae2657b53f8efca906
-    args: ["--config", "/config.yaml"]
+    args: ["/usr/bin/se-exporter", "--config", "/config.yaml"]
     service:
       main:
         ports:
           http:
-            port: 9122
+            port: 9100
     persistence:
       config:
         enabled: true
