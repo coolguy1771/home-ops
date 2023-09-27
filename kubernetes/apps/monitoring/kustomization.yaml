@@ -12,6 +12,7 @@ resources:
   - ./kube-state-metrics/ks.yaml
   - ./loki/ks.yaml
   - ./node-exporter/ks.yaml
+  - ./se-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./snmp-exporter/ks.yaml
   - ./tempo/ks.yaml

@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app se-exporter
+  namespace: monitoring
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      replicas: 1
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/coolguy1771/se-exporter
+      tag: rolling@sha256:ebc28611864e5587591f4daa8b198eecb79941dda787ccae2657b53f8efca906
+    args: ["--config", "/config.yaml"]
+    service:
+      main:
+        ports:
+          http:
+            port: 9122
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: se-exporter-configmap # overriden by kustomizeconfig
+        subPath: config.yaml
+        mountPath: /config.yaml
+        readOnly: true
