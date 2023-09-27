@@ -7,9 +7,3 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./scrapeconfig.yaml
-configMapGenerator:
-  - name: se-exporter-configmap
-    files:
-      - config.yaml=./config/config.yaml
-configurations:
-  - ./patches/kustomizeconfig.yaml

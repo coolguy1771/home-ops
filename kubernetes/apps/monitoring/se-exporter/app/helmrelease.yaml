@@ -35,17 +35,22 @@ spec:
     image:
       repository: ghcr.io/coolguy1771/se-exporter
       tag: rolling@sha256:ebc28611864e5587591f4daa8b198eecb79941dda787ccae2657b53f8efca906
-    args: ["/usr/bin/se-exporter", "--config", "/config.yaml"]
+    args: [
+      "/usr/bin/se-exporter",
+      "-h",
+      "$(SE_EXPORTER_ADDR)",
+      "-p",
+      "10196",
+      "--listen-port",
+      "9100",
+      "--token",
+      "$(SE_EXPORTER_TOKEN)",
+      "--run-async"]
+    envFrom:
+      - secretRef:
+          name: se-exporter-secret
     service:
       main:
         ports:
           http:
             port: 9100
-    persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: se-exporter-configmap # overriden by kustomizeconfig
-        subPath: config.yaml
-        mountPath: /config.yaml
-        readOnly: true
