@@ -236,7 +236,7 @@ spec:
           url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
           datasource: Prometheus
         space-engineers:
-          url: https://raw.githubusercontent.com/akimrx/space-engineers-exporter/master/grafana/dashboard.json
+          url: https://raw.githubusercontent.com/coolguy1771/home-ops/main/kubernetes/apps/monitoring/se-exporter/app/dashboard/dashboard.json
           datasource: Prometheus
       ceph:
         ceph-cluster:
