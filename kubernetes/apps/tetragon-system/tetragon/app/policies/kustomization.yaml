@@ -1,8 +1,0 @@
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./cve-2023-2640-overlayfs-ubuntu.yaml
-  - ./monitor-kernel-modules.yaml
-  - ./monitor-signed-kernel-modules.yaml
