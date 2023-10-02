@@ -99,7 +99,7 @@ spec:
       extraArgs:
         default-ssl-certificate: |-
           networking/${SECRET_PUBLIC_DOMAIN/./-}-tls
-        default-backend-service: nginx-external-defaultbackend
+        default-backend-service: networking/nginx-external-defaultbackend
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
