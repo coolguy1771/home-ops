@@ -18,7 +18,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -28,8 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: local-path-provisioner
-      namespace: storage
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
@@ -66,7 +63,7 @@ spec:
                 period: 24h
         common:
           path_prefix: /var/loki
-          replication_factor: 3
+          replication_factor: 2
           storage:
             s3:
               s3: null
@@ -78,7 +75,7 @@ spec:
         ruler:
           enable_api: true
           enable_alertmanager_v2: true
-          alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
+          alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
           storage:
             type: local
             local:
@@ -108,11 +105,12 @@ spec:
           reporting_enabled: false
     gateway:
       replicas: 2
+      image:
+        registry: ghcr.io
       ingress:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/enable: "false"
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host loki.${SECRET_PUBLIC_DOMAIN}
@@ -124,6 +122,7 @@ spec:
               - *host
             secretName: loki.${SECRET_PUBLIC_DOMAIN}
     read:
+      replicas: 2
       persistence:
         storageClass: ceph-block
       extraVolumeMounts:
@@ -133,9 +132,11 @@ spec:
         - name: rules
           emptyDir: {}
     write:
+      replicas: 2
       persistence:
         storageClass: ceph-block
     backend:
+      replicas: 2
       persistence:
         storageClass: ceph-block
       extraVolumeMounts:
@@ -152,9 +153,7 @@ spec:
     monitoring:
       dashboards:
         annotations:
-          kustomize.toolkit.fluxcd.io/substitute: disabled
-        labels:
-          grafana_dashboard: "true"
+          grafana_folder: Loki
       serviceMonitor:
         enabled: false
         metricsInstance:

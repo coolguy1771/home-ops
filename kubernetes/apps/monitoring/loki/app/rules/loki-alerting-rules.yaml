@@ -1,0 +1,93 @@
+---
+groups:
+  #
+  # SMART Failures
+  #
+  - name: smart-failure
+    rules:
+      - alert: SmartFailures
+        expr: |
+          sum by (hostname) (count_over_time({hostname=~".+"} | json | _SYSTEMD_UNIT = "smartmontools.service" !~ "(?i)previous self-test completed without error" !~ "(?i)Prefailure" |~ "(?i)(error|fail)"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          hostname: "{{ $labels.hostname }}"
+          summary: "{{ $labels.hostname }} has reported SMART failures"
+
+  #
+  # *arr
+  #
+  - name: arr
+    rules:
+      - alert: ArrDatabaseIsLocked
+        expr: |
+          sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database is locked"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is experiencing locked database issues"
+
+      - alert: ArrDatabaseIsMalformed
+        expr: |
+          sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database disk image is malformed"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
+
+      - alert: ArrFailedToAddTorrent
+        expr: |
+          avg by (app, message) (count_over_time({app=~".*arr"} |~ "(?i)Couldn't add report to download queue" | json [30m])) > 0
+        for: 2m
+        labels:
+          severity: warning
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.message }}"
+
+      - alert: ArrNetworkIsUnhealthy
+        expr: |
+          sum by (app) (count_over_time({app="autobrr"} |~ "(?i)network unhealthy"[15m])) > 0
+        for: 2m
+        labels:
+          severity: warning
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} has a unhealthy network"
+
+      - alert: ArrJobRaisedException
+        expr: |
+          sum by (app) (count_over_time({app="bazarr"} |~ "(?i)Job(.+)Update(.+)from(.+)raised an exception"[1h])) > 0
+        for: 2m
+        labels:
+          severity: warning
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is raising job exceptions"
+
+  #
+  # plex
+  #
+  - name: plex
+    rules:
+      - alert: PlexDatabaseIsBusy
+        expr: |
+          sum by (app) (count_over_time({app="plex"} |~ "(?i)retry busy DB"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is experiencing database issues"
