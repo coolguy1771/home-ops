@@ -1,9 +1,9 @@
 ---
 clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.5.0
+talosVersion: v1.5.3
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.28.1
+kubernetesVersion: v1.28.2
 additionalMachineCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
@@ -199,15 +199,15 @@ nodes:
               - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.4.6
               - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.54.03-v1.5.0
               - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.54.03-v1.13.5
-      # - |-
-      #   - op: add
-      #     path: /machine/kernel
-      #     value:
-      #       modules:
-      #         - name: nvidia
-      #         - name: nvidia_uvm
-      #         - name: nvidia_drm
-      #         - name: nvidia_modeset
+      - |-
+        - op: add
+          path: /machine/kernel
+          value:
+            modules:
+              - name: nvidia
+              - name: nvidia_uvm
+              - name: nvidia_drm
+              - name: nvidia_modeset
       - |-
         - op: add
           path: /machine/sysctls
@@ -287,7 +287,7 @@ controlPlane:
         time:
           disabled: false
           servers:
-            - 10.10.0.1
+            - 10.1.237.1
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
@@ -336,4 +336,4 @@ worker:
         time:
           disabled: false
           servers:
-            - 10.10.0.1
+            - 10.1.237.1

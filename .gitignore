@@ -3,6 +3,7 @@
 Thumbs.db
 # temp folders
 .private/
+.venv/
 # ansible
 xanmanning.k3s*
 # terraform

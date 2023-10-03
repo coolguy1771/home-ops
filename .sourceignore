@@ -3,6 +3,10 @@
 /.taskfiles/
 /.vscode/
 /ansible/
+/docs/
+/provision/
+/pulumi/
+/talos/
 /hack/
 /kubernetes/
 /terraform/

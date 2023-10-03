@@ -11,7 +11,7 @@ _... managed with Flux, Renovate and GitHub Actions_ 🤖
 <div align="center">
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/k8s-at-home)
-[![Kubernetes](https://img.shields.io/badge/v1.26-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://talos.dev/)
+[![Kubernetes](https://img.shields.io/badge/v1.28-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://talos.dev/)
 [![Renovate](https://img.shields.io/github/actions/workflow/status/coolguy1771/home-ops/renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/coolguy1771/home-ops/actions/workflows/renovate.yaml)
 
 </div>
@@ -32,10 +32,8 @@ There is a template over at [onedr0p/flux-cluster-template](https://github.com/o
 
 My cluster is [talos](https://talos.dev) provisioned overtop bare-metal. This is a semi hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate server for (NFS) file storage.
 
-🔸 _[Click here](./ansible/) to see my Ansible playbooks and roles._
 
 ### Core Components
-
 
 - [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted Github runners.
 - [cilium/cilium](https://github.com/cilium/cilium): Internal Kubernetes networking plugin.
@@ -73,7 +71,7 @@ Below is a a high level look at the layout of how my directory structure with Fl
 
 ```python
 # Key: <kind> :: <metadata.name>
-GitRepository :: home-ops-kubernetes
+GitRepository :: home-kubernetes
     Kustomization :: cluster
         Kustomization :: cluster-apps
             Kustomization :: cluster-apps-authelia
@@ -95,16 +93,14 @@ GitRepository :: home-ops-kubernetes
 
 | Name                                          | CIDR              |
 |-----------------------------------------------|-------------------|
-| Management VLAN                               | `192.168.1.0/24`  |
+| Management VLAN                               | `10.1.237.0/24`  |
 | Kubernetes Nodes VLAN                         | `10.10.10.0/24` |
 | Kubernetes external services (Cilium w/ BGP)  | `10.0.42.0/24` |
 | Kubernetes pods                               | `10.42.0.0/16`    |
 | Kubernetes services                           | `10.43.0.0/16`    |
 
-- HAProxy configured on my `Opnsense` router for the Kubernetes Control Plane Load Balancer.
-- Cilium configured with `loadbalancerIPs` to expose Kubernetes services with their own IP over BGP (w/ECMP) which is configured on my router.
-
-🔸 _[Click here](https://onedr0p.github.io/home-ops/notes/opnsense.html) to review how I configured HAProxy and BGP on Opnsense._
+- HAProxy configured on my `Vyos` router for the Kubernetes Control Plane Load Balancer.
+- Cilium configured with `loadBalancerIPs` to expose Kubernetes services with their own IP over BGP (w/ECMP) which is configured on my router.
 
 ---
 
@@ -122,57 +118,37 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 | [1Password](https://1password.com/)          | Secrets with [External Secrets](https://external-secrets.io/)     | ~$65/yr        |
 | [Terraform Cloud](https://www.terraform.io/) | Storing Terraform state                                           | Free           |
 | [B2 Storage](https://www.backblaze.com/b2)   | Offsite application backups                                       | ~$5/mo         |
-| [UptimeRobot](https://uptimerobot.com/)      | Monitoring internet connectivity and external facing applications | ~$85/yr        |
 | [Pushover](https://pushover.net/)            | Kubernetes Alerts and application notifications                   | Free           |
 | [NextDNS](https://nextdns.io/)               | My routers DNS server which includes AdBlocking                   | ~20/yr         |
-|                                              |                                                                   | Total: ~$30/mo |
+|                                              |                                                                   | Total: ~$18/mo |
 
 ---
 
 ## 🌐 DNS
 
-<details>
-  <summary>Click to see a diagram of how I conquer DNS!</summary>
+### Home DNS
 
-  <img src="https://raw.githubusercontent.com/onedr0p/home-ops/main/docs/src/assets/dns.png" align="center" width="600px" alt="dns"/>
-</details>
+On my Vyos router I have [Bind9](https://github.com/isc-projects/bind9) and [dnsdist](https://dnsdist.org/) deployed as containers. In my cluster `external-dns` is deployed with the `RFC2136` provider which syncs DNS records to `bind9`.
 
-### Ingress Controller
+Downstream DNS servers configured in `dnsdist` such as `bind9` (above) and [NextDNS](https://nextdns.io/). All my clients use `dnsdist` as the upstream DNS server, this allows for more granularity with configuring DNS across my networks. These could be things like giving each of my VLANs a specific `nextdns` profile, or having all requests for my domain forward to `bind9` on certain networks, or only using `1.1.1.1` instead of `nextdns` on certain networks where adblocking isn't needed.
 
-Over WAN, I have port forwarded ports `80` and `443` to the load balancer IP of my ingress controller that's running in my Kubernetes cluster.
+### Public DNS
 
-[Cloudflare](https://www.cloudflare.com/) works as a proxy to hide my homes WAN IP and also as a firewall. When not on my home network, all the traffic coming into my ingress controller on port `80` and `443` comes from Cloudflare. In `Vyos` I block all IPs not originating from the [Cloudflares list of IP ranges](https://www.cloudflare.com/ips/).
+Outside the `external-dns` instance mentioned above another instance is deployed in my cluster and configure to sync DNS records to [Cloudflare](https://www.cloudflare.com/). The only ingresses this `external-dns` instance looks at to gather DNS records to put in `Cloudflare` are ones that have an ingress class name of `external` and an ingress annotation of `external-dns.alpha.kubernetes.io/target`.
 
-### Internal DNS
-
-[CoreDNS](https://github.com/coredns/coredns) is deployed on my `Vyos` router and listening on `:53`. All DNS queries for _**my**_ domains are forwarded to [k8s_gateway](https://github.com/ori-edge/k8s_gateway) that is running in my cluster. With this setup `k8s_gateway` has direct access to my clusters ingresses and services and serves DNS for them in my internal network.
-
-### Ad Blocking
-
-The upstream server in CoreDNS is set to NextDNS which provides me with AdBlocking for all devices on my network.
-
-### External DNS
-
-[external-dns](https://github.com/kubernetes-sigs/external-dns) is deployed in my cluster and configure to sync DNS records to [Cloudflare](https://www.cloudflare.com/). The only ingresses `external-dns` looks at to gather DNS records to put in `Cloudflare` are ones that I explicitly set an annotation of `external-dns.home.arpa/enabled: "true"`
-
-🔸 _[Click here](./terraform/cloudflare) to see how else I manage Cloudflare with Terraform._
-
-### Dynamic DNS
-
-My home IP can change at any given time and in order to keep my WAN IP address up to date on Cloudflare. I have deployed a [CronJob](./kubernetes/apps/networking/ddns) in my cluster, this periodically checks and updates the `A` record `ipv4.domain.tld`.
-
----
 
 ## 🔧 Hardware
 
 | Device                   | Count | OS Disk Size | Data Disk Size          | Ram  | Operating System | Purpose                  |
 | ------------------------ | ----- | ------------ | ----------------------- | ---- | ---------------- | ------------------------ |
-| Supermicro SYS-510T-ML   | 1     | 256GB NVMe   | N/A                     | 8GB  | Vyos             | Router                   |
-| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Talos            | Kubernetes (k3s) Master  |
-| Dell Optiplex 3080 Micro | 2     | 250GB SSD    | N/A                     | 16GB | Talos            | Kubernetes (k3s) Master  |
-| Lenovo M910q Tiny        | 2     | 512GB NVMe   | 500Gb SSD (rook-ceph)   | 16GB | Talos            | Kubernetes (k3s) Worker  |
-| HP EliteDesk 800 G4 SFF  | 2     | 240GB NVMe   | 500Gb SSD (rook-ceph)   | 16GB | Talos            | Kubernetes (k3s) Worker  |
-| HP DL160 G10             | 1     | 500GB SSD    | 16TB zfs mirror         | 64GB | Ubuntu 22.04     | Shared file storage      |
+| Supermicro SYS-510T-ML   | 1     | 256GB NVMe   | N/A                     | 16GB | Vyos             | Router                   |
+| Dell Optiplex 3060 Micro | 1     | 240GB SSD    | N/A                     | 32GB | Talos            | Kubernetes Master        |
+| Dell Optiplex 3080 Micro | 2     | 256GB SSD    | N/A                     | 16GB | Talos            | Kubernetes Master        |
+| Lenovo M910q Tiny        | 2     | 512GB NVMe   | 500GB SSD (rook-ceph)   | 16GB | Talos            | Kubernetes Worker        |
+| Lenovo M720q Tiny        | 2     | 480GB NVMe   | N/A                     | 16GB | Talos            | Kubernetes Worker        |
+| HP EliteDesk 800 G4 SFF  | 2     | 240GB NVMe   | 500GB SSD (rook-ceph)   | 16GB | Talos            | Kubernetes Worker        |
+| HPE DL160 G10            | 1     | 512GB SSD    | 2x6TB HDD (rook-ceph)   | 32GB | Talos            | Kubernetes Worker        |
+| HPE DL160 G10            | 1     | 500GB SSD    | 16TB zfs mirror         | 64GB | Ubuntu 22.04     | Shared file storage      |
 
 ---
 
