@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: intel-device-plugin-gpu
-      namespace: kube-system
+      namespace: gpu-system
   values:
     controller:
       type: daemonset
