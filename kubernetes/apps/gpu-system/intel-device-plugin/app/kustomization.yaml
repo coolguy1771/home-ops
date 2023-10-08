@@ -6,4 +6,4 @@ namespace: gpu-system
 resources:
   - ./exporter
   - ./gpu
-  - ./operator
+  - ./app

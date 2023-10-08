@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: intel-device-plugins-gpu
-      version: 0.28.0
+      version: 0.28.1-helm.0
       sourceRef:
         kind: HelmRepository
         name: intel
@@ -29,6 +29,6 @@ spec:
     - name: intel-device-plugin-operator
       namespace: gpu-system
   values:
-    name: intel-gpu-plugin
+    name: intel-device-plugin-gpu
     sharedDevNum: 3
     nodeFeatureRule: true
