@@ -5,12 +5,11 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ./media-pvc.yaml
   # Flux-Kustomizations
   - ./autobrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./overseerr/ks.yaml
-  - ./plex/ks.yaml
-  - ./plex-auto-languages/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
