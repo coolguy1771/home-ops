@@ -104,7 +104,7 @@ spec:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_PUBLIC_DOMAIN}"
           policy.cilium.io/proxy-visibility: "<Egress/53/UDP/DNS>, <Egress/53/TCP/DNS>, <Egress/8096/TCP/HTTP>"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
