@@ -73,7 +73,7 @@ spec:
       AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
       AUTHELIA_NOTIFIER_SMTP_HOST: smtp-relay.286k.co
       AUTHELIA_NOTIFIER_SMTP_PORT: 25
-      AUTHELIA_NOTIFIER_SMTP_SENDER: Authelia <authelia@286k.co>
+      AUTHELIA_NOTIFIER_SMTP_SENDER: Authelia <authelia@${SECRET_PUBLIC_DOMAIN}>
       AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
       AUTHELIA_SERVER_ADDRESS: tcp4://0.0.0.0:80
       AUTHELIA_SESSION_DOMAIN: ${SECRET_PUBLIC_DOMAIN}
@@ -85,7 +85,7 @@ spec:
       AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
       AUTHELIA_THEME: dark
       AUTHELIA_TOTP_ISSUER: authelia.com
-      AUTHELIA_WEBAUTHN_DISABLE: "true"
+      AUTHELIA_WEBAUTHN_DISABLE: "false"
     envFrom:
       - secretRef:
           name: authelia-secret

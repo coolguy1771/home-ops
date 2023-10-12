@@ -123,11 +123,11 @@ spec:
         backend:
           image:
             repository: "quay.io/cilium/hubble-ui-backend"
-            tag: v0.12.0
+            tag: v0.12.1
         frontend:
           image:
             repository: "quay.io/cilium/hubble-ui"
-            tag: "v0.12.0"
+            tag: "v0.12.1"
         ingress:
           enabled: true
           annotations:

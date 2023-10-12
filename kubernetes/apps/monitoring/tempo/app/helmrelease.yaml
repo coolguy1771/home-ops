@@ -35,6 +35,7 @@ spec:
       reportingEnabled: false
       metricsGenerator:
         enabled: true
+        remoteWriteUrl: "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/write"
       storage:
         trace:
           backend: s3
@@ -46,7 +47,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: nginx
+          kubernetes.io/ingress.class: cilium
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "tempo-query.${SECRET_PUBLIC_DOMAIN}"
