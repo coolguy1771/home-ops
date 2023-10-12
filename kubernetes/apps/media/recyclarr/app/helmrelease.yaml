@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -38,7 +37,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/recyclarr/recyclarr
-      tag: 5.4.3
+      tag: 6.0.1
     env:
       TZ: America/New_York
     envFrom:
