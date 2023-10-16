@@ -5,7 +5,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   #- ./cilium/ks.yaml
-  - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
