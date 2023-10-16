@@ -31,6 +31,8 @@ spec:
     csi:
       csiAddons:
         enabled: true
+      enablePluginSelinuxHostMount: true
+      enableCSIEncryption: true
       cephFSKernelMountOptions: ms_mode=secure
     monitoring:
       enabled: true
