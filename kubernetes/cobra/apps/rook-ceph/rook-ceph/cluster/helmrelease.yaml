@@ -39,7 +39,7 @@ spec:
           hajimari.io/icon: mdi:chess-rook
           cert-manager.io/cluster-issuer: letsencrypt-production
         host:
-          name: &host "rook.${SECRET_PUBLIC_DOMAIN}"
+          name: &host "rook.286k.co"
           path: /
         tls:
           - hosts:
@@ -53,9 +53,15 @@ spec:
       bdev_async_discard = true
       osd_class_update_on_start = false
     cephClusterSpec:
+      mon:
+        allowMultiplePerNode: true
+      mgr:
+        allowMultiplePerNode: true
       network:
         provider: host
         connections:
+          encryption:
+            enabled: true
           compression:
             enabled: true
           requireMsgr2: true
