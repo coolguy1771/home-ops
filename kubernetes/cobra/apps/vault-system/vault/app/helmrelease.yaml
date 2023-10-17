@@ -254,7 +254,7 @@ spec:
             ui = true
 
             listener "tcp" {
-              tls_disable = 0
+              tls_disable = 1
               address = "[::]:8200"
               cluster_address = "[::]:8201"
               # Enable unauthenticated metrics access (necessary for Prometheus Operator)
@@ -265,50 +265,16 @@ spec:
 
             storage "raft" {
               path = "/vault/data"
+                retry_join {
+                leader_api_addr = "https://vault-0.vault-internal:8200"
+                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+              }
             }
 
             service_registration "kubernetes" {}
 
-        # config is a raw string of default configuration when using a Stateful
-        # deployment. Default is to use a Consul for its HA storage backend.
-        # This should be HCL.
-
-        # Note: Configuration files are stored in ConfigMaps so sensitive data
-        # such as passwords should be either mounted through extraSecretEnvironmentVars
-        # or through a Kube secret.  For more information see:
-        # https://www.vaultproject.io/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
-        config: |
-          ui = true
-
-          listener "tcp" {
-            tls_disable = 0
-            address = "[::]:8200"
-            cluster_address = "[::]:8201"
-          }
-          storage "consul" {
-            path = "vault"
-            address = "HOST_IP:8500"
-          }
-
-          service_registration "kubernetes" {}
-
-          # Example configuration for using auto-unseal, using Google Cloud KMS. The
-          # GKMS keys must already exist, and the cluster must have a service account
-          # that is authorized to access GCP KMS.
-          #seal "gcpckms" {
-          #   project     = "vault-helm-dev-246514"
-          #   region      = "global"
-          #   key_ring    = "vault-helm-unseal-kr"
-          #   crypto_key  = "vault-helm-unseal-key"
-          #}
-
-          # Example configuration for enabling Prometheus metrics.
-          # If you are using Prometheus Operator you can enable a ServiceMonitor resource below.
-          # You may wish to enable unauthenticated metrics in the listener block above.
-          telemetry {
-            prometheus_retention_time = "30s"
-            disable_hostname = true
-          }
 
         # A disruption budget limits the number of pods of a replicated application
         # that are down simultaneously from voluntary disruptions
