@@ -35,6 +35,7 @@ spec:
         # See the top level serverTelemetry section below before enabling this feature.
         prometheusOperator: true
     injector:
+      replicas: 1
       leaderElector:
         enabled: true
       metrics:
@@ -58,8 +59,6 @@ spec:
       updateStrategyType: "OnDelete"
       logLevel: "info"
       logFormat: "json"
-
-
       # Ingress allows ingress services to be created to allow external access
       # from Kubernetes to access Vault pods.
       # If deployment is on OpenShift, the following block is ignored.
@@ -216,64 +215,6 @@ spec:
         # Annotations to apply to the PVC
         annotations: {}
 
-      # Run Vault in "dev" mode. This requires no further setup, no state management,
-      # and no initialization. This is useful for experimenting with Vault without
-      # needing to unseal, store keys, et. al. All data is lost on restart - do not
-      # use dev mode for anything other than experimenting.
-      # See https://www.vaultproject.io/docs/concepts/dev-server.html to know more
-      dev:
-        enabled: false
-
-        # Set VAULT_DEV_ROOT_TOKEN_ID value
-        devRootToken: "root"
-
-      # Run Vault in "standalone" mode. This is the default mode that will deploy if
-      # no arguments are given to helm. This requires a PVC for data storage to use
-      # the "file" backend.  This mode is not highly available and should not be scaled
-      # past a single replica.
-      standalone:
-        enabled: "-"
-
-        # config is a raw string of default configuration when using a Stateful
-        # deployment. Default is to use a PersistentVolumeClaim mounted at /vault/data
-        # and store data there. This is only used when using a Replica count of 1, and
-        # using a stateful set. This should be HCL.
-
-        # Note: Configuration files are stored in ConfigMaps so sensitive data
-        # such as passwords should be either mounted through extraSecretEnvironmentVars
-        # or through a Kube secret.  For more information see:
-        # https://www.vaultproject.io/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
-        config: |
-          ui = true
-
-          listener "tcp" {
-            tls_disable = 0
-            address = "[::]:8200"
-            cluster_address = "[::]:8201"
-            # Enable unauthenticated metrics access (necessary for Prometheus Operator)
-            telemetry {
-              unauthenticated_metrics_access = "true"
-            }
-          }
-          storage "file" {
-            path = "/vault/data"
-          }
-
-          # Example configuration for using auto-unseal, using Google Cloud KMS. The
-          # GKMS keys must already exist, and the cluster must have a service account
-          # that is authorized to access GCP KMS.
-          #seal "gcpckms" {
-          #   project     = "vault-helm-dev"
-          #   region      = "global"
-          #   key_ring    = "vault-helm-unseal-kr"
-          #   crypto_key  = "vault-helm-unseal-key"
-          #}
-
-          # Example configuration for enabling Prometheus metrics in your config.
-          telemetry {
-            prometheus_retention_time = "30s"
-            disable_hostname = true
-          }
 
       # Run Vault in "HA" mode. There are no storage requirements unless the audit log
       # persistence is required.  In HA mode Vault will configure itself to use Consul
@@ -282,7 +223,7 @@ spec:
       # different HA backend.
       ha:
         enabled: true
-        replicas: 3
+        replicas: 1
 
         # Set the api_addr configuration for Vault HA
         # See https://www.vaultproject.io/docs/configuration#api_addr
@@ -303,7 +244,7 @@ spec:
           # Enables Raft integrated storage
           enabled: true
           # Set the Node Raft ID to the name of the pod
-          setNodeId: false
+          setNodeId: true
 
           # Note: Configuration files are stored in ConfigMaps so sensitive data
           # such as passwords should be either mounted through extraSecretEnvironmentVars
@@ -437,7 +378,7 @@ spec:
       enabled: true
       publishNotReadyAddresses: true
       # The service should only contain selectors for active Vault pod
-      activeVaultPodOnly: false
+      activeVaultPodOnly: true
       serviceType: "ClusterIP"
       serviceNodePort: null
       externalPort: 8200
