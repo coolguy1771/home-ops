@@ -10,7 +10,7 @@ spec:
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: cobra-kubernetes
   wait: false
   interval: 30m
   retryInterval: 1m
