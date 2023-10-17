@@ -33,7 +33,7 @@ spec:
       external:
         enable: true
       crashCollector:
-        disable: false
+        disable: true
       healthCheck:
         daemonHealth:
           mon:
