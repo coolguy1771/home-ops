@@ -28,143 +28,25 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    monitoring:
-      enabled: true
-      createPrometheusRules: true
-    ingress:
-      dashboard:
-        ingressClassName: cilium
-        annotations:
-          hajimari.io/appName: "Rook"
-          hajimari.io/icon: mdi:chess-rook
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        host:
-          name: &host "rook.286k.co"
-          path: /
-        tls:
-          - hosts:
-              - *host
-            secretName: rook-ceph-dashboard-tls
-    toolbox:
-      enabled: true
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      osd_class_update_on_start = false
+    operatorNamespace: rook-ceph
     cephClusterSpec:
-      mon:
-        allowMultiplePerNode: true
-      mgr:
-        allowMultiplePerNode: true
-      network:
-        provider: host
-        connections:
-          encryption:
-            enabled: true
-          compression:
-            enabled: true
-          requireMsgr2: true
+      external:
+        enable: true
       crashCollector:
         disable: false
-      dashboard:
-        enabled: true
-        urlPrefix: /
-        ssl: false
-      storage:
-        useAllNodes: false
-        useAllDevices: false
-        nodes:
-          - name: venus
-            devices:
-              - name: "/dev/sdc"
-              - name: "/dev/sdd"
-              - name: "/dev/sde"
-    cephBlockPools:
-      - name: ceph-blockpool
-        spec:
-          failureDomain: osd
-          replicated:
-            size: 3
-        storageClass:
-          enabled: true
-          name: ceph-block
-          isDefault: true
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          parameters:
-            imageFormat: "2"
-            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
-    cephFileSystems:
-      - name: ceph-filesystem
-        spec:
-          metadataPool:
-            replicated:
-              size: 3
-          dataPools:
-            - failureDomain: osd
-              replicated:
-                size: 3
-              name: data0
-          metadataServer:
-            activeCount: 1
-            activeStandby: true
-            resources:
-              requests:
-                cpu: 1000m
-                memory: 4Gi
-              limits:
-                memory: 4Gi
-        storageClass:
-          enabled: true
-          isDefault: false
-          name: ceph-filesystem
-          pool: data0
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          parameters:
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
-    cephObjectStores:
-      - name: ceph-objectstore
-        spec:
-          metadataPool:
-            failureDomain: osd
-            replicated:
-              size: 3
-          dataPool:
-            failureDomain: osd
-            erasureCoded:
-              dataChunks: 2
-              codingChunks: 1
-          preservePoolsOnDelete: true
-          gateway:
-            port: 80
-            resources:
-              requests:
-                cpu: 1000m
-                memory: 1Gi
-              limits:
-                memory: 2Gi
-            instances: 2
-          healthCheck:
-            bucket:
-              interval: 60s
-        storageClass:
-          enabled: true
-          name: ceph-bucket
-          reclaimPolicy: Delete
-          parameters:
-            region: us-east-1
+      healthCheck:
+        daemonHealth:
+          mon:
+            disabled: false
+            interval: 45s
+    # -- A list of CephBlockPool configurations to deploy
+    # @default -- See [below](#ceph-block-pools)
+    cephBlockPools: {}
+
+    # -- A list of CephFileSystem configurations to deploy
+    # @default -- See [below](#ceph-file-systems)
+    cephFileSystems: {}
+
+    # -- A list of CephObjectStore configurations to deploy
+    # @default -- See [below](#ceph-object-stores)
+    cephObjectStores: {}

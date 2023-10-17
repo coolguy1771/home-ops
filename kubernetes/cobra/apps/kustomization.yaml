@@ -9,4 +9,4 @@ resources:
 #  - ./networking
   - ./rook-ceph
   #- ./trivy-system
-  #- ./vault-system
+  - ./vault-system
