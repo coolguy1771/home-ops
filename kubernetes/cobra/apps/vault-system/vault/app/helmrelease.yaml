@@ -29,7 +29,7 @@ spec:
     global:
       enabled: true
       # TLS for end-to-end encrypted transport
-      tlsDisable: false
+      tlsDisable: true
       serverTelemetry:
         # Enable integration with the Prometheus Operator
         # See the top level serverTelemetry section below before enabling this feature.
