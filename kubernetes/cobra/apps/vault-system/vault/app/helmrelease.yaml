@@ -29,7 +29,7 @@ spec:
     global:
       enabled: true
       # TLS for end-to-end encrypted transport
-      tlsDisable: true
+      tlsDisable: false
       serverTelemetry:
         # Enable integration with the Prometheus Operator
         # See the top level serverTelemetry section below before enabling this feature.
@@ -101,7 +101,22 @@ spec:
           - secretName: vault-tls
             hosts:
               - vault.286k.co
-
+      readinessProbe:
+        enabled: true
+        path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+      livenessProbe:
+        enabled: true
+        path: "/v1/sys/health?standbyok=true"
+        initialDelaySeconds: 60
+      extraEnvironmentVars:
+        VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt
+      extraVolumes:
+        - type: secret
+          name: tls-server
+        - type: secret
+          name: tls-ca
+        - type: secret
+          name: kms-creds
       # authDelegator enables a cluster role binding to be attached to the service
       # account.  This cluster role binding can be used to setup Kubernetes auth
       # method.  https://www.vaultproject.io/docs/auth/kubernetes.html
@@ -119,10 +134,10 @@ spec:
 
       # extraEnvironmentVars is a list of extra environment variables to set with the stateful set. These could be
       # used to include variables required for auto-unseal.
-      extraEnvironmentVars: {}
-        # GOOGLE_REGION: global
-        # GOOGLE_PROJECT: myproject
-        # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/myproject/myproject-creds.json
+      # extraEnvironmentVars: {}
+      #   # GOOGLE_REGION: global
+      #   # GOOGLE_PROJECT: myproject
+      #   # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/myproject/myproject-creds.json
 
       # extraSecretEnvironmentVars is a list of extra environment variables to set with the stateful set.
       # These variables take value from existing Secret objects.
@@ -135,10 +150,10 @@ spec:
       # extraVolumes is a list of extra volumes to mount. These will be exposed
       # to Vault in the path `/vault/userconfig/<name>/`. The value below is
       # an array of objects, examples are shown below.
-      extraVolumes: []
-        # - type: secret (or "configMap")
-        #   name: my-secret
-        #   path: null # default is `/vault/userconfig`
+      # extraVolumes: []
+      #   # - type: secret (or "configMap")
+      #   #   name: my-secret
+      #   #   path: null # default is `/vault/userconfig`
       # Toleration Settings for server pods
       # This should be either a multi-line string or YAML matching the Toleration array
       # in a PodSpec.
@@ -224,39 +239,20 @@ spec:
       ha:
         enabled: true
         replicas: 1
-
-        # Set the api_addr configuration for Vault HA
-        # See https://www.vaultproject.io/docs/configuration#api_addr
-        # If set to null, this will be set to the Pod IP Address
-        apiAddr: null
-
-        # Set the cluster_addr confuguration for Vault HA
-        # See https://www.vaultproject.io/docs/configuration#cluster_addr
-        # If set to null, this will be set to https://$(HOSTNAME).{{ template "vault.fullname" . }}-internal:8201
-        clusterAddr: null
-
-        # Enables Vault's integrated Raft storage.  Unlike the typical HA modes where
-        # Vault's persistence is external (such as Consul), enabling Raft mode will create
-        # persistent volumes for Vault to store data according to the configuration under server.dataStorage.
-        # The Vault cluster will coordinate leader elections and failovers internally.
         raft:
-
           # Enables Raft integrated storage
           enabled: true
           # Set the Node Raft ID to the name of the pod
           setNodeId: true
-
-          # Note: Configuration files are stored in ConfigMaps so sensitive data
-          # such as passwords should be either mounted through extraSecretEnvironmentVars
-          # or through a Kube secret.  For more information see:
-          # https://www.vaultproject.io/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
           config: |
             ui = true
 
             listener "tcp" {
-              tls_disable = 1
               address = "[::]:8200"
               cluster_address = "[::]:8201"
+              tls_cert_file = "/vault/userconfig/tls-server/fullchain.pem"
+              tls_key_file = "/vault/userconfig/tls-server/server.key"
+              tls_client_ca_file = "/vault/userconfig/tls-server/client-auth-ca.pem"
               # Enable unauthenticated metrics access (necessary for Prometheus Operator)
               telemetry {
                 unauthenticated_metrics_access = "true"
@@ -267,9 +263,9 @@ spec:
               path = "/vault/data"
                 retry_join {
                 leader_api_addr = "https://vault-0.vault-internal:8200"
-                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+                leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+                leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+                leader_client_key_file = "/vault/userconfig/tls-server/server.key"
               }
             }
 
@@ -285,51 +281,6 @@ spec:
         # replicas. If you'd like a custom value, you can specify an override here.
           maxUnavailable: null
 
-      # Definition of the serviceAccount used to run Vault.
-      # These options are also used when using an external Vault server to validate
-      # Kubernetes tokens.
-      serviceAccount:
-        # Specifies whether a service account should be created
-        create: true
-        # The name of the service account to use.
-        # If not set and create is true, a name is generated using the fullname template
-        name: ""
-        # Extra annotations for the serviceAccount definition. This can either be
-        # YAML or a YAML-formatted multi-line templated string map of the
-        # annotations to apply to the serviceAccount.
-        annotations: {}
-        # Extra labels to attach to the serviceAccount
-        # This should be a YAML map of the labels to apply to the serviceAccount
-        extraLabels: {}
-        # Enable or disable a service account role binding with the permissions required for
-        # Vault's Kubernetes service_registration config option.
-        # See https://developer.hashicorp.com/vault/docs/configuration/service-registration/kubernetes
-        serviceDiscovery:
-          enabled: true
-
-      # Settings for the statefulSet used to run Vault.
-      statefulSet:
-        # Extra annotations for the statefulSet. This can either be YAML or a
-        # YAML-formatted multi-line templated string map of the annotations to apply
-        # to the statefulSet.
-        annotations: {}
-
-        # Set the pod and container security contexts.
-        # If not set, these will default to, and for *not* OpenShift:
-        # pod:
-        #   runAsNonRoot: true
-        #   runAsGroup: {{ .Values.server.gid | default 1000 }}
-        #   runAsUser: {{ .Values.server.uid | default 100 }}
-        #   fsGroup: {{ .Values.server.gid | default 1000 }}
-        # container:
-        #   allowPrivilegeEscalation: false
-        #
-        # If not set, these will default to, and for OpenShift:
-        # pod: {}
-        # container: {}
-        securityContext:
-          pod: {}
-          container: {}
 
       # Should the server pods run on the host network
       hostNetwork: false
