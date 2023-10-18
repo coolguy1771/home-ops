@@ -36,7 +36,7 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - host: &host gitops.{SECRET_PUBLIC_DOMAIN}
+        - host: &host gitops.${SECRET_PUBLIC_DOMAIN}
           paths:
             - path: /
               pathType: Prefix
