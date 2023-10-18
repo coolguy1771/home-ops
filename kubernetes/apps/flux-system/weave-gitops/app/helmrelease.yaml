@@ -32,7 +32,7 @@ spec:
       username: admin
     ingress:
       enabled: true
-      ingressClassName: cilium
+      className: cilium
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
