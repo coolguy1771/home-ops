@@ -141,10 +141,16 @@ spec:
 
       # extraSecretEnvironmentVars is a list of extra environment variables to set with the stateful set.
       # These variables take value from existing Secret objects.
-      extraSecretEnvironmentVars: []
-        # - envName: AWS_SECRET_ACCESS_KEY
-        #   secretName: vault
-        #   secretKey: AWS_SECRET_ACCESS_KEY
+      extraSecretEnvironmentVars:
+        - envName: AWS_SECRET_ACCESS_KEY
+          secretName: vault
+          secretKey: AWS_SECRET_ACCESS_KEY
+        - envName: AWS_ACCESS_KEY_ID
+          secretName: vault
+          secretKey: AWS_ACCESS_KEY_ID
+        - envName: VAULT_AWSKMS_SEAL_KEY_ID
+          secretName: vault
+          secretKey: VAULT_AWSKMS_SEAL_KEY_ID
 
       # Deprecated: please use 'volumes' instead.
       # extraVolumes is a list of extra volumes to mount. These will be exposed
@@ -258,7 +264,9 @@ spec:
                 unauthenticated_metrics_access = "true"
               }
             }
-
+            seal "awskms" {
+              region     = "us-east-1"
+            }
             storage "raft" {
               path = "/vault/data"
                 retry_join {
