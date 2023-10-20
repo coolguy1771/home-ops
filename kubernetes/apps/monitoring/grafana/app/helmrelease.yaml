@@ -343,7 +343,8 @@ spec:
       ingressClassName: external
       annotations:
         external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
-        hajimari.io/icon: simple-icons:grafana
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        policy.cilium.io/proxy-visibility: "<Egress/53/UDP/DNS>,<Egress/80/TCP/HTTP>"
       hosts:
         - &host grafana.${SECRET_PUBLIC_DOMAIN}
       tls:
