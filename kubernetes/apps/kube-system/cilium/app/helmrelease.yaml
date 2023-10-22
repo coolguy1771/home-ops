@@ -246,7 +246,7 @@ spec:
             # SPIRE agent configuration
             agent:
               # -- SPIRE agent image
-              image: ghcr.io/spiffe/spire-agent:1.8.0@sha256:1085124f6c71e904ec302df8ff47d7cce21992015b3252898ba9d71daebdc377
+              image: ghcr.io/spiffe/spire-agent:1.8.1@sha256:93561a73a0979f849f20d32a31611e0bcfc7013ce7270cd9c554095dfd1e154e
               # -- SPIRE agent service account
               serviceAccount:
                 create: true
