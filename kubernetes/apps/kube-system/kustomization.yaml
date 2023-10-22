@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./cilium/ks.yaml
+  - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
   - ./kubelet-csr-approver/ks.yaml

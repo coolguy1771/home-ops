@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -33,11 +32,11 @@ spec:
       username: admin
     ingress:
       enabled: true
-      ingressClassName: cilium
+      className: cilium
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
       hosts:
-        - host: &host gitops.{SECRET_PUBLIC_DOMAIN}
+        - host: &host gitops.${SECRET_PUBLIC_DOMAIN}
           paths:
             - path: /
               pathType: Prefix
