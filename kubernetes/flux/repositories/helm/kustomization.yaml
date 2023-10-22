@@ -10,6 +10,7 @@ resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
+  - ./coredns.yaml
   - ./csi-driver-nfs.yaml
   - ./descheduler.yaml
   - ./dysnix.yaml

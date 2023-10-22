@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: ingress-nginx
-      version: 4.8.1
+      version: 4.8.2
       sourceRef:
         kind: HelmRepository
         name: ingress-nginx
@@ -111,9 +111,9 @@ spec:
       resources:
         requests:
           cpu: 100m
-          memory: 275Mi
+          memory: 300Mi
         limits:
-          memory: 550Mi
+          memory: 600Mi
     defaultBackend:
       enabled: true
       image:
