@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/cobra/networking/external-dns/app
+  path: ./kubernetes/cobra/apps/networking/external-dns/app
   prune: true
   sourceRef:
     kind: GitRepository
