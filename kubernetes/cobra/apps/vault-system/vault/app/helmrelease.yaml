@@ -108,15 +108,15 @@ spec:
         enabled: true
         path: "/v1/sys/health?standbyok=true"
         initialDelaySeconds: 60
-      extraEnvironmentVars:
-        VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt
-      extraVolumes:
-        - type: secret
-          name: tls-server
-        - type: secret
-          name: tls-ca
-        - type: secret
-          name: kms-creds
+      # extraEnvironmentVars:
+      #   VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt
+      # extraVolumes:
+      #   - type: secret
+      #     name: tls-server
+      #   - type: secret
+      #     name: tls-ca
+      #   - type: secret
+      #     name: kms-creds
       # authDelegator enables a cluster role binding to be attached to the service
       # account.  This cluster role binding can be used to setup Kubernetes auth
       # method.  https://www.vaultproject.io/docs/auth/kubernetes.html
@@ -256,9 +256,9 @@ spec:
             listener "tcp" {
               address = "[::]:8200"
               cluster_address = "[::]:8201"
-              tls_cert_file = "/vault/userconfig/tls-server/fullchain.pem"
-              tls_key_file = "/vault/userconfig/tls-server/server.key"
-              tls_client_ca_file = "/vault/userconfig/tls-server/client-auth-ca.pem"
+              # tls_cert_file = "/vault/userconfig/tls-server/fullchain.pem"
+              # tls_key_file = "/vault/userconfig/tls-server/server.key"
+              # tls_client_ca_file = "/vault/userconfig/tls-server/client-auth-ca.pem"
               # Enable unauthenticated metrics access (necessary for Prometheus Operator)
               telemetry {
                 unauthenticated_metrics_access = "true"
@@ -271,9 +271,9 @@ spec:
               path = "/vault/data"
                 retry_join {
                 leader_api_addr = "https://vault-0.vault-internal:8200"
-                leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
-                leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
-                leader_client_key_file = "/vault/userconfig/tls-server/server.key"
+                # leader_ca_cert_file = "/vault/userconfig/tls-ca/ca.crt"
+                # leader_client_cert_file = "/vault/userconfig/tls-server/server.crt"
+                # leader_client_key_file = "/vault/userconfig/tls-server/server.key"
               }
             }
 
