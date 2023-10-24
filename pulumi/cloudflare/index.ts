@@ -5,7 +5,6 @@ export async function getIpv4Address() {
   return await fetch("http://ipv4.icanhazip.com").then(response => response.text()).then(text => text.trim());
 }
 
-
 const ipv4Address = getIpv4Address().then(ipv4Address => ipv4Address)
 
 pulumi.log.debug(`IPV4 Address: ${ipv4Address}`)
