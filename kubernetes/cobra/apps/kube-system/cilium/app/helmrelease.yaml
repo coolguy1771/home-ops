@@ -23,6 +23,8 @@ spec:
     remediation:
       retries: 5
   values:
+    securityContext:
+      privileged: true
     autoDirectNodeRoutes: true
     annotateK8sNode: true
     cluster:
