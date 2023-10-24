@@ -128,7 +128,7 @@ spec:
 
       persistence:
         enabled: true
-        existingClaim: "ceph-block"
+        existingClaim: "guardian-db"
 
       container:
         port: 5432
