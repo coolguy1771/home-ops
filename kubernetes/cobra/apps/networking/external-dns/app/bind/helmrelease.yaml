@@ -28,6 +28,7 @@ spec:
   values:
     fullnameOverride: *app
     provider: rfc2136
+    logFormat: json
     env:
       - name: EXTERNAL_DNS_RFC2136_HOST
         value: "10.10.254.8"
@@ -50,7 +51,7 @@ spec:
             name: external-dns-bind-secret
             key: rndc-secret
     policy: sync
-    sources: ["ingress", "service"]
+    sources: ["ingress", "service", "gateway-httproute", "gateway-grpcroute", "gateway-tlsroute", "gateway-tcproute", "gateway-udproute"]
     txtOwnerId: default
     txtPrefix: k8s.
     domainFilters: ["286k.co"]
