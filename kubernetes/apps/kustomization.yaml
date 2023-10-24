@@ -11,7 +11,7 @@ resources:
   - ./flux-system
   - ./gpu-system
   - ./kube-system
-  - ./kyverno
+  # - ./kyverno
   - ./media
   - ./monitoring
   - ./networking
