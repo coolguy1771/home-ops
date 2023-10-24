@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: kube-guardian
-      version: 0.0.5
+      version: 0.0.6
       sourceRef:
         kind: HelmRepository
         name: xentra
@@ -127,7 +127,7 @@ spec:
         sha: ""
 
       persistence:
-        enabled: false
+        enabled: true
         existingClaim: "guardian-db"
 
       container:
