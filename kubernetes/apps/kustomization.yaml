@@ -20,3 +20,4 @@ resources:
   - ./tetragon-system
   - ./tools
   - ./volsync
+  - ./xentra

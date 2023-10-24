@@ -34,3 +34,4 @@ resources:
   - ./stakater.yaml
   - ./stevehipwell.yaml
   - ./weaveworks.yaml
+  - ./xentra.yaml
