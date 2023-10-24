@@ -127,7 +127,7 @@ spec:
         sha: ""
 
       persistence:
-        enabled: true
+        enabled: false
         existingClaim: "guardian-db"
 
       container:
