@@ -50,9 +50,9 @@ spec:
       name: home
     bandwidthManager:
       # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
-      enabled: true
+      enabled: false
       # -- Activate BBR TCP congestion control for Pods
-      bbr: true
+      bbr: false
     pmtuDiscovery:
       enabled: true
     bpf:
