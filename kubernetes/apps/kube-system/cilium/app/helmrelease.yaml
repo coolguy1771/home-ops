@@ -58,7 +58,7 @@ spec:
     bpf:
       clockProbe: true
       lbExternalClusterIP: true
-      masquerade: true
+      masquerade: false
       tproxy: true
     containerRuntime:
       integration: containerd
