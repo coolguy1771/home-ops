@@ -39,6 +39,10 @@ spec:
         pullPolicy: Always
         tag: "latest"
         # -- Overrides the image tag.
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
     broker:
       # -- Number of broker replicas to deploy
       replicaCount: 1
