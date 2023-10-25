@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-  path: ./kubernetes/apps/xentra/kube-guardian/app
+  path: ./kubernetes/apps/kube-guardian/kube-guardian/app
   prune: true
   sourceRef:
     kind: GitRepository
