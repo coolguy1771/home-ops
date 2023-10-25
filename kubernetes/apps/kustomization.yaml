@@ -20,4 +20,4 @@ resources:
   - ./tetragon-system
   - ./tools
   - ./volsync
-  - ./xentra
+  - ./kube-guardian
