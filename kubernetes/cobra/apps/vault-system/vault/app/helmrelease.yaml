@@ -340,7 +340,7 @@ spec:
 
       image:
         repository: "hashicorp/vault-csi-provider"
-        tag: "1.4.0"
+        tag: "1.4.1"
         pullPolicy: IfNotPresent
 
       # volumes is a list of volumes made available to all containers. These are rendered
