@@ -1,0 +1,52 @@
+---
+#yaml-language-server: $schema=https://json.schemastore.org/kustomiz
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: talos-backup
+spec:
+  schedule: "0/10 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: talos-backup
+              image: ghcr.io/siderolabs/talos-backup:v0.1.0-alpha.0-2-gc9d9843
+              workingDir: /tmp
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - secretRef:
+                    name: talos-backup-secret
+                    optional: false
+              env:
+                - name: AWS_REGION
+                  value: us-east-1
+                # CUSTOM_S3_ENDPOINT is optional; if omitted the service will fallback to default AWS endpoints.
+                - name: CUSTOM_S3_ENDPOINT
+                  value: http://s3.286k.co
+                - name: BUCKET
+                  value: talos-backup
+                - name: AGE_X25519_PUBLIC_KEY
+                  value: "age158nn04az600a9t2s7ysudzm3x3f0amtrc74kpu4q9u8mhaycp3es6nqete"
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
+                capabilities:
+                  drop:
+                    - ALL
+                seccompProfile:
+                  type: RuntimeDefault
+              command:
+              - /talos-backup
+              volumeMounts:
+              - mountPath: /tmp
+                name: tmp
+              - mountPath: /var/run/secrets/talos.dev
+                name: talos-secrets
+          restartPolicy: OnFailure
+          volumes:
+          - emptyDir: {}
+            name: tmp
