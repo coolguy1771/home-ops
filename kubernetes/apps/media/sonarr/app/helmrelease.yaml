@@ -94,7 +94,7 @@ spec:
       main:
         enabled: true
         parentRefs:
-          - name: cilium
+          - name: tls-gateway
             namespace: kube-system
         hostnames:
           - &host "sonarr.${SECRET_PUBLIC_DOMAIN}"
