@@ -29,7 +29,7 @@ spec:
                 - name: BUCKET
                   value: talos-backup
                 - name: AGE_X25519_PUBLIC_KEY
-                  value: "age15uzrw396e67z9wdzsxzdk7ka0g2gr3l460e0slaea563zll3hdfqwqxdta"
+                  value: "age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9"
               securityContext:
                 runAsUser: 1000
                 runAsGroup: 1000
