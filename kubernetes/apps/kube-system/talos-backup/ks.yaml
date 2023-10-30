@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-talos-backup
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/kube-system/talos-backupp/app
+  path: ./kubernetes/apps/kube-system/talos-backup/app
   prune: true
   sourceRef:
     kind: GitRepository
