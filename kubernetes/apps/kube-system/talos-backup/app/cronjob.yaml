@@ -4,6 +4,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: talos-backup
+  namespace: kube-system
 spec:
   schedule: "0/10 * * * *"
   jobTemplate:
@@ -42,11 +43,14 @@ spec:
               command:
               - /talos-backup
               volumeMounts:
-              - mountPath: /tmp
-                name: tmp
-              - mountPath: /var/run/secrets/talos.dev
-                name: talos-secrets
+                - mountPath: /tmp
+                  name: tmp
+                - mountPath: /var/run/secrets/talos.dev
+                  name: talos-secrets
           restartPolicy: OnFailure
           volumes:
-          - emptyDir: {}
-            name: tmp
+            - emptyDir: {}
+              name: tmp
+            - name: talos-secrets
+              secret:
+                secretName: talos-backup-secrets
