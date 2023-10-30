@@ -93,6 +93,9 @@ spec:
     route:
       main:
         enabled: true
+        parentRefs:
+          - name: cilium
+            namespace: kube-system
         hostnames:
           - &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
     # ingress:
