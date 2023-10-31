@@ -85,11 +85,7 @@ spec:
         name: vector-aggregator-configmap # overriden by kustomizeconfig
         globalMounts:
           - path: /etc/vector/vector.yaml
-        subPath: vector.yaml
-        subPath: vector.yaml
-        mountPath: /etc/vector/vector.yaml
             subPath: vector.yaml
-        mountPath: /etc/vector/vector.yaml
             readOnly: true
       data:
         type: emptyDir
