@@ -47,3 +47,6 @@ spec:
           pci:
             deviceClassWhitelist: ["02", "0200", "0207", "0300", "0302"]
             deviceLabelFields: ["vendor"]
+    topologyUpdater:
+      enable: true
+      createCRDs: true
