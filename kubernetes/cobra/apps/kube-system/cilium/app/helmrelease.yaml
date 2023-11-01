@@ -40,8 +40,6 @@ spec:
       socketPath: /var/run/k3s/containerd/containerd.sock
     endpointRoutes:
       enabled: true
-    hubble:
-      enabled: false
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.32.0.0/16
