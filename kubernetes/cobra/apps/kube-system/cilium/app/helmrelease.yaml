@@ -60,6 +60,7 @@ spec:
       serviceTopology: true
     localRedirectPolicy: true
     operator:
+      replicas: 1
       rollOutPods: true
       prometheus:
         enabled: true
