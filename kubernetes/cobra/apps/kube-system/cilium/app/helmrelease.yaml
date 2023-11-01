@@ -1,25 +1,26 @@
-
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app cilium
+  name: cilium
   namespace: kube-system
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
-      chart: *app
+      chart: cilium
       version: 1.14.3
       sourceRef:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
+  maxHistory: 2
   install:
     remediation:
       retries: 5
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 5
   values:
@@ -27,14 +28,13 @@ spec:
     securityContext:
       privileged: true
     autoDirectNodeRoutes: true
-    annotateK8sNode: true
-    cluster:
-      id: 2
-      name: cobra
     bpf:
       masquerade: true
     bgp:
       enabled: false
+    cluster:
+      name: cobra
+      id: 2
     containerRuntime:
       integration: containerd
       socketPath: /var/run/k3s/containerd/containerd.sock
@@ -45,10 +45,10 @@ spec:
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.32.0.0/16
-    k8sServiceHost: 10.10.10.68
-    k8sServicePort: 6443
-    kubeProxyReplacement: false
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    # k8sServiceHost: 10.10.10.68
+    # k8sServicePort: 6443
+    # kubeProxyReplacement: false
+    # kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
       enabled: true
       leaseDuration: 120s
@@ -61,4 +61,21 @@ spec:
     localRedirectPolicy: true
     operator:
       rollOutPods: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Cilium
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    dashboards:
+      enabled: false
+      annotations:
+        grafana_folder: Cilium
     tunnel: disabled
