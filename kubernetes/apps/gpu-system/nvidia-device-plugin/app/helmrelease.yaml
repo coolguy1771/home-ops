@@ -47,6 +47,8 @@ spec:
       # List of fallback strategies to attempt if no config is selected and no default is provided
       fallbackStrategies: ["named" , "single"]
     runtimeClassName: nvidia
+    nodeSelector:
+      feature.node.kubernetes.io/pci-10de.present: "true"
     # Subcharts
     nfd: {}
     gfd:
