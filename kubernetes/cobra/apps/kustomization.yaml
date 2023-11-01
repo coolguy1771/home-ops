@@ -5,8 +5,9 @@ kind: Kustomization
 resources:
 #  - ./cert-manager
   - ./csi-addons-system
+  - ./kube-guardian
   - ./kube-system
   - ./networking
   - ./rook-ceph
   #- ./trivy-system
-  - ./vault-system
+  #- ./vault-system

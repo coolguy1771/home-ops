@@ -25,7 +25,7 @@ spec:
   values:
     rollOutCiliumPods: true
     securityContext:
-      privileged: false
+      privileged: true
       capabilities:
         ciliumAgent:
           - CHOWN
