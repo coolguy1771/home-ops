@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: 7.0.2
+      version: 7.0.1
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -142,6 +142,7 @@ spec:
             uid: prometheus
             access: proxy
             url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+            # url: http://vmselect-victoria-metrics.monitoring.svc.cluster.local:8481/select/0/prometheus
             jsonData:
               prometheusType: Thanos # Prometheus for victoria-metrics
             isDefault: true
@@ -157,6 +158,7 @@ spec:
             uid: alertmanager
             access: proxy
             url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            # url: http://vmalertmanager-victoria-metrics.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
           - name: Tempo
@@ -189,38 +191,41 @@ spec:
     dashboards:
       default:
         cloudflared:
-          gnetId: 17457 # https://grafana.com/grafana/dashboards/17457?tab=revisions
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         external-dns:
-          gnetId: 15038 # https://grafana.com/grafana/dashboards/15038?tab=revisions
+          # renovate: depName="External-dns"
+          gnetId: 15038
           revision: 1
           datasource: Prometheus
         minio:
-          gnetId: 13502 # https://grafana.com/grafana/dashboards/13502?tab=revisions
-          revision: 23
+          # renovate: depName="MinIO Dashboard"
+          gnetId: 13502
+          revision: 24
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         node-exporter-full:
-          gnetId: 1860 # https://grafana.com/grafana/dashboards/1860?tab=revisions
-          revision: 31
+          # renovate: depName="Node Exporter Full"
+          gnetId: 1860
+          revision: 33
           datasource: Prometheus
         redis:
-          gnetId: 763 # https://grafana.com/grafana/dashboards/763?tab=revisions
+          # renovate: depName="Redis Dashboard for Prometheus Redis Exporter 1.x"
+          gnetId: 763
           revision: 5
           datasource: Prometheus
         unpackerr:
-          gnetId: 18817 # https://grafana.com/grafana/dashboards/18817?tab=revisions
+          # renovate: depName="Unpackerr"
+          gnetId: 18817
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        idrac:
-          gnetId: 14395 # https://grafana.com/grafana/dashboards/14395?tab=revisions
-          revision: 1
-          datasource: Prometheus
         zfs:
-          gnetId: 7845 # https://grafana.com/grafana/dashboards/7845?tab=revisions
+          # renovate: depName="ZFS"
+          gnetId: 7845
           revision: 4
           datasource: Prometheus
         cloudnative-pg:
@@ -240,15 +245,18 @@ spec:
           datasource: Prometheus
       ceph:
         ceph-cluster:
-          gnetId: 2842 # https://grafana.com/grafana/dashboards/2842?tab=revisions
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
           revision: 17
           datasource: Prometheus
         ceph-osd:
-          gnetId: 5336 # https://grafana.com/grafana/dashboards/5336?tab=revisions
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
           revision: 9
           datasource: Prometheus
         ceph-pools:
-          gnetId: 5342 # https://grafana.com/grafana/dashboards/5342?tab=revisions
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
           revision: 9
           datasource: Prometheus
       flux:
@@ -263,22 +271,39 @@ spec:
           datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+          # renovate: depName="Kubernetes / System / API Server"
+          gnetId: 15761
+          revision: 14
           datasource: Prometheus
         kubernetes-coredns:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+          # renovate: depName="Kubernetes / System / CoreDNS"
+          gnetId: 15762
+          revision: 13
           datasource: Prometheus
         kubernetes-global:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+          # renovate: depName="Kubernetes / Views / Global"
+          gnetId: 15757
+          revision: 31
           datasource: Prometheus
         kubernetes-namespaces:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+          # renovate: depName="Kubernetes / Views / Namespaces"
+          gnetId: 15758
+          revision: 27
           datasource: Prometheus
         kubernetes-nodes:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+          # renovate: depName="Kubernetes / Views / Nodes"
+          gnetId: 15759
+          revision: 19
           datasource: Prometheus
         kubernetes-pods:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+          # renovate: depName="Kubernetes / Views / Pods"
+          gNetId: 15760
+          revision: 21
+          datasource: Prometheus
+        kubernetes-volumes:
+          # renovate: depName="K8s / Storage / Volumes / Cluster"
+          gnetId: 11454
+          revision: 14
           datasource: Prometheus
       nginx:
         nginx:
