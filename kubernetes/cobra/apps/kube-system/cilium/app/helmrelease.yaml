@@ -59,6 +59,34 @@ spec:
       mode: dsr
       serviceTopology: true
     localRedirectPolicy: true
+    hubble:
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query;ignoreAAAA
+          - drop
+          - tcp
+          - port-distribution
+          - icmp
+          - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+          - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+        serviceMonitor:
+          enabled: true
+        enableOpenMetrics: true
+        dashboards:
+          enabled: true
+          labelValue: "true"
+          annotations:
+            grafana_folder: Cilium
+      tls:
+        enabled: true
+        auto:
+          enabled: true
+          method: helm
+      relay:
+        enabled: true
+        rollOutPods: true
+        replicas: 1
     operator:
       replicas: 1
       rollOutPods: true
