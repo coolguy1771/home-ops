@@ -48,17 +48,12 @@ spec:
     cluster:
       id: 1
       name: home
-    bandwidthManager:
-      # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
-      enabled: false
-      # -- Activate BBR TCP congestion control for Pods
-      bbr: false
     pmtuDiscovery:
       enabled: true
     bpf:
       clockProbe: true
       lbExternalClusterIP: true
-      masquerade: false
+      masquerade: true
       tproxy: true
     containerRuntime:
       integration: containerd
