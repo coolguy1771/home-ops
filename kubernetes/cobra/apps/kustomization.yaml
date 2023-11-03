@@ -9,5 +9,6 @@ resources:
   - ./kube-system
   - ./networking
   - ./rook-ceph
+  - ./storage
   #- ./trivy-system
   #- ./vault-system
