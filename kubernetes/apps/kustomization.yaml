@@ -10,7 +10,7 @@ resources:
   - ./database
   - ./flux-system
   - ./gpu-system
-  - ./kepler-system
+#  - ./kepler-system
   - ./kube-guardian
   - ./kube-system
   - ./media
