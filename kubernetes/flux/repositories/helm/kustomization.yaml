@@ -21,6 +21,7 @@ resources:
   - ./ingress-nginx.yaml
   - ./intel.yaml
   - ./jetstack.yaml
+  - ./kepler.yaml
   - ./kubernetes-dashboard.yaml
   - ./kyverno.yaml
   - ./kepler.yaml

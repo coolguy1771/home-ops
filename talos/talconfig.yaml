@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: v1.5.4
@@ -25,14 +26,6 @@ nodes:
         mtu: 1500
         dhcp: true
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
@@ -42,14 +35,6 @@ nodes:
         mtu: 1500
         dhcp: true
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-2
     ipAddress: 10.10.10.22
@@ -60,14 +45,6 @@ nodes:
         mtu: 1500
         dhcp: true
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-3
     ipAddress: 10.10.10.23
@@ -78,16 +55,8 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
+      node-role.kubernetes.io/worker: "true"
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-4
     ipAddress: 10.10.10.24
@@ -98,16 +67,8 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
+      node-role.kubernetes.io/worker: "true"
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-5
     ipAddress: 10.10.10.25
@@ -118,16 +79,8 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
+      node-role.kubernetes.io/worker: "true"
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-6
     ipAddress: 10.10.10.26
@@ -138,16 +91,8 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
+      node-role.kubernetes.io/worker: "true"
     talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-7
     ipAddress: 10.10.10.27
@@ -158,15 +103,8 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
+      node-role.kubernetes.io/worker: "true"
     talosImageURL: factory.talos.dev/installer/59443dbd0e7318639327e29bc6d90c8d4107e804d651b2321c7000332029b6b7
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/amd-ucode:20230919
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
@@ -177,15 +115,8 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
+      node-role.kubernetes.io/worker: "true"
     talosImageURL: factory.talos.dev/installer/59443dbd0e7318639327e29bc6d90c8d4107e804d651b2321c7000332029b6b7
-    patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/amd-ucode:20230919
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
@@ -196,19 +127,9 @@ nodes:
         mtu: 1500
         dhcp: true
     nodeLabels:
-      node-role.kubernetes.io/worker: true
-    talosImageURL: factory.talos.dev/installer/01225b01a108a9eabf532e29b16620c29bda5e75fbbff88597a0a6a7fee99666
+      node-role.kubernetes.io/worker: "true"
+    talosImageURL: factory.talos.dev/installer/935877862127e1d69dd6f468f665d3cd21d2c9434eeed5b9adbe595f5dc5e7d1
     patches:
-      - |-
-        - op: add
-          path: /machine/install/extensions
-          value:
-            - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.54.03-v1.5.3
-            - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.54.03-v1.13.5
-            - image: ghcr.io/siderolabs/nvidia-fabricmanager:535.54.03
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
-            - image: ghcr.io/siderolabs/i915-ucode:20230919
-            - image: ghcr.io/siderolabs/intel-ucode:20230808
       - |-
         - op: add
           path: /machine/files
@@ -287,7 +208,7 @@ controlPlane:
             allowedRoles:
             - os:etcd:backup
             allowedKubernetesNamespaces:
-            - default
+            - kube-system
         files:
           - content: |
               [plugins."io.containerd.grpc.v1.cri"]
@@ -319,12 +240,7 @@ controlPlane:
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
-            - "talos.logging.kernel=udp://10.0.42.6:6050/"
             - "cpufreq.default_governor=performance"
-        logging:
-          destinations:
-            - endpoint: "udp://10.0.42.6:6051/"
-              format: json_lines
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
@@ -384,12 +300,7 @@ worker:
             op: create
         install:
           extraKernelArgs:
-            - "talos.logging.kernel=udp://10.0.42.6:6050/"
             - "cpufreq.default_governor=performance"
-        logging:
-          destinations:
-            - endpoint: "udp://10.0.42.6:6051/"
-              format: json_lines
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
