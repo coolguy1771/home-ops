@@ -24,7 +24,6 @@ resources:
   - ./kepler.yaml
   - ./kubernetes-dashboard.yaml
   - ./kyverno.yaml
-  - ./kepler.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
   - ./nvidia.yaml
