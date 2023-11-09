@@ -32,7 +32,7 @@ spec:
       strategy: RollingUpdate
     image:
       repository: ghcr.io/onedr0p/kubernetes-schemas
-      tag: latest@sha256:0759c0426d6d357a4f9c6a2906253edf42d9e8bde22ce299af02e20b1c12d889
+      tag: latest@sha256:effdedcb96684e86a4d3f2f4fff54c1a9e2185405d0c599df188bc9a427ec867
     service:
       main:
         ports:
