@@ -43,9 +43,9 @@ spec:
         storageClass: ceph-filesystem
         capacity: 20Gi
       ingress:
-        enabled: false
-        host: # MUST be set, if ingress is enabled
-        ingressClassName: ""
+        enabled: true
+        host: nuvector-controller.${SECRET_PUBLIC_DOMAIN} # MUST be set, if ingress is enabled
+        ingressClassName: "external"
         path: "/" # or this could be "/api", but might need "rewrite-target" annotation
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -92,11 +92,9 @@ spec:
             - Fullname: admin
               Password:
               Role: admin
-
     enforcer:
       # If false, enforcer will not be installed
       enabled: true
-
     manager:
       # If false, manager will not be installed
       enabled: true
