@@ -26,7 +26,7 @@ resources:
   - ./kyverno.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
-  - ./nuvector.yaml
+  - ./neuvector.yaml
   - ./nvidia.yaml
   - ./piraeus.yaml
   - ./postfinance.yaml

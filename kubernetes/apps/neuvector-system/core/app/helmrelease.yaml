@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: nuvector-core
-  namespace: nuvector-system
+  name: neuvector-core
+  namespace: neuvector-system
 spec:
   interval: 30m
   chart:
@@ -13,7 +13,7 @@ spec:
       version:  2.6.4
       sourceRef:
         kind: HelmRepository
-        name: nuvector
+        name: neuvector
         namespace: flux-system
   maxHistory: 2
   install:
@@ -51,7 +51,7 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           # ingress.kubernetes.io/rewrite-target: /
         tls: true
-        secretName: "{{ .Release.Name}}-controller-tls"
+        secretName: "neuvector-core-controller-tls"
       configmap:
         enabled: false
         data:
@@ -102,10 +102,12 @@ spec:
         ssl: true
       svc:
         type: ClusterIP # should be set to - ClusterIP
+      route:
+        enabled: false
       ingress:
         enabled: true
         host: nuvector-manager.${SECRET_PUBLIC_DOMAIN}
-        ingressClassName: "external"
+        ingressClassName: external
         path: "/"
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -115,13 +117,13 @@ spec:
           nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
           # only for end-to-end tls conf - ingress-nginx accepts backend self-signed cert
         tls: true
-        secretName: "{{ .Release.Name }}-manager-tls"
+        secretName: "neuvector-core-manager-tls"
     cve:
       adapter:
         enabled: true
         ingress:
           enabled: true
-          host: nuvector-cve.${SECRET_PUBLIC_DOMAIN} # MUST be set, if ingress is enabled
+          host: nuvector-adaptor.${SECRET_PUBLIC_DOMAIN} # MUST be set, if ingress is enabled
           ingressClassName: "external"
           path: "/"
           annotations:
@@ -130,9 +132,23 @@ spec:
             # nginx.ingress.kubernetes.io/whitelist-source-range: "1.1.1.1"
             nginx.ingress.kubernetes.io/rewrite-target: /
             nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
-            # only for end-to-end tls conf - ingress-nginx accepts backend self-signed cert
+              # only for end-to-end tls conf - ingress-nginx accepts backend self-signed cert
           tls: true
-          secretName: "{{ .Release.Name}}-cvetls" # my-tls-secret
+        secretName: "{{ .Release.Name}}-adaptor-tls" # my-tls-secret
+      ingress:
+        enabled: true
+        host: nuvector-cve.${SECRET_PUBLIC_DOMAIN} # MUST be set, if ingress is enabled
+        ingressClassName: "external"
+        path: "/"
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          # kubernetes.io/ingress.class: my-nginx
+          # nginx.ingress.kubernetes.io/whitelist-source-range: "1.1.1.1"
+          nginx.ingress.kubernetes.io/rewrite-target: /
+          nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+            # only for end-to-end tls conf - ingress-nginx accepts backend self-signed cert
+        tls: true
+        secretName: "{{ .Release.Name}}-cve-tls" # my-tls-secret
       updater:
         # If false, cve updater will not be installed
         enabled: true
