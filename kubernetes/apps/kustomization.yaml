@@ -16,7 +16,7 @@ resources:
   - ./media
   - ./monitoring
   - ./networking
-  - ./nuevector-system
+  - ./neuvector-system
   - ./rook-ceph
   - ./storage
   - ./tetragon-system
