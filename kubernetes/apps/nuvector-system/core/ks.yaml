@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-nuvector-crds
-  path: ./kubernetes/apps/networking/nuvector/core/app
+  path: ./kubernetes/apps/nuvector-system/core/app
   prune: true
   sourceRef:
     kind: GitRepository
