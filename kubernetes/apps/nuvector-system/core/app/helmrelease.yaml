@@ -1,0 +1,148 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nuvector-core
+  namespace: nuvector-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: core
+      version:  2.6.4
+      sourceRef:
+        kind: HelmRepository
+        name: nuvector
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    rbac: true # required for rancher authentication
+    serviceAccount: default
+    leastPrivilege: true
+    internal: # enable when cert-manager is installed for the internal certificates
+      certmanager:
+        enabled: true
+    controller:
+      # If false, controller will not be installed
+      enabled: true
+      pvc:
+        enabled: true
+        existingClaim: false
+        accessModes:
+          - ReadWriteMany
+        storageClass: ceph-filesystem
+        capacity: 20Gi
+      ingress:
+        enabled: false
+        host: # MUST be set, if ingress is enabled
+        ingressClassName: ""
+        path: "/" # or this could be "/api", but might need "rewrite-target" annotation
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          # ingress.kubernetes.io/rewrite-target: /
+        tls: true
+        secretName: "{{ .Release.Name}}-controller-tls"
+      configmap:
+        enabled: false
+        data:
+          # passwordprofileinitcfg.yaml: |
+          #  ...
+          # roleinitcfg.yaml: |
+          #  ...
+          # ldapinitcfg.yaml: |
+          #  ...
+          # oidcinitcfg.yaml: |
+          # ...
+          # samlinitcfg.yaml: |
+          # ...
+          # sysinitcfg.yaml: |
+          # ...
+          # userinitcfg.yaml: |
+          # ...
+      secret:
+        # NOTE: files defined here have preferrence over the ones defined in the configmap section
+        enabled: false
+        data:
+          # passwordprofileinitcfg.yaml:
+          #  ...
+          # roleinitcfg.yaml:
+          #  ...
+          # ldapinitcfg.yaml:
+          #   directory: OpenLDAP
+          #   ...
+          # oidcinitcfg.yaml:
+          #   Issuer: https://...
+          #   ...
+          # samlinitcfg.yaml:
+          #   ...
+          # sysinitcfg.yaml:
+          #   ...
+          userinitcfg.yaml:
+            users:
+            - Fullname: admin
+              Password:
+              Role: admin
+
+    enforcer:
+      # If false, enforcer will not be installed
+      enabled: true
+
+    manager:
+      # If false, manager will not be installed
+      enabled: true
+      env:
+        ssl: true
+      svc:
+        type: ClusterIP # should be set to - ClusterIP
+      ingress:
+        enabled: true
+        host: nuvector-manager.${SECRET_PUBLIC_DOMAIN}
+        ingressClassName: "external"
+        path: "/"
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          # kubernetes.io/ingress.class: my-nginx
+          # nginx.ingress.kubernetes.io/whitelist-source-range: "1.1.1.1"
+          nginx.ingress.kubernetes.io/rewrite-target: /
+          nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+          # only for end-to-end tls conf - ingress-nginx accepts backend self-signed cert
+        tls: true
+        secretName: "{{ .Release.Name }}-manager-tls"
+    cve:
+      adapter:
+        enabled: true
+        ingress:
+          enabled: true
+          host: nuvector-cve.${SECRET_PUBLIC_DOMAIN} # MUST be set, if ingress is enabled
+          ingressClassName: "external"
+          path: "/"
+          annotations:
+            nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+            # kubernetes.io/ingress.class: my-nginx
+            # nginx.ingress.kubernetes.io/whitelist-source-range: "1.1.1.1"
+            nginx.ingress.kubernetes.io/rewrite-target: /
+            nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+            # only for end-to-end tls conf - ingress-nginx accepts backend self-signed cert
+          tls: true
+          secretName: "{{ .Release.Name}}-cvetls" # my-tls-secret
+      updater:
+        # If false, cve updater will not be installed
+        enabled: true
+        secure: true
+      scanner:
+        enabled: true
+        replicas: 3
+    containerd:
+      enabled: true
+    crdwebhook:
+      enabled: false
