@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-nuvector-crds
+    - name: cluster-apps-nuevector-crds
   path: ./kubernetes/apps/neuvector-system/core/app
   prune: true
   sourceRef:
