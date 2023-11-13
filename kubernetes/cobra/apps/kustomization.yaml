@@ -11,4 +11,4 @@ resources:
   - ./rook-ceph
   - ./storage
   #- ./trivy-system
-  #- ./vault-system
+  - ./vault-system
