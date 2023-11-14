@@ -10,6 +10,6 @@ resources:
   - ./networking
   - ./rook-ceph
   - ./storage
-  - ./step-system
+  - ./smallstep-system
   #- ./trivy-system
   - ./vault-system
