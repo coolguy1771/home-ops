@@ -48,6 +48,8 @@ spec:
     ingressController:
       enabled: true
       loadbalancerMode: dedicated
+      defaultSecretName: "286k-co-tls"
+      defaultSecretNamespace: networking
     bgpControlPlane:
       enabled: true
     ipam:
