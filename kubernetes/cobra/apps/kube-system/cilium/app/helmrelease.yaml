@@ -46,10 +46,7 @@ spec:
     enableK8sEndpointSlice: true
     enableIdentityMark: true
     ingressController:
-      enabled: true
-      loadbalancerMode: dedicated
-      defaultSecretName: "286k-co-tls"
-      defaultSecretNamespace: networking
+      enabled: false
     bgpControlPlane:
       enabled: true
     ipam:
@@ -88,6 +85,21 @@ spec:
           labelValue: "true"
           annotations:
             grafana_folder: Cilium
+      ui:
+        enabled: true
+        rollOutPods: true
+        replicas: 1
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: vault-issuer
+          ingressClassName: internal
+          hosts:
+            - &host hubble.286k.co
+          tls:
+            - secretName: hubble-tls
+              hosts:
+                - *host
       tls:
         enabled: true
         auto:

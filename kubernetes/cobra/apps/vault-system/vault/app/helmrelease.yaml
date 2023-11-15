@@ -67,17 +67,12 @@ spec:
         enabled: true
         labels: {}
           # traffic: external
-        annotations: {}
-          # |
-          # kubernetes.io/ingress.class: nginx
-          # kubernetes.io/tls-acme: "true"
-          #   or
-          # kubernetes.io/ingress.class: nginx
-          # kubernetes.io/tls-acme: "true"
+        annotations:
+          cert-manager.io/cluster-issuer: "vault-issuer"
 
         # Optionally use ingressClassName instead of deprecated annotation.
         # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation
-        ingressClassName: "cilium"
+        ingressClassName: "internal"
 
         # As of Kubernetes 1.19, all Ingress Paths must have a pathType configured. The default value below should be sufficient in most cases.
         # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types for other possible values.
@@ -193,30 +188,14 @@ spec:
         # Does not affect the headless vault-internal service with `ClusterIP: None`
         instanceSelector:
           enabled: true
-        # clusterIP controls whether a Cluster IP address is attached to the
-        # Vault service within Kubernetes.  By default, the Vault service will
-        # be given a Cluster IP address, set to None to disable.  When disabled
-        # Kubernetes will create a "headless" service.  Headless services can be
-        # used to communicate with pods directly through DNS instead of a round-robin
-        # load balancer.
-        # clusterIP: None
       # This configures the Vault Statefulset to create a PVC for data
       # storage when using the file or raft backend storage engines.
       # See https://www.vaultproject.io/docs/configuration/storage/index.html to know more
       dataStorage:
         enabled: true
-        # Size of the PVC created
         size: 10Gi
-        # Location where the PVC will be mounted.
         mountPath: "/vault/data"
-        # Name of the storage class to use.  If null it will use the
-        # configured default Storage Class.
         storageClass: ceph-rbd
-        # Access Mode of the storage device being used for the PVC
-        accessMode: ReadWriteOnce
-        # Annotations to apply to the PVC
-        annotations: {}
-
       # This configures the Vault Statefulset to create a PVC for audit
       # logs.  Once Vault is deployed, initialized, and unsealed, Vault must
       # be configured to use this for audit logs.  This will be mounted to
@@ -224,24 +203,10 @@ spec:
       # See https://www.vaultproject.io/docs/audit/index.html to know more
       auditStorage:
         enabled: true
-        # Size of the PVC created
         size: 10Gi
         # Location where the PVC will be mounted.
         mountPath: "/vault/audit"
-        # Name of the storage class to use.  If null it will use the
-        # configured default Storage Class.
         storageClass: ceph-rbd
-        # Access Mode of the storage device being used for the PVC
-        accessMode: ReadWriteOnce
-        # Annotations to apply to the PVC
-        annotations: {}
-
-
-      # Run Vault in "HA" mode. There are no storage requirements unless the audit log
-      # persistence is required.  In HA mode Vault will configure itself to use Consul
-      # for its storage backend.  The default configuration provided will work the Consul
-      # Helm project by default.  It is possible to manually configure Vault to use a
-      # different HA backend.
       ha:
         enabled: true
         replicas: 1
@@ -276,22 +241,7 @@ spec:
                 leader_client_key_file = "/vault/userconfig/tls-server/tls.key"
               }
             }
-
             service_registration "kubernetes" {}
-
-
-        # A disruption budget limits the number of pods of a replicated application
-        # that are down simultaneously from voluntary disruptions
-        disruptionBudget:
-          enabled: true
-
-        # maxUnavailable will default to (n/2)-1 where n is the number of
-        # replicas. If you'd like a custom value, you can specify an override here.
-          maxUnavailable: null
-
-
-      # Should the server pods run on the host network
-      hostNetwork: false
 
     # Vault UI
     ui:
@@ -309,34 +259,9 @@ spec:
       externalPort: 8200
       targetPort: 8200
 
-      # The externalTrafficPolicy can be set to either Cluster or Local
-      # and is only valid for LoadBalancer and NodePort service types.
-      # The default value is Cluster.
-      # ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy
-      externalTrafficPolicy: Cluster
-
-      #loadBalancerSourceRanges:
-      #   - 10.0.0.0/16
-      #   - 1.78.23.3/32
-
-      # loadBalancerIP:
-
-      # Extra annotations to attach to the ui service
-      # This can either be YAML or a YAML-formatted multi-line templated string map
-      # of the annotations to apply to the ui service
-      annotations: {}
-
     # secrets-store-csi-driver-provider-vault
     csi:
-      # True if you want to install a secrets-store-csi-driver-provider-vault daemonset.
-      #
-      # Requires installing the secrets-store-csi-driver separately, see:
-      # https://github.com/kubernetes-sigs/secrets-store-csi-driver#install-the-secrets-store-csi-driver
-      #
-      # With the driver and provider installed, you can mount Vault secrets into volumes
-      # similar to the Vault Agent injector, and you can also sync those secrets into
-      # Kubernetes secrets.
-      enabled: false
+      enabled: true
 
       image:
         repository: "hashicorp/vault-csi-provider"
@@ -358,134 +283,14 @@ spec:
       # - name: tls
       #   mountPath: "/vault/tls"
       #   readOnly: true
-
-      resources: {}
-      # resources:
-      #   requests:
-      #     cpu: 50m
-      #     memory: 128Mi
-      #   limits:
-      #     cpu: 50m
-      #     memory: 128Mi
-
-      # Override the default secret name for the CSI Provider's HMAC key used for
-      # generating secret versions.
-      hmacSecretName: ""
-
-      # Settings for the daemonSet used to run the provider.
-      daemonSet:
-        updateStrategy:
-          type: RollingUpdate
-          maxUnavailable: ""
-        # Extra annotations for the daemonSet. This can either be YAML or a
-        # YAML-formatted multi-line templated string map of the annotations to apply
-        # to the daemonSet.
-        annotations: {}
-        # Provider host path (must match the CSI provider's path)
-        providersDir: "/etc/kubernetes/secrets-store-csi-providers"
-        # Kubelet host path
-        kubeletRootDir: "/var/lib/kubelet"
-        # Extra labels to attach to the vault-csi-provider daemonSet
-        # This should be a YAML map of the labels to apply to the csi provider daemonSet
-        extraLabels: {}
-        # security context for the pod template and container in the csi provider daemonSet
-        securityContext:
-          pod: {}
-          container: {}
-
-      pod:
-        # Extra annotations for the provider pods. This can either be YAML or a
-        # YAML-formatted multi-line templated string map of the annotations to apply
-        # to the pod.
-        annotations: {}
-
-        # Toleration Settings for provider pods
-        # This should be either a multi-line string or YAML matching the Toleration array
-        # in a PodSpec.
-        tolerations: []
-
-        # nodeSelector labels for csi pod assignment, formatted as a multi-line string or YAML map.
-        # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
-        # Example:
-        # nodeSelector:
-        #   beta.kubernetes.io/arch: amd64
-        nodeSelector: {}
-
-        # Affinity Settings
-        # This should be either a multi-line string or YAML matching the PodSpec's affinity field.
-        affinity: {}
-
-        # Extra labels to attach to the vault-csi-provider pod
-        # This should be a YAML map of the labels to apply to the csi provider pod
-        extraLabels: {}
-
       agent:
         enabled: true
-        extraArgs: []
-
         image:
           repository: "hashicorp/vault"
           tag: "1.15.2"
           pullPolicy: IfNotPresent
-
         logFormat: json
         logLevel: info
-
-        resources: {}
-        # resources:
-        #   requests:
-        #     memory: 256Mi
-        #     cpu: 250m
-        #   limits:
-        #     memory: 256Mi
-        #     cpu: 250m
-
-      # Priority class for csi pods
-      priorityClassName: ""
-
-      serviceAccount:
-        # Extra annotations for the serviceAccount definition. This can either be
-        # YAML or a YAML-formatted multi-line templated string map of the
-        # annotations to apply to the serviceAccount.
-        annotations: {}
-
-        # Extra labels to attach to the vault-csi-provider serviceAccount
-        # This should be a YAML map of the labels to apply to the csi provider serviceAccount
-        extraLabels: {}
-
-      # Used to configure readinessProbe for the pods.
-      readinessProbe:
-        # When a probe fails, Kubernetes will try failureThreshold times before giving up
-        failureThreshold: 2
-        # Number of seconds after the container has started before probe initiates
-        initialDelaySeconds: 5
-        # How often (in seconds) to perform the probe
-        periodSeconds: 5
-        # Minimum consecutive successes for the probe to be considered successful after having failed
-        successThreshold: 1
-        # Number of seconds after which the probe times out.
-        timeoutSeconds: 3
-      # Used to configure livenessProbe for the pods.
-      livenessProbe:
-        # When a probe fails, Kubernetes will try failureThreshold times before giving up
-        failureThreshold: 2
-        # Number of seconds after the container has started before probe initiates
-        initialDelaySeconds: 5
-        # How often (in seconds) to perform the probe
-        periodSeconds: 5
-        # Minimum consecutive successes for the probe to be considered successful after having failed
-        successThreshold: 1
-        # Number of seconds after which the probe times out.
-        timeoutSeconds: 3
-
-      # Enables debug logging.
-      debug: false
-
-      # Pass arbitrary additional arguments to vault-csi-provider.
-      # See https://www.vaultproject.io/docs/platform/k8s/csi/configurations#command-line-arguments
-      # for the available command line flags.
-      extraArgs: []
-
     # Vault is able to collect and publish various runtime metrics.
     # Enabling this feature requires setting adding `telemetry{}` stanza to
     # the Vault configuration. There are a few examples included in the `config` sections above.
@@ -498,7 +303,6 @@ spec:
       serviceMonitor:
         # Enable deployment of the Vault Server ServiceMonitor CustomResource.
         enabled: true
-
       prometheusRules:
           enabled: true
           # Some example rules.
