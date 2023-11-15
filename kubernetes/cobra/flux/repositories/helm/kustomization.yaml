@@ -21,6 +21,7 @@ resources:
   - ./hashicorp.yaml
   - ./ingress-nginx.yaml
   - ./intel.yaml
+  - ./istio.yaml
   - ./jetstack.yaml
   - ./kubernetes-dashboard.yaml
   - ./kyverno.yaml
