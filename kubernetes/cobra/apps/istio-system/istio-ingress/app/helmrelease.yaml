@@ -9,7 +9,7 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: istio-gateway
+      chart: gateway
       version: 1.20.0
       sourceRef:
         kind: HelmRepository
