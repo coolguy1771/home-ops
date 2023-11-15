@@ -30,6 +30,13 @@ spec:
       clusterIP: 10.96.0.10
     serviceAccount:
       create: true
+    resources:
+      limits:
+        cpu: null
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
     deployment:
       annotations:
         reloader.stakater.com/auto: "true"
