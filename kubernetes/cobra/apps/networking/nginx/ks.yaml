@@ -6,8 +6,8 @@ metadata:
   name: cluster-apps-nginx-certificates
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-cert-manager-issuers
+  # dependsOn:
+  #   - name: cluster-apps-cert-manager-issuers
   path: ./kubernetes/cobra/apps/networking/nginx/certificates
   prune: true
   sourceRef:
