@@ -69,6 +69,8 @@ spec:
           # traffic: external
         annotations:
           cert-manager.io/cluster-issuer: "vault-issuer"
+          cert-manager.io/common-name: "vault.286k.co"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
         # Optionally use ingressClassName instead of deprecated annotation.
         # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation

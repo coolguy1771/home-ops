@@ -93,6 +93,7 @@ spec:
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: vault-issuer
+            cert-manager.io/common-name: hubble.286k.co
           ingressClassName: internal
           hosts:
             - &host hubble.286k.co
