@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: "286k-co-tls"
   issuerRef:
-    name: letsencrypt-production
+    name: vault-issuer
     kind: ClusterIssuer
   commonName: "286k.co"
   dnsNames:
