@@ -40,6 +40,16 @@ spec:
       socketPath: /var/run/k3s/containerd/containerd.sock
     endpointRoutes:
       enabled: true
+    nodePort:
+      enabled: true
+    enableCiliumEndpointSlice: true
+    enableK8sEndpointSlice: true
+    enableIdentityMark: true
+    ingressController:
+      enabled: true
+      loadbalancerMode: dedicated
+    bgpControlPlane:
+      enabled: true
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.32.0.0/16
