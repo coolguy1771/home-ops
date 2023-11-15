@@ -32,7 +32,7 @@ spec:
       create: true
     resources:
       limits:
-        cpu: null
+        cpu: 300m
         memory: 256Mi
       requests:
         cpu: 200m
