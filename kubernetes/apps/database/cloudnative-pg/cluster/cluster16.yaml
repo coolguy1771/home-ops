@@ -14,15 +14,10 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  #Note: Bootstrap is needed when recovering from an existing cnpg cluster
-  bootstrap:
-    initdb:
-      import:
-        type: monolith
-        databases: ["*"]
-        roles: ["*"]
-        source:
-          externalCluster: cnpg-7
+  # Note: Bootstrap is needed when recovering from an existing cnpg cluster
+    # bootstrap:
+    #   recovery:
+    #     source: &previousCluster postgres16-v1
   postgresql:
     parameters:
       max_connections: "600"
@@ -51,14 +46,19 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-      - name: cnpg-7
-        connectionParameters:
-          host: postgres-rw.database.svc.cluster.local
-          user: postgres
-          dbname: postgres
-          sslmode: require
-        password:
-          name: cloudnative-pg-secret
-          key: password
+# Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       wal:
+  #         compression: bzip2
+  #         maxParallel: 8
+  #       destinationPath: s3://cnpg-dc1986ff/
+  #       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+  #       s3Credentials:
+  #         accessKeyId:
+  #           name: cloudnative-pg-secret
+  #           key: aws-access-key-id
+  #         secretAccessKey:
+  #           name: cloudnative-pg-secret
+  #           key: aws-secret-access-key
