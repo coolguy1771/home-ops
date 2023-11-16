@@ -11,6 +11,6 @@ resources:
   - ./networking
   - ./rook-ceph
   - ./storage
-  - ./smallstep-system
+  - ./system-upgrade
   #- ./trivy-system
   - ./vault-system
