@@ -6,7 +6,7 @@ namespace: media
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - ./volsync.yaml
+  - ./pvc.yaml
 configMapGenerator:
   - name: radarr-configmap
     files:

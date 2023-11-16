@@ -6,5 +6,10 @@ namespace: media
 resources:
   - ./helmrelease.yaml
   - ./volsync.yaml
-  - ./qbittools-reannounce
-  - ./qbittools-tagging
+  - ./gatus.yaml
+configMapGenerator:
+  - name: qbittorrent-scripts
+    files:
+      - ./config/completed.sh
+generatorOptions:
+  disableNameSuffixHash: true

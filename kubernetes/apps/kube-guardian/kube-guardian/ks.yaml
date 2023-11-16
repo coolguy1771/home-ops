@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kube-guardian
+  name: kube-guardian
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
   path: ./kubernetes/apps/kube-guardian/kube-guardian/app
   prune: true
   sourceRef:

@@ -4,7 +4,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: overseerr-restic
-  namespace: media
+  namespace: default
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
@@ -23,27 +23,67 @@ spec:
     - extract:
         key: volsync-restic-template
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: overseerr
+  namespace: default
+spec:
+  accessModes: ["ReadWriteOnce"]
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: overseerr-rdst
+  resources:
+    requests:
+      storage: 5Gi # must match the ReplicationDestination `.spec.capacity` below
+  storageClassName: ceph-block
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: overseerr-rdst
+  namespace: default
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: overseerr-restic-secret
+    copyMethod: Snapshot
+    accessModes: ["ReadWriteOnce"]
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block
+    capacity: 5Gi # must match the PersistentVolumeClaim `.resources.requests.storage` size above
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: overseerr
+  name: overseerr-rsrc
   namespace: media
 spec:
-  sourcePVC: config-overseerr-0
+  sourcePVC: overseerr
   trigger:
-    schedule: "0 0 * * *"
+    schedule: "0 7 * * *"
   restic:
     copyMethod: Snapshot
-    pruneIntervalDays: 10
+    pruneIntervalDays: 7
     repository: overseerr-restic-secret
-    cacheCapacity: 5Gi
     volumeSnapshotClassName: csi-ceph-blockpool
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes: ["ReadWriteOnce"]
     storageClassName: ceph-block
+    accessModes: ["ReadWriteMany"]
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
     retain:
-      daily: 10
+      daily: 7
       within: 3d

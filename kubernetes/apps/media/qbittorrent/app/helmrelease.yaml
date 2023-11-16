@@ -10,14 +10,13 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -32,86 +31,83 @@ spec:
     - name: volsync
       namespace: volsync
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.6.0@sha256:cb6259df3be61a5108bc4f85b09a523fc4b250589ca9b315ef927cbdf779afb6
-    env:
-      TZ: America/New_York
-      QBITTORRENT__PORT: &port 80
-      QBITTORRENT__BT_PORT: &bittorrentPort 50413
-      QBT_Preferences__WebUI__AlternativeUIEnabled: "false"
-      QBT_Preferences__WebUI__RootFolder: ""
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.0@sha256:cb6259df3be61a5108bc4f85b09a523fc4b250589ca9b315ef927cbdf779afb6
+            env:
+              TZ: America/New_York
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.244.0.0/16
+              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_BitTorrent__Session__Interface: eth0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: eth0
+            resources:
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 12Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: *port
       bittorrent:
-        enabled: true
+        controller: main
         type: LoadBalancer
-        loadBalancerIP: "${SVC_QBITTORRENT_ADDR}"
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.42.202
         ports:
           bittorrent:
             enabled: true
             port: *bittorrentPort
             protocol: TCP
-            targetPort: *bittorrentPort
-        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
-        ingressClassName: cilium
-        annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_hide_header "x-webkit-csp";
-            proxy_hide_header "content-security-policy";
-            proxy_hide_header "X-Frame-Options";
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/qbittorrent/nord.css"></head>';
-            sub_filter_once on;
-          cert-manager.io/cluster-issuer: letsencrypt-production
+        className: internal
         hosts:
           - host: &host qb.${SECRET_PUBLIC_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name }}-tls"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-    # Note: If downloading very large torrents it might be worth using NFS for your download directory.
-    # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
+            secretName: qbittorrent-tls
     persistence:
+      config:
+        enabled: true
+        existingClaim: qbittorrent
+      completed-script:
+        type: configMap
+        name: qbittorrent-scripts
+        defaultMode: 0775
+        globalMounts:
+          - path: /scripts/completed.sh
+            subPath: completed.sh
+            readOnly: true
       media:
-        enabled: true
-        type: nfs
-        server: "osiris.${SECRET_PRIVATE_DOMAIN}"
-        path: /pluto/media
-        mountPath: /media
-      incomplete:
-        enabled: true
-        type: emptyDir
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 6000Mi
+        existingClaim: media

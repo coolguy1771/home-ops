@@ -10,14 +10,13 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -28,75 +27,78 @@ spec:
     keepHistory: false
   dependsOn:
     - name: lldap
-      namespace: auth
+      namespace: default
     - name: redis
       namespace: database
   values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/onedr0p/postgres-init:14.9
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: authelia-secret
-    controller:
-      replicas: 2
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/authelia/authelia
-      tag: master@sha256:57518cb813364bf886ba9204e11fa83fe73b6deff39d527d792ef54847c9f9b3
-    args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
-    env:
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: ou=groups
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=people
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN: dc=home,dc=arpa
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_DISPLAY_NAME_ATTRIBUTE: displayName
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUPS_FILTER: (member={dn})
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUP_NAME_ATTRIBUTE: cn
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_IMPLEMENTATION: custom
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_MAIL_ATTRIBUTE: mail
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_START_TLS: "false"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_TIMEOUT: 5s
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS: ldap://lldap.auth.svc.cluster.local:389
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER: uid=admin,ou=people,dc=home,dc=arpa
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERNAME_ATTRIBUTE: uid
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
-      AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "false"
-      AUTHELIA_AUTHENTICATION_BACKEND_REFRESH_INTERVAL: 1m
-      AUTHELIA_DEFAULT_REDIRECTION_URL: https://auth.${SECRET_PUBLIC_DOMAIN}
-      AUTHELIA_DUO_API_DISABLE: "true"
-      AUTHELIA_LOG_LEVEL: info
-      AUTHELIA_LOG_FORMAT: json
-      AUTHELIA_NOTIFIER_DISABLE_STARTUP_CHECK: "true"
-      AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
-      AUTHELIA_NOTIFIER_SMTP_HOST: smtp-relay.286k.co
-      AUTHELIA_NOTIFIER_SMTP_PORT: 25
-      AUTHELIA_NOTIFIER_SMTP_SENDER: Authelia <authelia@${SECRET_PUBLIC_DOMAIN}>
-      AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
-      AUTHELIA_SERVER_ADDRESS: tcp4://0.0.0.0:80
-      AUTHELIA_SESSION_DOMAIN: ${SECRET_PUBLIC_DOMAIN}
-      AUTHELIA_SESSION_NAME: authelia-home-ops
-      AUTHELIA_SESSION_REDIS_DATABASE_INDEX: 14
-      AUTHELIA_SESSION_REDIS_HOST: redis.database.svc.cluster.local
-      AUTHELIA_STORAGE_POSTGRES_PORT: 5432
-      AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
-      AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
-      AUTHELIA_THEME: dark
-      AUTHELIA_TOTP_ISSUER: authelia.com
-      AUTHELIA_WEBAUTHN_DISABLE: "false"
-    envFrom:
-      - secretRef:
-          name: authelia-secret
-    enableServiceLinks: false
+    controllers:
+      main:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 14.9
+              pullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: authelia-secret
+        containers:
+          main:
+            image:
+              repository: ghcr.io/authelia/authelia
+              tag: v4.38.0-beta3@sha256:755b7efded2eefe12d6df9ead9c0821c69afa7e74a0b99a9b327027c2645aa18
+            env:
+              AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:80
+              AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
+              AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
+              AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
+              AUTHELIA_THEME: dark
+              X_AUTHELIA_CONFIG: /config/configuration.yaml
+              X_AUTHELIA_CONFIG_FILTERS: expand-env
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
     service:
       main:
         ports:
           http:
-            port: 80
+            port: *port
           metrics:
-            enabled: true
             port: 8080
     serviceMonitor:
       main:
@@ -107,66 +109,34 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/health
-            port: 80
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: external
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             add_header Cache-Control "no-store";
             add_header Pragma "no-cache";
             add_header X-Frame-Options "SAMEORIGIN";
             add_header X-XSS-Protection "1; mode=block";
-          hajimari.io/icon: mdi:shield-account
         hosts:
-          - host: &host "auth.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host auth.${SECRET_PUBLIC_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name }}-tls"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
+            secretName: authelia-tls
     persistence:
       config:
         enabled: true
         type: configMap
         name: authelia-configmap
-        subPath: configuration.yml
-        mountPath: /config/configuration.yml
-        readOnly: false
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 200Mi
+        globalMounts:
+          - path: /config/configuration.yaml
+            subPath: configuration.yaml
+            readOnly: true

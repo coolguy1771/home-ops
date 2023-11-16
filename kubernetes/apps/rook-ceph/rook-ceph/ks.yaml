@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-rook-ceph
+  name: rook-ceph
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -20,17 +20,17 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-rook-ceph-cluster
+  name: rook-ceph-cluster
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-rook-ceph
+    - name: rook-ceph
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false # no flux ks dependents
+  wait: false
   interval: 30m
   retryInterval: 1m
   timeout: 15m
