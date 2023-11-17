@@ -15,9 +15,9 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
-    # bootstrap:
-    #   recovery:
-    #     source: &previousCluster postgres16-v1
+  # bootstrap:
+  #   recovery:
+  #     source: &previousCluster postgres16-v1
   postgresql:
     parameters:
       max_connections: "600"
@@ -33,6 +33,8 @@ spec:
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
+      data:
+        compression: bzip2
       wal:
         compression: bzip2
         maxParallel: 8
@@ -46,7 +48,7 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
-# Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
   # externalClusters:
   #   - name: *previousCluster
   #     barmanObjectStore:
