@@ -9,6 +9,7 @@ resources:
   - ./database
   - ./flux-system
   - ./gpu-system
+  - ./istio-system
   - ./kube-guardian
   - ./kube-system
   - ./media
