@@ -4,7 +4,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: overseerr-restic
-  namespace: default
+  namespace: media
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
@@ -27,7 +27,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: overseerr
-  namespace: default
+  namespace: media
 spec:
   accessModes: ["ReadWriteOnce"]
   dataSourceRef:
@@ -44,7 +44,7 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
   name: overseerr-rdst
-  namespace: default
+  namespace: media
   annotations:
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
