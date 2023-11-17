@@ -85,7 +85,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal
+        className: istio
         hosts:
           - host: &host qb.${SECRET_PUBLIC_DOMAIN}
             paths:

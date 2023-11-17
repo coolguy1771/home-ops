@@ -65,10 +65,7 @@ spec:
     enableK8sEndpointSlice: true
     enableIdentityMark: true
     ingressController:
-      enabled: true
-      loadbalancerMode: dedicated
-      defaultSecretName: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
-      defaultSecretNamespace: networking
+      enabled: false
     gatewayAPI:
       enabled: true
     bgpControlPlane:
@@ -128,7 +125,7 @@ spec:
           annotations:
             kubernetes.io/ingress.class: cilium
             cert-manager.io/cluster-issuer: letsencrypt-production
-          ingressClassName: cilium
+          ingressClassName: istio
           hosts:
             - &host hubble.${SECRET_PUBLIC_DOMAIN}
           tls:
