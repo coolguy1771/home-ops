@@ -20,6 +20,7 @@ resources:
   - ./grafana.yaml
   - ./ingress-nginx.yaml
   - ./intel.yaml
+  - ./istio.yaml
   - ./jetstack.yaml
   - ./kepler.yaml
   - ./kubernetes-dashboard.yaml
