@@ -94,6 +94,8 @@ spec:
       main:
         enabled: true
         className: istio
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -104,6 +106,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: radarr-tls
     persistence:
       config:
         enabled: true

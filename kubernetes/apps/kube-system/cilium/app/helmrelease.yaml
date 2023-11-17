@@ -123,7 +123,7 @@ spec:
         ingress:
           enabled: true
           annotations:
-            kubernetes.io/ingress.class: cilium
+            kubernetes.io/ingress.class: istio
             cert-manager.io/cluster-issuer: letsencrypt-production
           ingressClassName: istio
           hosts:
