@@ -192,16 +192,6 @@ spec:
         #   cpu: 100m
         #   memory: 128Mi
 
-      # Default hub for Istio images.
-      # Releases are published to docker hub under 'istio' project.
-      # Dev builds from prow are on gcr.io
-      hub: docker.io/istio
-      # Default tag for Istio images.
-      tag: 1.19.3
-      # Variant of the image to use.
-      # Currently supported are: [debug, distroless]
-      variant: ""
-
       # Specify image pull policy if default behavior isn't desired.
       # Default behavior: latest images will be Always else IfNotPresent.
       imagePullPolicy: ""
@@ -238,7 +228,7 @@ spec:
       # When this option is set as true, Istio Operator, instead of webhooks, manages the
       # webhook configurations. When this option is set as false, webhooks manage their
       # own webhook configurations.
-      operatorManageWebhooks: false
+      operatorManageWebhooks: true
 
       # Custom DNS config for the pod to resolve names of services in other
       # clusters. Use this to add additional search domains, and other settings.
