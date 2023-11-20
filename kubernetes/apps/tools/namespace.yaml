@@ -5,3 +5,5 @@ metadata:
   name: tools
   labels:
     goldilocks.fairwinds.com/enabled: "true"
+  annotations:
+    istio-injection: enabled

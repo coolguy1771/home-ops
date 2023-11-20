@@ -24,6 +24,9 @@ spec:
       hosts:
         - '${SECRET_PUBLIC_DOMAIN}'
         - '*.${SECRET_PUBLIC_DOMAIN}'
+        - istio-gateway.istio-system.svc.cluster.local
+        - istio-gateway.istio-system.svc
+        - istio-gateway.istio-system
       tls:
         credentialName: istio-prod-cert-tls
         mode: SIMPLE
