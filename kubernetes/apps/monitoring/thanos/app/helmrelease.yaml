@@ -47,9 +47,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: istio
-        annotations:
-          hajimari.io/enable: "false"
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hostname: &host thanos-query-frontend.${SECRET_PUBLIC_DOMAIN}
         tls: true
         extraTls:

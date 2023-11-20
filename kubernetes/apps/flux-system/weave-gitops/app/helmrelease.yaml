@@ -32,9 +32,7 @@ spec:
       username: admin
     ingress:
       enabled: true
-      className: cilium
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
+      className: istio
       hosts:
         - host: &host gitops.${SECRET_PUBLIC_DOMAIN}
           paths:
@@ -43,7 +41,7 @@ spec:
       tls:
         - hosts:
             - *host
-          secretName: weave-gitops-tls
+          secretName: istio-prod-cert-tls
     networkPolicy:
       create: false
     metrics:

@@ -131,7 +131,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: onepassword-connect-tls
+            secretName: istio-prod-cert-tls
     persistence:
       config:
         enabled: true

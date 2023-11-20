@@ -98,7 +98,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: prowlarr-tls
+            secretName: istio-prod-cert-tls
     persistence:
       config:
         enabled: true

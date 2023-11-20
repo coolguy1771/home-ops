@@ -37,14 +37,12 @@ spec:
       ingress:
         enabled: true
         ingressClassName: istio
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host alertmanager.${SECRET_PUBLIC_DOMAIN}
         tls:
           - hosts:
               - *host
-            secretName: alertmanager-tls
+            secretName: istio-prod-cert-tls
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true
@@ -120,14 +118,12 @@ spec:
       ingress:
         enabled: true
         ingressClassName: istio
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}
         tls:
           - hosts:
               - *host
-            secretName: prometheus-tls
+            secretName: istio-prod-cert-tls
       thanosService:
         enabled: true
       thanosServiceMonitor:

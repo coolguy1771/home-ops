@@ -96,7 +96,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: qbittorrent-tls
+            secretName: istio-prod-cert-tls
     persistence:
       config:
         enabled: true

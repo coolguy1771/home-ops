@@ -100,7 +100,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: sabnzbd-tls
+            secretName: istio-prod-cert-tls
     persistence:
       config:
         enabled: true

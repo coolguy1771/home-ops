@@ -123,13 +123,12 @@ spec:
         ingress:
           enabled: true
           annotations:
-            kubernetes.io/ingress.class: istio
             cert-manager.io/cluster-issuer: letsencrypt-production
-          ingressClassName: istio
+          className: istio
           hosts:
             - &host hubble.${SECRET_PUBLIC_DOMAIN}
           tls:
-            - secretName: hubble-tls
+            - secretName: istio-prod-cert-tls
               hosts:
                 - *host
     rollOutCiliumPods: true

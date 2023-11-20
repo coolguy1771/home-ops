@@ -34,17 +34,13 @@ spec:
     ingress:
       dashboard:
         ingressClassName: istio
-        annotations:
-          hajimari.io/appName: "Rook"
-          hajimari.io/icon: mdi:chess-rook
-          cert-manager.io/cluster-issuer: letsencrypt-production
         host:
           name: &host "rook.${SECRET_PUBLIC_DOMAIN}"
           path: /
         tls:
           - hosts:
               - *host
-            secretName: rook-ceph-dashboard-tls
+            secretName: istio-prod-cert-tls
     toolbox:
       enabled: true
     configOverride: |
