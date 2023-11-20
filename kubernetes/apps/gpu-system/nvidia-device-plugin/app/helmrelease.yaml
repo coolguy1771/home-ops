@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: nvidia-device-plugin
-  namespace: gpu-system
 spec:
   interval: 30m
   chart:

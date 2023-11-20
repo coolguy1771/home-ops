@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: nginx-external
-  namespace: networking
+  namespace: &namespace networking
 spec:
   interval: 30m
   chart:
@@ -38,18 +38,15 @@ spec:
         name: external
         default: false
         controllerValue: k8s.io/external
-      publishService:
-        enabled: true
       admissionWebhooks:
         objectSelector:
           matchExpressions:
             - key: ingress-class
               operator: In
               values: ["external"]
-      enableTopologyAwareRouting: true
-      opentelemetry:
-        enabled: true
+      allowSnippetAnnotations: true
       config:
+        block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
         log-format-escape-json: "true"
         use-forwarded-headers: "true"
         disable-access-log: "false"
@@ -77,7 +74,8 @@ spec:
         ssl-protocols: TLSv1.3 TLSv1.2
         enable-ocsp: "true"
         hide-headers: Server,X-Powered-By
-        keep-alive: 10
+        keep-alive-requests: 10000
+        keep-alive: 120
         log-format-upstream: >
           {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x_forwarded_for": "$proxy_add_x_forwarded_for",
           "request_id": "$req_id", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
@@ -88,17 +86,15 @@ spec:
         proxy-buffer-size: 16k
         use-geoip2: true
         large-client-header-buffers: 2 2k # hardened near CIS benchmarks of 2 1k, but needs increase due to auth services (e.g. Kanidm, Authentik, CloudFlare Zero Trust)
-        block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
-          namespace: networking
+          namespace: *namespace
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: |-
-          networking/${SECRET_PUBLIC_DOMAIN/./-}-tls
+        default-ssl-certificate: networking/${SECRET_PUBLIC_DOMAIN/./-}-tls
         default-backend-service: networking/nginx-external-defaultbackend
       topologySpreadConstraints:
         - maxSkew: 1

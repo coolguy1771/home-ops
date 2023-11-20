@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: qbittorrent-orphaned
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -34,11 +33,14 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@daily"
+          timeZone: &timeZone America/New_York
         containers:
           main:
             image:
               repository: ghcr.io/buroa/qbtools
               tag: v0.10.0
+            env:
+              TZ: *timeZone
             args: [
               "orphaned",
               "--exclude-pattern", "*_unpackerred",

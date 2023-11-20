@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -13,18 +14,3 @@ spec:
   dnsNames:
     - "${SECRET_PUBLIC_DOMAIN}"
     - "*.${SECRET_PUBLIC_DOMAIN}"
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "${SECRET_DOMAIN_GAMES/./-}"
-  namespace: networking
-spec:
-  secretName: "${SECRET_DOMAIN_GAMES/./-}-tls"
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
-  commonName: "${SECRET_DOMAIN_GAMES}"
-  dnsNames:
-    - "${SECRET_DOMAIN_GAMES}"
-    - "*.${SECRET_DOMAIN_GAMES}"

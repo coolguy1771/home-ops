@@ -8,7 +8,6 @@ kind: CiliumBGPPeeringPolicy
 # "CiliumBGPPeeringPolicy" is used with `bgpControlPlane.enabled: true` which uses GoBGP, NOT the old `bgp.enabled: true` which uses MetalLB
 metadata:
   name: bgp-loadbalancer-ip-main
-  namespace: kube-system
 spec:
   nodeSelector:
     matchLabels:

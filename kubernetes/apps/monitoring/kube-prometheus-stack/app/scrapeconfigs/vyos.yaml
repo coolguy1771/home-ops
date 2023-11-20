@@ -4,7 +4,6 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: vyos-gatus
-  namespace: monitoring
 spec:
   staticConfigs:
     - targets: ["status.286k.co"]
@@ -14,19 +13,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: vyos-podman-exporter
-  namespace: monitoring
-spec:
-  staticConfigs:
-    - targets: ["vyos.286k.co:9882"]
-  metricsPath: /metrics
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
   name: vyos-smtp-relay
-  namespace: monitoring
 spec:
   staticConfigs:
     - targets: ["10.10.254.4:8080"]
@@ -37,9 +24,7 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: vyos-vnstat
-  namespace: monitoring
 spec:
   staticConfigs:
     - targets: ["vyos.286k.co:8685"]
   metricsPath: /metrics
-

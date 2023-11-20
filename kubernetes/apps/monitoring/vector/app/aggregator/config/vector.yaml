@@ -14,24 +14,6 @@ enrichment_tables:
 #
 
 sources:
-  talos_kernel_logs:
-    address: 0.0.0.0:6050
-    type: socket
-    mode: udp
-    max_length: 102400
-    decoding:
-      codec: json
-    host_key: __host
-
-  talos_service_logs:
-    address: 0.0.0.0:6051
-    type: socket
-    mode: udp
-    max_length: 102400
-    decoding:
-      codec: json
-    host_key: __host
-
   journald_source:
     type: vector
     version: "2"
@@ -148,32 +130,3 @@ sinks:
     remove_timestamp: true
     labels:
       hostname: '{{ host }}'
-
-  talos_kernel:
-    type: loki
-    inputs: ["talos_kernel_logs"]
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local
-    encoding:
-      codec: json
-      except_fields: ["__host"]
-    batch:
-      max_bytes: 1048576
-    out_of_order_action: rewrite_timestamp
-    labels:
-      hostname: '{{ __host }}'
-      service: '{{ facility }}'
-
-  talos_service:
-    type: loki
-    inputs: ["talos_service_logs"]
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local
-    encoding:
-      codec: json
-      except_fields: ["__host"]
-    batch:
-      max_bytes: 524288
-    out_of_order_action: rewrite_timestamp
-    labels:
-      hostname: '{{ __host }}'
-      service: "talos-service"
-      namespace: "talos:service"

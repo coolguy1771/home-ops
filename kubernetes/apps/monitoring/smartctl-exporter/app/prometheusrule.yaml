@@ -4,7 +4,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: smartctl-exporter-rules
-  namespace: monitoring
 spec:
   groups:
     - name: smartctl-exporter.rules
@@ -12,8 +11,8 @@ spec:
         - alert: SmartDeviceHighTemperature
           annotations:
             summary: Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
-              has a temperature higher than 60°C.
-          expr: smartctl_device_temperature > 60
+              has a temperature higher than 70°C.
+          expr: smartctl_device_temperature > 70
           for: 15m
           labels:
             severity: critical

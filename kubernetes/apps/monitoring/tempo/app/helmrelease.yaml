@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: tempo
-  namespace: monitoring
 spec:
   interval: 15m
   chart:
@@ -46,13 +45,15 @@ spec:
     tempoQuery:
       ingress:
         enabled: true
+        ingressClassName: istio
+        className: istio
         annotations:
-          kubernetes.io/ingress.class: cilium
+          kubernetes.io/ingress.class: istio
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "tempo-query.${SECRET_PUBLIC_DOMAIN}"
         tls:
-          - secretName: tempo-query-tls
+          - secretName: istio-prod-cert-tls
             hosts:
               - *host
     serviceMonitor:

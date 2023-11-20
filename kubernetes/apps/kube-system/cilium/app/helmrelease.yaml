@@ -3,24 +3,27 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app cilium
-  namespace: kube-system
+  name: cilium
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
-      chart: *app
+      chart: cilium
       version: 1.14.4
       sourceRef:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
+  maxHistory: 2
   install:
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     securityContext:
       privileged: true
@@ -52,7 +55,6 @@ spec:
       enabled: true
     bpf:
       clockProbe: true
-      lbExternalClusterIP: true
       masquerade: false
       tproxy: true
     containerRuntime:
@@ -67,7 +69,7 @@ spec:
     ingressController:
       enabled: false
     gatewayAPI:
-      enabled: true
+      enabled: false
     bgpControlPlane:
       enabled: true
     l2announcements:
@@ -183,11 +185,9 @@ spec:
     envoyConfig:
       # -- Enable CiliumEnvoyConfig CRD
       # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
-      enabled: true
+      enabled: false
     envoy:
-      enabled: true
-      rollOutPods: true
-      securityContext:
+      enabled: false
         # -- User to run the pod with
         # runAsUser: 0
         # -- Run the pod with elevated privileges
@@ -208,119 +208,4 @@ spec:
       # -- Enable authentication processing and garbage collection.
       # Note that if disabled, policy enforcement will still block requests that require authentication.
       # But the resulting authentication requests for these requests will not be processed, therefore the requests not be allowed.
-      enabled: true
-      # -- Buffer size of the channel Cilium uses to receive authentication events from the signal map.
-      queueSize: 1024
-      # -- Buffer size of the channel Cilium uses to receive certificate expiration events from auth handlers.
-      rotatedIdentitiesQueueSize: 1024
-        # -- Interval for garbage collection of auth map entries.
-      gcInterval: "5m0s"
-      # Configuration for Cilium's service-to-service mutual authentication using TLS handshakes.
-      # Note that this is not full mTLS support without also enabling encryption of some form.
-      # Current encryption options are Wireguard or IPSec, configured in encryption block above.
-      mutual:
-        # -- Port on the agent where mutual authentication handshakes between agents will be performed
-        port: 4250
-        # -- Timeout for connecting to the remote node TCP socket
-        connectTimeout: 5s
-        # Settings for SPIRE
-        spire:
-          # -- Enable SPIRE integration (beta)
-          enabled: false
-          # Settings to control the SPIRE installation and configuration
-          install:
-            # -- Enable SPIRE installation.
-            # This will only take effect only if authentication.mutual.spire.enabled is true
-            enabled: true
-            # -- SPIRE namespace to install into
-            namespace: spire-system
-            # SPIRE agent configuration
-            agent:
-              # -- SPIRE agent image
-              image: ghcr.io/spiffe/spire-agent:1.8.4@sha256:d489bc8470d7a0f292e0e3576c3e7025253343dc798241bcfd9061828e2a6bef
-              # -- SPIRE agent service account
-              serviceAccount:
-                create: true
-                name: spire-agent
-              # -- SPIRE agent annotations
-              annotations: { }
-              # -- SPIRE agent labels
-              labels: { }
-              # -- SPIRE Workload Attestor kubelet verification.
-              skipKubeletVerification: true
-              # -- SPIRE agent tolerations configuration
-              # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
-              tolerations: []
-            server:
-              # -- SPIRE server image
-              image: ghcr.io/spiffe/spire-server:1.8.4@sha256:bf79e0a921f8b8aa92602f7ea335616e72f7e91f939848e7ccc52d5bddfe96a1
-              # -- SPIRE server service account
-              serviceAccount:
-                create: true
-                name: spire-server
-              # -- SPIRE server init containers
-              initContainers: []
-              # -- SPIRE server annotations
-              annotations: {}
-              # -- SPIRE server labels
-              labels: {}
-              # SPIRE server service configuration
-              service:
-                # -- Service type for the SPIRE server service
-                type: ClusterIP
-                # -- Annotations to be added to the SPIRE server service
-                annotations: {}
-                # -- Labels to be added to the SPIRE server service
-                labels: {}
-              # -- SPIRE server affinity configuration
-              affinity: {}
-              # -- SPIRE server nodeSelector configuration
-              # ref: ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-              nodeSelector: {}
-              # -- SPIRE server tolerations configuration
-              # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
-              tolerations: []
-              # SPIRE server datastorage configuration
-              dataStorage:
-                # -- Enable SPIRE server data storage
-                enabled: true
-                # -- Size of the SPIRE server data storage
-                size: 1Gi
-                # -- Access mode of the SPIRE server data storage
-                accessMode: ReadWriteOnce
-                # -- StorageClass of the SPIRE server data storage
-                storageClass: ceph-block
-              # -- Security context to be added to spire server pods.
-              # SecurityContext holds pod-level security attributes and common container settings.
-              # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
-              podSecurityContext: {}
-              # -- Security context to be added to spire server containers.
-              # SecurityContext holds pod-level security attributes and common container settings.
-              # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
-              securityContext: {}
-              # SPIRE CA configuration
-              ca:
-                # -- SPIRE CA key type
-                # AWS requires the use of RSA. EC cryptography is not supported
-                keyType: "rsa-4096"
-                # -- SPIRE CA Subject
-                subject:
-                  country: "US"
-                  organization: "SPIRE"
-                  commonName: "Cilium SPIRE CA"
-          # -- SPIRE server address used by Cilium Operator
-          #
-          # If k8s Service DNS along with port number is used (e.g. <service-name>.<namespace>.svc(.*):<port-number> format),
-          # Cilium Operator will resolve its address by looking up the clusterIP from Service resource.
-          #
-          # Example values: 10.0.0.1:8081, spire-server.cilium-spire.svc:8081
-          serverAddress: spire-server.spire-system.svc:8081
-          # -- SPIFFE trust domain to use for fetching certificates
-          trustDomain: spiffe.cilium
-          # -- SPIRE socket path where the SPIRE delegated api agent is listening
-          adminSocketPath: /run/spire/sockets/admin.sock
-          # -- SPIRE socket path where the SPIRE workload agent is listening.
-          # Applies to both the Cilium Agent and Operator
-          agentSocketPath: /run/spire/sockets/agent/agent.sock
-          # -- SPIRE connection timeout
-          connectionTimeout: 30s
+      enabled: false

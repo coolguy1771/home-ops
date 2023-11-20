@@ -4,7 +4,6 @@ kind: Namespace
 metadata:
   name: actions-runner-system
   labels:
-    goldilocks.fairwinds.com/enabled: "true"
     kustomize.toolkit.fluxcd.io/prune: disabled
   annotations:
     istio-injection: enabled

@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: node-feature-discovery
-  namespace: kube-system
 spec:
   interval: 30m
   chart:
@@ -28,14 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    prometheus:
-      enable: true
-    tls:
-      enable: true
-      certManager: true
-    master:
-      config:
-        extraLabelNs: ["nvidia.com"]
     worker:
       config:
         core:
@@ -47,3 +38,5 @@ spec:
           pci:
             deviceClassWhitelist: ["02", "0200", "0207", "0300", "0302"]
             deviceLabelFields: ["vendor"]
+    prometheus:
+      enable: true

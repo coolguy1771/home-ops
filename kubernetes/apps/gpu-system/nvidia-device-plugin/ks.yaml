@@ -3,11 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: nvidia-device-plugin
+  name: &app nvidia-device-plugin
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: node-feature-discovery
+  targetNamespace: gpu-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/gpu-system/nvidia-device-plugin/app
   prune: true
   sourceRef:

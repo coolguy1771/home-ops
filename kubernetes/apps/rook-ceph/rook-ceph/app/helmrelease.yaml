@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: rook-ceph-operator
-  namespace: rook-ceph
 spec:
   interval: 30m
   timeout: 15m
@@ -18,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -30,7 +28,7 @@ spec:
   values:
     csi:
       csiAddons:
-        enabled: true
-      cephFSKernelMountOptions: ms_mode=secure
+        enabled: false # Set to true when using kubernetes-csi-addons
+      cephFSKernelMountOptions: ms_mode=secure # Set when encryption/compression is enabled
     monitoring:
       enabled: true

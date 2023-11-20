@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: snapshot-controller
-  namespace: storage
 spec:
   interval: 30m
   chart:
@@ -53,3 +52,5 @@ spec:
           deletionPolicy: Delete
       serviceMonitor:
         create: true
+      webhook:
+        enabled: false

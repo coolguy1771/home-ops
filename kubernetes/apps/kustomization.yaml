@@ -18,5 +18,5 @@ resources:
   - ./rook-ceph
   - ./storage
   - ./tetragon-system
-  - ./tools
+#  - ./tools
   - ./volsync

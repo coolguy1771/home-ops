@@ -13,7 +13,7 @@ if [[ "$2" == *"force-cross-seed"* ]]; then
         --retry-max-time 40 \
         --request POST \
         --data-urlencode "path=$1" \
-        http://cross-seed.media.svc.cluster.local/api/webhook
+        http://cross-seed.default.svc.cluster.local/api/webhook
 else
     printf "Skipping cross-seed check for '%s' with tags '%s'\n" "$1" "$2"
 fi

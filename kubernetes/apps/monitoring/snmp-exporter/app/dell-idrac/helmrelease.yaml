@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app snmp-exporter-dell-idrac
-  namespace: monitoring
+  namespace: &namespace monitoring
 spec:
   interval: 30m
   chart:
@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -41,16 +40,16 @@ spec:
         defaultMode: 420
     serviceMonitor:
       enabled: true
-      namespace: monitoring
+      namespace: *namespace
       params:
         - name: dell-idrac-0
           module:
-            - dell_idrac
-          target: dell-idrac-0.286k.co
+            - dell
+          target: dell-idrac-0
         - name: dell-idrac-1
           module:
-            - dell_idrac
-          target: dell-idrac-1.286k.co
+            - dell
+          target: dell-idrac-1
       path: /snmp
       scrapeTimeout: 30s
       relabelings:
