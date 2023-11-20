@@ -87,9 +87,8 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: isito
+        className: isito
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
           policy.cilium.io/proxy-visibility: "<Egress/53/UDP/DNS>,<Egress/80/TCP/HTTP>"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
@@ -101,7 +100,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretname: "{{ .Release.Name }}-tls"
+            secretname: istio-prod-cert-tls
     persistence:
       config:
         enabled: true
