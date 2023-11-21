@@ -188,21 +188,21 @@ spec:
       enabled: false
     envoy:
       enabled: false
-        # -- User to run the pod with
-        # runAsUser: 0
-        # -- Run the pod with elevated privileges
-        privileged: true
-        prometheus:
+      # -- User to run the pod with
+      # runAsUser: 0
+      # -- Run the pod with elevated privileges
+      privileged: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
           enabled: true
-          serviceMonitor:
-            enabled: true
-        capabilities:
-          # -- Capabilities for the `cilium-envoy` container
-          envoy:
-            # Used since cilium proxy uses setting IPPROTO_IP/IP_TRANSPARENT
-            - NET_ADMIN
-            - PERFMON
-            - BPF
+      capabilities:
+        # -- Capabilities for the `cilium-envoy` container
+        envoy:
+          # Used since cilium proxy uses setting IPPROTO_IP/IP_TRANSPARENT
+          - NET_ADMIN
+          - PERFMON
+          - BPF
     # Configuration for types of authentication for Cilium (beta)
     authentication:
       # -- Enable authentication processing and garbage collection.
