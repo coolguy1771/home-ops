@@ -51,19 +51,6 @@ spec:
         use-forwarded-headers: "true"
         disable-access-log: "false"
         enable-real-ip: "true"
-        enable-opentelemetry: "true"
-        opentelemetry-config: "/etc/nginx/opentelemetry.toml"
-        opentelemetry-operation-name: "HTTP $request_method $service_name $uri"
-        opentelemetry-trust-incoming-span: "true"
-        otlp-collector-host: "tempo.monitoring.svc"
-        otlp-collector-port: "4317"
-        otel-max-queuesize: "2048"
-        otel-schedule-delay-millis: "5000"
-        otel-max-export-batch-size: "512"
-        otel-service-name: "external-nginx-proxy" # Opentelemetry resource name
-        otel-sampler: "AlwaysOn" # Also: AlwaysOff, TraceIdRatioBased
-        otel-sampler-ratio: "1.0"
-        otel-sampler-parent-based: "false"
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
