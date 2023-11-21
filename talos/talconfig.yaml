@@ -2,13 +2,16 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: home-cluster
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.5.4
+talosVersion: v1.5.5
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.28.3
+kubernetesVersion: v1.28.4
+additionalApiServerCertSans:
+  - 10.10.254.3
+  - k8s-lb.286k.co
 additionalMachineCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
-endpoint: https://10.10.254.3:6443
+endpoint: https://k8s-lb.286k.co:6443
 domain: cluster.local
 clusterPodNets:
   - 10.244.0.0/16
@@ -25,7 +28,13 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
@@ -34,7 +43,13 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-2
     ipAddress: 10.10.10.22
@@ -44,7 +59,13 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: true
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-3
     ipAddress: 10.10.10.23
@@ -56,7 +77,13 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-4
     ipAddress: 10.10.10.24
@@ -68,7 +95,13 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-5
     ipAddress: 10.10.10.25
@@ -80,7 +113,13 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-6
     ipAddress: 10.10.10.26
@@ -92,7 +131,13 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/8a71f9fe5c25403801ac19ff2beeacbf79bcfaf82405833d75707ede0968c64d
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-7
     ipAddress: 10.10.10.27
@@ -104,7 +149,12 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/59443dbd0e7318639327e29bc6d90c8d4107e804d651b2321c7000332029b6b7
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
@@ -116,19 +166,45 @@ nodes:
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/59443dbd0e7318639327e29bc6d90c8d4107e804d651b2321c7000332029b6b7
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
     controlPlane: false
     installDisk: /dev/disk/by-id/ata-HRAA2S0512ZILM2_6G000SJA
     networkInterfaces:
+      - interface: bond0
+        dhcp: true
+        bond:
+          mode: 802.3ad
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
+          interfaces:
+            - eth0
+            - eth1
       - interface: eth2
         mtu: 1500
         dhcp: true
     nodeLabels:
       node-role.kubernetes.io/worker: "true"
-    talosImageURL: factory.talos.dev/installer/935877862127e1d69dd6f468f665d3cd21d2c9434eeed5b9adbe595f5dc5e7d1
+    schematic:
+      customization:
+        # extraKernelArgs:
+        #   - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
+            - siderolabs/nonfree-kmod-nvidia
+            - siderolabs/nvidia-container-toolkit
     patches:
       - |-
         - op: add
@@ -143,7 +219,7 @@ nodes:
                 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
                   BinaryName = "/usr/bin/nvidia-container-runtime"
               path: /etc/cri/conf.d/20-customization.part
-              op: add
+              op: append
       - |-
         - op: add
           path: /machine/kernel
@@ -178,6 +254,20 @@ controlPlane:
         value:
           validSubnets:
             - 10.10.10.0/24
+    - |-
+      - op: add
+        path: /machine/systemDiskEncryption
+        value:
+          ephemeral:
+            provider: luks2
+            keys:
+              - nodeID: {}
+                slot: 0
+          state:
+            provider: luks2
+            keys:
+              - nodeID: {}
+                slot: 0
     - |-
       cluster:
         apiServer:
@@ -271,6 +361,20 @@ worker:
         value:
           enabled: true
           port: 7445
+    - |-
+      - op: add
+        path: /machine/systemDiskEncryption
+        value:
+          ephemeral:
+            provider: luks2
+            keys:
+              - nodeID: {}
+                slot: 0
+          state:
+            provider: luks2
+            keys:
+              - nodeID: {}
+                slot: 0
     - |-
       machine:
         files:
