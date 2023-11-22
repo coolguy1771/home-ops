@@ -31,7 +31,7 @@ spec:
       username: admin
     ingress:
       enabled: true
-      className: istio
+      className: internal
       hosts:
         - host: &host weave-gitops.${SECRET_PUBLIC_DOMAIN}
           paths:

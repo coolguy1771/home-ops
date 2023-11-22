@@ -42,7 +42,7 @@ spec:
       replicaCount: 2
       ingress:
         enabled: true
-        ingressClassName: istio
+        ingressClassName: internal
         hostname: &host thanos-query-frontend.${SECRET_PUBLIC_DOMAIN}
         tls: true
         extraTls:

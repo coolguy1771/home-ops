@@ -45,8 +45,8 @@ spec:
     tempoQuery:
       ingress:
         enabled: true
-        ingressClassName: istio
-        className: istio
+        ingressClassName: internal
+        className: internal
         annotations:
           kubernetes.io/ingress.class: istio
           cert-manager.io/cluster-issuer: letsencrypt-production

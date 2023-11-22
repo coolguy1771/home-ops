@@ -126,7 +126,7 @@ spec:
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
-          className: istio
+          className: internal
           hosts:
             - &host hubble.${SECRET_PUBLIC_DOMAIN}
           tls:

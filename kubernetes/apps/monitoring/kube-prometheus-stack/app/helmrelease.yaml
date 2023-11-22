@@ -38,7 +38,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: istio
+        ingressClassName: internal
         hosts:
           - &host alertmanager.${SECRET_PUBLIC_DOMAIN}
         tls:
@@ -77,7 +77,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: istio
+        ingressClassName: internal
         pathType: Prefix
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}

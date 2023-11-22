@@ -86,7 +86,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: istio
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:

@@ -31,7 +31,7 @@ spec:
       createPrometheusRules: true
     ingress:
       dashboard:
-        ingressClassName: istio
+        ingressClassName: internal
         host:
           name: &host "rook.${SECRET_PUBLIC_DOMAIN}"
           path: /
