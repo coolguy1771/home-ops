@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: 286k-co
+spec:
+  secretName: 286k-co-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: 286k.cp
+  dnsNames:
+    - 286k.cp
+    - "*.286k.cp"

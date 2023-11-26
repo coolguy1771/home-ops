@@ -75,8 +75,6 @@ nodes:
       - interface: eno1
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         systemExtensions:
@@ -93,8 +91,6 @@ nodes:
       - interface: eno1
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         systemExtensions:
@@ -111,8 +107,6 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         systemExtensions:
@@ -129,8 +123,6 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         systemExtensions:
@@ -147,8 +139,6 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         systemExtensions:
@@ -164,8 +154,6 @@ nodes:
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         systemExtensions:
@@ -193,8 +181,6 @@ nodes:
       - interface: eth2
         mtu: 1500
         dhcp: true
-    nodeLabels:
-      node-role.kubernetes.io/worker: "true"
     schematic:
       customization:
         # extraKernelArgs:
