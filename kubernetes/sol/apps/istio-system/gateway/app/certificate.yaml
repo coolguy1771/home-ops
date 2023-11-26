@@ -2,7 +2,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${SECRET_PUBLIC_DOMAIN/./-}"
+  name: "286k.co"
   namespace: istio-system
 spec:
   secretName: "istio-prod-cert-tls"
@@ -21,7 +21,7 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "${SECRET_PUBLIC_DOMAIN}"
+  commonName: "286k.co"
   dnsNames:
-    - "${SECRET_PUBLIC_DOMAIN}"
-    - "*.${SECRET_PUBLIC_DOMAIN}"
+    - "286k.co"
+    - "*.286k.co"
