@@ -9,7 +9,7 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: 286k.cp
+  commonName: 286k.co
   dnsNames:
-    - 286k.cp
-    - "*.286k.cp"
+    - 286k.co
+    - "*.286k.co"
