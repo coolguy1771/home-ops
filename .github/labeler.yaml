@@ -9,3 +9,7 @@ area/hack:
   - "hack/**/*"
 area/terraform:
   - "terraform/**/*"
+area/talos:
+  - "talos/**/*"
+area/pulumi:
+  - "pulumi/**/*"

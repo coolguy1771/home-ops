@@ -1,15 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["kopia"],
-      "allowedVersions": "<10"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["postgresql"],
-      "allowedVersions": "<15"
-    }
   ]
 }

@@ -1,9 +1,13 @@
 ---
 # Area
-- name: area/infrastructure
+- name: area/pulumi
   color: "72ccf3"
   description: >-
-    Changes made in the infrastructure directory
+    Changes made in the "pulumi" directory
+- name: area/talos
+  color: "353951"
+  description: >-
+    Changes made in the "talos" directory
 - name: area/github
   color: "72ccf3"
   description: >-
