@@ -112,7 +112,7 @@ spec:
       config:
         enabled: true
         type: hostPath
-        hostPath: /eros/Minio
+        hostPath: /pluto/minio
         hostPathType: Directory
         globalMounts:
           - path: /data
