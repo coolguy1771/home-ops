@@ -19,7 +19,7 @@ spec:
               key: api-key
         selector:
           dnsZones:
-            - "${SECRET_PUBLIC_DOMAIN}"
+            - "286k.co"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/cert-manager.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
@@ -41,4 +41,4 @@ spec:
               key: api-key
         selector:
           dnsZones:
-            - "${SECRET_PUBLIC_DOMAIN}"
+            - "286k.co"
