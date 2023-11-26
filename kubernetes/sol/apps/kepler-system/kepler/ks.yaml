@@ -3,17 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kepler
+  name: &app kepler
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-node-feature-discovery
-  path: ./kubernetes/apps/kepler-system/kepler/app
+  targetNamespace: kepler-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/sol/apps/kepler-system/kepler/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+  wait: false
   interval: 30m
   retryInterval: 1m
   timeout: 5m
