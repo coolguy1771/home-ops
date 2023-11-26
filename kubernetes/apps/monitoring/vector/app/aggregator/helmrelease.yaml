@@ -65,7 +65,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: vector.${SECRET_PUBLIC_DOMAIN}
-        loadBalancerIP: ${SVC_VECTOR_ADDR}
+        loadBalancerIP: 10.0.42.201
         externalTrafficPolicy: Local
         ports:
           http:
