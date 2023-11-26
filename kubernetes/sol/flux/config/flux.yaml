@@ -26,6 +26,7 @@ spec:
     kind: OCIRepository
     name: flux-manifests
   patches:
+    # Remove the network policies that does not work with k3s
     - patch: |
         $patch: delete
         apiVersion: networking.k8s.io/v1
@@ -34,7 +35,6 @@ spec:
           name: not-used
       target:
         group: networking.k8s.io
-        version: v1
         kind: NetworkPolicy
     # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
     # https://fluxcd.io/flux/cheatsheets/bootstrap/#increase-the-number-of-workers
