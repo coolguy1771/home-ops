@@ -18,6 +18,5 @@ resources:
   - ./neuvector.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
-  - ./stevehipwell.yaml
   - ./weaveworks.yaml
   - ./xentra.yaml
