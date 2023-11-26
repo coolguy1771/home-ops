@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/istio-system/base/app
+  path: ./kubernetes/sol/apps/istio-system/base/app
   prune: true
   sourceRef:
     kind: GitRepository

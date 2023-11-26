@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/kube-guardian/kube-guardian/app
+  path: ./kubernetes/sol/apps/kube-guardian/kube-guardian/app
   prune: true
   sourceRef:
     kind: GitRepository

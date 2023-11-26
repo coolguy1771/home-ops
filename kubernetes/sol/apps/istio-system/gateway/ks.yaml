@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: istiod
-  path: ./kubernetes/apps/istio-system/gateway/app
+  path: ./kubernetes/sol/apps/istio-system/gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
