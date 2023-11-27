@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: external-secrets
-  namespace: kube-system
 spec:
   interval: 30m
   chart:
@@ -27,7 +26,6 @@ spec:
     keepHistory: false
   values:
     installCRDs: true
-    replicaCount: 1
     serviceMonitor:
       enabled: true
       interval: 1m

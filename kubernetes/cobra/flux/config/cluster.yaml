@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: cobra-kubernetes
+  name: home-kubernetes
   namespace: flux-system
 spec:
   interval: 30m
@@ -16,7 +16,7 @@ spec:
     # exclude all
     /*
     # include kubernetes directory
-    !/kubernetes
+    !/kubernetes/cobra
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -31,7 +31,7 @@ spec:
   wait: false
   sourceRef:
     kind: GitRepository
-    name: cobra-kubernetes
+    name: home-kubernetes
   decryption:
     provider: sops
     secretRef:

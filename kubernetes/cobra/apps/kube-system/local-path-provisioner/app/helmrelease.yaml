@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: local-path-provisioner
-  namespace: storage
 spec:
   interval: 30m
   chart:
@@ -16,7 +15,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -33,8 +31,8 @@ spec:
       defaultClass: false
     nodePathMap:
       - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
-        paths: ["/var/lib/local-path/storage"]
-    # Note: Using $$ to escape ${absolutePath} due to flux variable substitution
+        paths: ["/var/lib/rancher/k3s/storage"]
+    # Note: Do not enable Flux variable substitution on this HelmRelease
     configmap:
       setup: |-
         #!/bin/sh
