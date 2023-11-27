@@ -8,9 +8,9 @@ tasks:
     desc: Bootstrap Flux into a cluster
     summary: task {{.TASK}} [cluster=main]
     cmds:
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux
-      - sops --decrypt {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux/age-key.sops.yaml | kubectl apply -f -
-      - sops --decrypt {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux/github-deploy-key.sops.yaml | kubectl apply -f -
+      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/flux
+      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/age-key.sops.yaml | kubectl apply -f -
+      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml | kubectl apply -f -
       - sops --decrypt --in-place {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
       - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars
       - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/{{.cluster}}/flux/config
@@ -22,12 +22,12 @@ tasks:
       SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
     preconditions:
       - sh: test -f {{.ROOT_DIR}}/age.key
-      - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux/age-key.sops.yaml
-      - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux/github-deploy-key.sops.yaml
+      - sh: test -f {{.CLUSTER_DIR}}/bootstrap/flux/age-key.sops.yaml
+      - sh: test -f {{.CLUSTER_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml
       - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-settings.env
       - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
-      - sh: sops --decrypt {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux/age-key.sops.yaml
-      - sh: sops --decrypt {{.CLUSTER_DIR}}/{{.cluster}}/bootstrap/flux/github-deploy-key.sops.yaml
+      - sh: sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/age-key.sops.yaml
+      - sh: sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml
       - sh: sops --decrypt {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
 
   apply:
