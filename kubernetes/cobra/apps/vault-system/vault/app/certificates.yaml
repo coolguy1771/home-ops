@@ -10,7 +10,6 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: selfsigned-ca
-  namespace: cert-manager
 spec:
   isCA: true
   commonName: selfsigned-ca
@@ -35,7 +34,6 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: tls-server
-  namespace: vault-system
 spec:
   # Secret names are always required.
   secretName: tls-server

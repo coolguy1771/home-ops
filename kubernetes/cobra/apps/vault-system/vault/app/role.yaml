@@ -3,7 +3,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: vault-issuer
-  namespace: vault-system
 rules:
   - apiGroups: ['']
     resources: ['serviceaccounts/token']
@@ -14,7 +13,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: vault-issuer
-  namespace: vault-system
 subjects:
   - kind: ServiceAccount
     name: cert-manager
