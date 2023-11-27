@@ -5,4 +5,6 @@ kind: Kustomization
 namespace: vault-system
 resources:
   - ./helmrelease.yaml
+  - ./certificates.yaml
+  - ./issuer.yaml
   - ./externalsecret.yaml
