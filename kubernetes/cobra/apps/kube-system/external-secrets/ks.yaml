@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/sol/apps/kube-system/external-secrets/app
+  path: ./kubernetes/cobra/apps/kube-system/external-secrets/app
   prune: true
   sourceRef:
     kind: GitRepository
