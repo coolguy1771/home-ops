@@ -1,0 +1,211 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cilium
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cilium
+      version: 1.14.4
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    securityContext:
+      privileged: true
+      capabilities:
+        ciliumAgent:
+          - PERFMON
+          - BPF
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUI
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+    autoDirectNodeRoutes: true
+    annotateK8sNode: true
+    cluster:
+      id: 1
+      name: home
+    pmtuDiscovery:
+      enabled: true
+    bpf:
+      clockProbe: true
+      masquerade: false
+      tproxy: true
+    containerRuntime:
+      integration: containerd
+    endpointRoutes:
+      enabled: true
+    nodePort:
+      enabled: true
+    enableCiliumEndpointSlice: true
+    enableK8sEndpointSlice: true
+    enableIdentityMark: true
+    ingressController:
+      enabled: false
+    gatewayAPI:
+      enabled: false
+    bgpControlPlane:
+      enabled: true
+    l2announcements:
+      enabled: false
+      leaseDuration: 120s
+      leaseRenewDeadline: 60s
+      leaseRetryPeriod: 1s
+    hubble:
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query;ignoreAAAA
+          - drop
+          - tcp
+          - port-distribution
+          - icmp
+          - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+          - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+        serviceMonitor:
+          enabled: true
+        enableOpenMetrics: true
+        dashboards:
+          enabled: true
+          labelValue: "true"
+          annotations:
+            grafana_folder: Cilium
+      tls:
+        enabled: true
+        auto:
+          enabled: true
+          method: helm
+      relay:
+        enabled: true
+        rollOutPods: true
+        replicas: 2
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          trustCRDsExist: true
+      ui:
+        enabled: true
+        rollOutPods: true
+        replicas: 2
+        backend:
+          image:
+            repository: "quay.io/cilium/hubble-ui-backend"
+            tag: v0.12.2
+        frontend:
+          image:
+            repository: "quay.io/cilium/hubble-ui"
+            tag: "v0.12.2"
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-production
+          className: internal
+          hosts:
+            - &host hubble.${SECRET_PUBLIC_DOMAIN}
+          tls:
+            - secretName: istio-prod-cert-tls
+              hosts:
+                - *host
+    rollOutCiliumPods: true
+    externalIPs:
+      enabled: true
+    hostFirewall:
+      enabled: true
+    hostPort:
+      enabled: true
+    socketLB:
+      enabled: true
+    wellKnownIdentities:
+      enabled: true
+    enableCnpStatusUpdates: true
+    endpointStatus:
+      enabled: true
+      status: "policy"
+    ipam:
+      mode: kubernetes
+    ipv4NativeRoutingCIDR: "10.96.0.0/12"
+    monitor:
+      enabled: false
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    tunnel: disabled
+    operator:
+      enabled: true
+      rollOutPods: true
+      replicas: 2
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    loadBalancer:
+      algorithm: maglev
+      mode: dsr
+      serviceTopology: true
+    l7Proxy: true
+    localRedirectPolicy: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    k8sServiceHost: localhost
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    logOptions:
+      format: json
+    cgroup:
+      hostRooot: /sys/fs/cgroup
+      autoMount:
+        enabled: false
+    envoyConfig:
+      # -- Enable CiliumEnvoyConfig CRD
+      # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
+      enabled: false
+    envoy:
+      enabled: false
+      # -- User to run the pod with
+      # runAsUser: 0
+      # -- Run the pod with elevated privileges
+      privileged: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      capabilities:
+        # -- Capabilities for the `cilium-envoy` container
+        envoy:
+          # Used since cilium proxy uses setting IPPROTO_IP/IP_TRANSPARENT
+          - NET_ADMIN
+          - PERFMON
+          - BPF
+    # Configuration for types of authentication for Cilium (beta)
+    authentication:
+      # -- Enable authentication processing and garbage collection.
+      # Note that if disabled, policy enforcement will still block requests that require authentication.
+      # But the resulting authentication requests for these requests will not be processed, therefore the requests not be allowed.
+      enabled: false

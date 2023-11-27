@@ -1,0 +1,291 @@
+---
+# Source: kube-guardian/templates/broker/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: broker
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
+---
+# Source: kube-guardian/templates/controller/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: controller
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
+---
+# Source: kube-guardian/templates/database/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: database
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
+---
+# Source: kube-guardian/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kube-guardian-viewer
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    
+rules:
+- apiGroups: ["*"]
+  resources: ["namespaces", "pods", "services"]
+  verbs:
+    - get
+    - watch
+    - list
+---
+# Source: kube-guardian/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kube-guardian
+subjects:
+- kind: ServiceAccount
+  name: controller
+  namespace: kube-guardian
+roleRef:
+  kind: ClusterRole
+  name: kube-guardian-viewer
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: kube-guardian/templates/broker/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9090
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: broker
+---
+# Source: kube-guardian/templates/database/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: guardian-db
+  labels:
+    app: postgresdb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      # targetPort: postgresdb
+      protocol: TCP
+      name: http
+  selector:
+    app: postgresdb
+---
+# Source: kube-guardian/templates/controller/daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kube-guardian-controller
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-guardian
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kube-guardian
+    spec:
+      automountServiceAccountToken: true
+      hostNetwork: true
+      initContainers:
+      - name: wait-for-api
+        image: busybox
+        command: ["sh", "-c", "until wget -qO- http://broker.kube-guardian.svc.cluster.local:9090/health; do sleep 5; done"]
+      containers:
+      - name: controller
+        image: "ghcr.io/xentra-ai/images/guardian-controller@sha256:3b526f3bc7225a3fb29e9ffded2f1a4804c3c5447a126e7c21d89853e8b78498"
+        args:
+          - "cilium"
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /usr/sbin/uninstall-xentra.sh
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - NET_ADMIN
+            - SYS_MODULE
+        env:
+        - name: RUST_LOG
+          value: DEBUG
+        - name: CURRENT_NODE
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: API_ENDPOINT
+          value: "http://broker.kube-guardian.svc.cluster.local:9090"
+        volumeMounts:
+        - name: bpffs
+          mountPath: /sys/fs/bpf
+        - name: run-containerd-bundle
+          mountPath: /run/containerd/io.containerd.runtime.v2.task
+        - name: containerd-sock
+          mountPath: /run/containerd/containerd.sock
+          readOnly: true
+        - mountPath: /proc
+          name: hostproc
+      serviceAccountName: controller
+      dnsPolicy: ClusterFirstWithHostNet
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
+      volumes:
+      - name: bpffs
+        hostPath:
+          path: /sys/fs/bpf
+          type: Directory
+      - name: run-containerd-bundle
+        hostPath:
+          path: /run/containerd/io.containerd.runtime.v2.task
+      - name: containerd-sock
+        hostPath:
+          path: /run/containerd/containerd.sock
+      - hostPath:
+          path: /proc
+          type: Directory
+        name: hostproc
+      nodeSelector:
+        kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+---
+# Source: kube-guardian/templates/broker/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-guardian-broker
+  labels:
+    helm.sh/chart: kube-guardian-0.0.7
+    app.kubernetes.io/name: kube-guardian
+    app.kubernetes.io/instance: kube-guardian
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: broker
+      app.kubernetes.io/name: broker
+  template:
+    metadata:
+      labels:
+        app: broker
+        app.kubernetes.io/name: broker
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: broker
+      securityContext:
+        {}
+      containers:
+        - name: broker
+          securityContext:
+            {}
+          image: "ghcr.io/xentra-ai/images/guardian-broker@sha256:88d72aef474788c8b9ee0e30bd76c52f3bd2049a6236c651ec76d6c139f3ce5d"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: DATABASE_URL
+              value: "postgres://rust@guardian-db.kube-guardian.svc.cluster.local:5432/kube"
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: kube-guardian/templates/database/deployment.yaml
+# TODO This resource should be a statefulset
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guardian-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresdb
+  template:
+    metadata:
+      labels:
+        app: postgresdb
+    spec:
+      automountServiceAccountToken: true
+      containers:
+        - name: postgresdb
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: rust
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: trust
+            - name: POSTGRES_DB
+              value: kube
+          volumeMounts:
+            - mountPath: /var/lib/postgres/data
+              name: db-data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: guardian-db

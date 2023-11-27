@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app se-exporter
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      replicas: 1
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/coolguy1771/se-exporter
+      tag: rolling@sha256:3e46cb35f503b18c4d17f90dafc41818893862fdd765a514b8441e103340d64c
+    args: [
+      "/usr/bin/se-exporter",
+      "-h",
+      "$(SE_EXPORTER_ADDR)",
+      "-p",
+      "10196",
+      "--listen-port",
+      "9100",
+      "--token",
+      "$(SE_EXPORTER_TOKEN)",
+      "--run-async"]
+    envFrom:
+      - secretRef:
+          name: se-exporter-secret
+    service:
+      main:
+        ports:
+          http:
+            port: 9100
