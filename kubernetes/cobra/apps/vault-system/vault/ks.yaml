@@ -10,9 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: nginx-certificates
-  path: ./kubernetes/cobra/apps/vault-system/vault.app
+  path: ./kubernetes/cobra/apps/vault-system/vault/app
   prune: false
   sourceRef:
     kind: GitRepository
