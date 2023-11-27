@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: docker.io/kopia/kopia
-              tag: 0.15.0
+              tag: 20231124.0.114903
             env:
               TZ: America/New_York
             envFrom:
