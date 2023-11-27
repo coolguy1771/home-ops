@@ -47,7 +47,7 @@ spec:
             key: BIND_RNDC_KEY
     policy: sync
     sources: ["ingress", "service", "gateway-httproute", "gateway-grpcroute", "gateway-tlsroute", "gateway-tcproute", "gateway-udproute"]
-    txtOwnerId: networking
+    txtOwnerId: cobra
     txtPrefix: k8s.
     domainFilters: ["286k.co"]
     serviceMonitor:

@@ -47,7 +47,7 @@ spec:
             key: rndc-secret
     policy: sync
     sources: ["ingress", "service"]
-    txtOwnerId: networking
+    txtOwnerId: sol
     txtPrefix: k8s.
     domainFilters: ["286k.co"]
     serviceMonitor:
