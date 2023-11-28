@@ -16,7 +16,7 @@ spec:
             email: "${SECRET_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-secret
-              key: api-key
+              key: CLOUDFLARE_API_KEY
         selector:
           dnsZones:
             - "286k.co"
@@ -38,7 +38,7 @@ spec:
             email: "${SECRET_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-secret
-              key: api-key
+              key: CLOUDFLARE_API_KEY
         selector:
           dnsZones:
             - "286k.co"
