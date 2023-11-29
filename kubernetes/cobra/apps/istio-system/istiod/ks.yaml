@@ -6,7 +6,7 @@ metadata:
   name: &app istiod
   namespace: flux-system
 spec:
-  targetNamespace: istio
+  targetNamespace: istio-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
