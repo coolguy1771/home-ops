@@ -101,7 +101,7 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.turbo.ac
+          - &host prometheus.286k.co
         tls:
           - hosts:
               - *host
