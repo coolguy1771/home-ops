@@ -16,10 +16,10 @@ spec:
             email: "${SECRET_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-secret
-              key: api-key
+              key: CLOUDFLARE_API_KEY
         selector:
           dnsZones:
-            - "286k.co"
+            - 286k.co
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/cert-manager.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
@@ -38,7 +38,7 @@ spec:
             email: "${SECRET_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-secret
-              key: api-key
+              key: CLOUDFLARE_API_KEY
         selector:
           dnsZones:
-            - "286k.co"
+            - 286k.co
