@@ -29,7 +29,7 @@ spec:
   values:
     csi:
       csiAddons:
-        enabled: true
+        enabled: false
       enablePluginSelinuxHostMount: true
       enableCSIEncryption: false
       cephFSKernelMountOptions: ms_mode=secure
