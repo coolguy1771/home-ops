@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/cobra/apps/istio/istio-ingress/app
+  path: ./kubernetes/cobra/apps/istio-system/istio-ingress/app
   prune: true
   sourceRef:
     kind: GitRepository

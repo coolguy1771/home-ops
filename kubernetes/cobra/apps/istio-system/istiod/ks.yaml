@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/cobra/apps/istio/istiod/app
+  path: ./kubernetes/cobra/apps/istio-system/istiod/app
   prune: true
   sourceRef:
     kind: GitRepository
