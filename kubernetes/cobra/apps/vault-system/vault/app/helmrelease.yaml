@@ -288,7 +288,7 @@ spec:
         enabled: true
         image:
           repository: "hashicorp/vault"
-          tag: "1.15.2"
+          tag: "1.15.3"
           pullPolicy: IfNotPresent
         logFormat: json
         logLevel: info
