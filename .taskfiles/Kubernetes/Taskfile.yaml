@@ -5,11 +5,15 @@ version: "3"
 tasks:
 
   mount:
-    desc: Mount a PersistentVolumeClaim to a temporary pod
-    summary: task {{.TASK}} [cluster=main]? [ns=default]? [claim=plex]
+    desc: Mount a PersistentVolumeClaim to a temporary pod for a cluster
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+        ns: Namespace the PVC is in (default: default)
+        claim: PVC to mount (required)
     interactive: true
     cmd: |
-      kubectl run -n {{.ns}} debug-{{.claim}} -i --tty --rm --image=null --privileged --overrides='
+      kubectl --context {{.cluster}} run -n {{.ns}} debug-{{.claim}} -i --tty --rm --image=null --privileged --overrides='
         {
           "apiVersion": "v1",
           "spec": {
@@ -41,10 +45,8 @@ tasks:
           }
         }'
     vars:
-      claim: '{{ or .claim (fail "Argument (claim) is required") }}'
+      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
       ns: '{{.ns | default "default"}}'
-      cluster: '{{.cluster | default "main"}}'
-    env:
-      KUBECONFIG: "{{.CLUSTER_DIR}}/{{.cluster}}/kubeconfig"
+      claim: '{{ or .claim (fail "Argument (claim) is required") }}'
     preconditions:
-      - kubectl -n {{.ns}} get persistentvolumeclaim {{.claim}}
+      - { msg: "PVC not found", sh: "kubectl --context {{.cluster}} -n {{.ns}} get persistentvolumeclaim {{.claim}}" }

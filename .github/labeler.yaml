@@ -13,3 +13,11 @@ area/talos:
   - "talos/**/*"
 area/pulumi:
   - "pulumi/**/*"
+area/docs:
+  - "docs/**/*"
+cluster/kyak:
+  - "kubernetes/kyak/**/*"
+cluster/sol:
+  - "kubernetes/sol/**/*"
+cluster/cobra:
+  - "kubernetes/cobra/**/*"

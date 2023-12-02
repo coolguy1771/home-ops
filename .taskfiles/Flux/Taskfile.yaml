@@ -5,45 +5,49 @@ version: "3"
 tasks:
 
   bootstrap:
-    desc: Bootstrap Flux into a cluster
-    summary: task {{.TASK}} [cluster=main]
+    desc: Bootstrap Flux into a Kubernetes cluster
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+    prompt: Bootstrap Flux into the '{{.cluster}}' cluster... continue?
     cmds:
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/flux
-      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/age-key.sops.yaml | kubectl apply -f -
-      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml | kubectl apply -f -
-      - sops --decrypt --in-place {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/{{.cluster}}/flux/config
-      - defer: sops --encrypt --in-place {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
+      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux/age-key.sops.yaml | kubectl --context {{.cluster}} apply -f -
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux/github-deploy-key.sops.yaml | kubectl --context {{.cluster}} apply -f -
+      - sops --decrypt --in-place {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
+      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars
+      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/flux/config
+      - defer: sops --encrypt --in-place {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
     vars:
       cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
-    env:
-      KUBECONFIG: "{{.CLUSTER_DIR}}/{{.cluster}}/kubeconfig"
-      SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
     preconditions:
-      - sh: test -f {{.ROOT_DIR}}/age.key
-      - sh: test -f {{.CLUSTER_DIR}}/bootstrap/flux/age-key.sops.yaml
-      - sh: test -f {{.CLUSTER_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml
-      - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-settings.env
-      - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
-      - sh: sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/age-key.sops.yaml
-      - sh: sops --decrypt {{.CLUSTER_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml
-      - sh: sops --decrypt {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
+      - { msg: "Age private key not found",      sh: "test -f {{.ROOT_DIR}}/age.key" }
+      - { msg: "Age secret not found",           sh: "test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux/age-key.sops.yaml" }
+      - { msg: "Github deploy secret not found", sh: "test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux/github-deploy-key.sops.yaml" }
+      - { msg: "Cluster settings not found",     sh: "test -f {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/cluster-settings.env" }
+      - { msg: "Cluster secrets not found",      sh: "test -f {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env" }
+      - { msg: "Unable to decrypt sops secret",  sh: "sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux/age-key.sops.yaml" }
+      - { msg: "Unable to decrypt sops secret",  sh: "sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/flux/github-deploy-key.sops.yaml" }
+      - { msg: "Unable to decrypt sops secret",  sh: "sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env" }
 
   apply:
-    desc: Apply a resource path that contains Flux variables
-    summary: task {{.TASK}} [cluster=main]? [ks=./kubernetes/main/apps/default/plex/app]
-    dotenv: ['{{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-settings.env']
+    desc: Apply a Flux Kustomization resource for a cluster
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+        path: Path to the Flux Kustomization resource (required)
+        ns: Namespace the Flux Kustomization exists in (default: flux-system)
     cmd: |
-      sops exec-env {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env \
-        "kustomize build --load-restrictor=LoadRestrictionsNone {{.ks}} | \
-          envsubst | kubectl apply --server-side --field-manager=kustomize-controller -f -"
+      flux --context {{.cluster}} build ks $(basename {{.path}}) \
+          --namespace {{.ns}} \
+          --kustomization-file {{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}}/ks.yaml \
+          --path {{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}} \
+      | \
+      kubectl --context {{.cluster}} apply --server-side \
+          --field-manager=kustomize-controller -f -
     vars:
-      ks: '{{ or .ks (fail "Missing path (`ks` var)") }}'
-      cluster: '{{.cluster | default "main"}}'
-    env:
-      KUBECONFIG: "{{.CLUSTER_DIR}}/{{.cluster}}/kubeconfig"
-      SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
+      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
+      path: '{{ or .path (fail "Argument (path) is required") }}'
+      ns: '{{.ns | default "flux-system"}}'
     preconditions:
-      - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-settings.env
-      - sh: test -f {{.CLUSTER_DIR}}/{{.cluster}}/flux/vars/cluster-secrets.sops.env
+      - { msg: "Kustomization file not found", sh: "test -f {{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}}/ks.yaml" }
