@@ -1,4 +1,3 @@
-
 export const minioUser = "twitlin"
 export const minioServer = "s3.286k.co"
 export const MinioBuckets = [
