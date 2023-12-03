@@ -145,12 +145,12 @@ spec:
               key: AWS_SECRET_ACCESS_KEY
         - name: S3_ENDPOINT
           valueFrom:
-            configMapRef:
+            configMapKeyRef:
               name: thanos-bucket-v2
               key: BUCKET_HOST
         - name: BUCKET_NAME
           valueFrom:
-            configMapRef:
+            configMapKeyRef:
               name: thanos-bucket-v2
               key: BUCKET_NAME
     write:
@@ -172,12 +172,12 @@ spec:
               key: AWS_SECRET_ACCESS_KEY
         - name: S3_ENDPOINT
           valueFrom:
-            configMapRef:
+            configMapKeyRef:
               name: thanos-bucket-v2
               key: BUCKET_HOST
         - name: BUCKET_NAME
           valueFrom:
-            configMapRef:
+            configMapKeyRef:
               name: thanos-bucket-v2
               key: BUCKET_NAME
     backend:
@@ -197,12 +197,12 @@ spec:
               key: AWS_SECRET_ACCESS_KEY
         - name: S3_ENDPOINT
           valueFrom:
-            configMapRef:
+            configMapKeyRef:
               name: thanos-bucket-v2
               key: BUCKET_HOST
         - name: BUCKET_NAME
           valueFrom:
-            configMapRef:
+            configMapKeyRef:
               name: thanos-bucket-v2
               key: BUCKET_NAME
       persistence:
