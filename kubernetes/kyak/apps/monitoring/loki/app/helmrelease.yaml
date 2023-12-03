@@ -65,11 +65,9 @@ spec:
           replication_factor: 2
           storage:
             s3:
-              endpoint: "${BUCKET_HOST}"
-              bucketnames: "${BUCKET_NAME}"
-              accessKeyId: "${AWS_ACCESS_KEY_ID}"
-              secretAccessKey: "${AWS_SECRET_ACCESS_KEY}"
+              s3: null
               insecure: true
+              s3forcepathstyle: true
           ring:
             kvstore:
               store: memberlist
@@ -109,7 +107,7 @@ spec:
       image:
         registry: ghcr.io
       ingress:
-        enabled: false
+        enabled: true
         ingressClassName: internal
         hosts:
           - host: &host loki.${SECRET_PUBLIC_DOMAIN}
@@ -130,33 +128,12 @@ spec:
       extraVolumes:
         - name: rules
           emptyDir: {}
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - configMapRef:
-            name: loki-bucket-v2
-        - secretRef:
-            name: loki-bucket-v2
     write:
       replicas: 2
       persistence:
         storageClass: ceph-block
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - configMapRef:
-            name: loki-bucket-v2
-        - secretRef:
-            name: loki-bucket-v2
     backend:
       replicas: 2
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - configMapRef:
-            name: loki-bucket-v2
-        - secretRef:
-            name: loki-bucket-v2
       persistence:
         storageClass: ceph-block
       extraVolumeMounts:
@@ -184,5 +161,25 @@ spec:
           installOperator: false
       lokiCanary:
         enabled: false
+    sidecar:
+      image:
+        repository: ghcr.io/kiwigrid/k8s-sidecar
     test:
       enabled: false
+  valuesFrom:
+    - targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+      kind: ConfigMap
+      name: loki-bucket-v2
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.structuredConfig.common.storage.s3.endpoint
+      kind: ConfigMap
+      name: loki-bucket-v2
+      valuesKey: BUCKET_HOST
+    - targetPath: loki.structuredConfig.common.storage.s3.access_key_id
+      kind: Secret
+      name: loki-bucket-v2
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
+      kind: Secret
+      name: loki-bucket-v2
+      valuesKey: AWS_SECRET_ACCESS_KEY
