@@ -16,7 +16,6 @@ export function setupMinio(config: pulumi.Config) {
   // Create all minio users
   for (let user of minioConfig.MinioUsers) {
     new minio.IamUser(user.name, {
-      forceDestroy: true,
       name: user.name,
       updateSecret: true,
       secret: config.require("minioPassword"),
