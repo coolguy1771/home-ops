@@ -65,9 +65,10 @@ spec:
           replication_factor: 2
           storage:
             s3:
-              endpoint: '${S3_ENDPOINT}'
-              accessKeyId: '${ACCESS_KEY_ID}'
-              secretAccessKey: '${SECRET_ACCESS_KEY}'
+              endpoint: '$S3_ENDPOINT'
+              bucketnames: '$BUCKET_NAME'
+              accessKeyId: '$ACCESS_KEY_ID'
+              secretAccessKey: '$SECRET_ACCESS_KEY'
               insecure: true
           ring:
             kvstore:
@@ -147,6 +148,11 @@ spec:
             configMapRef:
               name: thanos-bucket-v2
               key: BUCKET_HOST
+        - name: BUCKET_NAME
+          valueFrom:
+            configMapRef:
+              name: thanos-bucket-v2
+              key: BUCKET_NAME
     write:
       replicas: 2
       persistence:
@@ -169,6 +175,11 @@ spec:
             configMapRef:
               name: thanos-bucket-v2
               key: BUCKET_HOST
+        - name: BUCKET_NAME
+          valueFrom:
+            configMapRef:
+              name: thanos-bucket-v2
+              key: BUCKET_NAME
     backend:
       replicas: 2
       extraArgs:
@@ -189,6 +200,11 @@ spec:
             configMapRef:
               name: thanos-bucket-v2
               key: BUCKET_HOST
+        - name: BUCKET_NAME
+          valueFrom:
+            configMapRef:
+              name: thanos-bucket-v2
+              key: BUCKET_NAME
       persistence:
         storageClass: ceph-block
       extraVolumeMounts:
@@ -218,8 +234,3 @@ spec:
         enabled: false
     test:
       enabled: false
-  valuesFrom:
-    - targetPath: loki.structuredConfig.common.storage.s3.bucketnames
-      kind: ConfigMap
-      name: loki-bucket-v2
-      valuesKey: BUCKET_NAME
