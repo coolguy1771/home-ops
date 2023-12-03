@@ -33,7 +33,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/coolguy1771/se-exporter
-      tag: rolling@sha256:9210d6033510c9d740ace5e8be0c6fb5f7409c0f1e93b04ffc10c04937e3d3bd
+      tag: rolling@sha256:b2862f92629e15d3aefa8add3b64ab35e3ce743e33ef4f93d08ac67cec921081
     args: [
       "/usr/bin/se-exporter",
       "-h",
