@@ -1,0 +1,61 @@
+name: Pulumi
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    paths: ["pulumi/*"]
+jobs:
+  preview:
+    name: Preview
+    runs-on: ["arc-runner-set-home-ops"]
+    permissions:
+      pull-requests: write
+    strategy:
+      matrix:
+        path: ["pulumi/sol"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node LTS ✨
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - name: Installing dependencies
+        working-directory: ${{ matrix.path }}
+        run: npm install
+      - uses: pulumi/actions@v4
+        with:
+          command: preview
+          comment-on-pr: true
+          comment-on-summary: true
+          work-dir: ${{ matrix.path }}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+  deploy:
+    name: Deploy
+    runs-on: ["arc-runner-set-home-ops"]
+    permissions:
+      contents: read
+    needs: preview
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    strategy:
+      matrix:
+        path: ["pulumi/sol"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node LTS ✨
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - name: Installing dependencies
+        working-directory: ${{ matrix.path }}
+        run: npm install
+      - uses: pulumi/actions@v4
+        with:
+          command: up
+          comment-on-summary: true
+          work-dir: ${{ matrix.path }}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}

@@ -1,0 +1,12 @@
+{
+    "name": "sol",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^16"
+    },
+    "dependencies": {
+        "@pulumi/aws": "^6.13.0",
+        "@pulumi/minio": "^0.15.0",
+        "@pulumi/pulumi": "^3.0.0"
+    }
+}
