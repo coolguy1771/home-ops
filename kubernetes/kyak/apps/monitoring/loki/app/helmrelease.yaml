@@ -65,7 +65,7 @@ spec:
           replication_factor: 2
           storage:
             s3:
-              endpoint: '$S3_ENDPOINT'
+              endpoint: '$BUCKET_HOST'
               bucketnames: '$BUCKET_NAME'
               accessKeyId: '$AWS_ACCESS_KEY_ID'
               secretAccessKey: '$AWS_SECRET_ACCESS_KEY'
@@ -132,79 +132,31 @@ spec:
           emptyDir: {}
       extraArgs:
         - '-config.expand-env=true'
-      extraEnv:
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: thanos-bucket-v2
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: thanos-bucket-v2
-              key: AWS_SECRET_ACCESS_KEY
-        - name: S3_ENDPOINT
-          valueFrom:
-            configMapKeyRef:
-              name: thanos-bucket-v2
-              key: BUCKET_HOST
-        - name: BUCKET_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: thanos-bucket-v2
-              key: BUCKET_NAME
+      extraEnvFrom:
+        - configMapRef:
+            name: loki-bucket-v2
+        - secretRef:
+            name: loki-bucket-v2
     write:
       replicas: 2
       persistence:
         storageClass: ceph-block
       extraArgs:
         - '-config.expand-env=true'
-      extraEnv:
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: thanos-bucket-v2
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: thanos-bucket-v2
-              key: AWS_SECRET_ACCESS_KEY
-        - name: S3_ENDPOINT
-          valueFrom:
-            configMapKeyRef:
-              name: thanos-bucket-v2
-              key: BUCKET_HOST
-        - name: BUCKET_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: thanos-bucket-v2
-              key: BUCKET_NAME
+      extraEnvFrom:
+        - configMapRef:
+            name: loki-bucket-v2
+        - secretRef:
+            name: loki-bucket-v2
     backend:
       replicas: 2
       extraArgs:
         - '-config.expand-env=true'
-      extraEnv:
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: thanos-bucket-v2
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: thanos-bucket-v2
-              key: AWS_SECRET_ACCESS_KEY
-        - name: S3_ENDPOINT
-          valueFrom:
-            configMapKeyRef:
-              name: thanos-bucket-v2
-              key: BUCKET_HOST
-        - name: BUCKET_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: thanos-bucket-v2
-              key: BUCKET_NAME
+      extraEnvFrom:
+        - configMapRef:
+            name: loki-bucket-v2
+        - secretRef:
+            name: loki-bucket-v2
       persistence:
         storageClass: ceph-block
       extraVolumeMounts:
