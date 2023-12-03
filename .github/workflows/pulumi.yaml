@@ -35,7 +35,7 @@ jobs:
           comment-on-pr: true
           comment-on-summary: true
           work-dir: ${{ matrix.path }}
-          stack-name: ${{ steps.extract_path.outputs.segment }}
+          stack-name: k8s
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
   deploy:
@@ -66,6 +66,6 @@ jobs:
           command: up
           comment-on-summary: true
           work-dir: ${{ matrix.path }}
-          stack-name: ${{ steps.extract_path.outputs.segment }}
+          stack-name: k8s
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
