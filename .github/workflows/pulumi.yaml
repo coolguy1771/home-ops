@@ -2,10 +2,10 @@ name: Pulumi
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
     paths: ["pulumi/*"]
 jobs:
   preview:
