@@ -29,7 +29,7 @@ jobs:
         id: extract_path
         run: |
           echo "::set-output name=segment::$(echo "${{ matrix.path }}" | awk -F'/' '{print $NF}')"
-      - uses: pulumi/actions@v4
+      - uses: pulumi/actions@1d3ebd326317f249313706eeb489c9ed7c036443 # v4
         with:
           command: preview
           comment-on-pr: true
@@ -61,7 +61,7 @@ jobs:
         id: extract_path
         run: |
           echo "::set-output name=segment::$(echo "${{ matrix.path }}" | awk -F'/' '{print $NF}')"
-      - uses: pulumi/actions@v4
+      - uses: pulumi/actions@1d3ebd326317f249313706eeb489c9ed7c036443 # v4
         with:
           command: up
           comment-on-summary: true
