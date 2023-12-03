@@ -65,6 +65,7 @@ spec:
           replication_factor: 2
           storage:
             s3:
+              s3: '$S3_ENDPOINT'
               endpoint: '$S3_ENDPOINT'
               bucketnames: '$BUCKET_NAME'
               accessKeyId: '$ACCESS_KEY_ID'
