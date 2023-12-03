@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      substitution.flux.home.arpa/disabled: "true"
   dependsOn:
     - name: external-secrets-stores
   path: ./kubernetes/kyak/apps/monitoring/loki/app
