@@ -65,11 +65,10 @@ spec:
           replication_factor: 2
           storage:
             s3:
-              s3: '$S3_ENDPOINT'
               endpoint: '$S3_ENDPOINT'
               bucketnames: '$BUCKET_NAME'
-              accessKeyId: '$ACCESS_KEY_ID'
-              secretAccessKey: '$SECRET_ACCESS_KEY'
+              accessKeyId: '$AWS_ACCESS_KEY_ID'
+              secretAccessKey: '$AWS_SECRET_ACCESS_KEY'
               insecure: true
           ring:
             kvstore:
