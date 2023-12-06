@@ -6,7 +6,7 @@ on:
     inputs:
       clusterName:
         description: Cluster Name
-        default: main
+        default: kyak
         required: true
       repoName:
         description: Flux HelmRepository Name

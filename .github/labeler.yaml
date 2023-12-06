@@ -1,23 +1,32 @@
 ---
 area/ansible:
-  - "ansible/**/*"
-area/github:
-  - ".github/**/*"
-area/kubernetes:
-  - "kubernetes/**/*"
-area/hack:
-  - "hack/**/*"
-area/terraform:
-  - "terraform/**/*"
-area/talos:
-  - "talos/**/*"
+  - changed-files:
+      - any-glob-to-any-file: ansible/**/*
 area/pulumi:
-  - "pulumi/**/*"
+  - changed-files:
+      - any-glob-to-any-file: pulumi/**/*
 area/docs:
-  - "docs/**/*"
+  - changed-files:
+      - any-glob-to-any-file: docs/**/*
+area/github:
+  - changed-files:
+      - any-glob-to-any-file: .github/**/*
+area/kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/**/*
+area/taskfile:
+  - changed-files:
+      - any-glob-to-any-file: .taskfiles/**/*
+      - any-glob-to-any-file: Taskfile*
+area/terraform:
+  - changed-files:
+      - any-glob-to-any-file: terraform/**/*
 cluster/kyak:
-  - "kubernetes/kyak/**/*"
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/kyak/**/*
 cluster/sol:
-  - "kubernetes/sol/**/*"
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/sol/**/*
 cluster/cobra:
-  - "kubernetes/cobra/**/*"
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/cobra/**/*
