@@ -1,6 +1,5 @@
 import * as minio from "@pulumi/minio";
 import * as pulumi from "@pulumi/pulumi";
-import * as aws from "@pulumi/aws";
 import * as minioConfig from "../env/minio";
 
 
@@ -17,7 +16,6 @@ export function setupMinio(config: pulumi.Config) {
   for (let user of minioConfig.MinioUsers) {
     new minio.IamUser(user.name, {
       name: user.name,
-      updateSecret: true,
       secret: config.require("minioPassword"),
     }, { provider: provider });
   }
@@ -33,7 +31,6 @@ export function setupMinio(config: pulumi.Config) {
   for (let bucket of minioConfig.MinioBuckets) {
       new minio.S3Bucket(bucket.name, {
         acl: bucket.acl,
-        forceDestroy: false,
         bucket: bucket.name,
       }, { provider: provider });
   }
