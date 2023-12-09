@@ -27,8 +27,7 @@ spec:
   values:
     extraInitContainers:
       - name: 01-init-db
-        image: ghcr.io/onedr0p/postgres-init:15
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/onedr0p/postgres-init:16
         envFrom:
           - secretRef:
               name: &secret grafana-secret
@@ -198,7 +197,7 @@ spec:
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
-          revision: 1
+          revision: 3
           datasource: Prometheus
         minio:
           # renovate: depName="MinIO Dashboard"
@@ -216,6 +215,13 @@ spec:
           gnetId: 763
           revision: 5
           datasource: Prometheus
+        spegel:
+          # renovate: depName="Spegel"
+          gnetId: 18089
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
         unpackerr:
           # renovate: depName="Unpackerr"
           gnetId: 18817
@@ -238,9 +244,6 @@ spec:
           datasource: Prometheus
         miniflux:
           url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
-          datasource: Prometheus
-        space-engineers:
-          url: https://raw.githubusercontent.com/coolguy1771/home-ops/main/kubernetes/apps/monitoring/se-exporter/app/dashboard/dashboard.json
           datasource: Prometheus
       ceph:
         ceph-cluster:

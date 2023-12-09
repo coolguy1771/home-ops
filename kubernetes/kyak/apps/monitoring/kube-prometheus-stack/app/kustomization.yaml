@@ -7,10 +7,9 @@ resources:
   - ./helmrelease.yaml
   - ./scrapeconfigs
   - ./prometheusrules
-  # - ./gatus.yaml
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:
-      - alertmanager.yaml=./config/alertmanager.yaml
+      - alertmanager.yaml=./resources/alertmanager.yaml
 generatorOptions:
   disableNameSuffixHash: true

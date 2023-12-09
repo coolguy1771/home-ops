@@ -5,6 +5,7 @@ kind: ScrapeConfig
 metadata:
   name: vyos-gatus
 spec:
+  scheme: HTTPS
   staticConfigs:
     - targets: ["status.286k.co"]
   metricsPath: /metrics
