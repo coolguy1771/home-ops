@@ -1,13 +1,12 @@
 ---
+# Area
 area/ansible:
   - changed-files:
       - any-glob-to-any-file: ansible/**/*
-area/pulumi:
-  - changed-files:
-      - any-glob-to-any-file: pulumi/**/*
 area/docs:
   - changed-files:
       - any-glob-to-any-file: docs/**/*
+      - any-glob-to-any-file: README.md
 area/github:
   - changed-files:
       - any-glob-to-any-file: .github/**/*
@@ -18,15 +17,17 @@ area/taskfile:
   - changed-files:
       - any-glob-to-any-file: .taskfiles/**/*
       - any-glob-to-any-file: Taskfile*
-area/terraform:
+area/pulumi:
   - changed-files:
-      - any-glob-to-any-file: terraform/**/*
+      - any-glob-to-any-file: pulumi/**/*
+# Cluster
 cluster/kyak:
   - changed-files:
+      - any-glob-to-any-file: talos/kyak/**/*
       - any-glob-to-any-file: kubernetes/kyak/**/*
+      - any-glob-to-any-file: pulimi/kyak/**/*
 cluster/sol:
   - changed-files:
+      - any-glob-to-any-file: ansible/sol/**/*
       - any-glob-to-any-file: kubernetes/sol/**/*
-cluster/cobra:
-  - changed-files:
-      - any-glob-to-any-file: kubernetes/cobra/**/*
+      - any-glob-to-any-file: pulumi/sol/**/*

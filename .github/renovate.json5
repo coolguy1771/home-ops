@@ -3,39 +3,37 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
     "replacements:k8s-registry-move",
+    ":automergeBranch",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":automergeDigest",
-    ":automergeBranch",
+    ":skipStatusChecks",
     ":timezone(America/New_York)",
     "github>coolguy1771/home-ops//.github/renovate/allowedVersions.json5",
     "github>coolguy1771/home-ops//.github/renovate/autoMerge.json5",
     "github>coolguy1771/home-ops//.github/renovate/clusters.json5",
     "github>coolguy1771/home-ops//.github/renovate/commitMessage.json5",
-    "github>coolguy1771/home-ops//.github/renovate/customDatasources.json5",
     "github>coolguy1771/home-ops//.github/renovate/customManagers.json5",
+    "github>coolguy1771/home-ops//.github/renovate/grafanaDashboards.json5",
     "github>coolguy1771/home-ops//.github/renovate/groups.json5",
     "github>coolguy1771/home-ops//.github/renovate/labels.json5",
     "github>coolguy1771/home-ops//.github/renovate/packageRules.json5",
-    "github>coolguy1771/home-ops//.github/renovate/semanticCommits.json5",
-    "helpers:pinGitHubActionDigests",
-    "security:openssf-scorecard"
+    "github>coolguy1771/home-ops//.github/renovate/semanticCommits.json5"
   ],
   "onboarding": false,
   "requireConfig": "optional",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "suppressNotifications": ["prIgnoreNotification"],
-  "vulnerabilityAlerts": {
-    "labels": ["security"],
-    "automerge": true,
-    "automergeType": "branch",
-    "schedule": ["at any time"]
-  },
-  "osvVulnerabilityAlerts": true,
-  "dependencyDashboardOSVVulnerabilitySummary": "all",
-  "ignorePaths": ["**/archive/**"],
+  "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
+  "rebaseWhen": "conflicted",
+  "assigneesFromCodeOwners": true,
+  "reviewersFromCodeOwners": true,
+  "ignorePaths": [
+    "**/*.sops.*",
+    "**/.archive/**",
+    "**/resources/**"
+  ],
   "flux": {
     "fileMatch": [
       "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"

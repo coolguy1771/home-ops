@@ -2,29 +2,22 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": "Separate PRs for main cluster",
+      "description": "Separate PRs for kyak cluster",
       "matchFileNames": [
-        "**/kubernetes/kyak/**"
+        "**/kubernetes/kyak/**",
+        "**/ansible/kyak/**",
+        "**/pulumi/kyak/**"
       ],
-      "additionalBranchPrefix": "main-"
+      "additionalBranchPrefix": "kyak-"
     },
     {
-      "description": "Separate PRs for storage cluster",
+      "description": "Separate PRs for sol cluster",
       "matchFileNames": [
         "**/kubernetes/sol/**",
-        "**/ansible/storage/**",
-        "**/terraform/storage/**"
+        "**/ansible/sol/**",
+        "**/pulumi/sol/**"
       ],
-      "additionalBranchPrefix": "storage-"
-    },
-    {
-      "description": "Separate PRs for cobra cluster",
-      "matchFileNames": [
-        "**/kubernetes/cobra/**",
-        "**/ansible/cobra/**",
-        "**/terraform/cobra/**"
-      ],
-      "additionalBranchPrefix": "cobra-"
+      "additionalBranchPrefix": "sol-"
     }
   ]
 }

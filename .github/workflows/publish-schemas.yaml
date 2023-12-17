@@ -13,6 +13,7 @@ env:
   DEBCONF_NONINTERACTIVE_SEEN: "true"
   DEBIAN_FRONTEND: noninteractive
   APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE: DontWarn
+  NIX_FLAKE_PATH: ./.github/workflows/resources/nix
 
 jobs:
   publish-schemas:
@@ -22,16 +23,31 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Setup Tools
-        shell: bash
-        run: |
-          sudo apt-get -qq update && \
-          sudo apt-get -qq install --no-install-recommends -y curl
-
-      - name: Setup Kube Tools
-        uses: yokawasa/action-setup-kube-tools@af4ebb1af1efd30c5bd84a2e9773355ad6362a33 # v0.9.3
+      - name: Generate Token
+        uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1.6.2
+        id: app-token
         with:
-          setup-tools: kubectl
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Install OS Deps
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y curl git xz-utils
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@7ac1ec25491415c381d9b62f0657c7a028df52a7 # v24
+        with:
+          github_access_token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Switch to Nix devShell
+        uses: nicknovitski/nix-develop@a2060d116a50b36dfab02280af558e73ab52427d # v1.1.0
+        with:
+          arguments: "${{ env.NIX_FLAKE_PATH }}"
 
       - name: Setup Python
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
@@ -42,8 +58,9 @@ jobs:
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
 
       - name: Setup Docker Buildx
-        id: buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+        with:
+          platforms: linux/amd64,linux/arm64
 
       - name: Generate container metadata
         id: meta
