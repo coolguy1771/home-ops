@@ -82,6 +82,22 @@ spec:
             devices:
               - name: "/dev/disk/by-id/ata-HGST_HUS726060ALE610_K8GEAJHD"
               - name: "/dev/disk/by-id/ata-HGST_HUS726060ALE610_K8GEBVED"
+        resources:
+          mgr: &resources
+            requests:
+              memory: 1Gi
+              cpu: 1000m
+            limits: {}
+          mon:
+            requests:
+              memory: 1Gi
+              cpu: 1000m
+            limits: {}
+          osd:
+            <<: *resources
+            limits:
+              memory: 4Gi
+              cpu: 8000m
     cephBlockPools:
       - name: ceph-blockpool
         spec:
