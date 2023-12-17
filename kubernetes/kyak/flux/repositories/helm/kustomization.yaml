@@ -12,6 +12,7 @@ resources:
   - ./cloudnative-pg.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
+  - ./democratic-csi.yaml
   - ./descheduler.yaml
   - ./dysnix.yaml
   - ./external-dns.yaml

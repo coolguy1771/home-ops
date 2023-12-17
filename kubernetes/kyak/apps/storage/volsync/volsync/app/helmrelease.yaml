@@ -3,17 +3,16 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: rook-ceph-operator
+  name: volsync
 spec:
   interval: 30m
-  timeout: 15m
   chart:
     spec:
-      chart: rook-ceph
-      version: v1.13.0
+      chart: volsync
+      version: 0.8.0
       sourceRef:
         kind: HelmRepository
-        name: rook-ceph
+        name: backube
         namespace: flux-system
   install:
     remediation:
@@ -28,15 +27,11 @@ spec:
     - name: snapshot-controller
       namespace: storage
   values:
-    csi:
-      cephFSKernelMountOptions: ms_mode=secure
-      enableLiveness: true
-      serviceMonitor:
-        enabled: true
-    monitoring:
-      enabled: true
-    resources:
-      requests:
-        memory: 128Mi # unchangable
-        cpu: 100m # unchangable
-      limits: {}
+    manageCRDs: true
+    image: &image
+      repository: ghcr.io/onedr0p/volsync
+      tag: 0.8.0
+    restic:
+      <<: *image
+    metrics:
+      disableAuth: true

@@ -3,16 +3,16 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: cert-manager
+  name: external-secrets
 spec:
   interval: 30m
   chart:
     spec:
-      chart: cert-manager
-      version: v1.13.3
+      chart: external-secrets
+      version: 0.9.10
       sourceRef:
         kind: HelmRepository
-        name: jetstack
+        name: external-secrets
         namespace: flux-system
   install:
     remediation:
@@ -24,21 +24,16 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    replicaCount: 2
     installCRDs: true
-    dns01RecursiveNameservers: 1.1.1.1:53,8.8.8.8:53
-    dns01RecursiveNameserversOnly: true
-    podDnsPolicy: None
-    podDnsConfig:
-      nameservers:
-        - "1.1.1.1"
-        - "9.9.9.9"
-    prometheus:
+    replicaCount: 2
+    serviceMonitor:
       enabled: true
-      servicemonitor:
-        enabled: true
-        prometheusInstance: monitoring
+      interval: 1m
     webhook:
-      replicaCount: 2
-    cainjector:
-      replicaCount: 2
+      serviceMonitor:
+        enabled: true
+        interval: 1m
+    certController:
+      serviceMonitor:
+        enabled: true
+        interval: 1m
