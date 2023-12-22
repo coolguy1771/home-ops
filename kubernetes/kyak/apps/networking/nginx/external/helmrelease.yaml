@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: nginx-external
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: ingress-nginx
-      version: 4.8.4
+      version: 4.9.0
       sourceRef:
         kind: HelmRepository
         name: ingress-nginx
