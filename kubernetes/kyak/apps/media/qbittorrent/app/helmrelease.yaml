@@ -116,4 +116,8 @@ spec:
             subPath: completed.sh
             readOnly: true
       media:
-        existingClaim: media
+        type: nfs
+        server: osiris.286k.co
+        path: /pluto/media
+        globalMounts:
+          - path: /media

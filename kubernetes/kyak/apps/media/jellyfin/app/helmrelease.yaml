@@ -123,8 +123,9 @@ spec:
         globalMounts:
           - path: /transcode
       media:
-        type: persistentVolumeClaim
-        existingClaim: media
+        type: nfs
+        server: osiris.286k.co
+        path: /pluto/media
         globalMounts:
           - path: /media
             readOnly: true

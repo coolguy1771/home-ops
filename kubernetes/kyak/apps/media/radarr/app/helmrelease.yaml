@@ -117,4 +117,9 @@ spec:
             subPath: pushover-notify.sh
             readOnly: true
       media:
-        existingClaim: media
+        type: nfs
+        server: osiris.286k.co
+        path: /pluto/media
+        globalMounts:
+          - path: /media
+

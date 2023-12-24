@@ -65,6 +65,9 @@ spec:
     serviceMonitor:
       main:
         enabled: true
-    persistence:
       media:
-        existingClaim: media
+        type: nfs
+        server: osiris.286k.co
+        path: /pluto/media
+        globalMounts:
+          - path: /media
