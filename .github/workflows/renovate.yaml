@@ -18,7 +18,7 @@ on:
         default: latest
         required: false
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 * * * *" # Every hour
   push:
     branches: ["main"]
     paths:
@@ -59,7 +59,7 @@ jobs:
         with:
           token: "${{ steps.app-token.outputs.token }}"
 
-      - name: Override default config from dispatch variables
+      - name: Override Default Config
         shell: bash
         run: |
           echo "RENOVATE_DRY_RUN=${{ github.event.inputs.dryRun || env.WORKFLOW_RENOVATE_DRY_RUN }}" >> "${GITHUB_ENV}"
