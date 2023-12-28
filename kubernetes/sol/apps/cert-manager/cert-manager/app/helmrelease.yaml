@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: jetstack
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -26,9 +25,8 @@ spec:
     keepHistory: false
   values:
     installCRDs: true
-    extraArgs:
-      - --dns01-recursive-nameservers=1.1.1.1:53,8.8.8.8:53
-      - --dns01-recursive-nameservers-only
+    dns01RecursiveNameservers: 1.1.1.1:53,8.8.8.8:53
+    dns01RecursiveNameserversOnly: true
     podDnsPolicy: None
     podDnsConfig:
       nameservers:

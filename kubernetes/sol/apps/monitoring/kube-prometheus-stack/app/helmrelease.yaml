@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-  maxHistory: 2
   install:
     crds: CreateReplace
     remediation:
@@ -29,15 +28,13 @@ spec:
     keepHistory: false
   dependsOn:
     - name: local-path-provisioner
-      namespace: kube-system
+      namespace: storage
   values:
     cleanPrometheusOperatorObjectNames: true
     crds:
       enabled: true
     alertmanager:
       enabled: false
-    defaultRules:
-      create: false
     kubelet:
       enabled: true
       serviceMonitor:
@@ -75,7 +72,7 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints: &cp
-        - 10.10.10.50
+        - 192.168.42.80
       serviceMonitor:
         metricRelabelings:
           # Remove duplicate labels provided by k3s
@@ -101,12 +98,17 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.286k.co
+          - &host prometheus.turbo.ac
         tls:
           - hosts:
               - *host
       prometheusSpec:
+        additionalAlertManagerConfigs:
+          - static_configs:
+              - targets:
+                  - alertmanager.devbu.io
         replicas: 1
+        replicaExternalLabelName: __replica__
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
@@ -125,10 +127,28 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-path
+              storageClassName: local-hostpath
               resources:
                 requests:
                   storage: 20Gi
+        thanos:
+          image: quay.io/thanos/thanos:v0.33.0
+          objectStorageConfig:
+            existingSecret:
+              name: kube-prometheus-stack-secret
+              key: objstore.yml
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "0.33.0"
+      thanosService:
+        enabled: true
+      thanosServiceExternal:
+        enabled: true
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: thanos.witl.xyz
+        externalTrafficPolicy: Cluster
+      thanosServiceMonitor:
+        enabled: true
     nodeExporter:
       enabled: true
     prometheus-node-exporter:

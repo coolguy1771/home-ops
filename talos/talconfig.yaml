@@ -8,9 +8,15 @@ kubernetesVersion: v1.28.4
 additionalApiServerCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
+  - 10.10.10.1
+  - 10.1.237.1
+  - 127.0.0.1
 additionalMachineCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
+  - 10.10.10.1
+  - 10.1.237.1
+  - 127.0.0.1
 endpoint: https://k8s-lb.286k.co:6443
 domain: cluster.local
 clusterPodNets:
@@ -299,6 +305,18 @@ controlPlane:
                 service_name = "containerd"
             path: /etc/cri/conf.d/20-customization.part
             op: create
+          # - op: create
+          #   path: /etc/nfsmount.conf
+          #   permissions: 0o644
+          #   content: |
+          #     [ NFSMount_Global_Options ]
+          #     nfsvers=4.2
+          #     hard=True
+          #     noatime=True
+          #     nodiratime=True
+          #     rsize=131072
+          #     wsize=131072
+          #     nconnect=8
           - path: /var/etc/nut/upsmon.conf
             permissions: 0o600
             op: create
@@ -377,6 +395,18 @@ worker:
                 service_name = "containerd"
             path: /etc/cri/conf.d/20-customization.part
             op: create
+          # - op: create
+          #   path: /etc/nfsmount.conf
+          #   permissions: 0o644
+          #   content: |
+          #     [ NFSMount_Global_Options ]
+          #     nfsvers=4.2
+          #     hard=True
+          #     noatime=True
+          #     nodiratime=True
+          #     rsize=131072
+          #     wsize=131072
+          #     nconnect=8
           - path: /var/etc/nut/upsmon.conf
             permissions: 0o600
             op: create
@@ -397,4 +427,4 @@ worker:
         time:
           disabled: false
           servers:
-            - 10.1.237.1
+            - 10.1.237.4

@@ -7,8 +7,6 @@ export async function getIpv4Address() {
 
 const ipv4Address = getIpv4Address().then(ipv4Address => ipv4Address)
 
-pulumi.log.debug(`IPV4 Address: ${ipv4Address}`)
-
 
 // Get the CF zone for the public domain
 export const publicDomain = cloudflare.getZone({

@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev//helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -30,15 +30,20 @@ spec:
       namespace: rook-ceph
   values:
     loki:
-      structuredConfig:
-        auth_enabled: false
-        server:
-          log_level: info
-          http_listen_port: 3100
-          grpc_listen_port: 9095
-        memberlist:
-          join_members: ["loki-memberlist"]
-        limits_config:
+      auth_enabled: false
+      tracing:
+        enabled: false
+      storage:
+        type: s3
+        insecure: true
+        s3forcepathstyle: true
+      server:
+        log_level: info
+        http_listen_port: 3100
+        grpc_listen_port: 9095
+      memberlist:
+        join_members: ["loki-memberlist"]
+      limits_config:
           retention_period: 14d
           enforce_metric_name: false
           reject_old_samples: true
@@ -51,57 +56,43 @@ spec:
           per_stream_rate_limit_burst: 20MB
           shard_streams:
             enabled: true
-        schema_config:
-          configs:
-            - from: "2022-01-11" # quote
-              store: boltdb-shipper
-              object_store: s3
-              schema: v12
-              index:
-                prefix: loki_index_
-                period: 24h
-        common:
-          path_prefix: /var/loki
-          replication_factor: 2
-          storage:
-            s3:
-              s3: null
-              insecure: true
-              s3forcepathstyle: true
-          ring:
-            kvstore:
-              store: memberlist
-        ruler:
-          enable_api: true
-          enable_alertmanager_v2: true
-          alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
-          storage:
-            type: local
-            local:
-              directory: /rules
+      common:
+        path_prefix: /var/loki
+        replication_factor: 2
+      ring:
+        kvstore:
+          store: memberlist
+      rulerConfig:
+        enable_api: true
+        enable_alertmanager_v2: true
+        alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+        storage:
+          type: local
+          local:
+            directory: /rules
           rule_path: /tmp/scratch
           ring:
             kvstore:
               store: memberlist
-        distributor:
+      distributor:
+        ring:
+          kvstore:
+            store: memberlist
+      compactor:
+        working_directory: /loki/compactor
+        shared_store: s3
+        compaction_interval: 5m
+        retention_enabled: true
+        retention_delete_delay: 2h
+        retention_delete_worker_count: 150
+      ingester:
+        max_chunk_age: 1h
+        lifecycler:
           ring:
             kvstore:
               store: memberlist
-        compactor:
-          working_directory: /var/loki/boltdb-shipper-compactor
-          shared_store: s3
-          compaction_interval: 10m
-          retention_enabled: true
-          retention_delete_delay: 2h
-          retention_delete_worker_count: 150
-        ingester:
-          max_chunk_age: 1h
-          lifecycler:
-            ring:
-              kvstore:
-                store: memberlist
-        analytics:
-          reporting_enabled: false
+      analytics:
+        reporting_enabled: false
     gateway:
       replicas: 2
       image:

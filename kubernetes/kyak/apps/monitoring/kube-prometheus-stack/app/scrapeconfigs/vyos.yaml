@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev//monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
@@ -10,7 +10,7 @@ spec:
     - targets: ["status.286k.co"]
   metricsPath: /metrics
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev//monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
@@ -20,7 +20,7 @@ spec:
     - targets: ["10.10.254.4:8080"]
   metricsPath: /metrics
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev//monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:

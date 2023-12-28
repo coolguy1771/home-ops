@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -33,7 +32,7 @@ spec:
           main:
             image:
               repository: docker.io/kopia/kopia
-              tag: 20231201.0.235310
+              tag: 0.15.0@sha256:e7af739af249782004a280a15fdc22b93012d5e118051bf143a1484669f0aa8a
             env:
               TZ: America/New_York
             envFrom:
@@ -100,7 +99,6 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: istio-prod-cert-tls
     persistence:
       config-file:
         type: secret
