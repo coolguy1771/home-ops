@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev//helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -242,6 +241,9 @@ spec:
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: Prometheus
         miniflux:
           url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
           datasource: Prometheus
@@ -263,13 +265,13 @@ spec:
           datasource: Prometheus
       flux:
         flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
           datasource: Prometheus
         flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
         flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/logs.json
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
           datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
@@ -280,22 +282,22 @@ spec:
         kubernetes-coredns:
           # renovate: depName="Kubernetes / System / CoreDNS"
           gnetId: 15762
-          revision: 13
+          revision: 14
           datasource: Prometheus
         kubernetes-global:
           # renovate: depName="Kubernetes / Views / Global"
           gnetId: 15757
-          revision: 31
+          revision: 33
           datasource: Prometheus
         kubernetes-namespaces:
           # renovate: depName="Kubernetes / Views / Namespaces"
           gnetId: 15758
-          revision: 27
+          revision: 31
           datasource: Prometheus
         kubernetes-nodes:
           # renovate: depName="Kubernetes / Views / Nodes"
           gnetId: 15759
-          revision: 19
+          revision: 24
           datasource: Prometheus
         kubernetes-pods:
           # renovate: depName="Kubernetes / Views / Pods"
