@@ -118,7 +118,7 @@ spec:
           allowVolumeExpansion: true
           parameters:
             imageFormat: "2"
-            imageFeatures: layering
+            mageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
@@ -136,11 +136,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 6
+              size: 3
           dataPools:
             - failureDomain: osd
               replicated:
-                size: 6
+                size: 3
               name: data0
           metadataServer:
             activeCount: 1
@@ -177,12 +177,12 @@ spec:
           metadataPool:
             failureDomain: osd
             replicated:
-              size: 6
+              size: 3
           dataPool:
             failureDomain: osd
             erasureCoded:
-              dataChunks: 4
-              codingChunks: 2
+              dataChunks: 2
+              codingChunks: 1
           preservePoolsOnDelete: true
           gateway:
             port: 80
