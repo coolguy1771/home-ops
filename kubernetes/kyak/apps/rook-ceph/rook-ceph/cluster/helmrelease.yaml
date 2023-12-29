@@ -175,11 +175,11 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: host
+            failureDomain: osd
             replicated:
               size: 6
           dataPool:
-            failureDomain: host
+            failureDomain: osd
             erasureCoded:
               dataChunks: 4
               codingChunks: 2
