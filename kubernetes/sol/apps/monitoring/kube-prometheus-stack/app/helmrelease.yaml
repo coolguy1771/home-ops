@@ -98,7 +98,7 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.turbo.ac
+          - &host prometheus.286k.co
         tls:
           - hosts:
               - *host
@@ -106,7 +106,7 @@ spec:
         additionalAlertManagerConfigs:
           - static_configs:
               - targets:
-                  - alertmanager.devbu.io
+                  - alertmanager.${SECRET_PUBLIC_DOMAIN}
         replicas: 1
         replicaExternalLabelName: __replica__
         ruleSelectorNilUsesHelmValues: false
@@ -145,7 +145,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: thanos.witl.xyz
+          external-dns.alpha.kubernetes.io/hostname: thanos.286k.co
         externalTrafficPolicy: Cluster
       thanosServiceMonitor:
         enabled: true
