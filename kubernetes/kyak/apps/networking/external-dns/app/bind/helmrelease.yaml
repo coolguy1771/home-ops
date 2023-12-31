@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: external-dns
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -44,7 +43,7 @@ spec:
         valueFrom:
           secretKeyRef:
             name: external-dns-bind-secret
-            key: rndc-secret
+            key: BIND_RNDC_KEY
     policy: sync
     sources: ["ingress", "service", "gateway-httproute", "gateway-grpcroute", "gateway-tlsroute", "gateway-tcproute", "gateway-udproute"]
     txtOwnerId: default
