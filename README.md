@@ -166,7 +166,7 @@ Outside the `external-dns` instance mentioned above another instance is deployed
 | HP EliteDesk 800 G4 SFF    | 2     | 240GB NVMe   | 500GB SSD (rook-ceph)   | 16GB  | Talos            | Kubernetes worker      |
 | HPE DL160 G10              | 1     | 512GB SSD    | 2x6TB HDD (rook-ceph)   | 32GB  | Talos            | Kubernetes worker      |
 | HPE DL160 G10              | 1     | 500GB SSD    | 16TB zfs mirror         | 128GB | Ubuntu 23.10     | Shared file storage    |
-| Dell R630                  | 1     | SSD          | 3x1.9TB HDD (rook-ceph) | 192GB | Fedora 39        | Single node k3s cluter |
+| Dell R630                  | 1     | 500GB SSD    | 3x1.5TB HDD (rook-ceph) | 192GB | Fedora 39        | Single node k3s cluter |
 | TESmart 8 Port KVM Switch  | 1     | -            | -                       | -     | -                | Network KVM (PiKVM)    |
 | PiKVM v4 plus              | 1     | -            | -                       | -     | PiKVM (Arch)     | Network KVM            |
 | Tripplite SMART3000RMXLN   | 1     | -            | -                       | -     | -                | UPS                    |
