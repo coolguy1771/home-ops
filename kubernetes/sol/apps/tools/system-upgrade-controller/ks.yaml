@@ -6,7 +6,7 @@ metadata:
   name: &app system-upgrade-controller
   namespace: flux-system
 spec:
-  targetNamespace: system-upgrade
+  targetNamespace: tools
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
