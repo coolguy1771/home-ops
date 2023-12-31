@@ -14,19 +14,20 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    rollOutCiliumPods: true
-    securityContext:
-      privileged: true
     autoDirectNodeRoutes: true
+    bandwidthManager:
+      enabled: true
+      bbr: true
     bpf:
       masquerade: true
     bgp:
@@ -78,34 +79,28 @@ spec:
           - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
         serviceMonitor:
           enabled: true
-        enableOpenMetrics: true
         dashboards:
           enabled: true
-          labelValue: "true"
           annotations:
             grafana_folder: Cilium
+      relay:
+        enabled: true
+        rollOutPods: true
+        prometheus:
+          serviceMonitor:
+            enabled: true
       ui:
         enabled: true
         rollOutPods: true
         replicas: 1
         ingress:
           enabled: true
-          ingressClassName: internal
+          className: internal
           hosts:
             - &host hubble.286k.co
           tls:
-            - secretName: hubble-tls
-              hosts:
+            - hosts:
                 - *host
-      tls:
-        enabled: true
-        auto:
-          enabled: true
-          method: helm
-      relay:
-        enabled: true
-        rollOutPods: true
-        replicas: 1
     operator:
       replicas: 1
       rollOutPods: true
@@ -126,4 +121,7 @@ spec:
       enabled: false
       annotations:
         grafana_folder: Cilium
+    rollOutCiliumPods: true
+    securityContext:
+      privileged: true
     tunnel: disabled
