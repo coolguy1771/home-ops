@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -35,27 +34,8 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 75Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
-        pod:
-          enableServiceLinks: false
-          nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 105, 10000]
         containers:
           main:
             image:
@@ -82,18 +62,39 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
+              limits: &resources
+                gpu.intel.com/i915: 1
+                memory: 16Gi
               requests:
-                gpu.intel.com/i915: 1
+                <<: *resources
                 cpu: 100m
-                memory: 1000Mi
-              limits:
-                gpu.intel.com/i915: 1
-                memory: 4000Mi
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values: ["frigate"]
+                  topologyKey: kubernetes.io/hostname
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [44, 105, 10000]
     service:
       main:
         type: LoadBalancer
-        LoadBalancerIP: "${SVC_JELLYFIN_ADDR}"
         externalTrafficPolicy: Cluster
         ports:
           http:
@@ -118,14 +119,17 @@ spec:
               - *host
             secretName: "{{ .Release.Name }}-tls"
     persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin
+      tmp:
+        type: emptyDir
       transcode:
         type: emptyDir
-        globalMounts:
-          - path: /transcode
       media:
         type: nfs
-        server: osiris.286k.co
-        path: /pluto/media
+        server: osiris.media.co
+        path: /pluto/Media
         globalMounts:
           - path: /media
             readOnly: true
