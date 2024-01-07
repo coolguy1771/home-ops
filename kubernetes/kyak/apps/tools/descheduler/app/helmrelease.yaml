@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -25,63 +25,42 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    replicas: 2
     kind: Deployment
-    schedule: "*/5 * * * *"
+    deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
-      strategies:
-        RemovePodsHavingTooManyRestarts:
-          enabled: true
-          params:
-            podsHavingTooManyRestarts:
-              podRestartThreshold: 5
-              includingInitContainers: true
-        RemovePodsViolatingTopologySpreadConstraint:
-          enabled: true
-          params:
-            includeSoftConstraints: true
-        PodLifeTime:
-          enabled: true
-          params:
-            podLifeTime:
-              states:
-                - Pending
-                - PodInitializing
-                - ContainerCreating
-              maxPodLifeTimeSeconds: 3600
-        RemoveFailedPods:
-          enabled: true
-          params:
-            failedPods:
-              reasons:
-                - NodeShutdown
-                - ImagePullBackOff
-                - CreateContainerConfigError
-              includingInitContainers: true
-              excludeOwnerKinds:
-                - Job
-              minPodLifetimeSeconds: 3600
-        RemoveDuplicates:
-          enabled: true
-        RemovePodsViolatingNodeTaints:
-          enabled: true
-        RemovePodsViolatingNodeAffinity:
-          enabled: true
-          params:
-            nodeAffinityType:
-              - requiredDuringSchedulingIgnoredDuringExecution
-        RemovePodsViolatingInterPodAntiAffinity:
-          enabled: true
-        LowNodeUtilization:
-          enabled: true
-          params:
-            nodeResourceUtilizationThresholds:
-              thresholds:
-                cpu: 35
-                memory: 35
-              targetThresholds:
-                cpu: 40
-                memory: 40
+      profiles:
+        - name: Default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                evictFailedBarePods: true
+                evictLocalStoragePods: true
+                evictSystemCriticalPods: true
+                nodeFit: true
+            - name: RemovePodsViolatingInterPodAntiAffinity
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                  - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingTopologySpreadConstraint
+              args:
+                constraints:
+                  - DoNotSchedule
+                  - ScheduleAnyway
+          plugins:
+            balance:
+              enabled:
+                - RemovePodsViolatingTopologySpreadConstraint
+            deschedule:
+              enabled:
+                - RemovePodsViolatingInterPodAntiAffinity
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingNodeTaints
     service:
       enabled: true
     serviceMonitor:
+      enabled: true
+    leaderElection:
       enabled: true
