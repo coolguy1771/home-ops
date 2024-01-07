@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -33,27 +32,31 @@ spec:
           main:
             image:
               repository: docker.io/golift/unpackerr
-              tag: 0.12.0
+              tag: 0.12.0@sha256:f2e35d22d85502d9e67da407cb6b1d9a71988dcadf8c7393043e15dd1d42857a
             env:
               TZ: America/New_York
               UN_WEBSERVER_METRICS: "true"
-              UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local
-              UN_SONARR_0_PATHS_0: /pluto/media/downloads/qbittorrent/complete/sonarr
-              UN_RADARR_0_URL: http://radarr.media.svc.cluster.local
-              UN_RADARR_0_PATHS_0: /pluto/media/downloads/qbittorrent/complete/radarr
+              UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
+              UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/sonarr
+              UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
+              UN_RADARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/radarr
             envFrom:
               - secretRef:
                   name: unpackerr-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
-                memory: 1Gi
               limits:
                 memory: 4Gi
         pod:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [10000]
@@ -65,6 +68,7 @@ spec:
     serviceMonitor:
       main:
         enabled: true
+    persistence:
       media:
         type: nfs
         server: osiris.286k.co
