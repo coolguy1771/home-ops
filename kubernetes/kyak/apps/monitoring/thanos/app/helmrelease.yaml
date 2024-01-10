@@ -100,7 +100,7 @@ spec:
       retentionResolution1h: 60d
       persistence:
         enabled: true
-        storageClass: local-path
+        storageClass: ceph-block
         size: 10Gi
     storegateway:
       enabled: true
