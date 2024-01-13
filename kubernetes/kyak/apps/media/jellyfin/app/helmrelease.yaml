@@ -74,6 +74,7 @@ spec:
               requests:
                 <<: *resources
                 cpu: 100m
+        pod:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
