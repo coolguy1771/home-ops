@@ -124,4 +124,4 @@ spec:
         path: /pluto/media
         globalMounts:
           - path: /media
-            readOnly: true
+            readOnly: false
