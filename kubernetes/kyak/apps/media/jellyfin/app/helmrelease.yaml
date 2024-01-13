@@ -76,7 +76,7 @@ spec:
                 cpu: 100m
         pod:
           nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
+            feature.node.kubernetes.io/pci-8086.present: "true"
           securityContext:
             runAsUser: 568
             runAsGroup: 568
