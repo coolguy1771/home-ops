@@ -175,14 +175,14 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: osd
+            failureDomain: host
             replicated:
-              size: 3
+              size: 6
           dataPool:
             failureDomain: osd
             erasureCoded:
-              dataChunks: 2
-              codingChunks: 1
+              dataChunks: 4
+              codingChunks: 2
           preservePoolsOnDelete: true
           gateway:
             port: 80
