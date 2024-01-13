@@ -121,7 +121,7 @@ spec:
       media:
         type: nfs
         server: osiris.286k.co
-        path: /pluto/Media
+        path: /pluto/media
         globalMounts:
           - path: /media
             readOnly: true
