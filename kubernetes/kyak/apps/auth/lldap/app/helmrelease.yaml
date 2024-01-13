@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -36,7 +35,6 @@ spec:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-              pullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
                   name: lldap-secret
@@ -44,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/lldap/lldap
-              tag: v0.5.0
+              tag: v0.5.0@sha256:f0f5d92cd6c6dca9415993cfc57919f0618e87090b323a98c1536975860fa45a
             env:
               TZ: America/New_York
               LLDAP_HTTP_PORT: &port 80
@@ -57,12 +55,26 @@ spec:
               LLDAP_SMTP_OPTIONS__FROM: LLDAP Admin <lldapadmin@286k.co>
               LLDAP_SMTP_OPTIONS__REPLY_TO: No Reply <no-reply@286k.co>
             envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
             resources:
               requests:
-                cpu: 5m
-                memory: 36M
+                cpu: 10m
               limits:
-                memory: 128M
+                memory: 128Mi
         pod:
           topologySpreadConstraints:
             - maxSkew: 1
