@@ -69,20 +69,10 @@ spec:
             resources:
               limits: &resources
                 gpu.intel.com/i915: 1
-                memory: 16Gi
+                memory: 8Gi
               requests:
                 <<: *resources
                 cpu: 100m
-        pod:
-          affinity:
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values: ["frigate"]
-                  topologyKey: kubernetes.io/hostname
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
