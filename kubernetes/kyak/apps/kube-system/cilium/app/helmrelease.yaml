@@ -108,8 +108,7 @@ spec:
       prometheus:
         enabled: true
         serviceMonitor:
-          enabled: true
-          trustCRDsExist: true
+          enabled: false
       ui:
         enabled: true
         rollOutPods: true
