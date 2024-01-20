@@ -9,3 +9,4 @@ resources:
   - ./descheduler/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
+  - ./system-upgrade-controller/ks.yaml
