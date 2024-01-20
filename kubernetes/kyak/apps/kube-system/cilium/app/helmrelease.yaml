@@ -26,11 +26,8 @@ spec:
     keepHistory: false
   values:
     securityContext:
-      privileged: true
       capabilities:
         ciliumAgent:
-          - PERFMON
-          - BPF
           - CHOWN
           - KILL
           - NET_ADMIN
@@ -41,13 +38,14 @@ spec:
           - DAC_OVERRIDE
           - FOWNER
           - SETGID
-          - SETUI
+          - SETUID
         cleanCiliumState:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
     autoDirectNodeRoutes: true
     annotateK8sNode: true
+    routingMode: native
     cluster:
       id: 1
       name: home
