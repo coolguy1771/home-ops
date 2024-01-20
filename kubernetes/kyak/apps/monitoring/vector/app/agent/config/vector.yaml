@@ -1,6 +1,9 @@
 ---
 data_dir: /vector-data-dir
 
+api:
+  enabled: false
+
 sources:
   kubernetes_source:
     type: kubernetes_logs
@@ -21,5 +24,5 @@ sinks:
     type: vector
     compression: true
     version: "2"
-    address: vector-aggregator.monitoring.svc.cluster.local:6010
+    address: vector-aggregator.monitoring.svc.cluster.local:6000
     inputs: ["kubernetes_source"]
