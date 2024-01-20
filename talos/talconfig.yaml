@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: home-cluster
-# renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.5.5
-# renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.28.4
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.6.1
+# renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
+kubernetesVersion: v1.29.0
 additionalApiServerCertSans:
   - 10.10.254.3
   - k8s-lb.286k.co
@@ -41,6 +41,10 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
+
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
@@ -56,6 +60,9 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-2
     ipAddress: 10.10.10.22
@@ -72,6 +79,9 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-3
     ipAddress: 10.10.10.23
@@ -88,6 +98,9 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-4
     ipAddress: 10.10.10.24
@@ -104,6 +117,9 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-5
     ipAddress: 10.10.10.25
@@ -120,6 +136,9 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-6
     ipAddress: 10.10.10.26
@@ -136,6 +155,9 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-7
     ipAddress: 10.10.10.27
@@ -151,6 +173,10 @@ nodes:
           officialExtensions:
             - siderolabs/amd-ucode
             - siderolabs/nut-client
+            - siderolabs/amdgpu-firmware
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
@@ -166,6 +192,10 @@ nodes:
           officialExtensions:
             - siderolabs/amd-ucode
             - siderolabs/nut-client
+            - siderolabs/amdgpu-firmware
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
@@ -182,21 +212,22 @@ nodes:
           updelay: 200
           downdelay: 200
           interfaces:
-            - eth0
-            - eth1
-      - interface: eth2
+            - enp55s0f0
+            - enp55s0f1
+      - interface: enp55s0f0
         mtu: 1500
         dhcp: true
     schematic:
       customization:
-        # extraKernelArgs:
-        #   - net.ifnames=0
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/nut-client
             - siderolabs/nonfree-kmod-nvidia
             - siderolabs/nvidia-container-toolkit
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
+            - siderolabs/binfmt-misc
     patches:
       - |-
         - op: add
@@ -231,12 +262,6 @@ controlPlane:
   patches:
     - |-
       - op: add
-        path: /machine/features/kubePrism
-        value:
-          enabled: true
-          port: 7445
-    - |-
-      - op: add
         path: /cluster/coreDNS
         value:
           disabled: true
@@ -261,28 +286,46 @@ controlPlane:
               - nodeID: {}
                 slot: 0
     - |-
-      cluster:
-        apiServer:
-          extraArgs:
-            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
-        controllerManager:
-          extraArgs:
-            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
-            bind-address: 0.0.0.0
-        discovery:
-          registries:
-            service:
-              disabled: true
-        proxy:
+      - op: add
+        path: /machine/kubelet/extraArgs
+        value:
+          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
+          rotate-server-certificates: "true"
+    - |-
+      - op: add
+        path: /cluster/apiServer/extraArgs
+        value:
+          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,ServerSideApply=true
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    - |-
+      - op: add
+        path: /cluster/controllerManager/extraArgs
+        value:
+          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
+          bind-address: 0.0.0.0
+    - |-
+      - op: add
+        path: /cluster/scheduler/extraArgs
+        value:
+          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
+          bind-address: 0.0.0.0
+    - |-
+      - op: add
+        path: /cluster/discovery/registries/service
+        value:
           disabled: true
-        scheduler:
-          extraArgs:
-            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
-            bind-address: 0.0.0.0
-        etcd:
-          extraArgs:
-            metrics: extensive
-            listen-metrics-urls: http://0.0.0.0:2381
+    - |-
+      - op: add
+        path: /cluster/proxy
+        value:
+          disabled: true
+    - |-
+      - op: add
+        path: /cluster/etcd/extraArgs
+        value:
+          listen-metrics-urls: http://0.0.0.0:2381
+          metrics: extensive
+    - |-
       machine:
         features:
           kubernetesTalosAPIAccess:
@@ -338,6 +381,10 @@ controlPlane:
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
+          vm.panic_on_oom: "0"
+          vm.overcommit_memory: "1"
+          kernel.panic: "10"
+          kernel.panic_on_oops: "1"
         time:
           disabled: false
           servers:
@@ -359,12 +406,6 @@ worker:
         value:
           feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
           rotate-server-certificates: "true"
-    - |-
-      - op: add
-        path: /machine/features/kubePrism
-        value:
-          enabled: true
-          port: 7445
     - |-
       - op: add
         path: /machine/systemDiskEncryption
@@ -424,6 +465,10 @@ worker:
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
+          vm.panic_on_oom: "0"
+          vm.overcommit_memory: "1"
+          kernel.panic: "10"
+          kernel.panic_on_oops: "1"
         time:
           disabled: false
           servers:

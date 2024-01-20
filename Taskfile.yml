@@ -2,17 +2,22 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
+
+env:
+  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig:{{.KUBERNETES_DIR}}/kubernetes/storage/kubeconfig"
+  SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
+
 includes:
-  ansible:
-    taskfile: .taskfiles/Ansible/Taskfile.yaml
-  external-secrets:
-    taskfile: .taskfiles/ExternalSecrets/Taskfile.yaml
-  flux:
-    taskfile: .taskfiles/Flux/Taskfile.yaml
-  kubernetes:
-    taskfile: .taskfiles/Kubernetes/Taskfile.yaml
-  volsync:
-    taskfile: .taskfiles/VolSync/Taskfile.yaml
+  ansible: .taskfiles/Ansible/Taskfile.yaml
+  external-secrets: .taskfiles/ExternalSecrets/Taskfile.yaml
+  flux: .taskfiles/Flux/Taskfile.yaml
+  kubernetes: .taskfiles/Kubernetes/Taskfile.yaml
+  # sops: .taskfiles/Sops/Taskfile.yaml
+  volsync: .taskfiles/VolSync/Taskfile.yaml
 
 tasks:
 
