@@ -32,7 +32,7 @@ spec:
           main:
             image:
               repository: docker.io/golift/unpackerr
-              tag: 0.13.0@sha256:96e816a1ff8e88d1ae934bf7b01cf5b518807030c77596665553e456f4095954
+              tag: 0.13.1@sha256:35f558e1a2f9d7b517a2ba92fd28fc90b04a56e9536fb8b91422710658212cd3
             env:
               TZ: America/New_York
               UN_WEBSERVER_METRICS: "true"
