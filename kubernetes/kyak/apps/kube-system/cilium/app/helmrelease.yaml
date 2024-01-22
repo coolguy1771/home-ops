@@ -26,6 +26,7 @@ spec:
     keepHistory: false
   values:
     securityContext:
+      privileged: true
       capabilities:
         ciliumAgent:
           - CHOWN
@@ -86,8 +87,6 @@ spec:
           - icmp
           - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
           - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
-        serviceMonitor:
-          enabled: true
         enableOpenMetrics: true
         dashboards:
           enabled: true
@@ -152,8 +151,6 @@ spec:
       enabled: false
     prometheus:
       enabled: true
-      serviceMonitor:
-        enabled: true
     tunnel: disabled
     operator:
       enabled: true
@@ -161,8 +158,6 @@ spec:
       replicas: 2
       prometheus:
         enabled: true
-        serviceMonitor:
-          enabled: true
     loadBalancer:
       algorithm: maglev
       mode: dsr
@@ -191,8 +186,6 @@ spec:
       privileged: true
       prometheus:
         enabled: true
-        serviceMonitor:
-          enabled: true
       capabilities:
         # -- Capabilities for the `cilium-envoy` container
         envoy:
