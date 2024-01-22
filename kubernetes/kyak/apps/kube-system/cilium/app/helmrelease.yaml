@@ -146,7 +146,7 @@ spec:
       status: "policy"
     ipam:
       mode: kubernetes
-    ipv4NativeRoutingCIDR: "10.96.0.0/12"
+    ipv4NativeRoutingCIDR: "10.244.0.0/16"
     monitor:
       enabled: false
     prometheus:
