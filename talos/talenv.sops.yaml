@@ -1,6 +1,7 @@
 SECRET_TS_AUTHKEY: ENC[AES256_GCM,data:jeagzTekUAlj/TSrO3KGrTIsx4YQcoGSv5c2VyXXFTJTd3hwAim8Lhuo77SEQMDyzNsDSTFJIQQf,iv:qjZsXhs5uQG96QZ8bXM9JJx7lMxz3oof15vti2iOvY4=,tag:JnJUqaWa5IIoSMuaUpmQDA==,type:str]
 SECRET_UPSMON_HOST: ENC[AES256_GCM,data:dPqhuak4OVqr0Mu7VSU=,iv:Pr1yF4SMMhbe7efsg/p1YZXYtocRuqGDh0691y8Y1Ow=,tag:XErSyNJrqkPNSxQ8FNiLeA==,type:str]
 SECRET_UPSMON_PASSWORD: ENC[AES256_GCM,data:BdB0yOeM,iv:j12tDFFgfcGhhz85lBKzIAfPYkcBf0Oe/kIv1kbloBI=,tag:nrp1iymAK3J9OfN1PRn8wA==,type:str]
+clusterEndpointIP: ENC[AES256_GCM,data:qvLXyBxmiH8n0gIHMI8=,iv:j9x/LW1VInJqNwX05KMlFdxSFzB8pM4Woxd7Po/kDY0=,tag:Dq00UBjahMnqkf5EnCYANw==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -16,8 +17,8 @@ sops:
             V1RLRVNIVDB1ZmJ0dzJGY2dVRWdZamcKDQIBIDUFJfVVGTU1bev/zdEhEoNk0v6R
             8Tfili6+aMA3gcnu1EtBOfF7EeePNndsJlzep6fhhWebtuBHqla5Nw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-19T12:46:38Z"
-    mac: ENC[AES256_GCM,data:+spCjlxp/W4t2GlGOf+7kKo91LmafjVIT28pYX7+MXlk1p91OXtjLvwj5NJ3+R5B4ErNjuEmxqpMVukrqv9EN6TlZQYVNpsjG3P8sYrMTvCBHxlTU8eT+g4g15OMDX8d7DGDlIR3uegbanm7vFPFRiylppVXkAl7g7NqLhZ19V0=,iv:NeuCrBrV+TSlRN/hNTH/fdXPOrW5jzjsDo0IIubK+aw=,tag:tJavfrPMfizj+Y4X/9fxKA==,type:str]
+    lastmodified: "2024-01-20T21:49:56Z"
+    mac: ENC[AES256_GCM,data:n3qhXYncJeIuZFjxHUZb5pi8RYvFAlbCLLITaAxD4IODaZNPlv9SsvPYQU2HJIE3KA7qOnDjf0JSj/YEs598ivyn2go+DSdxgtEKc1rLQNYkFJw37E0Jpvbcf9U1xVpjDEbiaCC0IysV7v8/JpLBzYAHMp2RqSRqlFN7v3L5IaE=,iv:UDAx0NFxsp1KuORwMDxIdcHcgLICdaJGf4eueO5QoRU=,tag:Ga9vLLI4patMDSFFR5NSfw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.8.1

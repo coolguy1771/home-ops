@@ -1,22 +1,15 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: home-cluster
-# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.6.1
-# renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
-kubernetesVersion: v1.29.0
-additionalApiServerCertSans:
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.2
+# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
+kubernetesVersion: v1.29.1
+additionalApiServerCertSans: &san
   - 10.10.254.3
   - k8s-lb.286k.co
-  - 10.10.10.1
-  - 10.1.237.1
   - 127.0.0.1
-additionalMachineCertSans:
-  - 10.10.254.3
-  - k8s-lb.286k.co
-  - 10.10.10.1
-  - 10.1.237.1
-  - 127.0.0.1
+additionalMachineCertSans: *san
 endpoint: https://k8s-lb.286k.co:6443
 domain: cluster.local
 clusterPodNets:
@@ -214,9 +207,6 @@ nodes:
           interfaces:
             - enp55s0f0
             - enp55s0f1
-      - interface: enp55s0f0
-        mtu: 1500
-        dhcp: true
     schematic:
       customization:
         systemExtensions:
@@ -289,7 +279,7 @@ controlPlane:
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
+          feature-gates:  GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false,StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
           rotate-server-certificates: "true"
     - |-
       - op: add
@@ -326,40 +316,45 @@ controlPlane:
           listen-metrics-urls: http://0.0.0.0:2381
           metrics: extensive
     - |-
+      - op: add
+        path: /machine/features/kubePrism
+        value:
+          enabled: true
+          port: 7445
+    - |-
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+    - |-
       machine:
         features:
           kubernetesTalosAPIAccess:
             enabled: true
             allowedRoles:
             - os:etcd:backup
+            - os:admin
             allowedKubernetesNamespaces:
-            - kube-system
+            - tools
         files:
           - content: |
               [plugins."io.containerd.grpc.v1.cri"]
                 enable_unprivileged_ports = true
                 enable_unprivileged_icmp = true
-              [plugins."io.containerd.tracing.processor.v1.otlp"]
-                endpoint = "http://tempo.monitoring.svc.cluster.local:4318"
               [metrics]
                 address = "0.0.0.0:11234"
-              [plugins."io.containerd.internal.v1.tracing"]
-                sampling_ratio = 1.0
-                service_name = "containerd"
             path: /etc/cri/conf.d/20-customization.part
             op: create
-          # - op: create
-          #   path: /etc/nfsmount.conf
-          #   permissions: 0o644
-          #   content: |
-          #     [ NFSMount_Global_Options ]
-          #     nfsvers=4.2
-          #     hard=True
-          #     noatime=True
-          #     nodiratime=True
-          #     rsize=131072
-          #     wsize=131072
-          #     nconnect=8
           - path: /var/etc/nut/upsmon.conf
             permissions: 0o600
             op: create
@@ -375,9 +370,6 @@ controlPlane:
           extraArgs:
             feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
             rotate-server-certificates: "true"
-        install:
-          extraKernelArgs:
-            - "cpufreq.default_governor=performance"
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
@@ -404,7 +396,7 @@ worker:
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
+          feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false,StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
           rotate-server-certificates: "true"
     - |-
       - op: add
@@ -421,6 +413,27 @@ worker:
               - nodeID: {}
                 slot: 0
     - |-
+      - op: add
+        path: /machine/features/kubePrism
+        value:
+          enabled: true
+          port: 7445
+    - |-
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+    - |-
       machine:
         files:
           - content: |
@@ -436,18 +449,6 @@ worker:
                 service_name = "containerd"
             path: /etc/cri/conf.d/20-customization.part
             op: create
-          # - op: create
-          #   path: /etc/nfsmount.conf
-          #   permissions: 0o644
-          #   content: |
-          #     [ NFSMount_Global_Options ]
-          #     nfsvers=4.2
-          #     hard=True
-          #     noatime=True
-          #     nodiratime=True
-          #     rsize=131072
-          #     wsize=131072
-          #     nconnect=8
           - path: /var/etc/nut/upsmon.conf
             permissions: 0o600
             op: create
@@ -459,9 +460,6 @@ worker:
             permissions: 0o644
             path: /var/etc/tailscale/auth.env
             op: create
-        install:
-          extraKernelArgs:
-            - "cpufreq.default_governor=performance"
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
