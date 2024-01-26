@@ -45,6 +45,8 @@ spec:
             - port: "443"
         - ports:
             - port: "80"
+        - ports:
+            - port: "7844"
     - toCIDRSet:
         - cidr: 1.0.0.1/32
       toPorts:
