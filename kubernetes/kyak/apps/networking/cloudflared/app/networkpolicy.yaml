@@ -17,7 +17,7 @@ spec:
       toPorts:
         - ports:
             - port: "8080"
-              protocol: "TCP"
+              protocol: TCP
   egress:
     - toEndpoints:
         - matchLabels:
@@ -26,4 +26,36 @@ spec:
       toPorts:
         - ports:
             - port: "443"
-              protocol: "TCP"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toFQDNs:
+        - matchPattern: "*.argotunnel.com"
+      toPorts:
+        - ports:
+            - port: "443"
+        - ports:
+            - port: "80"
+    - toCIDRSet:
+        - cidr: 1.0.0.1/32
+      toPorts:
+        - ports:
+            - port: "853"
+        - ports:
+            - port: "53"
+    - toCIDRSet:
+        - cidr: 1.1.1.1/32
+      toPorts:
+        - ports:
+            - port: "53"
+        - ports:
+            - port: "853"
