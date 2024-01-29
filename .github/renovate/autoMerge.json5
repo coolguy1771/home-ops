@@ -16,6 +16,14 @@
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Auto-merge NPM Packacges for minor and patch",
+      "matchManagers": ["js"],
+      "matchDatasources": ["npm"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ]
 }
