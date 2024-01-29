@@ -122,6 +122,7 @@ spec:
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
+            ingress.home.arpa/nginx-internal: allow
           className: internal
           hosts:
             - &host hubble.${SECRET_PUBLIC_DOMAIN}
