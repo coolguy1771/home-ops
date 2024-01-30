@@ -6,5 +6,6 @@ metadata:
   name: crunchydata
   namespace: flux-system
 spec:
+  type: oci
   interval: 2h
   url: oci://registry.developers.crunchydata.com/crunchydata/pgo
