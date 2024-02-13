@@ -14,26 +14,23 @@ securityContext:
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
-      - SETUI
+      - SETUID
     cleanCiliumState:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
 autoDirectNodeRoutes: true
 annotateK8sNode: true
+routingMode: native
 cluster:
   id: 1
   name: home
-bandwidthManager:
-  # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
-  enabled: true
-  # -- Activate BBR TCP congestion control for Pods
-  bbr: false
 pmtuDiscovery:
   enabled: true
 bpf:
   clockProbe: true
-  masquerade: true
+  masquerade: false
+  tproxy: true
 containerRuntime:
   integration: containerd
 endpointRoutes:
@@ -45,7 +42,6 @@ enableK8sEndpointSlice: true
 enableIdentityMark: true
 ingressController:
   enabled: false
-  loadbalancerMode: dedicated
 gatewayAPI:
   enabled: false
 bgpControlPlane:
@@ -68,12 +64,14 @@ socketLB:
   enabled: true
 wellKnownIdentities:
   enabled: true
+enableCnpStatusUpdates: true
+endpointStatus:
+  enabled: true
+  status: "policy"
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: 10.244.0.0/16
+ipv4NativeRoutingCIDR: "10.244.0.0/16"
 monitor:
-  enabled: true
-prometheus:
   enabled: false
 tunnel: disabled
 operator:
@@ -84,15 +82,12 @@ loadBalancer:
   algorithm: maglev
   mode: dsr
   serviceTopology: true
-  l7:
-    backend: envoy
-    algorithm: least_request
+l7Proxy: true
 localRedirectPolicy: true
-#enableIPv6BIGTCP: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 k8sServiceHost: localhost
 k8sServicePort: 7445
-kubeProxyReplacement: strict
+kubeProxyReplacement: true
 logOptions:
   format: json
 cgroup:
