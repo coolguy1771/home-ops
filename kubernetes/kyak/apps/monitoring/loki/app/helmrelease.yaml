@@ -25,6 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
+    - name: openebs
+      namespace: openebs-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   valuesFrom:
@@ -48,8 +50,6 @@ spec:
     loki:
       structuredConfig:
         auth_enabled: false
-        tracing:
-          enabled: true
         server:
           log_level: info
           http_listen_port: 3100
@@ -98,7 +98,6 @@ spec:
           enable_api: true
           enable_alertmanager_v2: true
           alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
-            # alertmanager_url: http://vmalertmanager-victoria-metrics.monitoring.svc.cluster.local:9093
           storage:
             type: local
             local:
@@ -141,11 +140,10 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: istio-prod-cert-tls
     read:
       replicas: 2
       persistence:
-        storageClass: ceph-block
+        storageClass: openebs-hostpath
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
@@ -155,11 +153,11 @@ spec:
     write:
       replicas: 2
       persistence:
-        storageClass: ceph-block
+        storageClass: openebs-hostpath
     backend:
       replicas: 2
       persistence:
-        storageClass: ceph-block
+        storageClass: openebs-hostpath
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
