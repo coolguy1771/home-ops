@@ -1,0 +1,14 @@
+values:
+  aws:
+    login:
+      fn::open::aws-login:
+        oidc:
+          duration: 1h
+          roleArn: arn:aws:iam::782070670678:role/pulumi-esc-iam-role
+          sessionName: pulumi-environments-session
+  environmentVariables:
+    AWS_ACCESS_KEY_ID: ${aws.login.accessKeyId}
+    AWS_SECRET_ACCESS_KEY: ${aws.login.secretAccessKey}
+    AWS_SESSION_TOKEN: ${aws.login.sessionToken}
+    AWS_REGION: us-east-1
+    AWS_PROFILE: AdministratorAccess-782070670678

@@ -1,0 +1,11 @@
+{
+    "name": "icb",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^18"
+    },
+    "dependencies": {
+        "@pulumi/aws": "^6.13.2",
+        "@pulumi/pulumi": "^3.0.0"
+    }
+}

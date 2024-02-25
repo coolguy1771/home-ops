@@ -15,6 +15,5 @@ export function r53record(
     type: type,
     records: records,
   });
-  //print the type of the dns record, this is for debugging purposes
   return record;
 }
