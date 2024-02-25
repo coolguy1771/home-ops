@@ -1,7 +1,7 @@
 ---
 k3s_control_node: true
 k3s_server:
-  cluster-cidr: 10.132.0.0/16
+  cluster-cidr: 10.142.0.0/16
   disable: ["flannel", "local-storage", "metrics-server", "servicelb", "traefik"]
   disable-cloud-controller: true
   disable-kube-proxy: true
@@ -15,6 +15,6 @@ k3s_server:
   kubelet-arg: ["image-gc-low-threshold=50", "image-gc-high-threshold=55"]
   node-ip: "{{ ansible_host }}"
   secrets-encryption: true
-  service-cidr: 10.133.0.0/16
+  service-cidr: 10.143.0.0/16
   tls-san: ["{{ k3s_registration_address }}", "expanse.turbo.ac", "expanse"]
   write-kubeconfig-mode: "0644" # quote
