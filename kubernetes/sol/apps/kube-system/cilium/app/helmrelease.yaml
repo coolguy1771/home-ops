@@ -138,7 +138,7 @@ spec:
     operator:
       enabled: true
       rollOutPods: true
-      replicas: 2
+      replicas: 1
       prometheus:
         enabled: true
     loadBalancer:
