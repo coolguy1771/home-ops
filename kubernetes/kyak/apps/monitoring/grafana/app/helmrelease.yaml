@@ -85,7 +85,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/default
+              path: /var/lib/grafana/dashboards/default-folder
           - name: ceph
             orgId: 1
             folder: Ceph
@@ -93,7 +93,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/ceph
+              path: /var/lib/grafana/dashboards/ceph-folder
           - name: flux
             orgId: 1
             folder: Flux
@@ -101,7 +101,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/flux
+              path: /var/lib/grafana/dashboards/flux-folder
           - name: kubernetes
             orgId: 1
             folder: Kubernetes
@@ -109,7 +109,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/kubernetes
+              path: /var/lib/grafana/dashboards/kubernetes-folder
           - name: nginx
             orgId: 1
             folder: Nginx
@@ -117,7 +117,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/nginx
+              path: /var/lib/grafana/dashboards/nginx-folder
           - name: prometheus
             orgId: 1
             folder: Prometheus
@@ -125,7 +125,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/prometheus
+              path: /var/lib/grafana/dashboards/prometheus-folder
           - name: thanos
             orgId: 1
             folder: Thanos
@@ -133,7 +133,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/thanos
+              path: /var/lib/grafana/dashboards/thanos-folder
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -147,9 +147,8 @@ spec:
             uid: prometheus
             access: proxy
             url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-            # url: http://vmselect-victoria-metrics.monitoring.svc.cluster.local:8481/select/0/prometheus
             jsonData:
-              prometheusType: Thanos # Prometheus for victoria-metrics
+              prometheusType: Thanos
             isDefault: true
           - name: Loki
             type: loki
@@ -163,7 +162,6 @@ spec:
             uid: alertmanager
             access: proxy
             url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
-            # url: http://vmalertmanager-victoria-metrics.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
           - name: Tempo
@@ -221,14 +219,14 @@ spec:
           # renovate: depName="Redis Dashboard for Prometheus Redis Exporter 1.x"
           gnetId: 763
           revision: 6
-          datasource: Prometheus
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         spegel:
           # renovate: depName="Spegel"
           gnetId: 18089
           revision: 1
           datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
+            - { name: DS_PROMETHEUS, value: Prometheus }
         unpackerr:
           # renovate: depName="Unpackerr"
           gnetId: 18817
@@ -239,9 +237,6 @@ spec:
           # renovate: depName="ZFS"
           gnetId: 7845
           revision: 4
-          datasource: Prometheus
-        cloudnative-pg:
-          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
           datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
@@ -278,13 +273,10 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
-        flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
-          datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
-          gnetId: 16761
+          gnetId: 15761
           revision: 16
           datasource: Prometheus
         kubernetes-coredns:
