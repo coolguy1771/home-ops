@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -36,8 +35,7 @@ spec:
           init-geoip:
             image:
               repository: ghcr.io/maxmind/geoipupdate
-              tag: v6.1.0
-              pullPolicy: IfNotPresent
+              tag: v6.1.0@sha256:cdd36d36c2e1d353a990a48e5a36d42ee75089d5d9064d80d36d90c147fd2606
             env:
               GEOIPUPDATE_EDITION_IDS: GeoLite2-City
               GEOIPUPDATE_FREQUENCY: "0"
@@ -49,7 +47,7 @@ spec:
           main:
             image:
               repository: docker.io/timberio/vector
-              tag: 0.36.0-debian
+              tag: 0.36.0-alpine@sha256:d481b891ca5b36e2ae2a66917cc252ba8aaf30a7904f84b4c7d74206bd3de2e9
             args: ["--config", "/etc/vector/vector.yaml"]
         pod:
           topologySpreadConstraints:
@@ -69,20 +67,17 @@ spec:
         ports:
           http:
             port: 8686
-          kubernetes-logs:
-            enabled: true
+          journald:
             port: 6000
-          vyos-syslog:
-            enabled: true
-            port: 6001
-          journald-logs:
-            enabled: true
-            port: 6002
+          kubernetes:
+            port: 6010
+          vyos:
+            port: 6020
     persistence:
       config:
         enabled: true
         type: configMap
-        name: vector-aggregator-configmap # overriden by kustomizeconfig
+        name: vector-aggregator-configmap
         globalMounts:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml
