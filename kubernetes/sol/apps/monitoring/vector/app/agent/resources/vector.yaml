@@ -9,5 +9,5 @@ sinks:
     type: vector
     compression: true
     inputs: ["journal_logs"]
-    address: 10.0.42.201:6002
+    address: 10.0.42.201:6000
     version: "2"
