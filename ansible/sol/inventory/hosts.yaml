@@ -1,0 +1,10 @@
+---
+kubernetes:
+  vars:
+    ansible_user: twitlin
+    ansible_ssh_port: 22
+  children:
+    master:
+      hosts:
+        osiris:
+          ansible_host: 10.10.10.50
