@@ -53,9 +53,32 @@ spec:
       network:
         provider: host
         connections:
-          compression:
-            enabled: true
           requireMsgr2: true
+      resources:
+        mgr:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
+        mon:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            memory: 1Gi
+        osd:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            memory: 6Gi
+        mgr-sidecar:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
       crashCollector:
         disable: false
       dashboard:
@@ -82,40 +105,19 @@ spec:
             devices:
               - name: "/dev/disk/by-id/ata-HGST_HUS726060ALE610_K8GEAJHD"
               - name: "/dev/disk/by-id/ata-HGST_HUS726060ALE610_K8GEBVED"
-      resources:
-        mgr:
-          requests:
-            cpu: 500m
-            memory: 512Mi
-          limits:
-            cpu: 2000m
-            memory: 2Gi
-        mon:
-          requests:
-            cpu: 1000m
-            memory: 1Gi
-          limits:
-            cpu: 4000m
-            memory: 4Gi
-        osd:
-          requests:
-            cpu: 1000m
-            memory: 4Gi
-          limits:
-            cpu: 4000m
-            memory: 8Gi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
           failureDomain: osd
           replicated:
-            size: 6
+            size: 3
         storageClass:
           enabled: true
           name: ceph-block
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
+          volumeBindingMode: Immediate
           parameters:
             imageFormat: "2"
             mageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
@@ -147,10 +149,11 @@ spec:
             activeStandby: true
             resources:
               requests:
-                cpu: 1000m
-                memory: 4Gi
+                cpu: 100m
+                memory: 1Gi
               limits:
                 memory: 4Gi
+            priorityClassName: system-cluster-critical
         storageClass:
           enabled: true
           isDefault: false
@@ -158,6 +161,7 @@ spec:
           pool: data0
           reclaimPolicy: Delete
           allowVolumeExpansion: true
+          volumeBindingMode: Immediate
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
@@ -188,11 +192,12 @@ spec:
             port: 80
             resources:
               requests:
-                cpu: 1000m
+                cpu: 100m
                 memory: 1Gi
               limits:
                 memory: 2Gi
             instances: 2
+            priorityClassName: system-cluster-critical
           healthCheck:
             bucket:
               interval: 60s
@@ -200,5 +205,15 @@ spec:
           enabled: true
           name: ceph-bucket
           reclaimPolicy: Delete
+          volumeBindingMode: Immediate
           parameters:
             region: us-east-1
+        ingress:
+          enabled: true
+          ingressClassName: internal
+          host:
+            name: &host rgw.witl.xyz
+            path: /
+          tls:
+            - hosts:
+                - *host

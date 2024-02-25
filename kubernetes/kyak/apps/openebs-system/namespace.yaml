@@ -2,9 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: rook-ceph
-  labels:
+  name: openebs-system
+  annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
-  annotations:
-    istio-injection: enabled
