@@ -17,6 +17,7 @@ resources:
   - ./kepler.yaml
   - ./metrics-server.yaml
   - ./neuvector.yaml
+  - ./openebs.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
   - ./weaveworks.yaml
