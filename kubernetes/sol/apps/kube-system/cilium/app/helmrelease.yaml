@@ -33,7 +33,7 @@ spec:
       hostRoot: /sys/fs/cgroup
     cluster:
       id: 2
-      name: storage
+      name: sol
     containerRuntime:
       integration: containerd
       socketPath: /var/run/k3s/containerd/containerd.sock
@@ -73,7 +73,7 @@ spec:
           enabled: true
           className: internal
           hosts:
-            - &host hubble.286l.co
+            - &host hubble.286k.co
           tls:
             - hosts:
                 - *host
