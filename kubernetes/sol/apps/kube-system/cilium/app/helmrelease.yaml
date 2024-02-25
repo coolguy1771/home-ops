@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -25,42 +24,24 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    securityContext:
-      privileged: true
     autoDirectNodeRoutes: true
-    annotateK8sNode: true
-    routingMode: native
-    enableRuntimeDeviceDetection: true
-    endpointRoutes:
-      enabled: true
+    bpf:
+      masquerade: false
+    cgroup:
+      automount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
     cluster:
       id: 2
-      name: sol
-    pmtuDiscovery:
-      enabled: true
-    bpf:
-      clockProbe: true
-      masquerade: true
-      tproxy: true
+      name: storage
     containerRuntime:
       integration: containerd
       socketPath: /var/run/k3s/containerd/containerd.sock
-    nodePort:
-      enabled: true
-    enableCiliumEndpointSlice: true
-    enableK8sEndpointSlice: true
-    enableIdentityMark: true
-    ingressController:
-      enabled: false
-    gatewayAPI:
-      enabled: false
     bgpControlPlane:
       enabled: true
-    l2announcements:
-      enabled: false
-      leaseDuration: 120s
-      leaseRenewDeadline: 60s
-      leaseRetryPeriod: 1s
+    enableRuntimeDeviceDetection: true
+    endpointRoutes:
+      enabled: true
     hubble:
       enabled: true
       metrics:
@@ -73,83 +54,79 @@ spec:
           - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
           - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
         enableOpenMetrics: true
-        dashboards:
-          enabled: false
-      tls:
-        enabled: true
-        auto:
+        serviceMonitor:
           enabled: true
-          method: helm
+        dashboards:
+          enabled: true
+          annotations:
+            grafana_folder: Cilium
       relay:
         enabled: true
         rollOutPods: true
-        replicas: 1
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: false
+        prometheus:
+          serviceMonitor:
+            enabled: true
       ui:
         enabled: true
         rollOutPods: true
-        replicas: 1
-        backend:
-          image:
-            repository: "quay.io/cilium/hubble-ui-backend"
-            tag: v0.13.0
-        frontend:
-          image:
-            repository: "quay.io/cilium/hubble-ui"
-            tag: "v0.13.0"
         ingress:
           enabled: true
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-production
-            ingress.home.arpa/nginx-internal: allow
           className: internal
           hosts:
-            - &host hubble.286k.co
+            - &host hubble.286l.co
           tls:
             - hosts:
                 - *host
-              secretName: hubble-tls
-    rollOutCiliumPods: true
-    externalIPs:
-      enabled: true
-    hostFirewall:
-      enabled: true
-    hostPort:
-      enabled: true
-    socketLB:
-      enabled: true
-    wellKnownIdentities:
-      enabled: true
-    enableCnpStatusUpdates: true
-    endpointStatus:
-      enabled: true
-      status: "policy"
     ipam:
       mode: kubernetes
-    ipv4NativeRoutingCIDR: "10.142.0.0/16"
-    monitor:
-      enabled: false
-    prometheus:
-      enabled: true
-    tunnel: disabled
-    operator:
-      enabled: true
-      rollOutPods: true
-      replicas: 1
-      prometheus:
-        enabled: true
-    loadBalancer:
-      algorithm: maglev
-      mode: dsr
-      serviceTopology: true
-    l7Proxy: true
-    localRedirectPolicy: true
+    ipv4NativeRoutingCIDR: 10.142.0.0/16
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 6444
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    logOptions:
-      format: json
+    l2announcements:
+      enabled: true
+    loadBalancer:
+      algorithm: maglev
+      mode: dsr
+    localRedirectPolicy: true
+    operator:
+      rollOutPods: true
+      replicas: 1
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Cilium
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
+    rollOutCiliumPods: true
+    routingMode: native
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
