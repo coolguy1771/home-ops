@@ -120,7 +120,7 @@ spec:
           volumeBindingMode: Immediate
           parameters:
             imageFormat: "2"
-            mageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
+            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
@@ -179,7 +179,7 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: host
+            failureDomain: osd
             replicated:
               size: 3
           dataPool:
@@ -212,7 +212,7 @@ spec:
           enabled: true
           ingressClassName: internal
           host:
-            name: &host rgw.witl.xyz
+            name: &host rgw.${SECRET_PUBLIC_DOMAIN}
             path: /
           tls:
             - hosts:
