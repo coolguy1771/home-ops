@@ -22,11 +22,5 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
-  values:
-    podLabels:
-      egress.home.arpa/apiserver: allow
-      egress.home.arpa/world: allow
-      egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place

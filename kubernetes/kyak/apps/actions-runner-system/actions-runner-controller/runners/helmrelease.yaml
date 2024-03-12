@@ -20,9 +20,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   valuesFrom:
     - targetPath: githubConfigSecret.github_app_id
       kind: Secret
