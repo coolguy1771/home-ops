@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: tailscale
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: tailscale-operator
+      version: 0.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: tailscale
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    installCRDs: "true"
+    operatorConfig:
+      defaultTags:
+        - "tag:k8s-operator"
+    # proxyConfig contains configuraton that will be applied to any ingress/egress
+    # proxies created by the operator.
+    # https://tailscale.com/kb/1236/kubernetes-operator/#cluster-ingress
+    # https://tailscale.com/kb/1236/kubernetes-operator/#cluster-egress
+    proxyConfig:
+      # ACL tag that operator will tag proxies with. Operator must be made owner of
+      # these tags
+      # https://tailscale.com/kb/1236/kubernetes-operator/?q=operator#setting-up-the-kubernetes-operator
+      # Multiple tags can be passed as a comma-separated string i.e 'tag:k8s-proxies,tag:prod'.
+      # Note that if you pass multiple tags to this field via `--set` flag to helm upgrade/install commands you must escape the comma (for example, "tag:k8s-proxies\,tag:prod"). See https://github.com/helm/helm/issues/1556
+      defaultTags: "tag:k8s"
+      firewallMode: auto
+
+    apiServerProxyConfig:
+      mode: "noauth" # "true", "false", "noauth"
+  valuesFrom:
+    - targetPath: oauth.clientId
+      kind: Secret
+      name: tailscale-operator-secret
+      valuesKey: CLIENT_ID
+    - targetPath: oauth.clientSecret
+      kind: Secret
+      name: tailscale-operator-secret
+      valuesKey: CLIENT_SECRET
