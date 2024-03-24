@@ -39,6 +39,6 @@ resources:
   - ./rook-ceph.yaml
   - ./stakater.yaml
   - ./stevehipwell.yaml
-  - ./tailscae.yaml
+  - ./tailscale.yaml
   - ./weaveworks.yaml
   - ./xentra.yaml
