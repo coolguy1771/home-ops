@@ -97,7 +97,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal
+        className: tailscale
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
