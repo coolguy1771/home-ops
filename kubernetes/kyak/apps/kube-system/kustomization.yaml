@@ -12,3 +12,4 @@ resources:
   - ./fstrim/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
+  - ./node-feature-discovery/ks.yaml

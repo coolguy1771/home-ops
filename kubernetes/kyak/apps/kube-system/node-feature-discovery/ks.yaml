@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/kyak/apps/tools/node-feature-discovery/app
+  path: ./kubernetes/kyak/apps/kube-system/node-feature-discovery/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -27,13 +27,13 @@ metadata:
   name: &app node-feature-discovery-rules
   namespace: flux-system
 spec:
-  targetNamespace: tools
+  targetNamespace: kube-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: node-feature-discovery
-  path: ./kubernetes/kyak/apps/tools/node-feature-discovery/rules
+  path: ./kubernetes/kyak/apps/kube-system/node-feature-discovery/rules
   prune: true
   sourceRef:
     kind: GitRepository
