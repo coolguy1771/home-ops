@@ -32,7 +32,7 @@ spec:
           main:
             image:
               repository: quay.io/minio/minio
-              tag: RELEASE.2024-03-21T23-13-43Z@sha256:a440ee22d5cf62285a3181c6c63e26e9a0e6e4854e533841deabf229561571d3
+              tag: RELEASE.2024-03-30T09-41-56Z@sha256:6a96b6c8c2bb8e1d09f1afe9a529266730b900f2b978d540be7af16182bdfb72
             env:
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.286k.co,https://s3.286k.co
               MINIO_BROWSER_REDIRECT_URL: https://minio.286k.co
