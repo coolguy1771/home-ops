@@ -30,8 +30,8 @@
       "addLabels": ["renovate/ansible"]
     },
     {
-      "matchDatasources": ["terraform-provider"],
-      "addLabels": ["renovate/terraform"]
+      "matchDatasources": ["pulumi-provider"],
+      "addLabels": ["renovate/pulumi"]
     },
     {
       "matchDatasources": ["github-releases", "github-tags"],
@@ -44,10 +44,6 @@
     {
       "matchDatasources": ["pypi"],
       "addLabels": ["renovate/pip"]
-    },
-    {
-      "matchDatasources": ["npm"],
-      "addLabels": ["renovate/npm"]
     }
   ]
 }
