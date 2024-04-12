@@ -28,10 +28,6 @@ spec:
     operatorConfig:
       defaultTags:
         - "tag:k8s-operator"
-    # proxyConfig contains configuraton that will be applied to any ingress/egress
-    # proxies created by the operator.
-    # https://tailscale.com/kb/1236/kubernetes-operator/#cluster-ingress
-    # https://tailscale.com/kb/1236/kubernetes-operator/#cluster-egress
     proxyConfig:
       # ACL tag that operator will tag proxies with. Operator must be made owner of
       # these tags
@@ -40,7 +36,6 @@ spec:
       # Note that if you pass multiple tags to this field via `--set` flag to helm upgrade/install commands you must escape the comma (for example, "tag:k8s-proxies\,tag:prod"). See https://github.com/helm/helm/issues/1556
       defaultTags: "tag:k8s"
       firewallMode: auto
-
     apiServerProxyConfig:
       mode: "noauth" # "true", "false", "noauth"
   valuesFrom:

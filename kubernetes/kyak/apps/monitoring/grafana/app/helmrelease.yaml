@@ -20,9 +20,15 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: authelia
+      namespace: auth
+    - name: kube-prometheus-stack
+      namespace: monitoring
+    - name: loki
+      namespace: monitoring
   values:
     extraInitContainers:
       - name: 01-init-db
@@ -40,6 +46,7 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_PUBLIC_DOMAIN}
     envFromSecrets:
@@ -70,8 +77,6 @@ spec:
         enabled: false
       auth.anonymous:
         enabled: false
-        # org_id: 1
-        # org_role: Viewer
       news:
         news_feed_enabled: false
     dashboardProviders:
@@ -146,9 +151,10 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+            url: http://thanos-query-frontend.monitoring.svc.cluster.local:10902
             jsonData:
               prometheusType: Thanos
+              timeInterval: 1m
             isDefault: true
           - name: Loki
             type: loki
@@ -215,12 +221,6 @@ spec:
           gnetId: 1860
           revision: 36
           datasource: Prometheus
-        redis:
-          # renovate: depName="Redis Dashboard for Prometheus Redis Exporter 1.x"
-          gnetId: 763
-          revision: 6
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
         spegel:
           # renovate: depName="Spegel"
           gnetId: 18089
@@ -240,6 +240,9 @@ spec:
           datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          datasource: Prometheus
+        dragonfly:
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
           datasource: Prometheus
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
@@ -354,7 +357,6 @@ spec:
       dashboards:
         enabled: true
         searchNamespace: ALL
-        labelValue: ""
         label: grafana_dashboard
         folderAnnotation: grafana_folder
         provider:
@@ -379,13 +381,10 @@ spec:
       annotations:
         external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
         cert-manager.io/cluster-issuer: letsencrypt-production
-        policy.cilium.io/proxy-visibility: "<Egress/53/UDP/DNS>,<Egress/80/TCP/HTTP>"
       hosts:
         - &host grafana.${SECRET_PUBLIC_DOMAIN}
       tls:
-        - hosts:
-            - *host
-          secretName: grafana-tls
+        - hosts: [*host]
     persistence:
       enabled: false
     testFramework:
