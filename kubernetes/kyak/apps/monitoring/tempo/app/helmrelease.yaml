@@ -48,7 +48,6 @@ spec:
         ingressClassName: internal
         className: internal
         annotations:
-          kubernetes.io/ingress.class: istio
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - &host "tempo-query.${SECRET_PUBLIC_DOMAIN}"
