@@ -31,9 +31,9 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: vector-agent
-      namespace: observability
+      namespace: monitoring
     - name: vector-aggregator
-      namespace: observability
+      namespace: monitoring
   valuesFrom:
     - targetPath: loki.storage.bucketNames.chunks
       kind: ConfigMap
