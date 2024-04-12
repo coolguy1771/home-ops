@@ -1,16 +1,15 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: jellyfin
-  namespace: media
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -21,9 +20,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: intel-device-plugin-gpu
       namespace: gpu-system
@@ -33,14 +31,14 @@ spec:
       namespace: volsync-system
   values:
     controllers:
-      main:
+      jellyfin:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/jellyfin
-              tag: 10.8.11@sha256:926e2a9f6677a0c7b12feba29f36c954154869318d6a52df72f72ff9c74cf494
+              repository: docker.io/jellyfin/jellyfin
+              tag: 10.8.13-1
               pullPolicy: IfNotPresent
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
@@ -68,15 +66,16 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
-              limits: &resources
+              requests:
+                gpu.intel.com/i915: 1
+                cpu: 100m
+                memory: 512Mi
+              limits:
                 gpu.intel.com/i915: 1
                 memory: 4Gi
-              requests:
-                <<: *resources
-                cpu: 100m
         pod:
           nodeSelector:
-            feature.node.kubernetes.io/pci-8086.present: "true"
+            intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
             runAsUser: 568
             runAsGroup: 568
@@ -85,12 +84,14 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [44, 10000]
     service:
-      main:
+      app:
+        controller: jellyfin
         type: LoadBalancer
-        externalTrafficPolicy: Cluster
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.42.128
         ports:
           http:
-            port: *port
+            port: 8096
     ingress:
       main:
         enabled: true
@@ -103,15 +104,13 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
-          - hosts:
-              - *host
+          - hosts: [*host]
             secretName: "{{ .Release.Name }}-tls"
     persistence:
       config:
-        enabled: true
         existingClaim: jellyfin
       tmp:
         type: emptyDir
