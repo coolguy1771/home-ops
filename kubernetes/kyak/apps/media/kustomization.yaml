@@ -6,7 +6,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./autobrr/ks.yaml
+  # - ./autobrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./overseerr/ks.yaml
   - ./prowlarr/ks.yaml
