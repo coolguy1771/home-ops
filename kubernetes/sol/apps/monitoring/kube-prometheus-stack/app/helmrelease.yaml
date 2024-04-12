@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 57.2.1
+      version: 58.0.1
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -23,9 +23,8 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: openebs
       namespace: openebs-system
@@ -72,7 +71,7 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints: &cp
-        - 192.168.42.80
+        - 10.10.10.50
       serviceMonitor:
         metricRelabelings:
           # Remove duplicate labels provided by k3s
@@ -101,18 +100,17 @@ spec:
         hosts:
           - &host prometheus.286k.co
         tls:
-          - hosts:
-              - *host
+          - hosts: [*host]
       prometheusSpec:
         podMetadata:
           annotations:
-            secret.reloader.stakater.com/reload: &secret kube-prometheus-stack-secret
+            secret.reloader.stakater.com/reload: &secret thanos-objstore-config
         additionalAlertManagerConfigs:
           - static_configs:
-              - targets:
-                  - alertmanager.286k.co
+              - targets: ["alertmanager.286k.co"]
         replicas: 1
         replicaExternalLabelName: __replica__
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
@@ -121,13 +119,22 @@ spec:
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
-          - auto-gomaxprocs
+          - auto-gomemlimit
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
+        image:
+          registry: quay.io
+          repository: prometheus/prometheus
+          tag: v2.51.0-dedupelabels
         retention: 2d
         retentionSize: 15GB
         externalLabels:
           cluster: storage
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 1Gi
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -141,7 +148,7 @@ spec:
           objectStorageConfig:
             existingSecret:
               name: *secret
-              key: objstore.yml
+              key: config
       thanosService:
         enabled: true
       thanosServiceExternal:
@@ -163,8 +170,7 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     kubeStateMetrics:
       enabled: true
@@ -181,8 +187,7 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     grafana:
       enabled: false
