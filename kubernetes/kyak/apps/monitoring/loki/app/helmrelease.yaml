@@ -138,6 +138,8 @@ spec:
       persistence:
         size: 20Gi
         storageClass: openebs-hostpath
+    chunksCache:
+      allocatedMemory: 3072
     sidecar:
       image:
         repository: ghcr.io/kiwigrid/k8s-sidecar
