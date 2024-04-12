@@ -8,4 +8,3 @@ resources:
   # Flux-Kustomizations
   - ./descheduler/ks.yaml
   - ./reloader/ks.yaml
-  - ./system-upgrade-controller/ks.yaml
