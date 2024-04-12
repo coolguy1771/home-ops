@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 57.2.1
+      version: 58.0.1
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -23,16 +23,13 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  valuesFrom:
-    - kind: ConfigMap
-      name: kube-state-metrics-configmap
-      valuesKey: kube-state-metrics.yaml
+    - name: openebs
+      namespace: openebs-system
+    - name: thanos
+      namespace: monitoring
   values:
     crds:
       enabled: true
@@ -45,9 +42,7 @@ spec:
         hosts:
           - &host alertmanager.${SECRET_PUBLIC_DOMAIN}
         tls:
-          - hosts:
-              - *host
-            secretName: istio-prod-cert-tls
+          - hosts: [*host]
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true
@@ -55,14 +50,33 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: openebs-hostpath
               resources:
                 requests:
                   storage: 1Gi
     kubelet:
       enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeApiServer:
       enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubeControllerManager:
       enabled: true
       endpoints: &cp
@@ -85,16 +99,18 @@ spec:
         hosts:
           - &host prometheus.${SECRET_PUBLIC_DOMAIN}
         tls:
-          - hosts:
-              - *host
-            secretName: istio-prod-cert-tls
+          - hosts: [*host]
       thanosService:
         enabled: true
       thanosServiceMonitor:
         enabled: true
       prometheusSpec:
+        podMetadata:
+          annotations:
+            secret.reloader.stakater.com/reload: &secret thanos-objstore-config
         replicas: 2
         replicaExternalLabelName: __replica__
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
@@ -103,23 +119,33 @@ spec:
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
-          - auto-gomaxprocs
+          - auto-gomemlimit
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
+        image:
+          registry: quay.io
+          repository: prometheus/prometheus
+          tag: v2.51.0-dedupelabels
         thanos:
-          image: quay.io/thanos/thanos:v0.34.1
+          image: quay.io/thanos/thanos:${THANOS_VERSION}
+          version: "${THANOS_VERSION#v}"
           objectStorageConfig:
             existingSecret:
-              name: thanos-objstore-secret
-              key: objstore.yml
+              name: *secret
+              key: config
         retention: 2d
         retentionSize: 15GB
         externalLabels:
           cluster: main
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 1500Mi
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: openebs-hostpath
               resources:
                 requests:
                   storage: 20Gi
@@ -134,31 +160,32 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     kubeStateMetrics:
       enabled: true
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
     grafana:
       enabled: false
       forceDeployDashboards: true
       sidecar:
         dashboards:
+          annotations:
+            grafana_folder: Kubernetes
           multicluster:
             etcd:
               enabled: true
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              version: v1
-              kind: ConfigMap
-              labelSelector: grafana_dashboard in (1)
-            patch: |-
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: not-used
-                namespace: not-used
-                annotations:
-                  grafana_folder: Kubernetes
