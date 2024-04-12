@@ -21,12 +21,11 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: snapshot-controller
-      namespace: storage
+      namespace: volsync-system
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=secure

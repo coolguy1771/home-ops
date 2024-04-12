@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,29 +20,35 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
-      main:
+      unpackerr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
-              repository: docker.io/golift/unpackerr
-              tag: 0.13.1@sha256:35f558e1a2f9d7b517a2ba92fd28fc90b04a56e9536fb8b91422710658212cd3
+              repository: ghcr.io/unpackerr/unpackerr
+              tag: 0.13.1@sha256:04fcb43fa70e6db88331962760607842cdf19889e6d35d9d2fde0cf6a1550eaf
             env:
               TZ: America/New_York
-              UN_WEBSERVER_METRICS: "true"
+              UN_WEBSERVER_METRICS: true
+              UN_WEBSERVER_LOG_FILE: /logs/webserver.log
+              UN_ACTIVITY: true
               UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
-              UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/sonarr
+              UN_SONARR_0_PATHS_0: /media/downloads/qbittorrent/complete/sonarr
               UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
-              UN_RADARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/radarr
+              UN_RADARR_0_PATHS_0: /media/downloads/qbittorrent/complete/radarr
             envFrom:
               - secretRef:
                   name: unpackerr-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -61,14 +67,23 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [10000]
     service:
-      main:
+      app:
+        controller: unpackerr
         ports:
           http:
             port: 5656
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: unpackerr
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
+      logs:
+        type: emptyDir
       media:
         type: nfs
         server: osiris.286k.co
