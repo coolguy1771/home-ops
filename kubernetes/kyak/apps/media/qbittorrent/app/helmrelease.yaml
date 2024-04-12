@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,31 +20,32 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
-      namespace: storage
+      namespace: volsync-system
   values:
     controllers:
-      main:
+      qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/qbittorrent
-              tag: 4.6.4@sha256:cb8a7df4e63bf410834af7846b6d5eee4f10748d03819ee7218015c5b0332a29
+              repository: ghcr.io/onedr0p/qbittorrent-beta
+              tag: 4.6.4@sha256:b1805f15565c95c7c4b00595ae59cbd716bc884a22c223c4f6c86fb1b9f062b3
             env:
               TZ: America/New_York
               QBITTORRENT__PORT: &port 80
               QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_Application__MemoryWorkingSetLimit: 10000
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.0.0.0/8
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.0.0.0/8
               QBT_Preferences__WebUI__LocalHostAuth: false
               QBT_BitTorrent__Session__Interface: eth0
               QBT_BitTorrent__Session__InterfaceAddress:
@@ -65,8 +66,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -75,7 +74,7 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 16Gi
+                memory: 12Gi
         pod:
           securityContext:
             runAsUser: 568
@@ -84,52 +83,33 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [10000]
     service:
-      main:
+      app:
+        controller: qbittorrent
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.42.122
         ports:
           http:
             port: *port
-      bittorrent:
-        controller: main
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 10.0.42.202
-        ports:
           bittorrent:
             enabled: true
             port: *bittorrentPort
             protocol: TCP
     ingress:
-      main:
-        enabled: true
-        className: internal
+      app:
+        className: tailscale
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host qb.${SECRET_PUBLIC_DOMAIN}
             paths:
               - path: /
                 service:
-                  name: main
-                  port: http
-          - host: &customHost qb.${SECRET_PUBLIC_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
-          - hosts:
-              - *host
+          - hosts: [*host]
     persistence:
       config:
-        enabled: true
         existingClaim: qbittorrent
-      completed-script:
-        type: configMap
-        name: qbittorrent-scripts
-        defaultMode: 0775
-        globalMounts:
-          - path: /scripts/completed.sh
-            subPath: completed.sh
-            readOnly: true
       media:
         type: nfs
         server: osiris.286k.co

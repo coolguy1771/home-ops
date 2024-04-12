@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,16 +20,13 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: qbittorrent
       namespace: media
   values:
     controllers:
-      main:
-        enabled: false
       tagging:
         type: cronjob
         cronjob: &cronJobSpec
@@ -68,7 +65,7 @@ spec:
             args: [
               "prune",
               "--exclude-category", "manual",
-              "--exclude-category", "music.collection",
+              "--exclude-category", "music",
               "--exclude-category", "music.import",
               "--include-tag", "unregistered",
               # "--dry-run",
@@ -82,7 +79,7 @@ spec:
             args: [
               "prune",
               "--exclude-category", "manual",
-              "--exclude-category", "music.collection",
+              "--exclude-category", "music",
               "--exclude-category", "music.import",
               "--exclude-category", "overlord",
               "--include-tag", "expired", # defined in config.yaml
@@ -104,7 +101,7 @@ spec:
           <<: *cronJobSpec
           schedule: "@daily"
         containers:
-          main:
+          app:
             image: *image
             env: *env
             args: [
@@ -122,7 +119,7 @@ spec:
           securityContext: *securityContext
       reannounce:
         containers:
-          main:
+          app:
             image: *image
             env: *env
             args: [
@@ -134,24 +131,19 @@ spec:
             resources: *resources
         pod:
           securityContext: *securityContext
-    service:
-      main:
-        enabled: false
     persistence:
-      config-file:
-        type: configMap
-        name: qbtools-configmap
-        advancedMounts:
-          tagging:
-            tagging:
-              - path: /config/config.yaml
-                subPath: config.yaml
-                readOnly: true
+      secret-file:
+        type: secret
+        name: qbtools-secret
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
       media:
         type: nfs
-        server: osiris.286k.co
-        path: /pluto/media
+        server: expanse.turbo.ac
+        path: /eros/Media
         advancedMounts:
           orphaned:
-            main:
+            app:
               - path: /media
