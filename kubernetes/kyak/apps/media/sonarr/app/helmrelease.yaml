@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,15 +20,14 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
     controllers:
-      main:
+      sonarr:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -40,14 +39,11 @@ spec:
               - secretRef:
                   name: sonarr-secret
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/sonarr
-              tag: 4.0.3.1413@sha256:4284def4b9fd2d3de2898ae3a6adc7aa84b9cd7f4407a35e7c61472519038396
+              repository: ghcr.io/onedr0p/sonarr-develop
+              tag: 4.0.3.1465@sha256:f6129990b5bc7adeae4c255862cc96c2a34704b0f748b890a4c1310085bcff6f
             env:
-              # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
-              # https://github.com/dotnet/runtime/issues/9336
-              COMPlus_EnableDiagnostics: "0"
               PUSHOVER_DEBUG: "false"
               SONARR__AUTHENTICATION_METHOD: External
               SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
@@ -70,8 +66,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -90,28 +84,25 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [10000]
     service:
-      main:
+      app:
+        controller: sonarr
         ports:
           http:
             port: *port
     ingress:
-      main:
-        enabled: true
+      app:
         className: tailscale
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
-          - hosts:
-              - *host
-            secretName: istio-prod-cert-tls
+          - hosts: [*host]
     persistence:
       config:
-        enabled: true
         existingClaim: sonarr
       pushover-notify:
         type: configMap
