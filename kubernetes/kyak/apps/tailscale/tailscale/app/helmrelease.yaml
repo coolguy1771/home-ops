@@ -28,4 +28,4 @@ spec:
     proxyConfig:
       firewallMode: auto
     apiServerProxyConfig:
-      mode: "noauth" # "true", "false", "noauth"
+      mode: "true" # "true", "false", "noauth"
