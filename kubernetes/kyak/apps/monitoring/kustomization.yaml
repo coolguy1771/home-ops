@@ -13,7 +13,7 @@ resources:
   - ./loki/ks.yaml
   - ./nut-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./snmp-exporter/ks.yaml
+  # - ./snmp-exporter/ks.yaml
   - ./tempo/ks.yaml
   - ./thanos/ks.yaml
   - ./vector/ks.yaml
