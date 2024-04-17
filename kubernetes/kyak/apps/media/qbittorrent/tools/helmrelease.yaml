@@ -141,8 +141,8 @@ spec:
             readOnly: true
       media:
         type: nfs
-        server: expanse.turbo.ac
-        path: /eros/Media
+        server: osiris.286k.co
+        path: /pluto/media
         advancedMounts:
           orphaned:
             app:
