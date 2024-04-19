@@ -15,7 +15,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: home-kubernetes
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -34,7 +34,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: home-kubernetes
   wait: true
   dependsOn:
     - name: crunchy-postgres-operator-cluster
