@@ -19,6 +19,6 @@ resources:
   - ./neuvector.yaml
   - ./openebs.yaml
   - ./prometheus-community.yaml
+  - ./ramblurr.yaml
   - ./stakater.yaml
   - ./weaveworks.yaml
-  - ./xentra.yaml
