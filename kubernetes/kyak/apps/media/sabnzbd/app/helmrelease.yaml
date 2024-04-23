@@ -48,6 +48,7 @@ spec:
                 sabnzbd.media.svc.cluster.local,
                 sab.${SECRET_PUBLIC_DOMAIN},
                 sabnzbd.${SECRET_PUBLIC_DOMAIN}
+                sabnzbd.tail06ebc.ts.net
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
