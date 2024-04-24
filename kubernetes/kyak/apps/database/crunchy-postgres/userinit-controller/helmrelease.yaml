@@ -8,7 +8,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: crunchy-userinit-controller
+      chart: crunchy-userinit
       version: 0.0.4
       sourceRef:
         kind: HelmRepository
