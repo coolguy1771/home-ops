@@ -9,3 +9,4 @@ resources:
   - ./cilium/ks.yaml
   - ./external-secrets/ks.yaml
   - ./metrics-server/ks.yaml
+  - ./reloader/ks.yaml
