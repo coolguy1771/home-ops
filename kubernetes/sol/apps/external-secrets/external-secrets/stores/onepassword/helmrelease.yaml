@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,32 +9,30 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
-      main:
+      onepassword-connect:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          api:
             image:
               repository: docker.io/1password/connect-api
-              tag: 1.7.2
+              tag: 1.7.2@sha256:0c5ae74396e3c18c3b65acb89cb76d31088968cf0c25deca3818c72b01586606
             env:
               XDG_DATA_HOME: &configDir /config
               OP_HTTP_PORT: &apiPort 80
@@ -64,18 +62,19 @@ spec:
                     path: /health
                     port: *apiPort
                   initialDelaySeconds: 15
-              startup:
-                enabled: false
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources: &resources
               requests:
                 cpu: 10m
-                memory: 128M
               limits:
                 memory: 256M
           sync:
             image:
               repository: docker.io/1password/connect-sync
-              tag: 1.7.2
+              tag: 1.7.2@sha256:ff5bf86187ac4da88224e63a5896b393b5a53f81434e8dbc5314e406a0f1db89
             env:
               XDG_DATA_HOME: *configDir
               OP_HTTP_PORT: &syncPort 8081
@@ -105,37 +104,34 @@ spec:
                     path: /health
                     port: *syncPort
                   initialDelaySeconds: 15
-              startup:
-                enabled: false
-              resources: *resources
-        pod:
-          securityContext:
-            runAsUser: 999
-            runAsGroup: 999
-            fsGroup: 999
-            fsGroupChangePolicy: OnRootMismatch
-    ingress:
-      main:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "{{ .Release.Name }}.286k.co"
-            paths:
-              - path: /
-                service:
-                  name: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
-    persistence:
-      config:
-        enabled: true
-        type: emptyDir
-        globalMounts:
-          - path: *configDir
+            securityContext: *securityContext
+            resources: *resources
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
-      main:
+      app:
+        controller: onepassword-connect
         ports:
           http:
             port: *apiPort
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.286k.co"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: *configDir

@@ -3,6 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./onepassword-connect.secret.sops.yaml
-  - ./helmrelease.yaml
-  - ./clustersecretstore.yaml
+  # Pre Flux-Kustomizations
+  - ./namespace.yaml
+  # Flux-Kustomizations
+  - ./external-secrets/ks.yaml
