@@ -50,7 +50,7 @@ spec:
               LLDAP_LDAP_PORT: &ldapPort 389
               LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
               LLDAP_SMTP_OPTIONS__ENABLE_PASSOWRD_RESET: true
-              LLDAP_SMTP_OPTIONS__HOST: smtp-relay.286k.co
+              LLDAP_SMTP_OPTIONS__HOST: smtp-relay.auth.svc.cluster.local
               LLDAP_SMTP_OPTIONS__PORT: 25
               LLDAP_SMTP_OPTIONS__FROM: LLDAP Admin <lldapadmin@286k.co>
               LLDAP_SMTP_OPTIONS__REPLY_TO: No Reply <no-reply@286k.co>
