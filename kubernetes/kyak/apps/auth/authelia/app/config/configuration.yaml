@@ -41,7 +41,7 @@ session:
 notifier:
   disable_startup_check: true
   smtp:
-    address: smtp-relay.286k.co:25
+    address: smtp-relay.auth.svc.cluster.local:25
     sender: Authelia <authelia@286k.co>
     disable_require_tls: true
 
