@@ -106,14 +106,13 @@ spec:
                   initialDelaySeconds: 15
             securityContext: *securityContext
             resources: *resources
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 999
-        runAsGroup: 999
-        fsGroup: 999
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+        pod:
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            runAsNonRoot: true
+            fsGroup: 999
+            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: onepassword-connect
@@ -124,12 +123,14 @@ spec:
       app:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.286k.co"
+          - host: &host "{{ .Release.Name }}.286k.co"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts: [*host]
     persistence:
       config:
         type: emptyDir

@@ -20,10 +20,12 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     installCRDs: true
+    replicaCount: 2
     serviceMonitor:
       enabled: true
       interval: 1m
