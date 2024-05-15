@@ -41,4 +41,3 @@ resources:
   - ./stevehipwell.yaml
   - ./tailscale.yaml
   - ./weaveworks.yaml
-  - ./xentra.yaml
