@@ -8,7 +8,7 @@ resources:
   # Flux-Kustomizations
   # - ./autobrr/ks.yaml
   - ./jellyfin/ks.yaml
-  # - ./overseerr/ks.yaml
+  - ./jellyseerr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
