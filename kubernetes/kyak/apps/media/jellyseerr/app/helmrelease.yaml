@@ -87,8 +87,14 @@ spec:
                 service:
                   identifier: app
                   port: http
+          - host: &fancyHost "requests.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
         tls:
-          - hosts: [*host]
+          - hosts: [*host, *fancyHost]
             secretName: "{{ .Release.Name }}-tls"
     persistence:
       config:
