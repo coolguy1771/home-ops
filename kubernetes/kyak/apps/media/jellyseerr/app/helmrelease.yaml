@@ -56,17 +56,17 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+        #     securityContext:
+        #       allowPrivilegeEscalation: false
+        #       readOnlyRootFilesystem: false
+        #       capabilities: { drop: ["ALL"] }
+        # pod:
+        #   securityContext:
+        #     runAsUser: 568
+        #     runAsGroup: 568
+        #     runAsNonRoot: true
+        #     fsGroup: 568
+        #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: jellyseerr
