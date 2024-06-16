@@ -22,14 +22,9 @@ spec:
     remediation:
       retries: 5
   values:
-    dnsPolicy: Default
     tetragon:
       exportAllowList: |-
         {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE", "PROCESS_UPROBE", "PROCESS_TRACEPOINT"]}
-      exportDenyList: |-
-        {"health_check":true}
-      fieldFilters: |-
-        {}
       # Access Kubernetes API to associate Tetragon events with Kubernetes pods.
       enableK8sAPI: true
       # enableProcessCred enables Capabilities visibility in exec and kprobe events.
@@ -37,9 +32,21 @@ spec:
       # enableProcessNs enables Namespaces visibility in exec and kprobe events.
       enableProcessNs: true
       prometheus:
-        enabled: true
         serviceMonitor:
           enabled: true
+      healthGrpc:
+        enabled: true
+        port: 6790
+      ociHookSetup:
+        # -- enable  init container to setup tetragon-oci-hook
+        enabled: true
     tetragonOperator:
       podInfo:
         enabled: true
+      tracingPolicy:
+        enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          # -- Whether to create a 'ServiceMonitor' resource targeting the tetragonOperator pods.
+          enabled: true
