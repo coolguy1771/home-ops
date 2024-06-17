@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2154
 
-PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
+PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"false"}"
 # kubectl port-forward service/radarr -n default 7878:80
 # export PUSHOVER_TOKEN="";
 # export PUSHOVER_USER_KEY="";
@@ -107,3 +107,4 @@ if [[ "${status_code}" -ne 200 ]] ; then
 else
     printf "%s - Sent notification with status code %s and payload: %s\n" "$(date)" "${status_code}" "$(echo "${notification}" | jq -c)"
 fi
+
