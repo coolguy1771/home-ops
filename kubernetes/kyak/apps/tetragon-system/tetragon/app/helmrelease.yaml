@@ -38,8 +38,7 @@ spec:
         enabled: true
         port: 6790
       ociHookSetup:
-        # -- enable  init container to setup tetragon-oci-hook
-        enabled: true
+        enabled: false
     tetragonOperator:
       podInfo:
         enabled: true
