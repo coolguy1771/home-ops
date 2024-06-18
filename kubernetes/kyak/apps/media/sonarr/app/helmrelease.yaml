@@ -95,7 +95,7 @@ spec:
       app:
         className: tailscale
         hosts:
-          - host: "{{ .Release.Name }}.devbu.io"
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 service:
