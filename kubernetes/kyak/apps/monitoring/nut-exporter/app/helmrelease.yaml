@@ -76,9 +76,6 @@ spec:
         ports:
           http:
             port: 9199
-    ingress:
-      main:
-        enabled: false
     serviceMonitor:
       app:
         serviceName: *app
