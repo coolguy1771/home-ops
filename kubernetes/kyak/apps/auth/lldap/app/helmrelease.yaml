@@ -71,7 +71,7 @@ spec:
                 enabled: false
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -99,7 +99,7 @@ spec:
             port: *port
           ldap:
             enabled: true
-            port: 389
+            port: *ldapPort
             protocol: TCP
     ingress:
       main:
