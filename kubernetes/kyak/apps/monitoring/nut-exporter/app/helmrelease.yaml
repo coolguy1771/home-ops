@@ -82,6 +82,6 @@ spec:
         endpoints:
           - port: http
             scheme: http
-            path: /metrics
+            path: /ups_metrics
             interval: 1m
             scrapeTimeout: 10s
