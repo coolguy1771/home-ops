@@ -90,7 +90,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - &host thanos.devbu.io
+          - &host thanos.${SECRET_PUBLIC_DOMAIN}
         tls:
           - hosts: [*host]
       podAnnotations: &podAnnotations
