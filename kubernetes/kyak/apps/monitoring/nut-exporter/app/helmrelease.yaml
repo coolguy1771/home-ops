@@ -85,3 +85,15 @@ spec:
             path: /ups_metrics
             interval: 1m
             scrapeTimeout: 10s
+            relabelConfigs:
+              - sourceLabels: [__address__]
+                targetLabel: __param_server
+              - sourceLabels: [__param_server]
+                targetLabel: instance
+              - targetLabel: __address__
+                replacement: osiris.286k.co
+            params:
+              ups: ["primary"]
+              server: ["osiris.286k.co"]
+            labels:
+              ups: "primary"
