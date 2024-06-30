@@ -254,7 +254,7 @@ spec:
           url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
           datasource: Prometheus
         nut-exporter:
-          url: https://github.com/DRuggeri/nut_exporter/blob/v3.1.1/dashboard/dashboard.json
+          url: https://raw.githubusercontent.com/DRuggeri/nut_exporter/v3.1.1/dashboard/dashboard.json
           datasource: Prometheus
       ceph:
         ceph-cluster:
