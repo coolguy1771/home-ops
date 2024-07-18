@@ -38,7 +38,7 @@ spec:
             env:
               HOSTNAME: "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
               SSL_PROXY: "true"
-              APPLICATION_PORT: &port 80
+              APPLICATION_PORT: &port 4444
               DATA_DIR: /data
               APPLICATION_DIR: /app
             probes:
