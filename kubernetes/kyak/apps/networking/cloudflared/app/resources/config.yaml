@@ -1,6 +1,5 @@
 ---
 originRequest:
-  http2Origin: true
   originServerName: external.${SECRET_PUBLIC_DOMAIN}
 ingress:
   - hostname: "${SECRET_PUBLIC_DOMAIN}"

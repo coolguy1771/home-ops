@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: ingress-nginx
-      version: 4.11.0
+      version: 4.10.1
       sourceRef:
         kind: HelmRepository
         name: ingress-nginx
@@ -20,6 +20,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   valuesFrom:
     - targetPath: controller.maxmindLicenseKey
@@ -48,22 +49,20 @@ spec:
       allowSnippetAnnotations: true
       config:
         block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
-        log-format-escape-json: "true"
-        use-forwarded-headers: "true"
-        disable-access-log: "false"
-        enable-real-ip: "true"
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
         enable-brotli: "true"
         custom-http-errors: 400,403,404,405,409,410,411,412,413,414,415,416,417,418,421,425,431,451,500,501,502,503,504,505,506,510
-        hsts-max-age: "31449600"
         hsts-preload: "true"
-        ssl-protocols: TLSv1.3 TLSv1.2
         enable-ocsp: "true"
+        enable-real-ip: "true"
+        force-ssl-redirect: "true"
         hide-headers: Server,X-Powered-By
+        hsts-max-age: 31449600
         keep-alive-requests: 10000
         keep-alive: 120
+        log-format-escape-json: "true"
         log-format-upstream: >
           {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x_forwarded_for": "$proxy_add_x_forwarded_for",
           "request_id": "$req_id", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
@@ -72,8 +71,9 @@ spec:
           "http_user_agent": "$http_user_agent", "country_code": "$geoip2_city_country_code", "country_name": "$geoip2_city_country_name"}
         proxy-body-size: 0
         proxy-buffer-size: 16k
+        ssl-protocols: TLSv1.3 TLSv1.2
         use-geoip2: true
-        large-client-header-buffers: 2 2k # hardened near CIS benchmarks of 2 1k, but needs increase due to auth services (e.g. Kanidm, Authentik, CloudFlare Zero Trust)
+        use-forwarded-headers: "true"
       metrics:
         enabled: true
         serviceMonitor:
@@ -95,9 +95,9 @@ spec:
       resources:
         requests:
           cpu: 100m
-          memory: 500Mi
+          memory: 750Mi
         limits:
-          memory: 1.5Gi
+          memory: 750Mi
     defaultBackend:
       enabled: true
       image:
