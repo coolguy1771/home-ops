@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: networking
 resources:
   - ./helmrelease.yaml
-  - ./networkpolicy.yaml
+#  - ./networkpolicy.yaml
