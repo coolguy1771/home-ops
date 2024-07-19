@@ -95,7 +95,6 @@ spec:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_headers_hash_bucket_size 128;
             proxy_headers_hash_max_size 1024;
-            proxy_redirect http:// $scheme://;
             proxy_cache_bypass $cookie_session;
             proxy_no_cache $cookie_session;
             proxy_set_header Connection $connection_upgrade;
