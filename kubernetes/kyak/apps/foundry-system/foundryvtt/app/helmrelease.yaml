@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: foundary
+  name: foundryvtt
 spec:
   interval: 30m
   chart:
@@ -27,7 +27,7 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      foundary:
+      foundryvtt:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -36,7 +36,7 @@ spec:
               repository: docker.io/mbround18/foundryvtt-docker
               tag: v2.0.0@sha256:c26fc65d95bae69b431aaec9c5ab96d6dec311e887f9837008452c8b87661d6f
             env:
-              APPLICATION_HOST: "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+              APPLICATION_HOST: "foundry.${SECRET_PUBLIC_DOMAIN}"
               SSL_PROXY: "true"
               APPLICATION_PORT: &port 4444
               DATA_DIR: /data
@@ -74,7 +74,7 @@ spec:
     #     seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: foundary
+        controller: foundryvtt
         ports:
           http:
             port: *port
@@ -85,7 +85,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -97,16 +97,16 @@ spec:
       data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: foundary
+        existingClaim: foundryvtt
       app:
         enabled: true
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 10Gi
-      # foundary-config:
+      # foundryvtt-config:
       #   enabled: true
       #   type: secret
-      #   name: foundary-secret
+      #   name: foundryvtt-secret
       #   globalMounts:
       #     - path: /data/Config/options.json
       #       subPath: options.json

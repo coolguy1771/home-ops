@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: foundary-system
+  name: foundry-system
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
@@ -12,7 +12,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: alert-manager
-  namespace: foundary-system
+  namespace: foundry-system
 spec:
   type: alertmanager
   address: http://alertmanager-operated.monitoring.svc.cluster.local:9093/api/v2/alerts/
@@ -22,7 +22,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: alert-manager
-  namespace: foundary-system
+  namespace: foundry-system
 spec:
   providerRef:
     name: alert-manager
