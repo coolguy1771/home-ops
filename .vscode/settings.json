@@ -7,7 +7,7 @@
   "ansible.validation.lint.enabled": true,
   "ansible.validation.lint.path": ".venv/bin/ansible-lint",
   "editor.bracketPairColorization.enabled": true,
-  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontFamily": "FiraCode NFM",
   "editor.fontLigatures": true,
   "editor.guides.bracketPairs": true,
   "editor.guides.bracketPairsHorizontal": true,
@@ -52,5 +52,5 @@
   "yaml.schemas": {
     "ansible": "./ansible/**/*.yaml",
     "kubernetes": "./kubernetes/**/*.yaml"
-  }
+  },
 }
