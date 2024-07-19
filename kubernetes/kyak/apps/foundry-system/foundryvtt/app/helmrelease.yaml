@@ -33,14 +33,18 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/mbround18/foundryvtt-docker
-              tag: v2.0.0@sha256:c26fc65d95bae69b431aaec9c5ab96d6dec311e887f9837008452c8b87661d6f
+              repository: docker.io/felddy/foundryvtt
+              tag: 12.328.0@sha256:6c4fb88134aab18c8a5da8df8a16796a186dc4f2d8402190ac78bd8ed30a85e1
             env:
-              APPLICATION_HOST: "foundry.${SECRET_PUBLIC_DOMAIN}"
-              SSL_PROXY: "true"
-              APPLICATION_PORT: &port 4444
-              DATA_DIR: /data
-              APPLICATION_DIR: /app
+              FOUNDRY_HOSTNAME: "foundry.${SECRET_PUBLIC_DOMAIN}"
+              FOUNDRY_CSS_THEME: "scifi"
+              FOUNDRY_MINIFY_STATIC_FILES: "true"
+              FOUNDRY_PROXY_PORT: 443
+              FOUNDRY_PROXY_SSL: "true"
+              FOUNDRY_TELEMETRY: "false"
+            envFrom:
+              - secretRef:
+                  name: foundryvtt-secret
             probes:
               liveness: &probes
                 enabled: false
@@ -48,7 +52,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: *port
+                    port: 30000
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -77,7 +81,7 @@ spec:
         controller: foundryvtt
         ports:
           http:
-            port: *port
+            port: 30000
     ingress:
       app:
         className: external
@@ -98,16 +102,3 @@ spec:
         enabled: true
         type: persistentVolumeClaim
         existingClaim: foundryvtt
-      app:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 10Gi
-      # foundryvtt-config:
-      #   enabled: true
-      #   type: secret
-      #   name: foundryvtt-secret
-      #   globalMounts:
-      #     - path: /data/Config/options.json
-      #       subPath: options.json
-      #       readOnly: true
