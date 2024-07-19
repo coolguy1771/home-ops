@@ -36,7 +36,7 @@ spec:
               repository: docker.io/mbround18/foundryvtt-docker
               tag: v2.0.0@sha256:c26fc65d95bae69b431aaec9c5ab96d6dec311e887f9837008452c8b87661d6f
             env:
-              HOSTNAME: "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+              APPLICATION_HOST: "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
               SSL_PROXY: "true"
               APPLICATION_PORT: &port 4444
               DATA_DIR: /data
@@ -81,6 +81,9 @@ spec:
     ingress:
       app:
         className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -100,3 +103,11 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 10Gi
+      # foundary-config:
+      #   enabled: true
+      #   type: secret
+      #   name: foundary-secret
+      #   globalMounts:
+      #     - path: /data/Config/options.json
+      #       subPath: options.json
+      #       readOnly: true
