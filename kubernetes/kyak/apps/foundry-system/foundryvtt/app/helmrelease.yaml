@@ -36,7 +36,8 @@ spec:
               repository: docker.io/felddy/foundryvtt
               tag: 12.328.0@sha256:6c4fb88134aab18c8a5da8df8a16796a186dc4f2d8402190ac78bd8ed30a85e1
             env:
-              FOUNDRY_HOSTNAME: "foundry.${SECRET_PUBLIC_DOMAIN}"
+              FOUNDRY_HOSTNAME: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
+              FOUNDRY_LOCAL_HOSTNAME: *host
               FOUNDRY_CSS_THEME: "scifi"
               CONTAINER_VERBOSE: "true"
               FOUNDRY_MINIFY_STATIC_FILES: "true"
