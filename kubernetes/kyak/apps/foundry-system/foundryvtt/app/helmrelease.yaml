@@ -38,9 +38,12 @@ spec:
             env:
               FOUNDRY_HOSTNAME: "foundry.${SECRET_PUBLIC_DOMAIN}"
               FOUNDRY_CSS_THEME: "scifi"
+              CONTAINER_VERBOSE: "true"
               FOUNDRY_MINIFY_STATIC_FILES: "true"
-              FOUNDRY_PROXY_PORT: 443
+              FOUNDRY_PROTOCOL: "4"
+              FOUNDRY_PROXY_PORT: "443"
               FOUNDRY_PROXY_SSL: "true"
+              FOUNDRY_COMPRESS_WEBSOCKET: "true"
               FOUNDRY_TELEMETRY: "false"
             envFrom:
               - secretRef:
@@ -64,9 +67,9 @@ spec:
             #   capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
-                memory: 2Gi
+                memory: 4Gi
     # defaultPodOptions:
     #   securityContext:
     #     runAsNonRoot: true
@@ -88,11 +91,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "Upgrade";
+          nginx.ingress.kubernetes.io/proxy-body-size: 4096m
         hosts:
           - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
             paths:
