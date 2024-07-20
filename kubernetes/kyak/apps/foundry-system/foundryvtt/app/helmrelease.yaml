@@ -42,8 +42,8 @@ spec:
               CONTAINER_VERBOSE: "true"
               FOUNDRY_MINIFY_STATIC_FILES: "true"
               FOUNDRY_PROTOCOL: "4"
-              #FOUNDRY_PROXY_PORT: "443"
-              #FOUNDRY_PROXY_SSL: "true"
+              FOUNDRY_PROXY_PORT: "443"
+              FOUNDRY_PROXY_SSL: "true"
               FOUNDRY_COMPRESS_WEBSOCKET: "true"
               FOUNDRY_TELEMETRY: "false"
             envFrom:
@@ -71,15 +71,15 @@ spec:
                 cpu: 10m
               limits:
                 memory: 4Gi
-    # defaultPodOptions:
-    #   securityContext:
+    defaultPodOptions:
+      securityContext:
     #     runAsNonRoot: true
     #     runAsUser: 568
     #     runAsGroup: 568
     #     fsGroup: 568
     #     fsGroupChangePolicy: OnRootMismatch
     #     supplementalGroups: [10000]
-    #     seccompProfile: { type: RuntimeDefault }
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: foundryvtt
