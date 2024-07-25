@@ -13,7 +13,7 @@ export const general = {
 
 // Global Tags
 export const tags = {
-  environment: "homelab",
+  environment: "icb",
   project_name: "cloud-homelab",
   github_url: `https://github.com/${general.github_username}/${general.repo_name}`,
 };
@@ -28,9 +28,9 @@ export const cloud_auth = {
 export const dns_records = [
   {
     name: "dayz",
-    type: "A",
+    type: "",
     ttl: 60,
-    records: ["64.20.36.157"],
+    records: ["135.148.53.140"],
     zone_id: general.public_hosted_zone,
   },
   {
@@ -68,7 +68,7 @@ users:
 `,
 };
 
-export const dns = [
+export const publicDns = [
   // kubeControlPlane: {
   //   kubernetes_endpoint: `talos.${general.domain}`,
   //   ttl: 300,
@@ -77,9 +77,9 @@ export const dns = [
   // },
   {
     name: "dayz",
-    type: "A",
+    type: "CNAME",
     ttl: 60,
-    records: ["64.20.36.157"],
+    records: ["delilah.icbplays.net"],
     zone_id: general.public_hosted_zone,
   },
   {
@@ -87,13 +87,6 @@ export const dns = [
     type: "CNAME",
     ttl: 60,
     records: ["ns1007311.ip-135-148-53.us"],
-    zone_id: general.public_hosted_zone,
-  },
-  {
-    name: "palworld",
-    type: "A",
-    ttl: 60,
-    records: ["208.115.234.42"],
     zone_id: general.public_hosted_zone,
   },
   {

@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
-clusterName: home-cluster
+clusterName: kyak
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
-talosVersion: v1.6.2
+talosVersion: v1.6.7
 # renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
-kubernetesVersion: v1.29.1
+kubernetesVersion: v1.29.3
 additionalApiServerCertSans: &san
   - 10.10.254.3
   - k8s-lb.286k.co
@@ -33,10 +33,6 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
 
   - hostname: k8s-1
     ipAddress: 10.10.10.21
@@ -52,10 +48,6 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
 
   - hostname: k8s-2
     ipAddress: 10.10.10.22
@@ -71,10 +63,6 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
 
   - hostname: k8s-3
     ipAddress: 10.10.10.23
@@ -90,10 +78,7 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
+
 
   - hostname: k8s-4
     ipAddress: 10.10.10.24
@@ -109,10 +94,7 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
+
 
   - hostname: k8s-5
     ipAddress: 10.10.10.25
@@ -128,10 +110,7 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
+
 
   - hostname: k8s-6
     ipAddress: 10.10.10.26
@@ -147,10 +126,6 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
-            - siderolabs/nut-client
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
 
   - hostname: k8s-7
     ipAddress: 10.10.10.27
@@ -165,11 +140,6 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
-            - siderolabs/nut-client
-            - siderolabs/amdgpu-firmware
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
@@ -184,11 +154,6 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
-            - siderolabs/nut-client
-            - siderolabs/amdgpu-firmware
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
@@ -212,12 +177,10 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
-            - siderolabs/nut-client
             - siderolabs/nonfree-kmod-nvidia
             - siderolabs/nvidia-container-toolkit
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
-            - siderolabs/binfmt-misc
+
+
     patches:
       - |-
         - op: add
@@ -303,7 +266,7 @@ controlPlane:
       - op: add
         path: /cluster/discovery/registries/service
         value:
-          disabled: true
+          disabled: false
     - |-
       - op: add
         path: /cluster/proxy
@@ -317,10 +280,14 @@ controlPlane:
           metrics: extensive
     - |-
       - op: add
-        path: /machine/features/kubePrism
+        path: /machine/features
         value:
-          enabled: true
-          port: 7445
+          stableHostname: true
+          diskQuotaSupport: true
+          rbac: true
+          kubePrism:
+            enabled: true
+            port: 7445
     - |-
       machine:
         files:
@@ -351,20 +318,11 @@ controlPlane:
               [plugins."io.containerd.grpc.v1.cri"]
                 enable_unprivileged_ports = true
                 enable_unprivileged_icmp = true
-              [metrics]
-                address = "0.0.0.0:11234"
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
             path: /etc/cri/conf.d/20-customization.part
-            op: create
-          - path: /var/etc/nut/upsmon.conf
-            permissions: 0o600
-            op: create
-            content: |-
-              MONITOR ${SECRET_UPSMON_HOST} 1 remote ${SECRET_UPSMON_PASSWORD} slave
-              SHUTDOWNCMD "/sbin/poweroff"
-          - content: |
-              TS_AUTHKEY=${SECRET_TS_AUTHKEY}
-            permissions: 0o644
-            path: /var/etc/tailscale/auth.env
             op: create
         kubelet:
           extraArgs:
@@ -381,6 +339,10 @@ controlPlane:
           disabled: false
           servers:
             - 10.1.237.1
+        udev:
+          rules:
+              - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
+              - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
@@ -400,6 +362,17 @@ worker:
           rotate-server-certificates: "true"
     - |-
       - op: add
+        path: /machine/kubelet/extraMounts
+        value:
+            - destination: /var/openebs/local
+              type: bind
+              source: /var/openebs/local
+              options:
+                - bind
+                - rshared
+                - rw
+    - |-
+      - op: add
         path: /machine/systemDiskEncryption
         value:
           ephemeral:
@@ -414,10 +387,14 @@ worker:
                 slot: 0
     - |-
       - op: add
-        path: /machine/features/kubePrism
+        path: /machine/features
         value:
-          enabled: true
-          port: 7445
+          stableHostname: true
+          diskQuotaSupport: true
+          rbac: true
+          kubePrism:
+            enabled: true
+            port: 7445
     - |-
       machine:
         files:
@@ -440,25 +417,11 @@ worker:
               [plugins."io.containerd.grpc.v1.cri"]
                 enable_unprivileged_ports = true
                 enable_unprivileged_icmp = true
-              [metrics]
-                address = "0.0.0.0:11234"
-              [plugins."io.containerd.tracing.processor.v1.otlp"]
-                endpoint = "http://tempo.monitoring.svc.cluster.local:4318"
-              [plugins."io.containerd.internal.v1.tracing"]
-                sampling_ratio = 1.0
-                service_name = "containerd"
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
             path: /etc/cri/conf.d/20-customization.part
-            op: create
-          - path: /var/etc/nut/upsmon.conf
-            permissions: 0o600
-            op: create
-            content: |-
-              MONITOR ${SECRET_UPSMON_HOST} 1 remote ${SECRET_UPSMON_PASSWORD} slave
-              SHUTDOWNCMD "/sbin/poweroff"
-          - content: |
-              TS_AUTHKEY=${SECRET_TS_AUTHKEY}
-            permissions: 0o644
-            path: /var/etc/tailscale/auth.env
             op: create
         sysctls:
           fs.inotify.max_user_watches: "1048576"
@@ -471,3 +434,7 @@ worker:
           disabled: false
           servers:
             - 10.1.237.4
+        udev:
+          rules:
+              - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
+              - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"

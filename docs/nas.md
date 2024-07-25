@@ -7,7 +7,7 @@
 1. Create initial pool and set configuration
 
     ```sh
-    sudo zpool create -o ashift=12 -f eros mirror \
+    sudo zpool create -o ashift=12 -f pluto mirror \
         /dev/disk/by-id/scsi-SATA_WDC_WD161KRYZ-01_2PGD6KMJ \
         /dev/disk/by-id/scsi-SATA_WDC_WD161KRYZ-01_2PH6SN5J
     sudo zfs set atime=off pluto
@@ -69,7 +69,7 @@
 3. Give a local user access to a specific datasets snapshots
 
     ```sh
-    sudo zfs allow -u jeff send,snapshot,hold eros/Media
+    sudo zfs allow -u jeff send,snapshot,hold pluto/media
     ```
 
 ## NFS

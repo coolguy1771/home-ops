@@ -43,9 +43,11 @@
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.kubeconfig": "/Users/twitlin/Code/repos/coolguy1771/home-ops/kubeconfig",
     "vs-kubernetes.knownKubeconfigs": [
-      "./kubeconfig"
+      "./kubeconfig",
+      "/Users/twitlin/Code/repos/coolguy1771/home-ops/kubernetes/cobra/kubeconfig",
+      "/Users/twitlin/Code/repos/coolguy1771/home-ops/kubeconfig"
     ]
   },
   "yaml.schemaStore.enable": true,
