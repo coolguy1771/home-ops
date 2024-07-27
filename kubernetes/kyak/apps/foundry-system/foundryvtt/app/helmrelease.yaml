@@ -43,7 +43,6 @@ spec:
               CONTAINER_PATCHES: /data/container_patches
               CONTAINER_VERBOSE: "true"
               FOUNDRY_TELEMETRY: false
-              FOUNDRY_LOCAL_HOSTNAME: *host
               FOUNDRY_MINIFY_STATIC_FILES: "true"
               FOUNDRY_PROTOCOL: "4"
               FOUNDRY_PROXY_PORT: "443"
