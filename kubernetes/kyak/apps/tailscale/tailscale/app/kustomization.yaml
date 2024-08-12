@@ -6,4 +6,4 @@ resources:
   # Pre Flux-Kustomizations
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./conntector.yaml
+  - ./connector.yaml
