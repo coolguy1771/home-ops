@@ -23,6 +23,8 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    crdwebhook:
+      enabled: false
     rbac: true # required for rancher authentication
     serviceAccount: neuvector
     leastPrivilege: true
@@ -243,7 +245,7 @@ spec:
         resources:
           limits:
             cpu: 400m
-            memory: 512Mi
+            memory: 1024Mi
           requests:
             cpu: 100m
             memory: 1024Mi
@@ -305,7 +307,7 @@ spec:
         runAsUser: # MUST be set for Rancher hardened cluster
         internal: # this is used for internal communication. Please use the SAME CA for all the components (controller, scanner, adapter and enforcer)
           certificate:
-            secret: ""
+            secret: "neuvector-internal"
             keyFile: tls.key
             pemFile: tls.crt
             caFile: ca.crt # must be the same CA for all internal.
