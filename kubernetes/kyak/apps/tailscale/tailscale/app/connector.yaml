@@ -19,6 +19,6 @@ spec:
   hostname: ts-lab-cidrs
   subnetRouter:
     advertiseRoutes:
-      - "10.1.10.0/24"
+      - "10.10.10.0/24"
       - "10.1.20.0/24"
       - "10.10.254.0/24"
