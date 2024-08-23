@@ -6,7 +6,7 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    app: istio-gateway
+    app: gateway
   servers:
     - port:
         number: 80
