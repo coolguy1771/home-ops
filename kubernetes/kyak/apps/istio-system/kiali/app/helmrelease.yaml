@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kiali-operator
+  namespace: istio-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: kiali-operator
+      version: 1.89.0
+      sourceRef:
+        kind: HelmRepository
+        name: kiali
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "64Mi"
+    replicaCount: 2
+    # For what a Kiali CR spec can look like, see:
+    # https://github.com/kiali/kiali-operator/blob/master/deploy/kiali/kiali_cr.yaml
+    cr:
+      create: true
+      name: kiali
+      namespace: "istio-system"
+      annotations: {}
+      spec:
+        deployment:
+          accessible_namespaces:
+          - '**'
+        auth:
+          strategy: "anonymous"

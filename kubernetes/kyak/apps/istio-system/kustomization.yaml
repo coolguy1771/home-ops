@@ -8,5 +8,6 @@ resources:
   - ./base/ks.yaml
   - ./cni/ks.yaml
   - ./istiod/ks.yaml
+  - ./kiali/ks.yaml
   - ./gateway/ks.yaml
   - ./ztunnel/ks.yaml
