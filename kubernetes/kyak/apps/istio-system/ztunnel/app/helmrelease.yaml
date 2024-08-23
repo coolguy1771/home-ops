@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app istio-ztunnel
+  name: &app ztunnel
   namespace: istio-system
 spec:
   interval: 15m
