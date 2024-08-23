@@ -44,5 +44,5 @@ spec:
             - key: istio
               operator: In
               values:
-              - ingressgateway
+                - ingressgateway
           topologyKey: kubernetes.io/hostname

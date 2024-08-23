@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: networking
   labels:
+    istio.io/dataplane-mode: ambient
     kustomize.toolkit.fluxcd.io/prune: disabled
   annotations:
     istio-injection: enabled

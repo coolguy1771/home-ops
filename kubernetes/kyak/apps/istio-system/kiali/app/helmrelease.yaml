@@ -36,6 +36,7 @@ spec:
       annotations: {}
       spec:
         deployment:
+          replicas: 2
           accessible_namespaces:
           - '**'
         auth:
@@ -46,3 +47,7 @@ spec:
             root_namespace: istio-system
           prometheus:
             url: http://thanos-query.monitoring.svc.cluster.local:10902
+          thanos_proxy:
+            enabled: true
+            retention_period: "7d"
+            scrape_interval: "30s"

@@ -4,4 +4,5 @@ kind: Namespace
 metadata:
   name: kube-system
   labels:
+    istio.io/dataplane-mode: ambient
     kustomize.toolkit.fluxcd.io/prune: disabled

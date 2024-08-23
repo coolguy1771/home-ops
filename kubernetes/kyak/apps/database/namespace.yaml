@@ -3,8 +3,9 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: database
+  labels:
+    istio.io/dataplane-mode: ambient
   annotations:
-    kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/provider_v1beta3.json

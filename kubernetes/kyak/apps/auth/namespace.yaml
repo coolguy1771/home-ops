@@ -4,7 +4,4 @@ kind: Namespace
 metadata:
   name: auth
   labels:
-    goldilocks.fairwinds.com/enabled: "true"
-    kustomize.toolkit.fluxcd.io/prune: disabled
-  annotations:
-    istio-injection: enabled
+    istio.io/dataplane-mode: ambient
