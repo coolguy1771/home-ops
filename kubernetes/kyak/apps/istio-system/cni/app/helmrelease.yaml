@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app istio-base
+  name: &app istio-cni
   namespace: istio-system
 spec:
   interval: 15m
   chart:
     spec:
-      chart: base
+      chart: cni
       version: 1.23.0
       sourceRef:
         kind: HelmRepository
@@ -21,4 +21,5 @@ spec:
   upgrade:
     remediation:
       retries: 5
-  values: {}
+  values:
+    profile: ambient
