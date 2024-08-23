@@ -9,11 +9,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: cni
+      chart: ztunnel
       version: 1.23.0
       sourceRef:
         kind: HelmRepository
-        name: ztunnel
+        name: istio
         namespace: flux-system
   install:
     remediation:
