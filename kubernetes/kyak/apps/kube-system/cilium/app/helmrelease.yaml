@@ -25,6 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    cni:
+      exclusive: false
     securityContext:
       privileged: true
       capabilities:

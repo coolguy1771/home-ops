@@ -12,6 +12,7 @@ resources:
   - ./allow-ingress-internet.yaml
   - ./allow-ingress-lan.yaml
   - ./allow-ingress-world.yaml
+  - ./allow-isito.yaml
 
   # - ./default-allow-kubedns.yaml
   - ./kube-system-allow-all.yaml

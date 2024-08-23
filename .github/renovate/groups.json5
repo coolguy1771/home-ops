@@ -78,6 +78,22 @@
         "commitMessageTopic": "{{{groupName}}} group"
       },
       "separateMinorPatch": true
+    },
+    {
+      "description": ["Istio Helm Charts Group"],
+      "groupName": "Istio Helm Charts",
+      "matchPackagePatterns": [
+        "istio",
+        "istiod",
+        "base",
+        "ztunnel",
+        "cni"
+      ],
+      "matchDatasources": ["helm"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
     }
   ]
 }
