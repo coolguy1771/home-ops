@@ -51,3 +51,8 @@ spec:
             enabled: true
             retention_period: "7d"
             scrape_interval: "30s"
+          grafana:
+            enabled: true
+            in_cluster_url: http://grafana.monitoring.svc.cluster.local/
+            # Public facing URL of Grafana
+            url: https://grafana.${SECRET_PUBLIC_DOMAIN}
