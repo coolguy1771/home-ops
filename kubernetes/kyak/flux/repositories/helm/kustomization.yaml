@@ -26,7 +26,7 @@ resources:
   - ./istio.yaml
   - ./jetstack.yaml
   - ./kepler.yaml
-  - ./kiali.ymal
+  - ./kiali.yaml
   - ./kubernetes-dashboard.yaml
   - ./kyverno.yaml
   - ./metrics-server.yaml
