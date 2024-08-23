@@ -40,3 +40,9 @@ spec:
           - '**'
         auth:
           strategy: "anonymous"
+        istio_namespace: "istio-system"
+        external_services:
+          istio:
+            root_namespace: istio-system
+          prometheus:
+            url: http://thanos-query.monitoring.svc.cluster.local:10902
