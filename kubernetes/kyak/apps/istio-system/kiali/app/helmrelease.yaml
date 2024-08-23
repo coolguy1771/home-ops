@@ -35,12 +35,23 @@ spec:
       namespace: "istio-system"
       annotations: {}
       spec:
+        server:
+          web_fqdn: kiali.${SECRET_PUBLIC_DOMAIN}
+          web_port: 443
+          web_root: /kiali
+          web_schema: https
         deployment:
           replicas: 2
-          accessible_namespaces:
-          - '**'
+          ingress:
+            class_name: "external"
+            enabled: true
         auth:
-          strategy: "anonymous"
+          strategy: openid
+          openid:
+            client_id: "kiali"
+            issuer_uri: "https://auth.${SECRET_PUBLIC_DOMAIN}"
+            disable_rbac: true
+            insecure_skip_verify_tls: true
         istio_namespace: "istio-system"
         external_services:
           istio:
