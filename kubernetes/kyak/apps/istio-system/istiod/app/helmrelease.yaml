@@ -22,41 +22,4 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      defaultPodDisruptionBudget:
-        enabled: false
-      variant: "distroless"
-      # caAddress: cert-manager-istio-csr.network-system.svc:443
-      proxy:
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 200m
-            memory: 256Mi
-      proxy_init:
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 200m
-            memory: 256Mi
-    pilot:
-      autoscaleEnabled: true
-      replicaCount: 2
-      autoscaleMin: 1
-      autoscaleMax: 3
-      env:
-        PILOT_ENABLE_WORKLOAD_ENTRY_AUTOREGISTRATION: true
-        PILOT_ENABLE_WORKLOAD_ENTRY_HEALTHCHECKS: true
-    meshConfig:
-      defaultConfig:
-        gatewayTopology:
-          # Trust Cloudflare
-          numTrustedProxies: 1
-          # Always forward the XFCC header in the request, regardless of whether the client connection is mTLS.
-          forwardClientCertDetails: ALWAYS_FORWARD_ONLY
-      accessLogFile: /dev/stdout
-      trustDomain: cluster.local
+    profile: ambient
