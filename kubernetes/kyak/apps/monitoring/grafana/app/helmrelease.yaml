@@ -272,6 +272,42 @@ spec:
           gnetId: 5342
           revision: 9
           datasource: Prometheus
+      istio:
+        istio-cp:
+          # renovate: depName="Istio Control Plane Dashboard"
+          gnetId: 7645
+          revision: 226
+          datasource: Prometheus
+        istio-mesh:
+          # renovate: depName="Istio Mesh Dashboard"
+          gnetId: 7639
+          revision: 226
+          datasource: Prometheus
+        istio-ztunnel:
+          # renovate: depName="Istio Ztunnel Dashboard"
+          gnetId: 21306
+          revision: 226
+          datasource: Prometheus
+        istio-service:
+          # renovate: depName="Istio Service Dashboard"
+          gnetId: 7636
+          revision: 226
+          datasource: Prometheus
+        istio-service:
+          # renovate: depName="Istio Performance Dashboard"
+          gnetId: 11829
+          revision: 226
+          datasource: Prometheus
+        istio-workload:
+          # renovate: depName="Istio Workload Dashboard"
+          gnetId: 7630
+          revision: 1
+          datasource: Prometheus
+        istio-wasm:
+          # renovate: depName="Istio Wasm Extension Dashboard"
+          gnetId: 13277
+          revision: 183
+          datasource: Prometheus
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
