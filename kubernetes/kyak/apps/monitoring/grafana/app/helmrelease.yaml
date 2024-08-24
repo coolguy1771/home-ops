@@ -293,7 +293,7 @@ spec:
           gnetId: 7636
           revision: 226
           datasource: Prometheus
-        istio-service:
+        istio-perf:
           # renovate: depName="Istio Performance Dashboard"
           gnetId: 11829
           revision: 226
