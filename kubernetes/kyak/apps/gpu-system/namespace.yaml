@@ -5,3 +5,4 @@ metadata:
   name: gpu-system
   labels:
     istio.io/dataplane-mode: ambient
+    istio-injection: enabled

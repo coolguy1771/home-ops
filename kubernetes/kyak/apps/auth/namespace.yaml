@@ -5,3 +5,4 @@ metadata:
   name: auth
   labels:
     istio.io/dataplane-mode: ambient
+    istio-injection: enabled

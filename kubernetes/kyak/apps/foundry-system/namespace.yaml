@@ -5,6 +5,7 @@ metadata:
   name: foundry-system
   labels:
     istio.io/dataplane-mode: ambient
+    istio-injection: enabled
   annotations:
     volsync.backube/privileged-movers: "true"
 ---
