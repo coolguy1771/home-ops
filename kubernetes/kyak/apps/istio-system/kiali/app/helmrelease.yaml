@@ -86,7 +86,7 @@ spec:
           istio:
             root_namespace: istio-system
           prometheus:
-            url: http://thanos-query.monitoring.svc.cluster.local:10902
+            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
             thanos_proxy:
               enabled: true
               retention_period: "14d"
