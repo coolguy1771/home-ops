@@ -99,6 +99,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/ceph-folder
+          - name: istio
+            orgId: 1
+            folder: Istio
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/istio-folder
           - name: flux
             orgId: 1
             folder: Flux
