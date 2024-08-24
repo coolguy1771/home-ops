@@ -48,6 +48,12 @@ spec:
           ingress:
             enabled: true
             override_yaml:
+            metadata:
+              annotations:
+                nginx.ingress.kubernetes.io/backend-protocol: HTTP
+                nginx.ingress.kubernetes.io/secure-backends: false
+                external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+                cert-manager.io/cluster-issuer: letsencrypt-production
               spec:
                 ingressClassName: external
                 rules:
