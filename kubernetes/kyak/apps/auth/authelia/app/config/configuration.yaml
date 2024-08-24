@@ -118,3 +118,15 @@ identity_providers:
         scopes: ['openid', 'profile', 'groups']
         userinfo_signed_response_alg: 'none'
         token_endpoint_auth_method: 'client_secret_post'
+      - id: kiali
+        descriton: Kiali
+        secret: "${KIALI_OAUTH_CLIENT_SECRET}"
+        public: false
+        authorization_policy: two_factor
+        audience: []
+        scopes: ["openid", "profile", "email"]
+        redirect_uris: ["https://kiali.witl.xyz"]
+        grant_types: ["refresh_token", "authorization_code"]
+        response_types: ["code"]
+        response_modes: ["form_post", "query", "fragment"]
+        userinfo_signing_algorithm: none
