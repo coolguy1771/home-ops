@@ -60,7 +60,11 @@ access_control:
   networks:
     - name: internal
       networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-  rules: []
+  rules:
+    - domain: 'kiali.wtil.xyz'
+      subject:
+        - 'group:kiali-user'
+      policy: 'two_factor'
 
 ntp:
   address: 10.1.237.1:123
