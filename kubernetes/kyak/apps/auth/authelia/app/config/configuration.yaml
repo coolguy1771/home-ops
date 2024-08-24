@@ -119,7 +119,7 @@ identity_providers:
         userinfo_signed_response_alg: 'none'
         token_endpoint_auth_method: 'client_secret_post'
       - id: kiali
-        descriton: Kiali
+        description: Kiali
         secret: "${KIALI_OAUTH_CLIENT_SECRET}"
         public: false
         authorization_policy: two_factor
