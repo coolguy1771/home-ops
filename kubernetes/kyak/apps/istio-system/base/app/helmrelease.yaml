@@ -16,9 +16,9 @@ spec:
         name: istio
         namespace: flux-system
   install:
+    crds: CreateReplace
     remediation:
       retries: 5
-  upgrade:
+    crds: CreateReplace
     remediation:
       retries: 5
-  values: {}

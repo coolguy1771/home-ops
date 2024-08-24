@@ -21,6 +21,9 @@ spec:
   upgrade:
     remediation:
       retries: 5
+  valuesFrom:
+    - kind: Secret
+      name: kiali-grafana-token
   values:
     resources:
       requests:
