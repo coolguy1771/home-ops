@@ -25,9 +25,6 @@ spec:
     profile: ambient
     global:
       logAsJson: true
-      meshID: beryjuorg
-      multiCluster:
-        clusterName: kyak
     meshConfig:
       serviceSettings:
         - settings:
