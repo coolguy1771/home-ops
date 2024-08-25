@@ -80,7 +80,7 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.devbu.io
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
         className: external
         hosts:
