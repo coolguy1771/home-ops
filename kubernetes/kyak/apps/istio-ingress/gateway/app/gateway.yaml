@@ -1,29 +1,35 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.raspbernetes.com/networking.istio.io/gateway_v1beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: istio-ingressgateway
 spec:
-  selector:
-    app: gateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - '${SECRET_PUBLIC_DOMAIN}'
-        - '*.${SECRET_PUBLIC_DOMAIN}'
-    - port:
-        number: 443
-        name: https
-        protocol: HTTPS
-      hosts:
-        - '${SECRET_PUBLIC_DOMAIN}'
-        - '*.${SECRET_PUBLIC_DOMAIN}'
+  gatewayClassName: istio
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "${SECRET_PUBLIC_DOMAIN}"
+    - name: wildcard-http
+      protocol: HTTP
+      port: 80
+      hostname: "*.${SECRET_PUBLIC_DOMAIN}"
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "${SECRET_PUBLIC_DOMAIN}"
       tls:
         mode: Terminate
         certificateRefs:
-        - kind: Secret
-          name: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
+          - kind: Secret
+            name: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
+    - name: wildcard-https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${SECRET_PUBLIC_DOMAIN}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
