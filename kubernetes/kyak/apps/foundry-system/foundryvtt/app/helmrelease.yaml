@@ -105,7 +105,7 @@ spec:
         kind: HTTPRoute
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: gateway.${SECRET_PUBLIC_DOMAIN}
         parentRefs:
           - name: istio-gateway
             namespace: istio-ingress
