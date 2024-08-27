@@ -6,3 +6,5 @@ resources:
   - ./helmrelease.yaml
   - ./certificate.yaml
   - ./gateway.yaml
+  # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
+  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml
