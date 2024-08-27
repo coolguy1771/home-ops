@@ -36,3 +36,9 @@ spec:
         certificateRefs:
           - kind: Secret
             name: "${SECRET_PUBLIC_DOMAIN/./-}-tls"
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              shared-gateway-access: "true"
