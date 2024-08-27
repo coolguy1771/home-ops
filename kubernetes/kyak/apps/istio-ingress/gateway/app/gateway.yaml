@@ -6,6 +6,7 @@ metadata:
   name: istio-gateway
   annotations:
     cert-manager.io/issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/target: gateway.${SECRET_PUBLIC_DOMAIN}
 spec:
   gatewayClassName: istio
   listeners:
