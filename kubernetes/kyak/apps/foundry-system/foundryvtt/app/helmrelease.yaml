@@ -83,41 +83,41 @@ spec:
         ports:
           http:
             port: 30000
-    # ingress:
-    #   app:
-    #     className: external
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
-    #       cert-manager.io/cluster-issuer: letsencrypt-production
-    #       nginx.ingress.kubernetes.io/proxy-body-size: 4096m
-    #     hosts:
-    #       - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http
-    #     tls:
-    #       - hosts: [*host]
-    route:
+    ingress:
       app:
-        enabled: true
-        kind: HTTPRoute
+        className: external
         annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
-        parentRefs:
-          - name: istio-gateway
-            namespace: istio-ingress
-        hostnames:
-          - "foundry.${SECRET_PUBLIC_DOMAIN}"
-        rules:
-          - backendRefs:
-            - name: foundryvtt
-              port: 30000
-            matches:
-            - path:
-                type: PathPrefix
-                value: /
+          nginx.ingress.kubernetes.io/proxy-body-size: 4096m
+        hosts:
+          - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts: [*host]
+    # route:
+    #   app:
+    #     enabled: true
+    #     kind: HTTPRoute
+    #     annotations:
+    #       cert-manager.io/cluster-issuer: letsencrypt-production
+    #     parentRefs:
+    #       - name: istio-gateway
+    #         namespace: istio-ingress
+    #     hostnames:
+    #       - "foundry.${SECRET_PUBLIC_DOMAIN}"
+    #     rules:
+    #       - backendRefs:
+    #         - name: foundryvtt
+    #           port: 30000
+    #         matches:
+    #         - path:
+    #             type: PathPrefix
+    #             value: /
     persistence:
       data:
         enabled: true
