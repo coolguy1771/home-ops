@@ -83,22 +83,42 @@ spec:
         ports:
           http:
             port: 30000
-    ingress:
+    # ingress:
+    #   app:
+    #     className: external
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+    #       cert-manager.io/cluster-issuer: letsencrypt-production
+    #       nginx.ingress.kubernetes.io/proxy-body-size: 4096m
+    #     hosts:
+    #       - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #     tls:
+    #       - hosts: [*host]
+    route:
       app:
-        className: external
+        enabled: true
+        kind: HTTPRoute
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
-          nginx.ingress.kubernetes.io/proxy-body-size: 4096m
-        hosts:
-          - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts: [*host]
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+        parentRefs:
+          - name: istio-gateway
+            namespace: istio-ingress
+        hostnames:
+          - "foundry.${SECRET_PUBLIC_DOMAIN}"
+        rules:
+          - backendRefs:
+            - name: foundryvtt
+              port: 30000
+            matches:
+            - path:
+                type: PathPrefix
+                value: /
     persistence:
       data:
         enabled: true
