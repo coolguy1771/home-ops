@@ -8,8 +8,4 @@ ingress:
     service: https://nginx-external-controller.networking.svc.cluster.local:443
     originRequest:
       originServerName: external.${SECRET_PUBLIC_DOMAIN}
-  - hostname: "foundry.${SECRET_PUBLIC_DOMAIN}"
-    service: https://istio-gateway-istio.istio-ingress.svc.cluster.local:443
-    originRequest:
-      originServerName: gateway.${SECRET_PUBLIC_DOMAIN}
   - service: http_status:404
