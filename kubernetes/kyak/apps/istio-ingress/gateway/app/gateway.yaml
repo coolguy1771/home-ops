@@ -1,9 +1,9 @@
 ---
-apiVersion: networking.istio.io/v1alpha3
+# yaml-language-server: $schema=https://kubernetes-schemas.raspbernetes.com/networking.istio.io/gateway_v1beta1.json
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: istio-ingressgateway
-  namespace: istio-system
 spec:
   selector:
     app: gateway
@@ -15,8 +15,6 @@ spec:
       hosts:
         - '${SECRET_PUBLIC_DOMAIN}'
         - '*.${SECRET_PUBLIC_DOMAIN}'
-      tls:
-        httpsRedirect: true
     - port:
         number: 443
         name: https
@@ -24,11 +22,8 @@ spec:
       hosts:
         - '${SECRET_PUBLIC_DOMAIN}'
         - '*.${SECRET_PUBLIC_DOMAIN}'
-        - istio-gateway.istio-system.svc.cluster.local
-        - istio-gateway.istio-system.svc
-        - istio-gateway.istio-system
       tls:
-        credentialName: istio-prod-cert-tls
-        mode: SIMPLE
-        minProtocolVersion: TLSV1_2
-        maxProtocolVersion: TLSV1_3
+        mode: Terminate
+        certificateRefs:
+        - kind: Secret
+          name: "${SECRET_PUBLIC_DOMAIN/./-}-tls"

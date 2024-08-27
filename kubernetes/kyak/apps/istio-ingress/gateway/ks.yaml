@@ -6,13 +6,13 @@ metadata:
   name: &app istio-gateway
   namespace: flux-system
 spec:
-  targetNamespace: istio-system
+  targetNamespace: istio-gateway
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: istiod
-  path: ./kubernetes/kyak/apps/istio-system/gateway/app
+  path: ./kubernetes/kyak/apps/istio-gateway/gateway/app
   prune: true
   sourceRef:
     kind: GitRepository

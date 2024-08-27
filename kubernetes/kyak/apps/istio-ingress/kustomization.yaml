@@ -5,8 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./base/ks.yaml
-  - ./cni/ks.yaml
-  - ./istiod/ks.yaml
-  - ./kiali/ks.yaml
-  - ./ztunnel/ks.yaml
+  - ./gateway/ks.yaml
