@@ -45,7 +45,7 @@ spec:
             name: external-dns-bind-secret
             key: BIND_RNDC_KEY
     policy: sync
-    sources: ["ingress", "service", "gateway-httproute", "gateway-grpcroute", "gateway-tlsroute", "gateway-tcproute", "gateway-udproute"]
+    sources: ["ingress", "service", "gateway-httproute", "gateway-tlsroute", "gateway-tcproute", "gateway-udproute"]
     txtOwnerId: kyak
     txtPrefix: k8s.
     domainFilters: ["${SECRET_PUBLIC_DOMAIN}"]
