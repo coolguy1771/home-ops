@@ -160,6 +160,18 @@ nodes:
     controlPlane: false
     installDisk: /dev/disk/by-id/ata-HRAA2S0512ZILM2_6G000SJA
     networkInterfaces:
+      - interface: eno1
+        mtu: 1500
+        dhcp: false
+      - interface: eno2
+        mtu: 1500
+        dhcp: false
+      - interface: enp55s0f0
+        mtu: 1500
+        dhcp: false
+      - interface: enp55s0f1
+        mtu: 1500
+        dhcp: false
       - interface: bond0
         dhcp: true
         bond:
@@ -167,8 +179,8 @@ nodes:
           lacpRate: fast
           xmitHashPolicy: layer3+4
           miimon: 100
-          updelay: 200
-          downdelay: 200
+          updelay: 100
+          downdelay: 100
           interfaces:
             - enp55s0f0
             - enp55s0f1
@@ -179,6 +191,8 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/nonfree-kmod-nvidia
             - siderolabs/nvidia-container-toolkit
+        extraKernelArgs:
+          - bond=bond1:eth3,eth4:mode=802.3ad,xmit_hash_policy=layer2+3:1500
 
 
     patches:
@@ -243,7 +257,7 @@ controlPlane:
         value:
           validSubnets:
             - 10.10.10.0/24
-    - |-
+    - &diskEncryption |-
       - op: add
         path: /machine/systemDiskEncryption
         value:
@@ -252,11 +266,15 @@ controlPlane:
             keys:
               - nodeID: {}
                 slot: 0
+              - tpm: {}
+                slot: 1
           state:
             provider: luks2
             keys:
               - nodeID: {}
                 slot: 0
+              - tpm: {}
+                slot: 1
     - |-
       - op: add
         path: /machine/kubelet/extraArgs
@@ -369,7 +387,7 @@ controlPlane:
           vm.overcommit_memory: "1"
           kernel.panic: "10"
           kernel.panic_on_oops: "1"
-    - |-
+    - &time |-
       - op: add
         path: /machine/time
         value:
@@ -411,20 +429,7 @@ worker:
               - bind
               - rshared
               - rw
-    - |-
-      - op: add
-        path: /machine/systemDiskEncryption
-        value:
-          ephemeral:
-            provider: luks2
-            keys:
-              - nodeID: {}
-                slot: 0
-          state:
-            provider: luks2
-            keys:
-              - nodeID: {}
-                slot: 0
+    - *diskEncryption
     - |-
       - op: add
         path: /machine/features
@@ -472,13 +477,7 @@ worker:
           vm.overcommit_memory: "1"
           kernel.panic: "10"
           kernel.panic_on_oops: "1"
-    - |-
-      - op: add
-        path: /machine/time
-        value:
-          disabled: false
-          servers:
-            - 10.1.237.4
+    - *time
     - |-
       - op: add
         path: /machine/udev
