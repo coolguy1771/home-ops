@@ -5,7 +5,7 @@ metadata:
   name: volsync-system
   labels:
     istio.io/dataplane-mode: ambient
-    istio-injection: enabled
+
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"

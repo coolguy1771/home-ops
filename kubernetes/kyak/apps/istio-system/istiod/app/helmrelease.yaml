@@ -23,3 +23,21 @@ spec:
       retries: 5
   values:
     profile: ambient
+    global:
+      logAsJson: true
+    meshConfig:
+      serviceSettings:
+        - settings:
+            clusterLocal: true
+          hosts:
+            - "kiali.istio-system.svc.cluster.local"
+      accessLogFile: "/dev/stdout"
+      accessLogEncoding: "JSON"
+      enableTracing: false
+      defaultConfig:
+        proxyMetadata:
+          ISTIO_META_DNS_CAPTURE: "true"
+          ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+          # ISTIO_META_PROXY_XDS_VIA_AGENT: "true"
+        interceptionMode: TPROXY
+      enablePrometheusMerge: true

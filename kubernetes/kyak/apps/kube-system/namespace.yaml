@@ -5,5 +5,4 @@ metadata:
   name: kube-system
   labels:
     istio.io/dataplane-mode: ambient
-    istio-injection: enabled
     kustomize.toolkit.fluxcd.io/prune: disabled

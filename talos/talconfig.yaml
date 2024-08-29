@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: kyak
-# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
-talosVersion: v1.6.7
-# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
-kubernetesVersion: v1.29.3
+# renovate: datasource=github-releases depName=siderolabs/talos
+talosVersion: v1.7.6
+# renovate: datasource=github-releases depName=kubernetes/kubernetes
+kubernetesVersion: v1.31.0
 additionalApiServerCertSans: &san
   - 10.10.254.3
   - k8s-lb.286k.co
@@ -160,6 +160,18 @@ nodes:
     controlPlane: false
     installDisk: /dev/disk/by-id/ata-HRAA2S0512ZILM2_6G000SJA
     networkInterfaces:
+      - interface: eno1
+        mtu: 1500
+        dhcp: false
+      - interface: eno2
+        mtu: 1500
+        dhcp: false
+      - interface: enp55s0f0
+        mtu: 1500
+        dhcp: false
+      - interface: enp55s0f1
+        mtu: 1500
+        dhcp: false
       - interface: bond0
         dhcp: true
         bond:
@@ -167,8 +179,8 @@ nodes:
           lacpRate: fast
           xmitHashPolicy: layer3+4
           miimon: 100
-          updelay: 200
-          downdelay: 200
+          updelay: 100
+          downdelay: 100
           interfaces:
             - enp55s0f0
             - enp55s0f1
@@ -179,6 +191,8 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/nonfree-kmod-nvidia
             - siderolabs/nvidia-container-toolkit
+        extraKernelArgs:
+          - bond=bond1:eth3,eth4:mode=802.3ad,xmit_hash_policy=layer2+3:1500
 
 
     patches:
@@ -187,6 +201,13 @@ nodes:
           path: /machine/files
           value:
             - content: |
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+                [plugins."io.containerd.grpc.v1.cri".containerd]
+                  discard_unpacked_layers = false
+                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                  discard_unpacked_layers = false
                 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
                   privileged_without_host_devices = false
                   runtime_engine = ""
@@ -195,7 +216,19 @@ nodes:
                 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
                   BinaryName = "/usr/bin/nvidia-container-runtime"
               path: /etc/cri/conf.d/20-customization.part
-              op: append
+              op: create
+            - content: |
+                [ NFSMount_Global_Options ]
+                nfsvers=4.2
+                hard=True
+                noatime=True
+                nodiratime=True
+                rsize=131072
+                wsize=131072
+                nconnect=8
+              permissions: 420
+              path: /etc/nfsmount.conf
+              op: overwrite
       - |-
         - op: add
           path: /machine/kernel
@@ -224,7 +257,7 @@ controlPlane:
         value:
           validSubnets:
             - 10.10.10.0/24
-    - |-
+    - &diskEncryption |-
       - op: add
         path: /machine/systemDiskEncryption
         value:
@@ -233,34 +266,36 @@ controlPlane:
             keys:
               - nodeID: {}
                 slot: 0
+              - tpm: {}
+                slot: 1
           state:
             provider: luks2
             keys:
               - nodeID: {}
                 slot: 0
+              - tpm: {}
+                slot: 1
     - |-
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates:  GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false,StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
+          feature-gates: GracefulNodeShutdown=true,KubeletTracing=true
           rotate-server-certificates: "true"
     - |-
       - op: add
         path: /cluster/apiServer/extraArgs
         value:
-          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,ServerSideApply=true
+          feature-gates: ServerSideApply=true
           tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
     - |-
       - op: add
         path: /cluster/controllerManager/extraArgs
         value:
-          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
           bind-address: 0.0.0.0
     - |-
       - op: add
         path: /cluster/scheduler/extraArgs
         value:
-          feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true
           bind-address: 0.0.0.0
     - |-
       - op: add
@@ -289,31 +324,9 @@ controlPlane:
             enabled: true
             port: 7445
     - |-
-      machine:
-        files:
-          - op: overwrite
-            path: /etc/nfsmount.conf
-            permissions: 0o644
-            content: |
-              [ NFSMount_Global_Options ]
-              nfsvers=4.2
-              hard=True
-              noatime=True
-              nodiratime=True
-              rsize=131072
-              wsize=131072
-              nconnect=8
-    - |-
-      machine:
-        features:
-          kubernetesTalosAPIAccess:
-            enabled: true
-            allowedRoles:
-            - os:etcd:backup
-            - os:admin
-            allowedKubernetesNamespaces:
-            - tools
-        files:
+      - op: add
+        path: /machine/files
+        value:
           - content: |
               [plugins."io.containerd.grpc.v1.cri"]
                 enable_unprivileged_ports = true
@@ -322,30 +335,75 @@ controlPlane:
                 discard_unpacked_layers = false
               [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
                 discard_unpacked_layers = false
+            permissions: 0
             path: /etc/cri/conf.d/20-customization.part
             op: create
-        kubelet:
-          extraArgs:
-            feature-gates: StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
-            rotate-server-certificates: "true"
-        sysctls:
+          - content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+            permissions: 420
+            path: /etc/nfsmount.conf
+            op: overwrite
+    - |-
+      - op: add
+        path: /machine/features
+        value:
+          rbac: true
+          stableHostname: true
+          kubernetesTalosAPIAccess:
+              enabled: true
+              allowedRoles:
+                  - os:admin
+              allowedKubernetesNamespaces:
+                  - system-upgrade
+          apidCheckExtKeyUsage: true
+          diskQuotaSupport: true
+          kubePrism:
+              enabled: true
+              port: 7445
+          hostDNS:
+              enabled: true
+              resolveMemberNames: true
+              forwardKubeDNSToHost: false
+    - |-
+      - op: add
+        path: /machine/kubelet/extraArgs
+        value:
+          feature-gates: KubeletTracing=true
+          rotate-server-certificates: "true"
+    - |-
+      - op: add
+        path: /machine/sysctls
+        value:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
           vm.panic_on_oom: "0"
           vm.overcommit_memory: "1"
           kernel.panic: "10"
           kernel.panic_on_oops: "1"
-        time:
+    - &time |-
+      - op: add
+        path: /machine/time
+        value:
           disabled: false
           servers:
-            - 10.1.237.1
-        udev:
+            - 10.1.237.4
+    - |-
+      - op: add
+        path: /machine/udev
+        value:
           rules:
-              - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
-              - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
+
 worker:
   patches:
     - |-
@@ -358,33 +416,20 @@ worker:
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false,StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
+          feature-gates: GracefulNodeShutdown=true,StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
           rotate-server-certificates: "true"
     - |-
       - op: add
         path: /machine/kubelet/extraMounts
         value:
-            - destination: /var/openebs/local
-              type: bind
-              source: /var/openebs/local
-              options:
-                - bind
-                - rshared
-                - rw
-    - |-
-      - op: add
-        path: /machine/systemDiskEncryption
-        value:
-          ephemeral:
-            provider: luks2
-            keys:
-              - nodeID: {}
-                slot: 0
-          state:
-            provider: luks2
-            keys:
-              - nodeID: {}
-                slot: 0
+          - destination: /var/openebs/local
+            type: bind
+            source: /var/openebs/local
+            options:
+              - bind
+              - rshared
+              - rw
+    - *diskEncryption
     - |-
       - op: add
         path: /machine/features
@@ -396,12 +441,10 @@ worker:
             enabled: true
             port: 7445
     - |-
-      machine:
-        files:
-          - op: overwrite
-            path: /etc/nfsmount.conf
-            permissions: 0o644
-            content: |
+      - op: add
+        path: /machine/files
+        value:
+          - content: |
               [ NFSMount_Global_Options ]
               nfsvers=4.2
               hard=True
@@ -410,9 +453,9 @@ worker:
               rsize=131072
               wsize=131072
               nconnect=8
-    - |-
-      machine:
-        files:
+            permissions: 420
+            path: /etc/nfsmount.conf
+            op: overwrite
           - content: |
               [plugins."io.containerd.grpc.v1.cri"]
                 enable_unprivileged_ports = true
@@ -421,20 +464,23 @@ worker:
                 discard_unpacked_layers = false
               [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
                 discard_unpacked_layers = false
+            permissions: 0
             path: /etc/cri/conf.d/20-customization.part
             op: create
-        sysctls:
+    - |-
+      - op: add
+        path: /machine/sysctls
+        value:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
           vm.panic_on_oom: "0"
           vm.overcommit_memory: "1"
           kernel.panic: "10"
           kernel.panic_on_oops: "1"
-        time:
-          disabled: false
-          servers:
-            - 10.1.237.4
-        udev:
+    - *time
+    - |-
+      - op: add
+        path: /machine/udev
+        value:
           rules:
-              - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
-              - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"

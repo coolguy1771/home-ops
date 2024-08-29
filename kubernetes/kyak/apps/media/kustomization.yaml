@@ -10,7 +10,7 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
+  # - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sabnzbd/ks.yaml

@@ -3,16 +3,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app istio-gateway
+  name: &app gateway
   namespace: flux-system
 spec:
-  targetNamespace: istio-system
+  targetNamespace: istio-ingress
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: istiod
-  path: ./kubernetes/kyak/apps/istio-system/gateway/app
+  path: ./kubernetes/kyak/apps/istio-ingress/gateway/app
   prune: true
   sourceRef:
     kind: GitRepository

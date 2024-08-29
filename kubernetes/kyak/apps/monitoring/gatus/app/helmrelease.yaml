@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.3.2
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -57,7 +57,7 @@ spec:
           app:
             image:
               repository: ghcr.io/twin/gatus
-              tag: v5.11.0@sha256:eb0374eb55e3ff84ec8f9ea10342ddb623cfba23e5836138896cde01f11cf23d
+              tag: v5.12.1@sha256:3cc4e90534c05599f07fbdf15580401aa7771fac15f51d1dc8f7de265d70d12f
             env:
               TZ: America/New_York
               GATUS_CONFIG_PATH: /config
@@ -112,6 +112,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          cert-manager.io/cluster-issuer: letsencrypt-production
         className: external
         hosts:
           - host: &host status.${SECRET_PUBLIC_DOMAIN}

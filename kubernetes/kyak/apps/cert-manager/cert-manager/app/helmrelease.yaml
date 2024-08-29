@@ -32,7 +32,7 @@ spec:
     podDnsConfig:
       nameservers:
         - "1.1.1.1"
-        - "9.9.9.9"
+        - "8.8.8.8"
     prometheus:
       enabled: true
       servicemonitor:
@@ -45,3 +45,7 @@ spec:
       podLabels:
         egress.home.arpa/apiserver: allow
         egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
+    config:
+      apiVersion: controller.config.cert-manager.io/v1alpha1
+      kind: ControllerConfiguration
+      enableGatewayAPI: true

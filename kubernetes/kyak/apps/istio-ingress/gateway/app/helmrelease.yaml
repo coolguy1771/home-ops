@@ -23,20 +23,13 @@ spec:
       retries: 5
   values:
     replicaCount: 2
+    service:
+      type: LoadBalancer
+      annotations:
+        io.cilium/lb-ipam-ips: 10.0.42.5
     autoscaling:
       enabled: false
-    service:
-      loadBalancerIP: 10.0.42.5
-      externalTrafficPolicy: "Local"
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 200m
-        memory: 256Mi
     affinity:
-      # This podAntiAffinity ensures ingress controllers are not scheduled on the same node
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -44,5 +37,7 @@ spec:
             - key: istio
               operator: In
               values:
-                - ingressgateway
+                - gateway
           topologyKey: kubernetes.io/hostname
+    # If specified, the gateway will act as a network gateway for the given network.
+    networkGateway: ""
