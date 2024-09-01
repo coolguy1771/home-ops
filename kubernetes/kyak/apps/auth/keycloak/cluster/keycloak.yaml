@@ -74,9 +74,9 @@ spec:
     healthEnabled: true
   metrics:
     metricsEnabled: true
-  logging:
-    log: console
-    logConsoleColor: true
+  # logging:
+  #   log: console
+  #   logConsoleColor: true
   ingress:
     className: external
 
