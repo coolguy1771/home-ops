@@ -70,10 +70,10 @@ spec:
       - web-authn
   transaction:
     xaEnabled: false
-  health:
-    healthEnabled: true
-  metrics:
-    metricsEnabled: true
+  # health:
+  #   healthEnabled: true
+  # metrics:
+  #   metricsEnabled: true
   # logging:
   #   log: console
   #   logConsoleColor: true
