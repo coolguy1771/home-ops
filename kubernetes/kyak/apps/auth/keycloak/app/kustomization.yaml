@@ -8,3 +8,4 @@ resources:
   - ./service.yaml
   - ./serviceaccount.yaml
   - ./deployment.yaml
+  - ./externalsecret.yaml

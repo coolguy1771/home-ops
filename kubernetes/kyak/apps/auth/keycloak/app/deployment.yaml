@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/managed-by: quarkus
   name: keycloak-operator
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: keycloak-operator
@@ -72,4 +72,13 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 10
+          resources: {}
+      initContainers:
+        - envFrom:
+          - secretRef:
+              name: keycloak-db-secret
+          image: ghcr.io/onedr0p/postgres-init:16
+          imagePullPolicy: IfNotPresent
+          name: init-db
+          resources: {}
       serviceAccountName: keycloak-operator
