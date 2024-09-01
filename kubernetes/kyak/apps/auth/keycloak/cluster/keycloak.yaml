@@ -49,7 +49,6 @@ spec:
       - dpop
       - dynamic-scopes
       - fips
-      - hostname
       - impersonation
       - js-adapter
       - kerberos
