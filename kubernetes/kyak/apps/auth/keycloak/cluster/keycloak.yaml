@@ -28,7 +28,7 @@ spec:
     hostname: https://keycloak.${SECRET_PUBLIC_DOMAIN}
     admin: https://keycloak.${SECRET_PUBLIC_DOMAIN}/admin
     strict: false
-    backchannelDynamic: true
+    backchannelDynamic: false
   features:
     enabled:
       - docker
