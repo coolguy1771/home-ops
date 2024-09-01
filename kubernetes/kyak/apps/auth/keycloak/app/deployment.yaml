@@ -76,7 +76,7 @@ spec:
       initContainers:
         - envFrom:
           - secretRef:
-              name: keycloak-db-secret
+              name: keycloak-secret
           image: ghcr.io/onedr0p/postgres-init:16
           imagePullPolicy: IfNotPresent
           name: init-db
