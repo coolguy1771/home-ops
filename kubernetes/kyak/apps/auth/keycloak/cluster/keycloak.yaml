@@ -77,4 +77,6 @@ spec:
   #   logConsoleColor: true
   ingress:
     className: external
-
+    annotations:
+      external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+      cert-manager.io/cluster-issuer: letsencrypt-production
