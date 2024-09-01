@@ -48,7 +48,6 @@ spec:
       - docker
       - dpop
       - dynamic-scopes
-      - fips
       - impersonation
       - js-adapter
       - kerberos
