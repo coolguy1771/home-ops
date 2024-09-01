@@ -26,7 +26,7 @@ spec:
     tlsSecret: keycloak-tls
   hostname:
     hostname: https://keycloak.${SECRET_PUBLIC_DOMAIN}
-    admin: https://keycloak.${SECRET_PUBLIC_DOMAIN}/admin
+    admin: https://keycloak-admin.${SECRET_PUBLIC_DOMAIN}
     strict: false
     backchannelDynamic: false
   features:
