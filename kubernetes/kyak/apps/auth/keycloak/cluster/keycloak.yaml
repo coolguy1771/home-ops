@@ -15,7 +15,7 @@ spec:
     host: postgres16-rw.database.svc.cluster.local
     database: keycloak
     port: 5432
-    schema: schema
+    schema: public
     poolInitialSize: 1
     poolMinSize: 10
     poolMaxSize: 20
