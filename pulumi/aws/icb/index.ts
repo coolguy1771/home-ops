@@ -120,8 +120,8 @@ const icbBackupBucket = new awsNative.s3.Bucket(
         {
           bucketKeyEnabled: true,
           serverSideEncryptionByDefault: {
-            sSEAlgorithm:
-              awsNative.s3.BucketServerSideEncryptionByDefaultSSEAlgorithm
+            sseAlgorithm:
+              awsNative.s3.BucketServerSideEncryptionByDefaultSseAlgorithm
                 .Aes256,
           },
         },
@@ -196,7 +196,7 @@ const icbCDN = new awsNative.cloudfront.Distribution("icb-cdn", {
       functionAssociations: [
         {
           eventType: "viewer-request",
-          functionARN: pulumi.interpolate`arn:aws:cloudfront::${currentAccountId}:function/cdn-add-index`,
+          functionArn: pulumi.interpolate`arn:aws:cloudfront::${currentAccountId}:function/cdn-add-index`,
         },
       ],
     },
@@ -206,9 +206,9 @@ const icbCDN = new awsNative.cloudfront.Distribution("icb-cdn", {
         id: icbBackupBucket.id,
         customOriginConfig: {
           originProtocolPolicy: "http-only",
-          hTTPPort: 80,
-          hTTPSPort: 443,
-          originSSLProtocols: ["TLSv1.2"],
+          httpPort: 80,
+          httpsPort: 443,
+          originSslProtocols: ["TLSv1.2"],
         },
         originShield: {
           enabled: true,
@@ -228,6 +228,6 @@ const icbCDN = new awsNative.cloudfront.Distribution("icb-cdn", {
       sslSupportMethod: "sni-only",
       minimumProtocolVersion: "TLSv1.2_2021",
     },
-    webACLId: pulumi.interpolate`arn:aws:wafv2:${currentRegion}:${currentAccountId}:global/webacl/CreatedByCloudFront-47f1aba3-dc49-4048-a4a6-fe02315795da/bf13f317-c833-41fc-a12b-4a82d023e615`,
+    // webAclId: pulumi.interpolate`arn:aws:wafv2:${currentRegion}:${currentAccountId}:global/webacl/CreatedByCloudFront-47f1aba3-dc49-4048-a4a6-fe02315795da/bf13f317-c833-41fc-a12b-4a82d023e615`,
   },
 });
