@@ -134,7 +134,7 @@ spec:
           - path: /app/logs
       pluto:
         type: nfs
-        server: expanse.internal
+        server: osiris.286k.co
         path: /pluto
         globalMounts:
           - path: /pluto
