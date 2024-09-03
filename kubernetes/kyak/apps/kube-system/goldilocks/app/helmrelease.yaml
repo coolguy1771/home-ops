@@ -43,6 +43,5 @@ spec:
               - path: /
                 type: ImplementationSpecific
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
-              - *host
+          - secretName: "goldilocks-tls"
+            hosts: [*host]
