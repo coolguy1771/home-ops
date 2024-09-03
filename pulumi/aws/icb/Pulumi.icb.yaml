@@ -1,5 +1,4 @@
 config:
   aws-native:region: us-east-1
-  aws:profile: AdministratorAccess-782070670678
   aws:region: us-east-1
   oidc:escEnv: coolguy1771/cdn-prod
