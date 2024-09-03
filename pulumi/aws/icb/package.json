@@ -1,0 +1,12 @@
+{
+    "name": "aws",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^22.5.2"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.130.0",
+        "@pulumi/aws-native": "^0.121.0",
+        "@pulumi/aws": "^6.50.1"
+    }
+}

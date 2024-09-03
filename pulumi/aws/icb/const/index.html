@@ -1,0 +1,1226 @@
+<!-- S3 Bucket Explorer Version: 3.1.2 -->
+
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: auto">
+  <head>
+    <!-- Configuration -->
+    <script>
+      const config = {
+        title: "Bucket Browser", // prefix value with `HTML> ` to render as html, see subtitle
+        subtitle:
+          'HTML>made with ♥ by <b><a href="https://qoo.monster">qoomon</a></b>', // prefix value with `HTML> ` to render as html
+        logo: "https://qoomon.github.io/aws-s3-bucket-browser/logo.png",
+        favicon: "https://qoomon.github.io/aws-s3-bucket-browser/favicon.ico",
+        primaryColor: "#167df0",
+        allowDownloadAll: true, // enable or disable 'download all' button to download all files as a zip archive
+
+        bucketUrl: "https://s3.us-east-1.amazonaws.com/icb-d9ff5992",
+        // If bucketUrl is undefined, this script tries to determine bucket Rest API URL from this file location itself.
+        //   This will only work for locations like these
+        //   * https://s3.BUCKET-REGION.amazonaws.com/BUCKET-NAME/index.html
+        //   * http://BUCKET-NAME.s3-website-BUCKET-REGION.amazonaws.com/index.html
+        //   * https://storage.googleapis.com/BUCKET-NAME/index.html
+        //   * https://BUCKET-NAME.s3-web.BUCKET-REGION.cloud-object-storage.appdomain.cloud/
+        //   * https://BUCKET-NAME.BUCKET-REGION.digitaloceanspaces.com
+        //   * https://BUCKET-NAME.BUCKET-REGION.cdn.digitaloceanspaces.com
+        // If bucketUrl is set manually, ensure this is the bucket Rest API URL, e.g.
+        //   * https://s3.BUCKET-REGION.amazonaws.com/BUCKET-NAME
+        //   * https://storage.googleapis.com/BUCKET-NAME
+        //   The URL should return an XML document with <ListBucketResult> as root element.
+        rootPrefix: undefined, // e.g. 'subfolder/'
+        keyExcludePatterns: [/^index\.html$/], // matches againt object key relative to rootPrefix
+        pageSize: 50,
+
+        bucketMaskUrl: "https://cdn.icbplays.net",
+        // If bucketMaskUrl is set, file urls will be changed from ${bucketUrl}/${file} to ${bucketMaskUrl}/${file}
+        //   bucketMaskUrl: 'https://example.org'
+        //     => https://example.org/foo/bar.txt
+        //   bucketMaskUrl: document.location.origin
+        //     => ${document.location.origin}/foo/bar.txt
+
+        defaultOrder: "name-asc", // (name|size|dateModified)-(asc|desc)
+      };
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link id="favicon" rel="shortcut icon" />
+    <title>Bucket Browser</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css"
+      integrity="sha384-HphS8cQyN+eYiJ5PMbzShG6qZdRtvHPVLPkYb8JwMkmNgaIxrFVDhQe3jIbq3EZ2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v6.5.2/css/all.css"
+      integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/vue@3.4.32/dist/vue.global.prod.js"
+      integrity="sha384-dABb4ekX7QBOUdIIKzqjXGEapo0jlc8DxsRNpJs1DtDCvg1d0hatybOPLMrZJHer"
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ntohq/buefy-next@0.1.4/dist/buefy.min.css"
+      integrity="sha384-uKOSQ8X8o+jTwmPclX1z/d6IKB+spCvEua2ysnQprHMuYMf35xBOMGDxejgM2qGS"
+      crossorigin="anonymous"
+    />
+    <script>
+      window.process = { env: { NODE_ENV: "production" } };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@ntohq/buefy-next@0.1.4/dist/buefy.min.js"
+      integrity="sha384-fd8rwC0JXdulBombqOXIudg/1G+9AbB0zDYPAi8SfJy+RemRrq0jG1TC6PUS8EpX"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/moment@2.30.1/min/moment.min.js"
+      integrity="sha384-jzJ+sNWbKe71gDLLfQKgdtslQjhK70oKLFN+wmwxyg6mQN7Vem+wzce4pryF0HP/"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/zero-md@3.1.2?register"
+      type="module"
+      integrity="sha384-pC9TgzoLph8mmd0K9PwH5vJbK6Be5F2opR6JOA6MivxsU8lL3uIRQayAwvrDtiGE"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.min.js"
+      integrity="sha384-HqC294x+jARmk/wUrzXlnRpiZrmiHJ4BIKph0mrcMJ/cLuMkNDHY0IjbDanCNhcU"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Explorer App Style -->
+    <style>
+      body {
+        width: 100vw;
+        min-height: 100vh;
+        position: relative;
+        background-color: #f5f5f5;
+        overflow-y: auto;
+        --primary-color: #167df0;
+      }
+
+      a {
+        color: var(--primary-color);
+      }
+
+      #app {
+        padding: 2.25rem 2.5rem;
+      }
+
+      #app #breadcrumbs {
+        margin-right: 0.5em;
+      }
+
+      #app #breadcrumbs .button .icon:first-child:not(:last-child) {
+        margin-left: calc(-0.5em - 1px);
+        margin-right: calc(-0.5em - 1px);
+      }
+
+      #app .search-prefix-matches-path-prefix input.input {
+        color: var(--primary-color) !important;
+        font-weight: bold;
+      }
+
+      #app .button.is-primary {
+        background-color: var(--primary-color) !important;
+      }
+
+      #app .button.is-primary.is-outlined {
+        background-color: transparent !important;
+        border-color: var(--primary-color) !important;
+        color: var(--primary-color) !important;
+      }
+
+      #app .button.is-primary.is-outlined.is-loading::after {
+        border-color: transparent transparent var(--primary-color)
+          var(--primary-color) !important;
+      }
+
+      #app .table .button.is-text {
+        padding: 0.1em 0.75em;
+        height: auto;
+        text-decoration: none;
+        box-shadow: none;
+        background-color: unset;
+        user-select: text;
+        color: var(--primary-color);
+        font-weight: 500;
+        text-align: left;
+        overflow: hidden;
+      }
+
+      #app .table .button.is-text.is-focused,
+      #app .table .button.is-text.is-hovered,
+      #app .table .button.is-text:focus,
+      #app .table .button.is-text:hover {
+        background-color: transparent;
+        color: inherit;
+      }
+
+      #app .buttons .field {
+        margin-bottom: 0.5rem;
+      }
+
+      #app .button.is-text > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #app .button.is-primary:focus:not(:active) {
+        box-shadow: inset 0px 0px 0px 0.1em #ffffffcc;
+      }
+
+      #app .input:focus:not(.is-danger),
+      #app .select select:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+      }
+
+      #app .select:not(.is-multiple):not(.is-loading)::after {
+        border-color: var(--primary-color) !important;
+      }
+
+      #app .name-column > div:first-child {
+        display: flex;
+        align-items: center;
+      }
+
+      #app .name-column-icon {
+        display: block;
+        flex-basis: 1.5rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        align-content: center;
+        text-align: center;
+      }
+
+      #app .name-column-buttons {
+        display: flex;
+        margin-left: auto;
+      }
+
+      #app .name-column-buttons > .button {
+        height: 1em;
+        height: auto;
+        padding: 0em 0.6em;
+        margin-left: 0.5em;
+      }
+
+      #app .name-column-details {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        flex-shrink: 0;
+        min-width: 5rem;
+        font-size: 0.85rem;
+        line-height: 1.5rem;
+        flex-direction: column;
+      }
+
+      #app .footer-bucket-url {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-bottom: 0.5rem;
+        font-size: small;
+        text-align: center;
+        color: darkgray;
+      }
+
+      #app .footer-bucket-url a {
+        color: inherit;
+      }
+
+      @media screen and (max-width: 768px) {
+        #app .name-column::before {
+          display: none !important;
+        }
+
+        #app .name-column > div:first-child {
+          max-width: calc(100% - 5.5rem);
+        }
+
+        #app .size-column,
+        #app .modified-column {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Explorer App-->
+    <div id="app" style="display: none">
+      <div :style="cssVars">
+        <!-- Header -->
+        <div class="level">
+          <div class="level-left" style="max-width: 100%">
+            <figure
+              class="level-item image is-96x96"
+              style="margin-right: 1.5rem"
+            >
+              <img :src="config.logo" />
+            </figure>
+            <div>
+              <h1 class="title" v-html="config.titleHTML"></h1>
+              <h2 class="subtitle" v-html="config.subtitleHTML"></h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <!-- Navigation Bar -->
+          <div class="container is-clearfix" style="margin-bottom: 1rem">
+            <div class="buttons is-pulled-left" style="width: 100%">
+              <div id="breadcrumbs">
+                <!-- Prefix Breadcrumbs -->
+                <b-button
+                  v-for="(breadcrump, index) in pathBreadcrumbs"
+                  v-bind:key="breadcrump.url"
+                  type="is-primary"
+                  rounded
+                  tag="a"
+                  :href="breadcrump.url"
+                  target=""
+                  icon-pack="fas"
+                  :icon-left="index == 0 ? 'bucket': ''"
+                  :style="{ fontWeight: index == 0 ? 'bolder': ''}"
+                  style="white-space: pre"
+                >
+                  <template v-if="index > 0">{{ breadcrump.name }}</template>
+                </b-button>
+              </div>
+
+              <div class="container" style="display: flex">
+                <!-- Prefix Search Input -->
+                <b-field
+                  :type="!validBucketPrefix(searchPrefix) ? 'is-danger' : ''"
+                  :class="searchPrefix && pathPrefix.replace(/^.*\//,'') === searchPrefix ? 'search-prefix-matches-path-prefix' : ''"
+                  style="flex: auto"
+                >
+                  <b-input
+                    rounded
+                    v-model="searchPrefix"
+                    placeholder="search by prefix"
+                    icon="magnifying-glass"
+                    icon-clickable
+                    @icon-click="searchByPrefix"
+                    :icon-right="searchPrefix !== '' ? 'close-circle' : ''"
+                    icon-right-clickable
+                    @icon-right-click="searchPrefix = ''; searchByPrefix()"
+                    @keydown.enter="searchByPrefix"
+                    enterkeyhint="search"
+                  >
+                  </b-input>
+                </b-field>
+
+                <!-- Download All Button -->
+                <b-button
+                  v-if="config.allowDownloadAll && pathContentTableData.filter(item => item.type === 'content').length >= 2"
+                  type="is-primary"
+                  outlined
+                  rounded
+                  :loading="downloadAllFilesProgress !== null"
+                  icon-pack="fas"
+                  icon-left="download"
+                  @click="downloadAllFiles"
+                  style="margin-left: 0.7rem"
+                ></b-button>
+
+                <!-- Paginating Buttons -->
+                <div
+                  class="container"
+                  v-if="nextContinuationToken || previousContinuationTokens.length > 0"
+                  style="display: contents"
+                >
+                  <div style="margin-left: 0.6rem"></div>
+
+                  <b-button
+                    type="is-primary"
+                    rounded
+                    icon-pack="fas"
+                    icon-left="angle-left"
+                    @click="previousPage"
+                    :disabled="previousContinuationTokens.length === 0"
+                  >
+                  </b-button>
+                  <b-button
+                    type="is-primary"
+                    rounded
+                    icon-pack="fas"
+                    icon-right="angle-right"
+                    @click="nextPage"
+                    :disabled="!nextContinuationToken"
+                  >
+                  </b-button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <b-progress
+            v-if="downloadAllFilesProgress !== null"
+            type="is-info"
+            :value="downloadAllFilesProgress * 105"
+            show-value
+            style="margin-bottom: 1rem"
+          >
+            <div
+              style="width: 70vw; display: flex; justify-content: space-around"
+            >
+              <span
+                >{{ `${downloadAllFilesReceivedCount} / ${downloadAllFilesCount}
+                Files` }}</span
+              >
+            </div>
+          </b-progress>
+
+          <!-- Content Table -->
+          <b-table
+            :data="pathContentTableData"
+            :default-sort="config.defaultOrder.split('-')[0]"
+            :default-sort-direction="config.defaultOrder.split('-')[1]"
+            :mobile-cards="true"
+          >
+            <b-table-column
+              v-slot="props"
+              field="name"
+              label="Name"
+              sortable
+              :custom-sort="sortTableData('name')"
+              cell-class="name-column"
+            >
+              <div>
+                <b-icon
+                  pack="far"
+                  :icon="props.row.type === 'prefix' ? 'folder' : 'file-alt'"
+                  size="is-medium"
+                  class="name-column-icon"
+                >
+                </b-icon>
+
+                <b-button
+                  type="is-text"
+                  rounded
+                  tag="a"
+                  :href="props.row.type === 'content' ? props.row.url : `#${props.row.prefix}`"
+                  @click="blurActiveElement"
+                >
+                  {{ props.row.name }}
+                </b-button>
+
+                <div class="name-column-buttons">
+                  <template v-if="props.row.type === 'content'">
+                    <!-- Markdown Preview Button -->
+                    <b-button
+                      v-if="props.row.name.endsWith('.md')"
+                      tag="a"
+                      type="is-text"
+                      icon-left="image"
+                      size="is-medium"
+                      :href="`#${pathPrefix.replace(/[^/]*$/, '') + props.row.name}?preview=markdown`"
+                      target="_blank"
+                    ></b-button>
+
+                    <!-- Install Button -->
+                    <b-button
+                      v-if="props.row.installUrl"
+                      tag="a"
+                      type="is-primary"
+                      rounded
+                      outlined
+                      :href="props.row.installUrl"
+                      target="_blank"
+                      @click="blurActiveElement"
+                      >Install
+                    </b-button>
+                  </template>
+                </div>
+              </div>
+
+              <div
+                v-if="cardView && (props.row.size || props.row.dateModified)"
+                class="name-column-details"
+              >
+                <div>{{ formatBytes(props.row.size) }}</div>
+
+                <b-tooltip
+                  :active="!!props.row.dateModified"
+                  type="is-light"
+                  size="is-small"
+                  position="is-left"
+                  animated
+                  multilined
+                >
+                  <div>
+                    {{ formatDateTime_relative(props.row.dateModified) }}
+                  </div>
+                  <template v-slot:content>
+                    <span
+                      >{{ formatDateTime_date(props.row.dateModified) }}</span
+                    >
+                    <br />
+                    <span
+                      >{{ formatDateTime_time(props.row.dateModified) }}</span
+                    >
+                  </template>
+                </b-tooltip>
+              </div>
+            </b-table-column>
+            <b-table-column
+              v-slot="props"
+              field="size"
+              numeric
+              label="Size"
+              sortable
+              :custom-sort="sortTableData('size')"
+              right
+              width="128"
+              cell-class="size-column"
+            >
+              {{ formatBytes(props.row.size) }}
+            </b-table-column>
+            <b-table-column
+              v-slot="props"
+              field="dateModified"
+              label="Date Modified"
+              sortable
+              :custom-sort="sortTableData('dateModified')"
+              centered
+              width="256"
+              cell-class="modified-column"
+            >
+              <b-tooltip
+                :active="!!props.row.dateModified"
+                type="is-light"
+                size="is-small"
+                position="is-left"
+                animated
+                multilined
+              >
+                <div>{{ formatDateTime_relative(props.row.dateModified) }}</div>
+                <template v-slot:content>
+                  <span>{{ formatDateTime_date(props.row.dateModified) }}</span>
+                  <br />
+                  <span>{{ formatDateTime_time(props.row.dateModified) }}</span>
+                </template>
+              </b-tooltip>
+            </b-table-column>
+          </b-table>
+
+          <!-- Paginating Buttons -->
+          <div class="container is-clearfix" style="margin-top: 1rem">
+            <div
+              v-show="nextContinuationToken || previousContinuationTokens.length > 0"
+              class="buttons is-pulled-right"
+            >
+              <b-button
+                type="is-primary"
+                rounded
+                icon-pack="fas"
+                icon-left="angle-left"
+                @click="previousPage"
+                :disabled="previousContinuationTokens.length === 0"
+              >
+              </b-button>
+              <b-button
+                type="is-primary"
+                rounded
+                icon-pack="fas"
+                icon-right="angle-right"
+                @click="nextPage"
+                :disabled="!nextContinuationToken"
+              >
+              </b-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-bucket-url">
+          <a :href="`${config.bucketUrl}?prefix=${bucketPrefix}`"
+            >Bucket: {{ config.bucketUrl }}</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview App -->
+    <div id="preview" style="display: none">
+      <zero-md id="preview-markdown" src="#">
+        <template>
+          <!-- Sensible host style defaults -->
+          <style>
+            :host {
+              display: block;
+              position: relative;
+              contain: content;
+            }
+
+            :host([hidden]) {
+              display: none;
+            }
+
+            .markdown-body {
+              padding: 4.5rem
+                max(calc(100% - max(1012px, min(1012px, 100%))) / 2, 2.5rem);
+              min-height: calc(100vh - (2 * 4.5rem));
+            }
+          </style>
+
+          <!-- GitHub markdown styles (light/dark) -->
+          <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css"/>-->
+          <!-- GitHub markdown styles (light) -->
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown-light.min.css"
+          />
+          <style>
+            .markdown-body {
+              background: whitesmoke;
+            }
+          </style>
+
+          <!-- Highlightjs Github theme (light) -->
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/styles/github.min.css"
+          />
+          <!-- Highlightjs Github theme (dark) -->
+          <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/styles/github-dark.min.css" media="(prefers-color-scheme:dark)" /> -->
+
+          <!-- KaTeX styles (needed for math) -->
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css"
+          />
+        </template>
+      </zero-md>
+    </div>
+
+    <!-- GitHub Corner -->
+    <a
+      href="https://github.com/qoomon/aws-s3-bucket-browser"
+      class="github-corner"
+      aria-label="View source on GitHub"
+    >
+      <svg
+        width="80"
+        height="80"
+        viewBox="0 0 250 250"
+        style="
+          fill: #151513;
+          color: #fff;
+          position: fixed;
+          top: 0;
+          border: 0;
+          right: 0;
+        "
+        aria-hidden="true"
+      >
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path
+          d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+          fill="currentColor"
+          style="transform-origin: 130px 106px"
+          class="octo-arm"
+        ></path>
+        <path
+          d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+          fill="currentColor"
+          class="octo-body"
+        ></path>
+      </svg>
+      <style scopped>
+        .github-corner:hover .octo-arm {
+          animation: octocat-wave 560ms ease-in-out;
+        }
+
+        @keyframes octocat-wave {
+          0%,
+          100% {
+            transform: rotate(0);
+          }
+          20%,
+          60% {
+            transform: rotate(-25deg);
+          }
+          40%,
+          80% {
+            transform: rotate(10deg);
+          }
+        }
+
+        @media (max-width: 500px) {
+          .github-corner:hover .octo-arm {
+            animation: none;
+          }
+
+          .github-corner .octo-arm {
+            animation: octocat-wave 560ms ease-in-out;
+          }
+        }
+      </style>
+    </a>
+
+    <!-- Helper Functions -->
+    <script>
+      String.prototype.removePrefix = function (prefix) {
+        if (!this.startsWith(prefix)) return this;
+        return this.substring(prefix.length);
+      };
+
+      String.prototype.escapeHTML = function () {
+        const template = document.createElement("span");
+        template.innerText = this;
+        return template.innerHTML;
+      };
+
+      function devicePlatform_iOS() {
+        return (
+          /iPad|iPhone|iPod/.test(navigator.platform) ||
+          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+        );
+      }
+
+      function encodePath(path) {
+        const replaceChars = {
+          ";": "%3B",
+          "?": "%3F",
+          ":": "%3A",
+          "@": "%40",
+          "&": "%26",
+          "=": "%3D",
+          "+": "%2B",
+          $: "%24",
+          ",": "%2C",
+          "#": "%23",
+        };
+        return encodeURI(path)
+          .split("")
+          .map((char) => replaceChars[char] || char)
+          .join("");
+      }
+    </script>
+
+    <!-- Config Script -->
+    <script>
+      const htmlPrefix = "HTML>";
+      if (config.title) {
+        if (config.title.startsWith(htmlPrefix))
+          config.titleHTML = config.title.removePrefix(htmlPrefix);
+        else config.titleHTML = config.title.escapeHTML();
+      }
+      if (config.subtitle) {
+        if (config.subtitle.startsWith(htmlPrefix))
+          config.subtitleHTML = config.subtitle.removePrefix(htmlPrefix);
+        else config.subtitleHTML = config.subtitle.escapeHTML();
+      }
+
+      if (!config.bucketUrl) {
+        // try get bucket url by request parameter
+        config.bucketUrl = new URL(window.location).searchParams.get("bucket");
+      }
+      if (!config.bucketUrl) {
+        config.bucketUrl = window.location.href;
+      }
+
+      // try adjusting bucket url to bucket rest api endpoint
+      let match;
+      let type;
+
+      if (!match) {
+        type = "AWS";
+        // check for urls like https://s3.eu-central-1.amazonaws.com/example-bucket/index.html
+        match = config.bucketUrl.match(
+          /(?<protocol>[^:]+):\/\/s3\.(?<region>[^.]+)\.amazonaws.com\/(?<name>[^/]+)(\/(?<prefix>[^?]+))?/
+        );
+      }
+      if (!match) {
+        type = "AWS";
+        // check for urls like http://example-bucket.s3-website-eu-west-1.amazonaws.com/index.html
+        match = config.bucketUrl.match(
+          /(?<protocol>[^:]+):\/\/(?<name>.+)\.s3-website-(?<region>[^.]+)\.amazonaws\.com(\/(?<prefix>[^?]+))?/
+        );
+      }
+      if (!match) {
+        type = "AWS";
+        // check for urls like http://example-bucket.s3-website.eu-central-1.amazonaws.com/index.html
+        match = config.bucketUrl.match(
+          /(?<protocol>[^:]+):\/\/(?<name>.+)\.s3-website\.(?<region>[^.]+)\.amazonaws\.com(\/(?<prefix>[^?]+))?/
+        );
+      }
+      if (!match) {
+        type = "GCP";
+        // check for urls like https://storage.googleapis.com/example-bucket/index.html
+        match = config.bucketUrl.match(
+          /(?<protocol>[^:]+):\/\/storage\.googleapis\.com\/(?<name>[^/]+)(\/(?<prefix>[^?]+))?/
+        );
+      }
+      if (!match) {
+        type = "DGO";
+        // check for urls like https://example-bucket.nyc3.digitaloceanspaces.com/index.html
+        // check for urls like https://example-bucket.nyc3.cdn.digitaloceanspaces.com/index.html
+        match = config.bucketUrl.match(
+          /(?<protocol>[^:]+):\/\/(?<name>.+)\.(?<region>[^.]+)\.(?<domain>(cdn\.)?digitaloceanspaces\.com)(\/(?<prefix>[^?]+))?/
+        );
+      }
+      if (!match) {
+        type = "IBM";
+        // check for urls like http://example-bucket.s3-web.us-south.cloud-object-storage.appdomain.cloud/index.html
+        match = config.bucketUrl.match(
+          /(?<protocol>[^:]+):\/\/(?<name>.+)\.s3-web\.(?<region>[^.]+)\.cloud-object-storage\.appdomain\.cloud(\/(?<prefix>[^?]+))?/
+        );
+      }
+
+      if (match) {
+        switch (type) {
+          case "AWS":
+            config.bucketUrl = `${match.groups.protocol}://s3.${match.groups.region}.amazonaws.com/${match.groups.name}`;
+            break;
+          case "GCP":
+            config.bucketUrl = `${match.groups.protocol}://storage.googleapis.com/${match.groups.name}`;
+            break;
+          case "DGO":
+            config.bucketUrl = `${match.groups.protocol}://${match.groups.name}.${match.groups.region}.${match.groups.domain}`;
+            break;
+          case "IBM":
+            config.bucketUrl = `${match.groups.protocol}://${match.groups.name}.s3.${match.groups.region}.cloud-object-storage.appdomain.cloud/`;
+            break;
+        }
+        if (config.rootPrefix === undefined)
+          config.rootPrefix = match.groups.prefix;
+      }
+      console.log("Bucket REST API: " + config.bucketUrl);
+
+      config.rootPrefix = config.rootPrefix || "";
+      if (config.rootPrefix) {
+        config.rootPrefix = config.rootPrefix.replace(/\/?$/, "/"); // ensure trailing slash
+        console.log("Bucket Root Prefix: " + config.rootPrefix);
+      }
+
+      document.title = config.title;
+      document.getElementById("favicon").href = config.favicon;
+    </script>
+
+    <!-- Main Script -->
+    <script>
+      const initialHashValue =
+        decodeURIComponent(window.location.hash).replace(/^#/, "") || "";
+      const initialHashValueParams = new URLSearchParams(
+        initialHashValue.replace(/^.*?(\?|$)/, "")
+      );
+      // preview mode
+      if (initialHashValueParams.get("preview")) {
+        document.getElementById("app").remove();
+        document.getElementById("preview").style.display = "block";
+
+        const filePath = initialHashValue.replace(/\?.*$/, "");
+        const fileUrl = urlFromFilePath(filePath);
+
+        const previewFormat = initialHashValueParams.get("preview");
+        const previewElement = document.querySelector(
+          `#preview > #preview-${previewFormat}`
+        ); // remove all other preview elements
+        [...document.querySelectorAll("#preview > *")]
+          .filter((element) => element.id !== previewElement?.id)
+          .forEach((element) => element.remove());
+        // set source of preview element
+        switch (previewFormat) {
+          case "markdown":
+            previewElement.src = fileUrl;
+            break;
+          default:
+            alert(`Unsupported preview for ${previewFormat} files!`);
+        }
+
+        function urlFromFilePath(filePath) {
+          return `${(config.bucketMaskUrl || config.bucketUrl).replace(
+            /\/*$/,
+            ""
+          )}/${encodePath(filePath)}`;
+        }
+      }
+      // explorer mode
+      else {
+        document.getElementById("preview").remove();
+        document.getElementById("app").style.display = "block";
+
+        const app = Vue.createApp({
+          data() {
+            return {
+              config: config, // defined in <head> section
+              pathPrefix: "",
+              searchPrefix: "",
+              pathContentTableData: [],
+
+              previousContinuationTokens: [],
+              continuationToken: undefined,
+              nextContinuationToken: undefined,
+
+              windowWidth: window.innerWidth,
+
+              downloadAllFilesCount: null,
+              downloadAllFilesReceivedCount: null,
+              downloadAllFilesProgress: null,
+            };
+          },
+          computed: {
+            cssVars() {
+              return {
+                "--primary-color": this.config.primaryColor,
+              };
+            },
+            pathBreadcrumbs() {
+              return ["", ...(this.pathPrefix.match(/[^/]*\//g) || [])].map(
+                (pathPrefixPart, index, pathPrefixParts) => ({
+                  name: decodeURI(pathPrefixPart),
+                  url:
+                    "#" +
+                    pathPrefixParts.slice(0, index).join("") +
+                    pathPrefixPart,
+                })
+              );
+            },
+            cardView() {
+              return this.windowWidth <= 768;
+            },
+            bucketPrefix() {
+              return `${config.rootPrefix}${this.pathPrefix}`;
+            },
+          },
+          watch: {
+            pathPrefix() {
+              this.previousContinuationTokens = [];
+              this.continuationToken = undefined;
+              this.nextContinuationToken = undefined;
+              this.searchPrefix = this.pathPrefix.replace(/^.*\//, "");
+              window.location.hash = this.pathPrefix;
+              this.refresh();
+            },
+          },
+          methods: {
+            blurActiveElement() {
+              document.activeElement.blur();
+            },
+            moment,
+            validBucketPrefix(prefix) {
+              if (prefix === "") return true;
+              if (prefix.startsWith(" ") || prefix.endsWith(" ")) return false;
+              if (prefix.includes("//")) return false;
+              if (prefix.startsWith("/") && this.bucketPrefix.includes("/"))
+                return false;
+              return true;
+            },
+            searchByPrefix() {
+              if (this.validBucketPrefix(this.searchPrefix)) {
+                const pathPrefixDir = this.pathPrefix.replace(/[^/]*$/, "");
+                this.pathPrefix = pathPrefixDir + this.searchPrefix;
+              }
+            },
+            previousPage() {
+              if (this.previousContinuationTokens.length > 0) {
+                this.continuationToken = this.previousContinuationTokens.pop();
+                this.refresh();
+              }
+            },
+            nextPage() {
+              if (this.nextContinuationToken) {
+                this.previousContinuationTokens.push(this.continuationToken);
+                this.continuationToken = this.nextContinuationToken;
+                this.refresh();
+              }
+            },
+            async downloadAllFiles() {
+              const archiveFiles = this.pathContentTableData
+                .filter((item) => item.type === "content")
+                .map((item) => item.url);
+
+              this.downloadAllFilesCount = archiveFiles.length;
+              this.downloadAllFilesReceivedCount = 0;
+              this.downloadAllFilesProgress = 0;
+
+              let totalContentLength = 0;
+              let totalReceivedLength = 0;
+
+              const archiveName = this.pathPrefix
+                .split("/")
+                .filter((part) => part.trim())
+                .pop();
+              console.debug(`create archive for ${archiveName}...`);
+              const archiveData = [];
+              const archive = new fflate.Zip((err, data, final) => {
+                if (err) throw err;
+                archiveData.push(data);
+              });
+
+              await Promise.all(
+                archiveFiles.map(async (url) => {
+                  const fileName = url
+                    .split("/")
+                    .filter((part) => part.trim())
+                    .pop();
+                  console.debug(`downloading ${fileName}...`);
+                  const fileStream = new fflate.ZipPassThrough(fileName);
+                  archive.add(fileStream);
+
+                  const fileResponse = await fetch(url);
+                  totalContentLength += parseInt(
+                    fileResponse.headers.get("Content-Length")
+                  );
+                  const fileReader = fileResponse.body.getReader();
+
+                  while (true) {
+                    const { done, value } = await fileReader.read();
+                    if (done) {
+                      fileStream.push(new Uint8Array(), true);
+                      break;
+                    }
+                    fileStream.push(new Uint8Array(value));
+
+                    totalReceivedLength += value.length;
+                    this.downloadAllFilesProgress =
+                      (totalReceivedLength / totalContentLength +
+                        this.downloadAllFilesReceivedCount /
+                          this.downloadAllFilesCount) /
+                      2;
+                  }
+                  this.downloadAllFilesReceivedCount++;
+                })
+              ).then(() => archive.end());
+              console.debug("done!");
+
+              const archiveBlob = new Blob(archiveData, {
+                type: "application/octet-stream",
+              });
+              const objectUrl = window.URL.createObjectURL(archiveBlob);
+              const link = document.createElement("a");
+              link.href = objectUrl;
+              link.download = `${archiveName}.zip`;
+              link.click();
+              window.URL.revokeObjectURL(objectUrl);
+
+              this.downloadAllFilesCount = null;
+              this.downloadAllFilesReceivedCount = null;
+              this.downloadAllFilesProgress = null;
+            },
+            async refresh() {
+              let listBucketResult;
+              try {
+                if (!config.bucketUrl) {
+                  throw Error("Bucket URL is undefined!");
+                }
+
+                let bucketListApiUrl = `${config.bucketUrl}?list-type=2`;
+                bucketListApiUrl += `&delimiter=/`;
+                bucketListApiUrl += `&prefix=${this.bucketPrefix}`;
+
+                if (config.pageSize) {
+                  bucketListApiUrl += `&max-keys=${config.pageSize}`;
+                }
+                if (this.continuationToken) {
+                  bucketListApiUrl += `&continuation-token=${encodePath(
+                    this.continuationToken
+                  )}`;
+                }
+                let listBucketResultResponse = await fetch(bucketListApiUrl);
+                let listBucketResultXml = await listBucketResultResponse.text();
+
+                listBucketResult = new DOMParser().parseFromString(
+                  listBucketResultXml,
+                  "text/xml"
+                );
+                if (
+                  !listBucketResult.querySelector(
+                    "ListBucketResult > Delimiter"
+                  )
+                ) {
+                  throw Error(
+                    `Bucket URL ${config.bucketUrl} is not a valid bucket API URL, response does not contain <ListBucketResult><Delimiter> tag.`
+                  );
+                }
+              } catch (error) {
+                this.$buefy.notification.open({
+                  message: error.message?.escapeHTML(),
+                  type: "is-danger",
+                  duration: 60000,
+                  position: "is-bottom",
+                });
+                throw error;
+              }
+
+              let nextContinuationTokenTag = listBucketResult.querySelector(
+                "NextContinuationToken"
+              );
+              this.nextContinuationToken =
+                nextContinuationTokenTag &&
+                nextContinuationTokenTag.textContent;
+
+              let commonPrefixes = [
+                ...listBucketResult.querySelectorAll(
+                  "ListBucketResult > CommonPrefixes"
+                ),
+              ]
+                .map((tag) => ({
+                  prefix: tag
+                    .querySelector("Prefix")
+                    .textContent.removePrefix(config.rootPrefix),
+                }))
+                .filter(
+                  (prefix) =>
+                    !config.keyExcludePatterns.find((pattern) =>
+                      pattern.test(
+                        prefix.prefix.removePrefix(config.rootPrefix)
+                      )
+                    )
+                )
+                .map((prefix) => ({
+                  type: "prefix",
+                  name: prefix.prefix.split("/").slice(-2)[0] + "/",
+                  prefix: prefix.prefix,
+                }));
+
+              let contents = [
+                ...listBucketResult.querySelectorAll(
+                  "ListBucketResult > Contents"
+                ),
+              ]
+                .map((tag) => ({
+                  key: tag.querySelector("Key").textContent,
+                  size: parseInt(tag.querySelector("Size").textContent),
+                  dateModified: new Date(
+                    tag.querySelector("LastModified").textContent
+                  ),
+                }))
+                .filter(
+                  (content) => content.key !== decodeURI(this.bucketPrefix)
+                )
+                .filter(
+                  (content) =>
+                    !config.keyExcludePatterns.find((pattern) =>
+                      pattern.test(content.key.removePrefix(config.rootPrefix))
+                    )
+                )
+                .map((content) => {
+                  if (content.key.endsWith("/") && !content.size) {
+                    return {
+                      type: "prefix",
+                      name: content.key.split("/")[0] + "/",
+                      prefix: `${this.pathPrefix}${content.key}`,
+                    };
+                  }
+
+                  let url = `${(
+                    config.bucketMaskUrl || config.bucketUrl
+                  ).replace(/\/*$/, "")}/${encodePath(content.key)}`;
+                  let installUrl = undefined;
+                  if (url.endsWith("/manifest.plist") && devicePlatform_iOS()) {
+                    // generate manifest.plist install urls
+                    installUrl = `itms-services://?action=download-manifest&url=${encodePath(
+                      url
+                    )}`;
+                  }
+                  return {
+                    type: "content",
+                    name: content.key.split("/").slice(-1)[0],
+                    size: content.size,
+                    dateModified: content.dateModified,
+
+                    key: content.key,
+                    url,
+                    installUrl,
+                  };
+                });
+
+              this.pathContentTableData = [...commonPrefixes, ...contents];
+            },
+            sortTableData(columnName) {
+              return (rowA, rowB, isAsc) => {
+                // prefixes always first
+                if (rowA.type != rowB.type) {
+                  return rowA.type === "prefix" ? -1 : 1;
+                }
+
+                const valueA = rowA[columnName];
+                const valueB = rowB[columnName];
+                if (valueA != valueB) {
+                  if (valueA === undefined) {
+                    return isAsc ? -1 : 1;
+                  }
+                  if (valueB === undefined) {
+                    return isAsc ? 1 : -1;
+                  }
+                  return isAsc
+                    ? valueA < valueB
+                      ? -1
+                      : 1
+                    : valueA < valueB
+                    ? 1
+                    : -1;
+                }
+
+                return 0;
+              };
+            },
+            formatBytes(size) {
+              if (!size) {
+                return "-";
+              }
+              const KB = 1024;
+              if (size < KB) {
+                return size + "  B";
+              }
+              const MB = 1000000;
+              if (size < MB) {
+                return (size / KB).toFixed(0) + " KB";
+              }
+              const GB = 1000000000;
+              if (size < GB) {
+                return (size / MB).toFixed(2) + " MB";
+              }
+              return (size / GB).toFixed(2) + " GB";
+            },
+            formatDateTime_date(date) {
+              return date ? moment(date).format("ddd, DD. MMM YYYY") : "-";
+            },
+            formatDateTime_time(date) {
+              return date ? moment(date).format("hh:mm:ss") : "-";
+            },
+            formatDateTime_relative(date) {
+              return date ? moment(date).fromNow() : "-";
+            },
+          },
+          async mounted() {
+            window.onpopstate = () =>
+              (this.pathPrefix = decodeURIComponent(
+                window.location.hash
+              ).replace(/^#/, ""));
+            window.onpopstate();
+            window.addEventListener("resize", () => {
+              this.windowWidth = window.innerWidth;
+            });
+
+            this.refresh();
+          },
+          async beforeUnmount() {
+            window.removeEventListener("resize");
+          },
+        });
+        app.use(Buefy.default, { defaultIconPack: "fas" });
+        app.mount("#app");
+      }
+    </script>
+  </body>
+</html>
