@@ -113,6 +113,10 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
     persistence:
       config:
         type: emptyDir
