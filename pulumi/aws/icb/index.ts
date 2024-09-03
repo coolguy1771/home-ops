@@ -181,6 +181,156 @@ const cdnTLSCertificate = new aws.acm.Certificate("cdnTLSCertificate", {
   validationMethod: "DNS",
 });
 
+// const staticContentCachePolicy = new aws.cloudfront.CachePolicy(
+//   "staticContentCachePolicy",
+//   {
+//     comment: "Amplify cache policy for static content",
+//     defaultTtl: 0,
+//     maxTtl: 31536000,
+//     minTtl: 0,
+//     parametersInCacheKeyAndForwardedToOrigin: {
+//       enableAcceptEncodingBrotli: true,
+//       enableAcceptEncodingGzip: true,
+//       headersConfig: {
+//         headerBehavior: "whitelist",
+//         headers: {
+//           items: ["Authorization", "Host"],
+//         },
+//       },
+//       cookiesConfig: {
+//         cookieBehavior: "none",
+//       },
+//       queryStringsConfig: {
+//         queryStringBehavior: "none",
+//       },
+//     },
+//     name: "Managed-Amplify-StaticContent",
+//   }
+// );
+
+// // CloudFront Cache Policy for Default Amplify Settings
+// const defaultAmplifyCachePolicy = new aws.cloudfront.CachePolicy(
+//   "defaultAmplifyCachePolicy",
+//   {
+//     defaultTtl: 0,
+//     maxTtl: 31536000,
+//     minTtl: 0,
+//     parametersInCacheKeyAndForwardedToOrigin: {
+//       enableAcceptEncodingBrotli: true,
+//       enableAcceptEncodingGzip: true,
+//       headersConfig: {
+//         headerBehavior: "whitelist",
+//         headers: {
+//           items: [
+//             "Authorization",
+//             "Accept",
+//             "CloudFront-Viewer-Country",
+//             "Host",
+//           ],
+//         },
+//       },
+//       cookiesConfig: {
+//         cookieBehavior: "all",
+//       },
+//       queryStringsConfig: {
+//         queryStringBehavior: "all",
+//       },
+//     },
+//     name: "Managed-Amplify-Default",
+//   }
+// );
+
+// // CloudFront Cache Policy for Image Optimization
+// const imageOptimizationCachePolicy = new aws.cloudfront.CachePolicy(
+//   "imageOptimizationCachePolicy",
+//   {
+//     comment: "Amplify cache policy for image optimization",
+//     defaultTtl: 0,
+//     maxTtl: 31536000,
+//     minTtl: 0,
+//     parametersInCacheKeyAndForwardedToOrigin: {
+//       enableAcceptEncodingBrotli: true,
+//       enableAcceptEncodingGzip: true,
+//       headersConfig: {
+//         headerBehavior: "whitelist",
+//         headers: {
+//           items:
+//           ["Authorization", "Accept", "Host"]
+//         },
+//       },
+//       cookiesConfig: {
+//         cookieBehavior: "none",
+//       },
+//       queryStringsConfig: {
+//         queryStringBehavior: "all",
+//       },
+//     },
+//     name: "Managed-Amplify-ImageOptimization",
+//   }
+// );
+
+const cloudFrontWebACL = new awsNative.wafv2.WebAcl("icb-cdn-web-acl-cloudfront", {
+  description: "Web ACL for CloudFront",
+  defaultAction: { allow: {} },
+  scope: "CLOUDFRONT",
+  visibilityConfig: {
+    cloudWatchMetricsEnabled: true,
+    metricName: "icb-cdn-waf",
+    sampledRequestsEnabled: true,
+  },
+  rules: [
+    {
+      name: "AWS-AWSManagedRulesAmazonIpReputationList",
+      priority: 0,
+      overrideAction: { none: {} },
+      statement: {
+        managedRuleGroupStatement: {
+          vendorName: "AWS",
+          name: "AWSManagedRulesAmazonIpReputationList",
+        },
+      },
+      visibilityConfig: {
+        cloudWatchMetricsEnabled: true,
+        metricName: "AWS-AWSManagedRulesAmazonIpReputationList",
+        sampledRequestsEnabled: true,
+      },
+    },
+    {
+      name: "AWS-AWSManagedRulesCommonRuleSet",
+      priority: 1,
+      overrideAction: { none: {} },
+      statement: {
+        managedRuleGroupStatement: {
+          vendorName: "AWS",
+          name: "AWSManagedRulesCommonRuleSet",
+        },
+      },
+      visibilityConfig: {
+        cloudWatchMetricsEnabled: true,
+        metricName: "AWS-AWSManagedRulesCommonRuleSet",
+        sampledRequestsEnabled: true,
+      },
+    },
+    {
+      name: "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+      priority: 2,
+      overrideAction: { none: {} },
+      statement: {
+        managedRuleGroupStatement: {
+          vendorName: "AWS",
+          name: "AWSManagedRulesKnownBadInputsRuleSet",
+        },
+      },
+      visibilityConfig: {
+        cloudWatchMetricsEnabled: true,
+        metricName: "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+        sampledRequestsEnabled: true,
+      },
+    },
+  ],
+  name: "icb-cdn-waf",
+});
+
 // CloudFront Distribution
 const icbCDN = new awsNative.cloudfront.Distribution("icb-cdn", {
   distributionConfig: {
@@ -228,6 +378,6 @@ const icbCDN = new awsNative.cloudfront.Distribution("icb-cdn", {
       sslSupportMethod: "sni-only",
       minimumProtocolVersion: "TLSv1.2_2021",
     },
-    // webAclId: pulumi.interpolate`arn:aws:wafv2:${currentRegion}:${currentAccountId}:global/webacl/CreatedByCloudFront-47f1aba3-dc49-4048-a4a6-fe02315795da/bf13f317-c833-41fc-a12b-4a82d023e615`,
+    webAclId: cloudFrontWebACL.awsId,
   },
 });
