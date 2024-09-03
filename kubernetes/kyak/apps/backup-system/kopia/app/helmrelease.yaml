@@ -104,7 +104,8 @@ spec:
       main:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_PUBLIC_DOMAIN}
-        className: internal
+          cert-manager.k8s.io/cluster-issuer: letsencrypt-production
+        className: tailscale
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
