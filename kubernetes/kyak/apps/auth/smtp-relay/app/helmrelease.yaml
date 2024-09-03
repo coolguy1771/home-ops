@@ -35,7 +35,7 @@ spec:
               repository: ghcr.io/foxcpp/maddy
               tag: 0.7.1@sha256:6ab538e2f28baf2324f7cb418c7f9476fd9c7e9fa9b14bc3aecf51a9f6962064
             env:
-              SMTP_RELAY_SMTP_PORT: &port 587
+              SMTP_RELAY_SMTP_PORT: &port 25
               SMTP_RELAY_METRICS_PORT: &metricsPort 8080
               SMTP_RELAY_SERVER_PORT: 465
             envFrom:
@@ -102,6 +102,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /cache
-      tls:
-        type: secret
-        name: smtp-relay-tls
+      # tls:
+      #   type: secret
+      #   name: smtp-relay-tls
