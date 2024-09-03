@@ -5,7 +5,7 @@ metadata:
   name: flux-system
   labels:
     istio.io/dataplane-mode: ambient
-
+    goldilocks.fairwinds.com/enabled: "true"
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"

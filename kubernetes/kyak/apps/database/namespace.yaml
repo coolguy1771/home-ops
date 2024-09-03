@@ -5,7 +5,7 @@ metadata:
   name: database
   labels:
     istio.io/dataplane-mode: ambient
-
+    goldilocks.fairwinds.com/enabled: "true"
   annotations:
     volsync.backube/privileged-movers: "true"
 ---

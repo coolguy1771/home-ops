@@ -6,6 +6,7 @@ metadata:
   labels:
     istio.io/dataplane-mode: ambient
     shared-gateway-access: "true"
+    goldilocks.fairwinds.com/enabled: "true"
   annotations:
     volsync.backube/privileged-movers: "true"
 ---

@@ -4,7 +4,9 @@ kind: Namespace
 metadata:
   name: monitoring
   labels:
+    istio.io/dataplane-mode: ambient
     kustomize.toolkit.fluxcd.io/prune: disabled
+    goldilocks.fairwinds.com/enabled: "true"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/provider_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3

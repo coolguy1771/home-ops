@@ -6,3 +6,4 @@ metadata:
   labels:
     istio.io/dataplane-mode: ambient
     kustomize.toolkit.fluxcd.io/prune: disabled
+    goldilocks.fairwinds.com/enabled: "true"

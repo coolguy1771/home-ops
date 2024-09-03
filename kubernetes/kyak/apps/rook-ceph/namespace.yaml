@@ -5,5 +5,5 @@ metadata:
   name: rook-ceph
   labels:
     istio.io/dataplane-mode: ambient
-
+    goldilocks.fairwinds.com/enabled: "true"
     kustomize.toolkit.fluxcd.io/prune: disabled
