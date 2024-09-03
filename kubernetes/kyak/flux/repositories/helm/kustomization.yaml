@@ -19,6 +19,7 @@ resources:
   - ./dysnix.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
+  - ./fairwinds.yaml
   - ./falco-security.yaml
   - ./grafana.yaml
   - ./ingress-nginx.yaml
