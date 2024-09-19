@@ -4,6 +4,7 @@
 <html lang="en" style="overflow-y: auto">
   <head>
     <!-- Configuration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
     <script>
       const config = {
         title: "Bucket Browser", // prefix value with `HTML> ` to render as html, see subtitle
@@ -731,7 +732,7 @@
 
       if (!config.bucketUrl) {
         // try get bucket url by request parameter
-        config.bucketUrl = new URL(window.location).searchParams.get("bucket");
+        config.bucketUrl = DOMPurify.sanitize(new URL(window.location).searchParams.get("bucket"));
       }
       if (!config.bucketUrl) {
         config.bucketUrl = window.location.href;
