@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: kiali-operator
-      version: 1.89.0
+      version: 1.89.3
       sourceRef:
         kind: HelmRepository
         name: kiali
