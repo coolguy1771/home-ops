@@ -289,7 +289,7 @@ spec:
         istio-mesh:
           # renovate: depName="Istio Mesh Dashboard"
           gnetId: 7639
-          revision: 228
+          revision: 229
           datasource: Prometheus
         istio-ztunnel:
           # renovate: depName="Istio Ztunnel Dashboard"
