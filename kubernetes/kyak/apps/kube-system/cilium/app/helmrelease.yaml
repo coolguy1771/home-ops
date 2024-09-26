@@ -181,12 +181,6 @@ spec:
       enabled: false
     envoy:
       enabled: false
-      # -- User to run the pod with
-      # runAsUser: 0
-      # -- Run the pod with elevated privileges
-      privileged: true
-      prometheus:
-        enabled: true
       capabilities:
         # -- Capabilities for the `cilium-envoy` container
         envoy:
