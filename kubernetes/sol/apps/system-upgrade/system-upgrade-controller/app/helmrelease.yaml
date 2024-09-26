@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: docker.io/rancher/system-upgrade-controller
-              tag: v0.13.4@sha256:3df6d01b9eb583a78c309ce0b2cfeed98a9af97983e4ea96bf53410dd56c6f45
+              tag: v0.14.0@sha256:69a721d89cabb500baf94cf8953c8abfb16c7c625a842c8447e3d15bf92a7a5c
             env:
               SYSTEM_UPGRADE_CONTROLLER_DEBUG: false
               SYSTEM_UPGRADE_CONTROLLER_THREADS: 2
