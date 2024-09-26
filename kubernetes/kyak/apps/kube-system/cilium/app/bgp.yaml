@@ -11,34 +11,11 @@ spec:
     - name: "instance-64512"
       localASN: 64512
       peers:
-      - name: "peer-64512-vyos"
-        peerASN: 64512
-        peerAddress: 10.1.237.1
-        peerConfigRef:
-          name: "cilium-peer-vyos"
       - name: "peer-64512-coresw"
         peerASN: 64512
         peerAddress: 10.1.237.4
         peerConfigRef:
           name: "cilium-peer-coresw"
----
-apiVersion: cilium.io/v2alpha1
-kind: CiliumBGPPeerConfig
-metadata:
-  name: cilium-peer-vyos
-spec:
-  timers:
-    holdTimeSeconds: 9
-    keepAliveTimeSeconds: 3
-  gracefulRestart:
-    enabled: true
-    restartTimeSeconds: 15
-  families:
-    - afi: ipv4
-      safi: unicast
-      advertisements:
-        matchLabels:
-          advertise: "bgp"
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeerConfig

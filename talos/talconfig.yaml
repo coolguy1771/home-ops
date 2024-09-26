@@ -215,11 +215,10 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/binfmt-misc
-            - siderolabs/chelsio-drivers
-            - siderolabs/chelsio-firmware
             - siderolabs/fuse3
             - siderolabs/intel-ucode
             - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-fabricmanager-production
             - siderolabs/nvidia-container-toolkit-production
             - siderolabs/util-linux-tools
         extraKernelArgs:
@@ -272,20 +271,6 @@ nodes:
           path: /machine/sysctls
           value:
             net.core.bpf_jit_harden: 1
-      - |-
-        - op: add
-          path: /machine/systemDiskEncryption
-          value:
-            ephemeral:
-              provider: luks2
-              keys:
-                - nodeID: {}
-                  slot: 0
-            state:
-              provider: luks2
-              keys:
-                - nodeID: {}
-                  slot: 0
 
 controlPlane:
   patches:
@@ -307,12 +292,12 @@ controlPlane:
           ephemeral:
             provider: luks2
             keys:
-              - tpm: {}
+              - nodeID: {}
                 slot: 0
           state:
             provider: luks2
             keys:
-              - tpm: {}
+              - nodeID: {}
                 slot: 0
     - |-
       - op: add

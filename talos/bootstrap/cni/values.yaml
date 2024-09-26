@@ -31,8 +31,6 @@ bpf:
   clockProbe: true
   masquerade: false
   tproxy: true
-containerRuntime:
-  integration: containerd
 endpointRoutes:
   enabled: true
 nodePort:
@@ -64,16 +62,11 @@ socketLB:
   enabled: true
 wellKnownIdentities:
   enabled: true
-enableCnpStatusUpdates: true
-endpointStatus:
-  enabled: true
-  status: "policy"
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: "10.244.0.0/16"
 monitor:
   enabled: false
-tunnel: disabled
 operator:
   enabled: true
   rollOutPods: true

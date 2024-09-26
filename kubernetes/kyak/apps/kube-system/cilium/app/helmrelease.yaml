@@ -143,7 +143,6 @@ spec:
       enabled: true
     wellKnownIdentities:
       enabled: true
-    enableCnpStatusUpdates: true
     endpointStatus:
       enabled: true
       status: "policy"
@@ -154,7 +153,6 @@ spec:
       enabled: false
     prometheus:
       enabled: true
-    tunnel: disabled
     operator:
       enabled: true
       rollOutPods: true
