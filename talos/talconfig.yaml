@@ -6,7 +6,7 @@ talosVersion: v1.8.0
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 kubernetesVersion: v1.31.1
 additionalApiServerCertSans: &san
-  - 10.10.254.3
+  - 10.10.10.201
   - k8s-lb.286k.co
   - 127.0.0.1
 additionalMachineCertSans: *san
@@ -31,8 +31,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-1
     ipAddress: 10.10.10.21
@@ -46,8 +49,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-2
     ipAddress: 10.10.10.22
@@ -61,8 +67,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-3
     ipAddress: 10.10.10.23
@@ -76,9 +85,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
-
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-4
     ipAddress: 10.10.10.24
@@ -92,9 +103,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
-
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-5
     ipAddress: 10.10.10.25
@@ -108,9 +121,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
-
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-6
     ipAddress: 10.10.10.26
@@ -124,8 +139,11 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/intel-ucode
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
             - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-7
     ipAddress: 10.10.10.27
@@ -138,8 +156,12 @@ nodes:
     schematic:
       customization:
         systemExtensions:
-          officialExtensions:
-            - siderolabs/amd-ucode
+            officialExtensions:
+                - siderolabs/amd-ucode
+                - siderolabs/amdgpu-firmware
+                - siderolabs/binfmt-misc
+                - siderolabs/fuse3
+                - siderolabs/util-linux-tools
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
@@ -154,6 +176,10 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
+            - siderolabs/amdgpu-firmware
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
+            - siderolabs/util-linux-tools
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
@@ -188,12 +214,16 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
+            - siderolabs/binfmt-misc
+            - siderolabs/chelsio-drivers
+            - siderolabs/chelsio-firmware
+            - siderolabs/fuse3
             - siderolabs/intel-ucode
-            - siderolabs/nonfree-kmod-nvidia
-            - siderolabs/nvidia-container-toolkit
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
+            - siderolabs/util-linux-tools
         extraKernelArgs:
           - bond=bond1:eth3,eth4:mode=802.3ad,xmit_hash_policy=layer2+3:1500
-
 
     patches:
       - |-
@@ -266,15 +296,11 @@ controlPlane:
             keys:
               - nodeID: {}
                 slot: 0
-              - tpm: {}
-                slot: 1
           state:
             provider: luks2
             keys:
               - nodeID: {}
                 slot: 0
-              - tpm: {}
-                slot: 1
     - |-
       - op: add
         path: /machine/kubelet/extraArgs
@@ -393,7 +419,7 @@ controlPlane:
         value:
           disabled: false
           servers:
-            - 10.1.237.4
+            - time.nist.gov
     - |-
       - op: add
         path: /machine/udev
