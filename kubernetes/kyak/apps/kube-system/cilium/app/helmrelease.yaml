@@ -28,7 +28,6 @@ spec:
     cni:
       exclusive: false
     securityContext:
-      privileged: true
       capabilities:
         ciliumAgent:
           - CHOWN
@@ -51,15 +50,13 @@ spec:
     routingMode: native
     cluster:
       id: 1
-      name: home
+      name: kyak
     pmtuDiscovery:
       enabled: true
     bpf:
       clockProbe: true
       masquerade: false
       tproxy: true
-    containerRuntime:
-      integration: containerd
     endpointRoutes:
       enabled: true
     nodePort:
@@ -145,7 +142,11 @@ spec:
       enabled: true
     ipam:
       mode: kubernetes
-    ipv4NativeRoutingCIDR: "10.244.0.0/16"
+    ipv4NativeRoutingCIDR: "10.96.0.0/16"
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     monitor:
       enabled: false
     prometheus:
@@ -187,7 +188,4 @@ spec:
           - BPF
     # Configuration for types of authentication for Cilium (beta)
     authentication:
-      # -- Enable authentication processing and garbage collection.
-      # Note that if disabled, policy enforcement will still block requests that require authentication.
-      # But the resulting authentication requests for these requests will not be processed, therefore the requests not be allowed.
       enabled: false
