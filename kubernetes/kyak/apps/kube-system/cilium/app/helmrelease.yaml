@@ -163,10 +163,6 @@ spec:
       serviceTopology: true
     l7Proxy: true
     localRedirectPolicy: true
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    k8sServiceHost: localhost
-    k8sServicePort: 7445
-    kubeProxyReplacement: true
     logOptions:
       format: json
     cgroup:
