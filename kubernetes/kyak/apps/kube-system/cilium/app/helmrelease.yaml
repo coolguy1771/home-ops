@@ -143,9 +143,6 @@ spec:
       enabled: true
     wellKnownIdentities:
       enabled: true
-    endpointStatus:
-      enabled: true
-      status: "policy"
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "10.244.0.0/16"
