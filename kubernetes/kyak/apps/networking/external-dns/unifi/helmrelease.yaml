@@ -62,9 +62,9 @@ spec:
       - --ignore-ingress-tls-spec
     policy: sync
     sources: ["ingress", "service"]
-    txtOwnerId: main
-    txtPrefix: k8s.main.
-    domainFilters: ["devbu.io"]
+    txtOwnerId: kyak
+    txtPrefix: k8s.kyak.
+    domainFilters: ["${SECRET_PUBLIC_DOMAIN}"]
     serviceMonitor:
       enabled: true
     podAnnotations:
