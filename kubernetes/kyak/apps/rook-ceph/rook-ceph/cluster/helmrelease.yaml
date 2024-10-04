@@ -96,7 +96,7 @@ spec:
             memory: 512Mi
           limits:
             memory: 1Gi
-        osd:
+        host:
           requests:
             cpu: 500m
             memory: 2Gi
@@ -111,7 +111,7 @@ spec:
     cephBlockPools:
       - name: ceph-blockpool
         spec:
-          failureDomain: osd
+          failureDomain: host
           replicated:
             size: 3
         storageClass:
@@ -143,7 +143,7 @@ spec:
             replicated:
               size: 3
           dataPools:
-            - failureDomain: osd
+            - failureDomain: host
               replicated:
                 size: 3
               name: data0
@@ -191,11 +191,11 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: osd
+            failureDomain: host
             replicated:
               size: 3
           dataPool:
-            failureDomain: osd
+            failureDomain: host
             erasureCoded:
               dataChunks: 2
               codingChunks: 1
