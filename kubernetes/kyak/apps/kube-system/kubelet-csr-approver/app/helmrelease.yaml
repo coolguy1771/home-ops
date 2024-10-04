@@ -1,14 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app kubelet-csr-approver
+  name: kubelet-csr-approver
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
-      chart: *app
+      chart: kubelet-csr-approver
       version: 1.2.2
       sourceRef:
         kind: HelmRepository
@@ -16,13 +16,17 @@ spec:
         namespace: flux-system
   install:
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      strategy: rollback
+      retries: 3
+  valuesFrom:
+    - kind: ConfigMap
+      name: kubelet-csr-approver-helm-values
   values:
-    # Required configuration item
-    providerRegex: "^k8s-[0-9]"
-    namespace: "kube-system"
-    allowedDnsNames: 3
-    bypassDnsResolution: true
+    metrics:
+      enable: true
+      serviceMonitor:
+        enabled: true
