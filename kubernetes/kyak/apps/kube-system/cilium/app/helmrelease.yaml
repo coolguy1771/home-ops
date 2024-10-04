@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -14,67 +14,29 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
+  valuesFrom:
+    - kind: ConfigMap
+      name: cilium-helm-values
   values:
     cni:
       exclusive: false
-    securityContext:
-      capabilities:
-        ciliumAgent:
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUID
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
     autoDirectNodeRoutes: true
     annotateK8sNode: true
     routingMode: native
-    cluster:
-      id: 1
-      name: kyak
     pmtuDiscovery:
       enabled: true
-    bpf:
-      clockProbe: true
-      masquerade: false
-      tproxy: true
-    endpointRoutes:
-      enabled: true
-    nodePort:
-      enabled: true
-    enableCiliumEndpointSlice: true
-    enableK8sEndpointSlice: true
-    enableIdentityMark: true
     ingressController:
       enabled: false
     gatewayAPI:
       enabled: false
-    bgpControlPlane:
-      enabled: true
-    l2announcements:
-      enabled: false
-      leaseDuration: 120s
-      leaseRenewDeadline: 60s
-      leaseRetryPeriod: 1s
     hubble:
       enabled: true
       metrics:
@@ -133,7 +95,7 @@ spec:
     externalIPs:
       enabled: true
     hostFirewall:
-      enabled: true
+      enabled: false
     hostPort:
       enabled: true
     socketLB:
@@ -142,13 +104,6 @@ spec:
       enabled: true
     ipam:
       mode: kubernetes
-    ipv4NativeRoutingCIDR: "10.96.0.0/16"
-    k8sServiceHost: 127.0.0.1
-    k8sServicePort: 7445
-    kubeProxyReplacement: true
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    monitor:
-      enabled: false
     prometheus:
       enabled: true
     operator:
@@ -157,11 +112,13 @@ spec:
       replicas: 2
       prometheus:
         enabled: true
+      dashboards:
+        enabled: true
     loadBalancer:
       algorithm: maglev
       mode: dsr
       serviceTopology: true
-    l7Proxy: true
+    l7Proxy: false
     localRedirectPolicy: true
     logOptions:
       format: json
@@ -170,18 +127,9 @@ spec:
       autoMount:
         enabled: false
     envoyConfig:
-      # -- Enable CiliumEnvoyConfig CRD
-      # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
       enabled: false
     envoy:
       enabled: false
-      capabilities:
-        # -- Capabilities for the `cilium-envoy` container
-        envoy:
-          # Used since cilium proxy uses setting IPPROTO_IP/IP_TRANSPARENT
-          - NET_ADMIN
-          - PERFMON
-          - BPF
     # Configuration for types of authentication for Cilium (beta)
     authentication:
       enabled: false
