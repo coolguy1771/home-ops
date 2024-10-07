@@ -10,6 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: istio-cni
+    - name: istiod
   path: ./kubernetes/kyak/apps/istio-system/ztunnel/app
   prune: true
   sourceRef:

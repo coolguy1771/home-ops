@@ -10,6 +10,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: istiod
+    - name: cert-manager
+      namespace: cert-manager
   path: ./kubernetes/kyak/apps/istio-system/kiali/app
   prune: true
   sourceRef:
