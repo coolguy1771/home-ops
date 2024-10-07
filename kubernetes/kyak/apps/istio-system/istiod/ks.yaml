@@ -13,7 +13,6 @@ spec:
   dependsOn:
     - name: istio-base
     - name: cert-manager
-      namespace: cert-manager
   path: ./kubernetes/kyak/apps/istio-system/istiod/app
   prune: true
   sourceRef:
