@@ -107,7 +107,7 @@ spec:
             secret.reloader.stakater.com/reload: &secret thanos-objstore-config
         additionalAlertManagerConfigs:
           - static_configs:
-              - targets: ["alertmanager.286k.co"]
+              - targets: ["alertmanager.${SECRET_PUBLIC_DOMAIN}"]
         replicas: 1
         replicaExternalLabelName: __replica__
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
