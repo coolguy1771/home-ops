@@ -16,4 +16,5 @@ resources:
   # - ./snmp-exporter/ks.yaml
   - ./tempo/ks.yaml
   - ./thanos/ks.yaml
+  - ./unpoller/ks.yaml
   - ./vector/ks.yaml
