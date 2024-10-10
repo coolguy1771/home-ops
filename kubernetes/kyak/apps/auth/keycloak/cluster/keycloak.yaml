@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=
 apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
@@ -79,3 +81,5 @@ spec:
     annotations:
       external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
       cert-manager.io/cluster-issuer: letsencrypt-production
+
+# https://github.com/wadahiro/keycloak-discord/releases/download/v0.5.0/keycloak-discord-0.5.0.jar

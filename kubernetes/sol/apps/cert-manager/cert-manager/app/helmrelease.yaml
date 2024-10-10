@@ -24,16 +24,24 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    installCRDs: true
-    dns01RecursiveNameservers: 1.1.1.1:53,8.8.8.8:53
+    replicaCount: 1
+    crds:
+      enabled: true
+    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
     dns01RecursiveNameserversOnly: true
-    podDnsPolicy: None
-    podDnsConfig:
-      nameservers:
-        - "1.1.1.1"
-        - "8.8.8.8"
     prometheus:
       enabled: true
       servicemonitor:
         enabled: true
         prometheusInstance: monitoring
+    webhook:
+      replicaCount: 1
+    cainjector:
+      replicaCount: 1
+      podLabels:
+        egress.home.arpa/apiserver: allow
+        egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
+    # config:
+    #   apiVersion: controller.config.cert-manager.io/v1alpha1
+    #   kind: ControllerConfiguration
+    #   enableGatewayAPI: true
