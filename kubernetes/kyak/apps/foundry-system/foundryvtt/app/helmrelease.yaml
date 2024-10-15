@@ -87,7 +87,7 @@ spec:
       app:
         className: tailscale
         annotations:
-          # external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: foundry.tail06ebc.ts.net
           cert-manager.io/cluster-issuer: letsencrypt-production
           tailscale.com/funnel: "true"
           nginx.ingress.kubernetes.io/proxy-body-size: 4096m
