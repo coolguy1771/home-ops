@@ -155,6 +155,13 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/unifi-folder
+          - name: kepler
+            orgId: 1
+            folder: Kepler
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -397,6 +404,13 @@ spec:
           # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
           gnetId: 11312
           revision: 9
+          datasource: Prometheus
+      kepler:
+        kepler-exporter:
+          url: https://raw.githubusercontent.com/sustainable-computing-io/kepler/refs/heads/main/grafana-dashboards/Kepler-Exporter.json
+          datasource: Prometheus
+        kepler-exporter-promrules:
+          url: https://raw.githubusercontent.com/sustainable-computing-io/kepler/refs/heads/main/grafana-dashboards/Kepler-Exporter-PromRules.json
           datasource: Prometheus
     sidecar:
       dashboards:
