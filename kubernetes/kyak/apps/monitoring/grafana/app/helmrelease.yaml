@@ -162,6 +162,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
+              path: /var/lib/grafana/dashboards/kepler-folder
     datasources:
       datasources.yaml:
         apiVersion: 1
