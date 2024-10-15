@@ -85,10 +85,11 @@ spec:
             port: 30000
     ingress:
       app:
-        className: external
+        className: tailscale
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
+          tailscale.com/funnel: "true"
           nginx.ingress.kubernetes.io/proxy-body-size: 4096m
         hosts:
           - host: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
