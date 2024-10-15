@@ -2,8 +2,8 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ${job}
-  namespace: ${ns}
+  name: volsync-unlock-{{ ENV.APP') }}
+  namespace: {{ ENV.NS }}
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -12,16 +12,16 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: minio
-          image: docker.io/restic/restic:0.17.1
+          image: docker.io/restic/restic:latest
           args: ["unlock", "--remove-all"]
           envFrom:
             - secretRef:
-                name: ${app}-volsync-secret
+                name: {{ ENV.APP }}-volsync-secret
           resources: {}
         - name: r2
-          image: docker.io/restic/restic:0.17.1
+          image: docker.io/restic/restic:latest
           args: ["unlock", "--remove-all"]
           envFrom:
             - secretRef:
-                name: ${app}-volsync-r2-secret
+                name: {{ ENV.APP }}-volsync-r2-secret
           resources: {}

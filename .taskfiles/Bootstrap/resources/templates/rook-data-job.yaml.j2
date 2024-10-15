@@ -2,18 +2,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ${job}
-  namespace: default
+  name: {{ ENV.JOB }}
+  namespace: {{ ENV.NS }}
 spec:
   ttlSecondsAfterFinished: 3600
   template:
     spec:
       automountServiceAccountToken: false
       restartPolicy: Never
-      nodeName: ${node}
+      nodeName: {{ ENV.NODE }}
       containers:
         - name: main
-          image: docker.io/library/alpine:3.20.3
+          image: docker.io/library/alpine:latest
           command: ["/bin/sh", "-c"]
           args: ["rm -rf /mnt/host_var/lib/rook"]
           volumeMounts:

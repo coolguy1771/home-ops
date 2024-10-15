@@ -12,13 +12,11 @@ env:
 
 includes:
   ansible: .taskfiles/Ansible/Taskfile.yaml
-  bootstrap: .taskfiles/Bootstrap/Taskfile.yaml
-  external-secrets: .taskfiles/ExternalSecrets/Taskfile.yaml
+  bootstrap: .taskfiles/bootstrap/taskfile.yaml
   flux: .taskfiles/Flux/Taskfile.yaml
-  kubernetes: .taskfiles/Kubernetes/Taskfile.yaml
-  rook: .taskfiles/Rook/Taskfile.yaml
+  kubernetes: .taskfiles/kubernetes/taskfile.yaml
   talos: .taskfiles/Talos/Taskfile.yaml
-  volsync: .taskfiles/VolSync/Taskfile.yaml
+  volsync: .taskfiles/volsync/taskfile.yaml
 
 tasks:
 
