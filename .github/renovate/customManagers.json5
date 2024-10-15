@@ -29,6 +29,19 @@
       "matchStrings": ["imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"],
       "datasourceTemplate": "docker",
       "versioningTemplate": "redhat"
+    },
+    {
+      "customType": "regex",
+      "description": ["Process Talos Schematic versions"],
+      "datasourceTemplate": "json",
+      "versioningTemplate": "semver",
+      "fileMatch": ["(^|/)kubernetes/.+\\.json?$"],
+      // "kernel": "https://factory.talos.dev/image/d8fe2ed657178bb666614158e2ba8d2852405195f7a9b97a63847510f3fc9c97/v1.8.1/kernel-amd64",
+      // "initrd": ["https://factory.talos.dev/image/d8fe2ed657178bb666614158e2ba8d2852405195f7a9b97a63847510f3fc9c97/v1.8.1/initramfs-amd64.xz"],
+      "matchStrings": [
+        "/\"(?<depName>\\S+)\"\\s+\\[?\"(?<factory>https:\/\/((xn--|_)?[a-z0-9]+(-[a-z0-9]+)*\\.)+([a-z]{2,}))\/image\/[a-f0-9]+\/(?<currentValue>(v|\\d)[^\/]+)\\S+\\]?\""
+      ],
+      "registryUrlTemplate": "https://factory.talos.dev/versions"
     }
   ]
 }

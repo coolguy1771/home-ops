@@ -91,12 +91,10 @@ tasks:
   bootstrap-matchbox:
     desc: Bootstrap required Matchbox configuration to PXE Boot machine
     cmds:
-      - for: ['kernel-amd64', 'initramfs-amd64.xz']
-        cmd: |
-          curl -skL https://factory.talos.dev/image/{{.TALOS_SCHEMATIC_ID}}/{{.TALOS_VERSION}}/{{.ITEM}} | \
-              curl -skT - -u "{{.HOME_SERVICE_USER}}:" \
-                  sftp://{{.HOME_SERVICE_ADDR}}/{{.HOME_SERVICE_MATCHBOX_DIR}}/assets/{{.ITEM}}
-      - find {{.CLUSTER_DIR}}/bootstrap/talos/assets -type f | xargs -I{} sh -c "sops --decrypt {} | {{.MINIJINJA_CMD}} - | curl -skT - -u "{{.HOME_SERVICE_USER}}:" sftp://{{.HOME_SERVICE_ADDR}}/{{.HOME_SERVICE_MATCHBOX_DIR}}/assets/\$(basename {} | sed 's/\.secret\.sops//')"
+      - |
+        find {{.CLUSTER_DIR}}/../../talos/clusterconfig -type f -not -name 'talosconfig' | while read -r file; do
+          curl -skT "$file" -u "{{.HOME_SERVICE_USER}}:" sftp://{{.HOME_SERVICE_ADDR}}/{{.HOME_SERVICE_MATCHBOX_DIR}}/assets/"${file##*/kyak-}"
+        done
       - find {{.CLUSTER_DIR}}/bootstrap/talos/groups -type f | xargs -I{} curl -skT {} -u "{{.HOME_SERVICE_USER}}:" sftp://{{.HOME_SERVICE_ADDR}}/{{.HOME_SERVICE_MATCHBOX_DIR}}/groups/
       - find {{.CLUSTER_DIR}}/bootstrap/talos/profiles -type f | xargs -I{} curl -skT {} -u "{{.HOME_SERVICE_USER}}:" sftp://{{.HOME_SERVICE_ADDR}}/{{.HOME_SERVICE_MATCHBOX_DIR}}/profiles/
       - ssh -l {{.HOME_SERVICE_USER}} {{.HOME_SERVICE_ADDR}} "cd /var/opt/home-service ; go-task restart-matchbox"
