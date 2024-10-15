@@ -45,8 +45,8 @@ metrics:
       - { color: red, min: 76, max: 9999 }
     title: Memory
 
-  - name: cluster_power_usage
-    query: round(upsHighPrecOutputLoad, 0.1)
+  - name: cluster_pod_power_usage
+    query: round(sum(irate(kepler_container_other_joules_total{}[1m])) + sum(irate(kepler_container_gpu_joules_total{}[1m])) + sum(irate(kepler_container_dram_joules_total{}[1m])) + sum(irate(kepler_container_package_joules_total{}[1m])), 0.1)
     suffix: "w"
     colors:
       - { color: "green", min: 0, max: 400 }
