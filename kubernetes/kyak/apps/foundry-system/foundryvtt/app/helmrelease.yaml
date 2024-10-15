@@ -100,6 +100,7 @@ spec:
                   port: http
         tls:
           - hosts: [*host]
+            secretName: foundryvtt-tls
     # route:
     #   app:
     #     enabled: true
