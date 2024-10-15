@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./gateway/ks.yaml
+#  - ./gateway/ks.yaml
