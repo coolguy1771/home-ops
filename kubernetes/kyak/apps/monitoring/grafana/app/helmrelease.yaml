@@ -322,7 +322,7 @@ spec:
         istio-workload:
           # renovate: depName="Istio Workload Dashboard"
           gnetId: 7630
-          revision: 231
+          revision: 232
           datasource: Prometheus
         istio-wasm:
           # renovate: depName="Istio Wasm Extension Dashboard"
