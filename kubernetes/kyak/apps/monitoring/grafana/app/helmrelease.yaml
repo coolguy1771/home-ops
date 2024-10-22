@@ -49,6 +49,7 @@ spec:
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_PUBLIC_DOMAIN}
+      GF_SECURITY_HIDE_VERSION: true
     envFromSecrets:
       - name: *secret
     grafana.ini:
