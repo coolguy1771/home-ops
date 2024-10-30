@@ -2,7 +2,7 @@
     "name": "icb",
     "main": "index.ts",
     "devDependencies": {
-        "@types/node": "^20.0.0"
+        "@types/node": "^22.0.0"
     },
     "dependencies": {
         "@pulumi/aws": "^6.13.2",
