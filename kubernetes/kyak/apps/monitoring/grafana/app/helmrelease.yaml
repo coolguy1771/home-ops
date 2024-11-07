@@ -68,6 +68,8 @@ spec:
         use_pkce: true
         allow_sign_up: true
         role_attribute_strict: true
+        use_refresh_token: true
+        role_attribute_path: grafana_role
       auth.generic_oauth.group_mapping:
         org_id: 1
         role_attribute_path: |
