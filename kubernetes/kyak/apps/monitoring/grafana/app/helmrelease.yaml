@@ -60,20 +60,18 @@ spec:
       auth:
         oauth_auto_login: true
         oauth_allow_insecure_email_lookup: true
-      auth.generic_oauth:
+      auth.okta:
         enabled: true
-        name: Authelia
-        icon: signin
-        scopes: openid profile email groups
-        empty_scopes: false
-        login_attribute_path: preferred_username
-        groups_attribute_path: groups
-        name_attribute_path: name
+        name: Okta
+        icon: okta
+        scopes: openid profile email offline_access
         use_pkce: true
+        allow_sign_up: true
+        role_attribute_strict: true
       auth.generic_oauth.group_mapping:
         org_id: 1
         role_attribute_path: |
-          contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+          contains(groups[*], 'Grafana Admin') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
       auth.basic:
         enabled: false
       auth.anonymous:
