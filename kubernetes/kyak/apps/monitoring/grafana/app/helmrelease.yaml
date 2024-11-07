@@ -38,10 +38,10 @@ spec:
               name: &secret grafana-secret
     replicas: 2
     env:
-      GF_AUTH_GENERIC_OAUTH_API_URL: https://trial-4506274.okta.com/oauth2/v1/userinfo
-      GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://trial-4506274.okta.com/oauth2/v1/authorize
-      GF_AUTH_GENERIC_OAUTH_CLIENT_ID: 0oal790slfyEYqKQv697
-      GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://trial-4506274.okta.com/oauth2/v1/token
+      GF_AUTH_OKTA_API_URL: https://trial-4506274.okta.com/oauth2/v1/userinfo
+      GF_AUTH_OKTA_AUTH_URL: https://trial-4506274.okta.com/oauth2/v1/authorize
+      GF_AUTH_OKTA_CLIENT_ID: 0oal790slfyEYqKQv697
+      GF_AUTH_OKTA_TOKEN_URL: https://trial-4506274.okta.com/oauth2/v1/token
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
