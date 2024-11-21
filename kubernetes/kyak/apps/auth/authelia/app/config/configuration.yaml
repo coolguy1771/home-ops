@@ -37,7 +37,6 @@ session:
     database_index: 2
     host: dragonfly.database.svc.cluster.local
 
-
 notifier:
   disable_startup_check: true
   smtp:
@@ -61,10 +60,10 @@ access_control:
     - name: internal
       networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   rules:
-    - domain: 'kiali.wtil.xyz'
+    - domain: "kiali.wtil.xyz"
       subject:
-        - 'group:kiali-user'
-      policy: 'two_factor'
+        - "group:kiali-user"
+      policy: "two_factor"
 
 ntp:
   address: 10.1.237.1:123
@@ -115,13 +114,13 @@ identity_providers:
         description: jellyfin
         client_secret: "${JELLYFIN_OAUTH_CLIENT_SECRET}"
         public: false
-        authorization_policy: 'two_factor'
+        authorization_policy: "two_factor"
         require_pkce: true
-        pkce_challenge_method: 'S256'
-        redirect_uris: ['https://jellyfin.witl.xyz/sso/OID/redirect/authelia']
-        scopes: ['openid', 'profile', 'groups']
-        userinfo_signed_response_alg: 'none'
-        token_endpoint_auth_method: 'client_secret_post'
+        pkce_challenge_method: "S256"
+        redirect_uris: ["https://jellyfin.witl.xyz/sso/OID/redirect/authelia"]
+        scopes: ["openid", "profile", "groups"]
+        userinfo_signed_response_alg: "none"
+        token_endpoint_auth_method: "client_secret_post"
       - id: kiali
         description: Kiali
         secret: "${KIALI_OAUTH_CLIENT_SECRET}"
@@ -133,4 +132,26 @@ identity_providers:
         grant_types: ["refresh_token", "authorization_code"]
         response_types: ["code"]
         response_modes: ["form_post", "query", "fragment"]
+        userinfo_signing_algorithm: none
+      - id: wud
+        description: WUD openid client
+        secret: "${WUD_OAUTH_CLIENT_SECRET}"
+        public: false
+        authorization_policy: two_factor
+        audience: []
+        scopes:
+          - openid
+          - profile
+          - email
+        redirect_uris:
+          - https://wud.delilah.icbplays.net/auth/oidc/authelia/cb
+        grant_types:
+          - refresh_token
+          - authorization_code
+        response_types:
+          - code
+        response_modes:
+          - form_post
+          - query
+          - fragment
         userinfo_signing_algorithm: none
