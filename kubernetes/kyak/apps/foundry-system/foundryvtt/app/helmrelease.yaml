@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: docker.io/felddy/foundryvtt
-              tag: 12.331.0@sha256:306930efe642caa5541add4e269127a3a9122e007496bb22b524f7d9bcc755fc
+              tag: 13.332.0@sha256:3eeab8bbda9ce357f3e53293948b4e100d915a8d594481a6dbfaa4fc2ddb9e3d
             env:
               FOUNDRY_HOSTNAME: &host "foundry.${SECRET_PUBLIC_DOMAIN}"
               FOUNDRY_LOCAL_HOSTNAME: *host
