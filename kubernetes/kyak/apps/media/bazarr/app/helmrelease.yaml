@@ -62,21 +62,21 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-          subcleaner:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.3.0@sha256:5813a7da0ccd58f6dfb9d5e48480e2877355e6bb3d7d81c8908eb1adc3a23b6e
-            env:
-              GITSYNC_REPO: https://github.com/KBlixt/subcleaner
-              GITSYNC_REF: master
-              GITSYNC_PERIOD: 24h
-              GITSYNC_ROOT: /add-ons
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
-            securityContext: *securityContext
+          # subcleaner:
+          #   image:
+          #     repository: registry.k8s.io/git-sync/git-sync
+          #     tag: v4.3.0@sha256:5813a7da0ccd58f6dfb9d5e48480e2877355e6bb3d7d81c8908eb1adc3a23b6e
+          #   env:
+          #     GITSYNC_REPO: https://github.com/KBlixt/subcleaner
+          #     GITSYNC_REF: master
+          #     GITSYNC_PERIOD: 24h
+          #     GITSYNC_ROOT: /add-ons
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #     limits:
+          #       memory: 128Mi
+          #   securityContext: *securityContext
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -95,14 +95,18 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_PUBLIC_DOMAIN}
+          cert-manager.io/cluster-issuer: letsencrypt-production
         className: internal
         hosts:
-          - host: bazarr.${SECRET_PUBLIC_DOMAIN}
+          - host: &host bazarr.${SECRET_PUBLIC_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts: [*host]
+            secretName: "{{ .Release.Name }}-tls"
     persistence:
       add-ons:
         type: emptyDir
