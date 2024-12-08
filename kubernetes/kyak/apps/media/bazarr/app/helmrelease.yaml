@@ -30,6 +30,14 @@ spec:
       bazarr:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: bazarr-secret
         containers:
           app:
             image:
@@ -37,9 +45,11 @@ spec:
               tag: 1.4.5@sha256:c0bf91443c32f3978777b4ddd2732908f51b157bbe00cd3259b23f7716bb4af7
             env:
               TZ: America/New_York
+              POSTGRES_ENABLED: "true"
             envFrom:
               - secretRef:
                   name: bazarr-secret
+
             probes:
               liveness: &probes
                 enabled: true
