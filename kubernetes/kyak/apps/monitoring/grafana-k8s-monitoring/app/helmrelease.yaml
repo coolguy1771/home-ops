@@ -25,15 +25,15 @@ spec:
   valuesFrom:
     - targetPath: externalServices.basicAuth.prometheus.password
       kind: Secret
-      name: grafana-k8s-monitoring
+      name: grafana-k8s-monitoring-secret
       valuesKey: ACCESS_TOKEN
     - targetPath: externalServices.basicAuth.loki.password
       kind: Secret
-      name: grafana-k8s-monitoring
+      name: grafana-k8s-monitoring-secret
       valuesKey: ACCESS_TOKEN
     - targetPath: externalServices.basicAuth.tempo.password
       kind: Secret
-      name: grafana-k8s-monitoring
+      name: grafana-k8s-monitoring-secret
       valuesKey: ACCESS_TOKEN
   values:
     cluster:
