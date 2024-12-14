@@ -43,6 +43,9 @@ spec:
         host: https://prometheus-prod-13-prod-us-east-0.grafana.net
         basicAuth:
           username: "1847040"
+        queue_config:
+          max_samples_per_send: 1500
+          sample_age_limit: 5m
       loki:
         host: https://logs-prod-006.grafana.net
         basicAuth:
