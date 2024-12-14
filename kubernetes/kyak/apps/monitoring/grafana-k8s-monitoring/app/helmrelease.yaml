@@ -43,24 +43,21 @@ spec:
         host: https://prometheus-prod-13-prod-us-east-0.grafana.net
         basicAuth:
           username: "1847040"
-          password: REPLACE_WITH_ACCESS_POLICY_TOKEN
       loki:
         host: https://logs-prod-006.grafana.net
         basicAuth:
           username: "1022805"
-          password: REPLACE_WITH_ACCESS_POLICY_TOKEN
       tempo:
         host: https://tempo-prod-04-prod-us-east-0.grafana.net:443
         basicAuth:
           username: "1017120"
-          password: REPLACE_WITH_ACCESS_POLICY_TOKEN
     metrics:
       enabled: true
       alloy:
         metricsTuning:
           useIntegrationAllowList: true
       cost:
-        enabled: true
+        enabled: false
       kepler:
         enabled: true
       node-exporter:
@@ -85,13 +82,7 @@ spec:
       grafanaCloudMetrics:
         enabled: true
     opencost:
-      enabled: true
-      opencost:
-        exporter:
-          defaultClusterId: kyak
-        prometheus:
-          external:
-            url: https://prometheus-prod-13-prod-us-east-0.grafana.net/api/prom
+      enabled: false
     kube-state-metrics:
       enabled: true
     prometheus-node-exporter:
