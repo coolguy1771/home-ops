@@ -1,0 +1,107 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana-k8s-monitoring
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: k8s-monitoring
+      version: 1.6.15
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  valuesFrom:
+    - targetPath: externalServices.basicAuth.prometheus.password
+      kind: Secret
+      name: grafana-k8s-monitoring
+      valuesKey: ACCESS_TOKEN
+    - targetPath: externalServices.basicAuth.loki.password
+      kind: Secret
+      name: grafana-k8s-monitoring
+      valuesKey: ACCESS_TOKEN
+    - targetPath: externalServices.basicAuth.tempo.password
+      kind: Secret
+      name: grafana-k8s-monitoring
+      valuesKey: ACCESS_TOKEN
+  values:
+    cluster:
+      name: kyak
+    externalServices:
+      prometheus:
+        host: https://prometheus-prod-13-prod-us-east-0.grafana.net
+        basicAuth:
+          username: "1847040"
+          password: REPLACE_WITH_ACCESS_POLICY_TOKEN
+      loki:
+        host: https://logs-prod-006.grafana.net
+        basicAuth:
+          username: "1022805"
+          password: REPLACE_WITH_ACCESS_POLICY_TOKEN
+      tempo:
+        host: https://tempo-prod-04-prod-us-east-0.grafana.net:443
+        basicAuth:
+          username: "1017120"
+          password: REPLACE_WITH_ACCESS_POLICY_TOKEN
+    metrics:
+      enabled: true
+      alloy:
+        metricsTuning:
+          useIntegrationAllowList: true
+      cost:
+        enabled: true
+      kepler:
+        enabled: true
+      node-exporter:
+        enabled: true
+      beyla:
+        enabled: true
+    logs:
+      enabled: true
+      pod_logs:
+        enabled: true
+      cluster_events:
+        enabled: true
+    traces:
+      enabled: true
+    receivers:
+      grpc:
+        enabled: true
+      http:
+        enabled: true
+      zipkin:
+        enabled: true
+      grafanaCloudMetrics:
+        enabled: true
+    opencost:
+      enabled: true
+      opencost:
+        exporter:
+          defaultClusterId: kyak
+        prometheus:
+          external:
+            url: https://prometheus-prod-13-prod-us-east-0.grafana.net/api/prom
+    kube-state-metrics:
+      enabled: true
+    prometheus-node-exporter:
+      enabled: true
+    prometheus-operator-crds:
+      enabled: true
+    kepler:
+      enabled: true
+    alloy: {}
+    alloy-events: {}
+    alloy-logs: {}
+    beyla:
+      enabled: true
