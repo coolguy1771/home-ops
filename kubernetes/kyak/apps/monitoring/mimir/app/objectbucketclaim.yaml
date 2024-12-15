@@ -25,15 +25,3 @@ metadata:
 spec:
   bucketName: mimir-ruler
   storageClassName: ceph-bucket
----
-apiVersion: ceph.rook.io/v1
-kind: CephObjectStoreUser
-metadata:
-  name: mimir
-  namespace: rook-ceph
-spec:
-  store: ceph-objectstore
-  displayName: mimir
-  capabilities:
-    user: "*"
-    bucket: "*"
