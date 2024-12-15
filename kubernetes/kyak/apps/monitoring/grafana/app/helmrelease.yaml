@@ -23,9 +23,9 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: authelia
-      namespace: auth
-    - name: kube-prometheus-stack
+    # - name: authelia
+    #   namespace: auth
+    - name: mimir
       namespace: monitoring
     - name: loki
       namespace: monitoring
