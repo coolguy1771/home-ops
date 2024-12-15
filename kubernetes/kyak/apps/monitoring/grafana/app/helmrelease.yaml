@@ -164,6 +164,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/kepler-folder
+          - name: Mimir
+            orgId: 1
+            folder: mimir
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/mimir-folder
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -176,9 +184,9 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.monitoring.svc.cluster.local:10902
+            url: http://mimir-gateway.monitoring.svc:80/prometheus
             jsonData:
-              prometheusType: Thanos
+              prometheusType: Mimir
               timeInterval: 1m
             isDefault: true
           - name: Loki
@@ -192,7 +200,7 @@ spec:
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            url: http://alertmanager-operated.monitoring.svc.cluster.local:9095
             jsonData:
               implementation: prometheus
           - name: Tempo

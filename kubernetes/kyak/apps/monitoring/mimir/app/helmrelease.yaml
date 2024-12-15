@@ -779,7 +779,8 @@ spec:
         enabled: true
         # -- Annotations to add to the Grafana dashboard ConfigMap
         annotations:
-          k8s-sidecar-target-directory: /tmp/dashboards/MimirDashboards
+          k8s-sidecar-target-directory: /tmp/dashboards/mimir-folder
+          grafana_folder: "Mimir"
         # -- Labels to add to the Grafana dashboard ConfigMap
         labels:
           grafana_dashboard: "1"

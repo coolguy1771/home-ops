@@ -22,38 +22,16 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  valuesFrom:
-    - targetPath: externalServices.basicAuth.prometheus.password
-      kind: Secret
-      name: grafana-k8s-monitoring-secret
-      valuesKey: ACCESS_TOKEN
-    - targetPath: externalServices.basicAuth.loki.password
-      kind: Secret
-      name: grafana-k8s-monitoring-secret
-      valuesKey: ACCESS_TOKEN
-    - targetPath: externalServices.basicAuth.tempo.password
-      kind: Secret
-      name: grafana-k8s-monitoring-secret
-      valuesKey: ACCESS_TOKEN
   values:
     cluster:
       name: kyak
     externalServices:
       prometheus:
-        host: https://prometheus-prod-13-prod-us-east-0.grafana.net
-        basicAuth:
-          username: "1847040"
-        queue_config:
-          max_samples_per_send: 1500
-          sample_age_limit: 5m
+        host: http://mimir-gateway.monitoring.svc:80/api/v1/push
       loki:
-        host: https://logs-prod-006.grafana.net
-        basicAuth:
-          username: "1022805"
+        host: http://loki-gateway.monitoring.svc.
       tempo:
-        host: https://tempo-prod-04-prod-us-east-0.grafana.net:443
-        basicAuth:
-          username: "1017120"
+        host: https://tempo.monitoring.svc:4318
     metrics:
       enabled: true
       alloy:
