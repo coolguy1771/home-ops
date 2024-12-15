@@ -207,8 +207,8 @@ spec:
         limits:
           memory: 2.1Gi
         requests:
-          cpu: 1
-          memory: 1.5Gi
+          cpu: 500m
+          memory: 750Mi
       topologySpreadConstraints: {}
       affinity:
         podAntiAffinity:
@@ -284,8 +284,8 @@ spec:
         limits:
           memory: 731Mi
         requests:
-          cpu: 1
-          memory: 512Mi
+          cpu: 500m
+          memory: 256Mi
 
       ingress:
         enabled: false
