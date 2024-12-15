@@ -138,12 +138,12 @@ spec:
       persistentVolume:
         size: 50Gi
         storageClass: "ceph-block"
-      replicas: 3
+      replicas: 2
       resources:
         limits:
           memory: 12Gi
         requests:
-          cpu: 3.5
+          cpu: 1
           memory: 3Gi
       topologySpreadConstraints: {}
       affinity:
@@ -202,7 +202,7 @@ spec:
       persistentVolume:
         size: 10Gi
         storageClass: ceph-block
-      replicas: 3
+      replicas: 2
       resources:
         limits:
           memory: 2.1Gi
