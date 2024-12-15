@@ -243,22 +243,22 @@ spec:
         storageClass: ceph-block
 
     admin-cache:
-      enabled: true
+      enabled: false
       replicas: 1
 
     chunks-cache:
-      enabled: true
+      enabled: false
       replicas: 1
 
     index-cache:
-      enabled: true
+      enabled: false
       replicas: 1
 
     metadata-cache:
-      enabled: true
+      enabled: false
 
     results-cache:
-      enabled: true
+      enabled: false
       replicas: 1
 
     # -- Setting for the Grafana Rollout Operator https://github.com/grafana/helm-charts/tree/main/charts/rollout-operator
