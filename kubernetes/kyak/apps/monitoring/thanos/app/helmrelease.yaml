@@ -104,7 +104,7 @@ spec:
           alertmanagers:
             - api_version: v2
               static_configs:
-                - dnssrv+_http-web._tcp.alertmanager-operated.observability.svc.cluster.local
+                - dnssrv+_http-web._tcp.alertmanager-operated.monitoring.svc.cluster.local
       rules:
         value: |-
           groups:
