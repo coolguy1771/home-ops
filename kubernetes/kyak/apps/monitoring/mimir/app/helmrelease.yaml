@@ -91,6 +91,7 @@ spec:
         limits:
           # Delete from storage metrics data older than 90 days.
           compactor_blocks_retention_period: 90d
+          max_global_series_per_user: 2000000
     # -- runtimeConfig provides a reloadable runtime configuration. Changing the runtimeConfig doesn't require a restart of all components.
     # For more infromation see https://grafana.com/docs/mimir/latest/configure/about-runtime-configuration/
     runtimeConfig:
@@ -99,7 +100,6 @@ spec:
         max_series: 2500000
         max_tenants: 1000
         max_inflight_push_requests: 30000
-        max_global_series_per_user: 2000000
       distributor_limits: # limits that each distributor replica enforces
         max_ingestion_rate: 20000
         max_inflight_push_requests: 30000
