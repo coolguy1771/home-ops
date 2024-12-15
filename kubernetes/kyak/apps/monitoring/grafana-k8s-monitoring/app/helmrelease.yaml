@@ -28,6 +28,8 @@ spec:
     externalServices:
       prometheus:
         host: http://mimir-gateway.monitoring.svc:80
+        writeEndpoint: /api/v1/push
+        queryEndpoint: /prometheus
       loki:
         host: http://loki-gateway.monitoring.svc
       tempo:
