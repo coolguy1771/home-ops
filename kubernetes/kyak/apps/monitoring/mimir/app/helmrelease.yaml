@@ -73,10 +73,10 @@ spec:
           storage:
             backend: s3
             s3:
-              bucket_name: "${BUCKET_NAME}"
               endpoint: "${BUCKET_HOST}:${BUCKET_PORT}"
               access_key_id: "${AWS_ACCESS_KEY_ID}"
               secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+              insecure: true
               http:
                 insecure_skip_verify: true
         blocks_storage:
