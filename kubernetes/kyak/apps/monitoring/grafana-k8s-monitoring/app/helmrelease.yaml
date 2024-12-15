@@ -33,7 +33,7 @@ spec:
       loki:
         host: http://loki-gateway.monitoring.svc
       tempo:
-        host: http://tempo.monitoring.svc:4318
+        host: http://tempo.monitoring.svc:4317
     metrics:
       enabled: true
       alloy:

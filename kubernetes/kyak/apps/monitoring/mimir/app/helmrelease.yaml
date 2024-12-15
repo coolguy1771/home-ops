@@ -96,7 +96,7 @@ spec:
     runtimeConfig:
       ingester_limits: # limits that each ingester replica enforces
         max_ingestion_rate: 20000
-        max_series: 1500000
+        max_series: 2500000
         max_tenants: 1000
         max_inflight_push_requests: 30000
       distributor_limits: # limits that each distributor replica enforces
@@ -106,7 +106,7 @@ spec:
       overrides:
         tenant-1: # limits for tenant-1 that the whole cluster enforces
           ingestion_tenant_shard_size: 9
-          max_global_series_per_user: 1500000
+          max_global_series_per_user: 2500000
           max_fetched_series_per_query: 100000
 
     alertmanager:
