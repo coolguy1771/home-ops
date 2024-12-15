@@ -144,7 +144,7 @@ spec:
           memory: 12Gi
         requests:
           cpu: 1
-          memory: 3Gi
+          memory: 1Gi
       topologySpreadConstraints: {}
       affinity:
         podAntiAffinity:
@@ -194,7 +194,7 @@ spec:
           memory: 2.8Gi
         requests:
           cpu: 2
-          memory: 2Gi
+          memory: 1Gi
 
 
 
