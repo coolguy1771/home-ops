@@ -39,7 +39,7 @@ spec:
       #       name: mysecret
       extraEnvFrom:
         - configMapRef:
-            name: mimir-bucket
+            name: mimir-blocks-bucket
         - secretRef:
             name: mimir-bucket
       # -- Common volumes to add to all pods directly managed by this chart.
