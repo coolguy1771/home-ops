@@ -111,828 +111,91 @@ spec:
 
     alertmanager:
       enabled: true
-      replicas: 3
-
+      resources:
+        limits:
+          memory: 1.4Gi
+        requests:
+          cpu: 1
+          memory: 1Gi
       statefulSet:
         enabled: true
-
-      service:
-        annotations: {}
-        labels: {}
-
-      # -- Optionally set the scheduler for pods of the alertmanager
-      schedulerName: ""
-
-      resources:
-        requests:
-          cpu: 10m
-          memory: 32Mi
-
-      # -- Fallback config for alertmanager.
-      # When a tenant doesn't have an Alertmanager configuration, the Grafana Mimir Alertmanager uses the fallback configuration.
-      fallbackConfig: |
-        receivers:
-            - name: default-receiver
-        route:
-            receiver: default-receiver
-
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # -- Pod Disruption Budget for alertmanager, this will be applied across availability zones to prevent losing redundancy
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for alertmanager pods
-      priorityClassName: null
-
-      # -- NodeSelector to pin alertmanager pods to certain set of nodes. This is ignored when alertmanager.zoneAwareReplication.enabled=true.
-      nodeSelector: {}
-      # -- Pod affinity settings for the alertmanager. This is ignored when alertmanager.zoneAwareReplication.enabled=true.
-      affinity: {}
-
       persistentVolume:
         enabled: true
         storageClass: "ceph-block"
         enableRetentionPolicy: true
         whenDeleted: Delete
         whenScaled: Retain
-
-
-      # Tolerations for pod assignment
-      # ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-      tolerations: []
-
-      initContainers: []
-      # Init containers to be added to the alertmanager pod.
-      # - name: my-init-container
-      #   image: busybox:latest
-      #   command: ['sh', '-c', 'echo hello']
-
-      extraContainers: []
-      # Additional containers to be added to the alertmanager pod.
-      # - name: reverse-proxy
-      #   image: angelbarrera92/basic-auth-reverse-proxy:dev
-      #   args:
-      #     - "serve"
-      #     - "--upstream=http://localhost:3100"
-      #     - "--auth-config=/etc/reverse-proxy-conf/authn.yaml"
-      #   ports:
-      #     - name: http
-      #       containerPort: 11811
-      #       protocol: TCP
-      #   volumeMounts:
-      #     - name: reverse-proxy-auth-config
-      #       mountPath: /etc/reverse-proxy-conf
-
-      extraVolumes: []
-      # Additional volumes to the alertmanager pod.
-      # - name: reverse-proxy-auth-config
-      #   secret:
-      #     secretName: reverse-proxy-auth-config
-
-      # Extra volume mounts that will be added to the alertmanager container
-      extraVolumeMounts: []
-
-      # Extra env variables to pass to the alertmanager container
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: null
 
     distributor:
-      # Setting it to null will produce a deployment without replicas set, allowing you to use autoscaling with the deployment
-      replicas: 3
-
       resources:
+        limits:
+          memory: 5.7Gi
         requests:
-          cpu: 100m
-          memory: 512Mi
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 1000
+          cpu: 2
+          memory: 4Gi
 
     ingester:
-      # -- Total number of replicas for the ingester across all availability zones
-      # If ingester.zoneAwareReplication.enabled=false, this number is taken as is.
-      # Otherwise each zone starts `ceil(replicas / number_of_zones)` number of pods.
-      #   E.g. if 'replicas' is set to 4 and there are 3 zones, then 4/3=1.33 and after rounding up it means 2 pods per zone are started.
-      replicas: 3
-
-      statefulSet:
-        enabled: true
-
-      service:
-        annotations: {}
-        labels: {}
-
-      # -- Optionally set the scheduler for pods of the ingester
-      schedulerName: ""
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 512Mi
-
-      # Additional ingester container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # -- The name of the PriorityClass for ingester pods
-      priorityClassName: null
-
-      # -- Pod Disruption Budget for ingester, this will be applied across availability zones to prevent losing redundancy
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      podManagementPolicy: Parallel
-
-      # -- NodeSelector to pin ingester pods to certain set of nodes. This is ignored when ingester.zoneAwareReplication.enabled=true.
-      nodeSelector: {}
-      # -- Pod affinity settings for the ingester. This is ignored when ingester.zoneAwareReplication.enabled=true.
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      # It is recommended to replace this with requiredDuringSchedulingIgnoredDuringExecution podAntiAffinity rules when
-      # deploying to production.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-
       persistentVolume:
-        # If true and ingester.statefulSet.enabled is true,
-        # Ingester will create/use a Persistent Volume Claim
-        # If false, use emptyDir
-        #
-        enabled: true
+        size: 50Gi
+        storageClass: "ceph-block"
+      replicas: 3
+      resources:
+        limits:
+          memory: 12Gi
+        requests:
+          cpu: 3.5
+          memory: 8Gi
+      topologySpreadConstraints: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: target # support for enterprise.legacyLabels
+                    operator: In
+                    values:
+                      - ingester
+              topologyKey: 'kubernetes.io/hostname'
 
-        # Ingester data Persistent Volume Claim annotations
-        #
-        annotations: {}
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - ingester
+              topologyKey: 'kubernetes.io/hostname'
 
-        # Ingester data Persistent Volume access modes
-        # Must match those of existing PV or dynamic provisioner
-        # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-        accessModes:
-          - ReadWriteOnce
-
-        # Ingester data Persistent Volume size
-        size: 2Gi
-
-        # Subdirectory of Ingester data Persistent Volume to mount
-        # Useful if the volume's root directory is not empty
-        subPath: ""
-
-        # -- Enable StatefulSetAutoDeletePVC feature
-        # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
-        enableRetentionPolicy: true
-        whenDeleted: Delete
-        whenScaled: Retain
-
-        # Ingester data Persistent Volume Storage Class
-        # If defined, storageClassName: <storageClass>
-        # If set to "-", storageClassName: "", which disables dynamic provisioning
-        # If undefined (the default) or set to null, no storageClassName spec is
-        #   set, choosing the default provisioner.
-        #
-        # A per-zone storageClass configuration in `ingester.zoneAwareReplication.zones[*].storageClass` takes precedence over this field.
-        #
+      zoneAwareReplication:
+        topologyKey: 'kubernetes.io/hostname'
         storageClass: "ceph-block"
 
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 1000
-
-      # -- Options to configure zone-aware replication for ingester
-      # Example configuration with full geographical redundancy:
-      # rollout_operator:
-      #   enabled: true
-      # ingester:
-      #   zoneAwareReplication:
-      #     enabled: true
-      #     topologyKey: 'kubernetes.io/hostname'  # This generates default anti-affinity rules
-      #     zones:  # Zone list has to be fully redefined for modification. Update with you actual zones or skip to use logical zones only.
-      #     - name: zone-a
-      #       nodeSelector:
-      #         topology.kubernetes.io/zone: us-central1-a
-      #       storageClass: storage-class-us-central1-a
-      #     - name: zone-a
-      #       nodeSelector:
-      #         topology.kubernetes.io/zone: us-central1-b
-      #       storageClass: storage-class-us-central1-b
-      #     - name: zone-c
-      #       nodeSelector:
-      #         topology.kubernetes.io/zone: us-central1-c
-      #       storageClass: storage-class-us-central1-c
-      #
-      zoneAwareReplication:
-        # -- Enable zone-aware replication for ingester
-        enabled: false
-        # -- Maximum number of ingesters that can be unavailable per zone during rollout
-        maxUnavailable: 50
-        # -- topologyKey to use in pod anti-affinity. If unset, no anti-affinity rules are generated. If set, the generated anti-affinity rule makes sure that pods from different zones do not mix.
-        # E.g.: topologyKey: 'kubernetes.io/hostname'
-        topologyKey: 'kubernetes.io/hostname'
-        # -- Auxiliary values for migration, see https://grafana.com/docs/helm-charts/mimir-distributed/latest/migration-guides/migrate-from-single-zone-with-helm/
-        migration:
-          # -- Indicate if migration is ongoing for multi zone ingester
-          enabled: false
-          # -- Exclude default zone on write path
-          excludeDefaultZone: false
-          # -- Enable zone-awareness, read path only
-          readPath: false
-          # -- Total number of replicas to start in availability zones when migration is enabled
-          replicas: 0
-          # -- Scale default zone ingesters to 0
-          scaleDownDefaultZone: false
-          # -- Enable zone-awareness, write path only
-          writePath: false
-        # -- Zone definitions for ingester zones. Note: you have to redefine the whole list to change parts as YAML does not allow to modify parts of a list.
-        zones:
-          # -- Name of the zone, used in labels and selectors. Must follow Kubernetes naming restrictions: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-          - name: zone-a
-            # -- nodeselector to restrict where pods of this zone can be placed. E.g.:
-            # nodeSelector:
-            #   topology.kubernetes.io/zone: zone-a
-            nodeSelector: null
-            # -- extraAffinity adds user defined custom affinity rules (merged with generated rules)
-            extraAffinity: {}
-            # -- Ingester data Persistent Volume Storage Class
-            # If defined, storageClassName: <storageClass>
-            # If set to "-", then use `storageClassName: ""`, which disables dynamic provisioning
-            # If undefined or set to null (the default), then fall back to the value of `ingester.persistentVolume.storageClass`.
-            storageClass: null
-          # -- Name of the zone, used in labels and selectors. Must follow Kubernetes naming restrictions: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-          - name: zone-b
-            # -- nodeselector to restrict where pods of this zone can be placed. E.g.:
-            # nodeSelector:
-            #   topology.kubernetes.io/zone: zone-b
-            nodeSelector: null
-            # -- extraAffinity adds user defined custom affinity rules (merged with generated rules)
-            extraAffinity: {}
-            # -- Ingester data Persistent Volume Storage Class
-            # If defined, storageClassName: <storageClass>
-            # If set to "-", then use `storageClassName: ""`, which disables dynamic provisioning
-            # If undefined or set to null (the default), then fall back to the value of `ingester.persistentVolume.storageClass`.
-            storageClass: null
-          # -- Name of the zone, used in labels and selectors. Must follow Kubernetes naming restrictions: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-          - name: zone-c
-            # -- nodeselector to restrict where pods of this zone can be placed. E.g.:
-            # nodeSelector:
-            #   topology.kubernetes.io/zone: zone-c
-            nodeSelector: null
-            # -- extraAffinity adds user defined custom affinity rules (merged with generated rules)
-            extraAffinity: {}
-            # -- Ingester data Persistent Volume Storage Class
-            # If defined, storageClassName: <storageClass>
-            # If set to "-", then use `storageClassName: ""`, which disables dynamic provisioning
-            # If undefined or set to null (the default), then fall back to the value of `ingester.persistentVolume.storageClass`.
-            storageClass: null
-
-    overrides_exporter:
-      enabled: true
-      replicas: 2
-
-      annotations: {}
-
-      initContainers: []
-
-      service:
-        annotations: {}
-        labels: {}
-
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 0
-          maxSurge: 15%
-
-      podLabels: {}
-      podAnnotations: {}
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for overrides-exporter pods
-      priorityClassName: null
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        {}
-        #  maxSkew: 1
-        #  topologyKey: kubernetes.io/hostname
-        #  whenUnsatisfiable: ScheduleAnyway
-
-      # -- SecurityContext override for overrides-exporter pods
-      securityContext: {}
-
-      # -- The SecurityContext for overrides-exporter containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      extraArgs: {}
-
-      persistence:
-        subPath:
-
-      livenessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-
-      terminationGracePeriodSeconds: 30
-
-      tolerations: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: null
-
     ruler:
-      enabled: true
-      replicas: 2
-
-      service:
-        annotations: {}
-        labels: {}
-
-      # -- Dedicated service account for ruler pods.
-      # If not set, the default service account defined at the begining of this file will be used.
-      # This service account can be used even if the default one is not set.
-      serviceAccount:
-        create: false
-        # -- Ruler specific service account name. If not set and create is set to true, the default
-        # name will be the default mimir service account's name with the "-ruler" suffix.
-        name: ""
-        annotations: {}
-        labels: {}
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-
-      # Additional ruler container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs:
-        {}
-        # log.level: debug
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-      persistence:
-        subPath:
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-
-      # -- SecurityContext override for ruler pods
-      securityContext: {}
-
-      # -- The SecurityContext for ruler containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxSurge: 50%
-          maxUnavailable: 0
-
-      terminationGracePeriodSeconds: 600
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 1000
-
-      # -- If set to true, a dedicated query path will be deployed for the ruler and operational mode will be set to use remote evaluation. https://grafana.com/docs/mimir/latest/references/architecture/components/ruler/#remote
-      # -- This is useful for isolating the ruler queries from other queriers (api/grafana).
-      remoteEvaluationDedicatedQueryPath: true
-
-    # -- Only deployed if .Values.ruler.remoteEvaluationDedicatedQueryPath
-    ruler_querier:
-      replicas: 2
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 5000
-
-    # -- Only deployed if .Values.ruler.remoteEvaluationDedicatedQueryPath
-    ruler_query_frontend:
-      # Setting it to null will produce a deployment without replicas set, allowing you to use autoscaling with the deployment
       replicas: 1
-
-      service:
-        annotations: {}
-        labels: {}
-
       resources:
+        limits:
+          memory: 2.8Gi
         requests:
-          cpu: 100m
-          memory: 128Mi
-
-      # Additional ruler-query-frontend container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for ruler-query-frontend pods
-      priorityClassName: null
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-      persistence:
-        subPath:
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-
-      # -- SecurityContext override for query-fronted pods
-      securityContext: {}
-
-      # -- The SecurityContext for ruler-query-frontend containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 0
-          maxSurge: 15%
-
-      terminationGracePeriodSeconds: 390
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 5000
-
-    # -- Only deployed if .Values.ruler.remoteEvaluationDedicatedQueryPath
-    ruler_query_scheduler:
-      replicas: 2
-
-      service:
-        annotations: {}
-        labels: {}
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-
-      # Additional ruler-query-scheduler container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for ruler-query-scheduler pods
-      priorityClassName: null
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-      persistence:
-        subPath:
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-
-      # -- SecurityContext override for ruler-query-scheduler pods
-      securityContext: {}
-
-      # -- The SecurityContext for ruler-query-scheduler containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 0
-          maxSurge: 1
-
-      terminationGracePeriodSeconds: 180
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: null
+          cpu: 1
+          memory: 2Gi
 
     querier:
-      replicas: 2
-
-      service:
-        annotations: {}
-        labels: {}
-
+      replicas: 1
       resources:
+        limits:
+          memory: 5.6Gi
         requests:
-          cpu: 100m
-          memory: 128Mi
-
-      # Additional querier container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for querier pods
-      priorityClassName: null
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-      persistence:
-        subPath:
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-
-      # -- SecurityContext override for querier pods
-      securityContext: {}
-
-      # -- The SecurityContext for querier containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 0
-          maxSurge: 15%
-
-      terminationGracePeriodSeconds: 180
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 5000
+          cpu: 2
+          memory: 4Gi
 
     query_frontend:
-      # Setting it to null will produce a deployment without replicas set, allowing you to use autoscaling with the deployment
-      replicas: 3
-
-      service:
-        annotations: {}
-        labels: {}
-
+      replicas: 1
       resources:
+        limits:
+          memory: 2.8Gi
         requests:
-          cpu: 100m
-          memory: 128Mi
+          cpu: 2
+          memory: 2Gi
 
-      # Additional query-frontend container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for query-frontend pods
-      priorityClassName: null
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-      persistence:
-        subPath:
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 45
-
-      # -- SecurityContext override for query-fronted pods
-      securityContext: {}
-
-      # -- The SecurityContext for query-frontend containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 0
-          maxSurge: 15%
-
-      terminationGracePeriodSeconds: 390
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 5000
 
     query_scheduler:
       enabled: true
@@ -1014,328 +277,48 @@ spec:
       jaegerReporterMaxQueueSize: null
 
     store_gateway:
-      # -- Total number of replicas for the store-gateway across all availability zones
-      # If store_gateway.zoneAwareReplication.enabled=false, this number is taken as is.
-      # Otherwise each zone starts `ceil(replicas / number_of_zones)` number of pods.
-      #   E.g. if 'replicas' is set to 4 and there are 3 zones, then 4/3=1.33 and after rounding up it means 2 pods per zone are started.
-      replicas: 1
-
-      service:
-        annotations: {}
-        labels: {}
-
-      # -- Optionally set the scheduler for pods of the store-gateway
-      schedulerName: ""
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 512Mi
-
-      # Additional store-gateway container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # -- Management policy for store-gateway pods
-      # New variable introduced with Helm chart version 5.1.0. For backwards compatibility it is set to `OrderedReady`
-      # On new deployments it is highly recommended to switch it to `Parallel` as this will be the new default from 6.0.0
-      podManagementPolicy: OrderedReady
-
-      # -- Pod Disruption Budget for store-gateway, this will be applied across availability zones to prevent losing redundancy
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      # -- The name of the PriorityClass for store-gateway pods
-      priorityClassName: null
-
-      # -- NodeSelector to pin store-gateway pods to certain set of nodes. This is ignored when store_gateway.zoneAwareReplication.enabled=true.
-      nodeSelector: {}
-      # -- Pod affinity settings for the store_gateway. This is ignored when store_gateway.zoneAwareReplication.enabled=true.
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      # It is recommended to replace this with requiredDuringSchedulingIgnoredDuringExecution podAntiAffinity rules when
-      # deploying to production.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-
       persistentVolume:
-        # If true Store-gateway will create/use a Persistent Volume Claim
-        # If false, use emptyDir
-        #
-        enabled: true
-
-        # Store-gateway data Persistent Volume Claim annotations
-        #
-        annotations: {}
-
-        # Store-gateway data Persistent Volume access modes
-        # Must match those of existing PV or dynamic provisioner
-        # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-        #
-        accessModes:
-          - ReadWriteOnce
-
-        # Store-gateway data Persistent Volume size
-        #
-        size: 2Gi
-
-        # Subdirectory of Store-gateway data Persistent Volume to mount
-        # Useful if the volume's root directory is not empty
-        #
-        subPath: ""
-
-        # Store-gateway data Persistent Volume Storage Class
-        # If defined, storageClassName: <storageClass>
-        # If set to "-", storageClassName: "", which disables dynamic provisioning
-        # If undefined (the default) or set to null, no storageClassName spec is
-        #   set, choosing the default provisioner.
-        #
-        # A per-zone storageClass configuration in `store_gateway.zoneAwareReplication.zones[*].storageClass` takes precedence over this field.
-        storageClass: "ceph-block"
-
-        # -- Enable StatefulSetAutoDeletePVC feature
-        # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
-        enableRetentionPolicy: true
-        whenDeleted: Delete
-        whenScaled: Retain
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 60
-
-      # -- SecurityContext override for store-gateway pods
-      securityContext: {}
-
-      # -- The SecurityContext for store-gateway containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      # -- updateStrategy of the store-gateway statefulset. This is ignored when store_gateway.zoneAwareReplication.enabled=true.
-      strategy:
-        type: RollingUpdate
-
-      terminationGracePeriodSeconds: 120
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: 1000
-
-      # -- Options to configure zone-aware replication for store-gateway
-      # Example configuration with full geographical redundancy:
-      # rollout_operator:
-      #   enabled: true
-      # store_gateway:
-      #   zoneAwareReplication:
-      #     enabled: true
-      #     topologyKey: 'kubernetes.io/hostname'  # This generates default anti-affinity rules
-      #     zones:  # Zone list has to be fully redefined for modification. Update with you actual zones or skip to use logical zones only.
-      #     - name: zone-a
-      #       nodeSelector:
-      #         topology.kubernetes.io/zone: us-central1-a
-      #     - name: zone-a
-      #       nodeSelector:
-      #         topology.kubernetes.io/zone: us-central1-b
-      #     - name: zone-c
-      #       nodeSelector:
-      #         topology.kubernetes.io/zone: us-central1-c
-      #
+        size: 10Gi
+        storageClass: ceph-block
+      replicas: 3
+      resources:
+        limits:
+          memory: 2.1Gi
+        requests:
+          cpu: 1
+          memory: 1.5Gi
+      topologySpreadConstraints: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: target # support for enterprise.legacyLabels
+                    operator: In
+                    values:
+                      - store-gateway
+              topologyKey: 'kubernetes.io/hostname'
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - store-gateway
+              topologyKey: 'kubernetes.io/hostname'
       zoneAwareReplication:
-        # -- Enable zone-aware replication for store-gateway
-        enabled: false
-        # -- Maximum number of store-gateways that can be unavailable per zone during rollout
-        maxUnavailable: 50
-        # -- topologyKey to use in pod anti-affinity. If unset, no anti-affinity rules are generated. If set, the generated anti-affinity rule makes sure that pods from different zones do not mix.
-        # E.g.: topologyKey: 'kubernetes.io/hostname'
-        topologyKey: null
-        # -- Auxiliary values for migration, see https://grafana.com/docs/helm-charts/mimir-distributed/latest/migration-guides/migrate-from-single-zone-with-helm/
-        migration:
-          # -- Indicate if migration is ongoing for multi zone store-gateway
-          enabled: false
-          # -- Enable zone-awareness on the readPath
-          readPath: false
-        # -- Zone definitions for store-gateway zones. Note: you have to redefine the whole list to change parts as YAML does not allow to modify parts of a list.
-        zones:
-          # -- Name of the zone, used in labels and selectors. Must follow Kubernetes naming restrictions: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-          - name: zone-a
-            # -- nodeselector to restrict where pods of this zone can be placed. E.g.:
-            # nodeSelector:
-            #   topology.kubernetes.io/zone: zone-a
-            nodeSelector: null
-            # -- extraAffinity adds user defined custom affinity rules (merged with generated rules)
-            extraAffinity: {}
-            # -- StoreGateway data Persistent Volume Storage Class
-            # If defined, storageClassName: <storageClass>
-            # If set to "-", then use `storageClassName: ""`, which disables dynamic provisioning
-            # If undefined or set to null (the default), then fall back to the value of `store_gateway.persistentVolume.storageClass`.
-            storageClass: null
-          # -- Name of the zone, used in labels and selectors. Must follow Kubernetes naming restrictions: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-          - name: zone-b
-            # -- nodeselector to restrict where pods of this zone can be placed. E.g.:
-            # nodeSelector:
-            #   topology.kubernetes.io/zone: zone-b
-            nodeSelector: null
-            # -- extraAffinity adds user defined custom affinity rules (merged with generated rules)
-            extraAffinity: {}
-            # -- StoreGateway data Persistent Volume Storage Class
-            # If defined, storageClassName: <storageClass>
-            # If set to "-", then use `storageClassName: ""`, which disables dynamic provisioning
-            # If undefined or set to null (the default), then fall back to the value of `store_gateway.persistentVolume.storageClass`.
-            storageClass: null
-          # -- Name of the zone, used in labels and selectors. Must follow Kubernetes naming restrictions: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-          - name: zone-c
-            # -- nodeselector to restrict where pods of this zone can be placed. E.g.:
-            # nodeSelector:
-            #   topology.kubernetes.io/zone: zone-c
-            nodeSelector: null
-            # -- extraAffinity adds user defined custom affinity rules (merged with generated rules)
-            extraAffinity: {}
-            # -- StoreGateway data Persistent Volume Storage Class
-            # If defined, storageClassName: <storageClass>
-            # If set to "-", then use `storageClassName: ""`, which disables dynamic provisioning
-            # If undefined or set to null (the default), then fall back to the value of `store_gateway.persistentVolume.storageClass`.
-            storageClass: null
+        topologyKey: 'kubernetes.io/hostname'
 
     compactor:
-      replicas: 3
-
-      service:
-        annotations: {}
-        labels: {}
-
-      # -- Optionally set the scheduler for pods of the compactor
-      schedulerName: ""
-
       resources:
+        limits:
+          memory: 2.1Gi
         requests:
-          cpu: 100m
-          memory: 512Mi
-
-      # Additional compactor container arguments, e.g. log level (debug, info, warn, error)
-      extraArgs: {}
-
-      # Pod Labels
-      podLabels: {}
-
-      # Pod Annotations
-      podAnnotations: {}
-
-      # Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-
-      podManagementPolicy: OrderedReady
-
-      # -- The name of the PriorityClass for compactor pods
-      priorityClassName: null
-
-      nodeSelector: {}
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints:
-        maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-
-      annotations: {}
-
+          cpu: 1
+          memory: 1.5Gi
       persistentVolume:
-        # If true compactor will create/use a Persistent Volume Claim
-        # If false, use emptyDir
-        #
         enabled: true
-
-        # compactor data Persistent Volume Claim annotations
-        #
-        annotations: {}
-
-        # compactor data Persistent Volume access modes
-        # Must match those of existing PV or dynamic provisioner
-        # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-        #
-        accessModes:
-          - ReadWriteOnce
-
-        # compactor data Persistent Volume size
-        #
-        size: 2Gi
-
-        # Subdirectory of compactor data Persistent Volume to mount
-        # Useful if the volume's root directory is not empty
-        #
-        subPath: ""
-
-        # compactor data Persistent Volume Storage Class
-        # If defined, storageClassName: <storageClass>
-        # If set to "-", storageClassName: "", which disables dynamic provisioning
-        # If undefined (the default) or set to null, no storageClassName spec is
-        #   set, choosing the default provisioner.
-        #
+        size: 20Gi
         storageClass: ceph-block
-
-        # -- Enable StatefulSetAutoDeletePVC feature
-        # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
-        enableRetentionPolicy: false
-        whenDeleted: Retain
-        whenScaled: Retain
-
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: http-metrics
-        initialDelaySeconds: 60
-
-      # -- SecurityContext override for compactor pods
-      securityContext: {}
-
-      # -- The SecurityContext for compactor containers
-      containerSecurityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        capabilities:
-          drop: [ALL]
-
-      strategy:
-        type: RollingUpdate
-
-      terminationGracePeriodSeconds: 900
-
-      tolerations: []
-      initContainers: []
-      extraContainers: []
-      extraVolumes: []
-      extraVolumeMounts: []
-      env: []
-      extraEnvFrom: []
-
-      # -- Jaeger reporter queue size
-      # Set to 'null' to use the Jaeger client's default value
-      jaegerReporterMaxQueueSize: null
 
     memcached:
       image:
@@ -1390,389 +373,28 @@ spec:
       #   memcached.tls.server-name: memcached
       extraArgs: {}
 
+    admin-cache:
+      enabled: true
+      replicas: 2
+
     chunks-cache:
-      # -- Specifies whether memcached based chunks-cache should be enabled
-      enabled: false
-
-      # -- Total number of chunks-cache replicas
-      replicas: 1
-
-      # -- Port of the chunks-cache service
-      port: 11211
-
-      # -- Amount of memory allocated to chunks-cache for object storage (in MB).
-      allocatedMemory: 8192
-
-      # -- Maximum item memory for chunks-cache (in MB).
-      maxItemMemory: 1
-
-      # -- Maximum number of connections allowed
-      connectionLimit: 16384
-
-      # -- Extra init containers for chunks-cache pods
-      initContainers: []
-
-      # -- Annotations for the chunks-cache pods
-      annotations: {}
-      # -- Node selector for chunks-cache pods
-      nodeSelector: {}
-      # -- Affinity for chunks-cache pods
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints: {}
-      #  maxSkew: 1
-      #  topologyKey: kubernetes.io/hostname
-      #  whenUnsatisfiable: ScheduleAnyway
-
-      # -- Tolerations for chunks-cache pods
-      tolerations: []
-      # -- Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-      # -- The name of the PriorityClass for chunks-cache pods
-      priorityClassName: null
-      # -- Labels for chunks-cache pods
-      podLabels: {}
-      # -- Annotations for chunks-cache pods
-      podAnnotations: {}
-      # -- Management policy for chunks-cache pods
-      podManagementPolicy: Parallel
-      # -- Grace period to allow the chunks-cache to shutdown before it is killed
-      terminationGracePeriodSeconds: 30
-
-      # -- Stateful chunks-cache strategy
-      statefulStrategy:
-        type: RollingUpdate
-
-      # -- Add extended options for chunks-cache memcached container. The format is the same as for the memcached -o/--extend flag.
-      # Example:
-      # extraExtendedOptions: 'tls,no_hashexpand'
-      extraExtendedOptions: ""
-
-      # -- Additional CLI args for chunks-cache
-      extraArgs: {}
-
-      # -- Additional containers to be added to the chunks-cache pod.
-      extraContainers: []
-
-      # -- Additional volumes to be added to the chunks-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumes:
-      # - name: extra-volume
-      #   secret:
-      #    secretName: extra-volume-secret
-      extraVolumes: []
-
-      # -- Additional volume mounts to be added to the chunks-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumeMounts:
-      # - name: extra-volume
-      #   mountPath: /etc/extra-volume
-      #   readOnly: true
-      extraVolumeMounts: []
-
-      # -- List of additional PVCs to be created for the chunks-cache statefulset
-      volumeClaimTemplates: []
-
-      # -- Resource requests and limits for the chunks-cache
-      # By default a safe memory limit will be requested based on allocatedMemory value (floor (* 1.2 allocatedMemory)).
-      resources: null
-
-      # -- Service annotations and labels
-      service:
-        annotations: {}
-        labels: {}
+      enabled: true
+      replicas: 2
 
     index-cache:
-      # -- Specifies whether memcached based index-cache should be enabled
-      enabled: false
-
-      # -- Total number of index-cache replicas
-      replicas: 1
-
-      # -- Port of the index-cache service
-      port: 11211
-
-      # -- Amount of memory allocated to index-cache for object storage (in MB).
-      allocatedMemory: 2048
-
-      # -- Maximum item index-cache for memcached (in MB).
-      maxItemMemory: 5
-
-      # -- Maximum number of connections allowed
-      connectionLimit: 16384
-
-      # -- Extra init containers for index-cache pods
-      initContainers: []
-
-      # -- Annotations for the index-cache pods
-      annotations: {}
-      # -- Node selector for index-cache pods
-      nodeSelector: {}
-      # -- Affinity for index-cache pods
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints: {}
-      #  maxSkew: 1
-      #  topologyKey: kubernetes.io/hostname
-      #  whenUnsatisfiable: ScheduleAnyway
-
-      # -- Tolerations for index-cache pods
-      tolerations: []
-      # -- Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-      # -- The name of the PriorityClass for index-cache pods
-      priorityClassName: null
-      # -- Labels for index-cache pods
-      podLabels: {}
-      # -- Annotations for index-cache pods
-      podAnnotations: {}
-      # -- Management policy for index-cache pods
-      podManagementPolicy: Parallel
-      # -- Grace period to allow the index-cache to shutdown before it is killed
-      terminationGracePeriodSeconds: 30
-
-      # -- Stateful index-cache strategy
-      statefulStrategy:
-        type: RollingUpdate
-
-      # -- Add extended options for index-cache memcached container. The format is the same as for the memcached -o/--extend flag.
-      # Example:
-      # extraExtendedOptions: 'tls,modern,track_sizes'
-      extraExtendedOptions: ""
-
-      # -- Additional CLI args for index-cache
-      extraArgs: {}
-
-      # -- Additional containers to be added to the index-cache pod.
-      extraContainers: []
-
-      # -- Additional volumes to be added to the index-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumes:
-      # - name: extra-volume
-      #   secret:
-      #    secretName: extra-volume-secret
-      extraVolumes: []
-
-      # -- Additional volume mounts to be added to the index-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumeMounts:
-      # - name: extra-volume
-      #   mountPath: /etc/extra-volume
-      #   readOnly: true
-      extraVolumeMounts: []
-
-      # -- List of additional PVCs to be created for the index-cache statefulset
-      volumeClaimTemplates: []
-
-      # -- Resource requests and limits for the index-cache
-      # By default a safe memory limit will be requested based on allocatedMemory value (floor (* 1.2 allocatedMemory)).
-      resources: null
-
-      # -- Service annotations and labels
-      service:
-        annotations: {}
-        labels: {}
+      enabled: true
+      replicas: 3
 
     metadata-cache:
-      # -- Specifies whether memcached based metadata-cache should be enabled
-      enabled: false
-
-      # -- Total number of metadata-cache replicas
-      replicas: 1
-
-      # -- Port of the metadata-cache service
-      port: 11211
-
-      # -- Amount of memory allocated to metadata-cache for object storage (in MB).
-      allocatedMemory: 512
-
-      # -- Maximum item metadata-cache for memcached (in MB).
-      maxItemMemory: 1
-
-      # -- Maximum number of connections allowed
-      connectionLimit: 16384
-
-      # -- Extra init containers for metadata-cache pods
-      initContainers: []
-
-      # -- Annotations for the metadata-cache pods
-      annotations: {}
-      # -- Node selector for metadata-cache pods
-      nodeSelector: {}
-      # -- Affinity for metadata-cache pods
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints: {}
-      #  maxSkew: 1
-      #  topologyKey: kubernetes.io/hostname
-      #  whenUnsatisfiable: ScheduleAnyway
-
-      # -- Tolerations for metadata-cache pods
-      tolerations: []
-      # -- Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-      # -- The name of the PriorityClass for metadata-cache pods
-      priorityClassName: null
-      # -- Labels for metadata-cache pods
-      podLabels: {}
-      # -- Annotations for metadata-cache pods
-      podAnnotations: {}
-      # -- Management policy for metadata-cache pods
-      podManagementPolicy: Parallel
-      # -- Grace period to allow the metadata-cache to shutdown before it is killed
-      terminationGracePeriodSeconds: 30
-
-      # -- Stateful metadata-cache strategy
-      statefulStrategy:
-        type: RollingUpdate
-
-      # -- Add extended options for metadata-cache memcached container. The format is the same as for the memcached -o/--extend flag.
-      # Example:
-      # extraExtendedOptions: 'tls,modern,track_sizes'
-      extraExtendedOptions: ""
-
-      # -- Additional CLI args for metadata-cache
-      extraArgs: {}
-
-      # -- Additional containers to be added to the metadata-cache pod.
-      extraContainers: []
-
-      # -- Additional volumes to be added to the metadata-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumes:
-      # - name: extra-volume
-      #   secret:
-      #    secretName: extra-volume-secret
-      extraVolumes: []
-
-      # -- Additional volume mounts to be added to the metadata-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumeMounts:
-      # - name: extra-volume
-      #   mountPath: /etc/extra-volume
-      #   readOnly: true
-      extraVolumeMounts: []
-
-      # -- List of additional PVCs to be created for the metadata-cache statefulset
-      volumeClaimTemplates: []
-
-      # -- Resource requests and limits for the metadata-cache
-      # By default a safe memory limit will be requested based on allocatedMemory value (floor (* 1.2 allocatedMemory)).
-      resources: null
-
-      # -- Service annotations and labels
-      service:
-        annotations: {}
-        labels: {}
+      enabled: true
 
     results-cache:
-      # -- Specifies whether memcached based results-cache should be enabled
-      enabled: false
-
-      # -- Total number of results-cache replicas
-      replicas: 1
-
-      # -- Port of the results-cache service
-      port: 11211
-
-      # -- Amount of memory allocated to results-cache for object storage (in MB).
-      allocatedMemory: 512
-
-      # -- Maximum item results-cache for memcached (in MB).
-      maxItemMemory: 5
-
-      # -- Maximum number of connections allowed
-      connectionLimit: 16384
-
-      # -- Extra init containers for results-cache pods
-      initContainers: []
-
-      # -- Annotations for the results-cache pods
-      annotations: {}
-      # -- Node selector for results-cache pods
-      nodeSelector: {}
-      # -- Affinity for results-cache pods
-      affinity: {}
-
-      # -- topologySpreadConstraints allows to customize the default topologySpreadConstraints. This can be either a single dict as shown below or a slice of topologySpreadConstraints.
-      # labelSelector is taken from the constraint itself (if it exists) or is generated by the chart using the same selectors as for services.
-      topologySpreadConstraints: {}
-      #  maxSkew: 1
-      #  topologyKey: kubernetes.io/hostname
-      #  whenUnsatisfiable: ScheduleAnyway
-
-      # -- Tolerations for results-cache pods
-      tolerations: []
-      # -- Pod Disruption Budget
-      podDisruptionBudget:
-        maxUnavailable: 1
-      # -- The name of the PriorityClass for results-cache pods
-      priorityClassName: null
-      # -- Labels for results-cache pods
-      podLabels: {}
-      # -- Annotations for results-cache pods
-      podAnnotations: {}
-      # -- Management policy for results-cache pods
-      podManagementPolicy: Parallel
-      # -- Grace period to allow the results-cache to shutdown before it is killed
-      terminationGracePeriodSeconds: 30
-
-      # -- Stateful results-cache strategy
-      statefulStrategy:
-        type: RollingUpdate
-
-      # -- Add extended options for results-cache memcached container. The format is the same as for the memcached -o/--extend flag.
-      # Example:
-      # extraExtendedOptions: 'tls,modern,track_sizes'
-      extraExtendedOptions: ""
-
-      # -- Additional CLI args for results-cache
-      extraArgs: {}
-
-      # -- Additional containers to be added to the results-cache pod.
-      extraContainers: []
-
-      # -- Additional volumes to be added to the results-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumes:
-      # - name: extra-volume
-      #   secret:
-      #    secretName: extra-volume-secret
-      extraVolumes: []
-
-      # -- Additional volume mounts to be added to the results-cache pod (applies to both memcached and exporter containers).
-      # Example:
-      # extraVolumeMounts:
-      # - name: extra-volume
-      #   mountPath: /etc/extra-volume
-      #   readOnly: true
-      extraVolumeMounts: []
-
-      # -- List of additional PVCs to be created for the results-cache statefulset
-      volumeClaimTemplates: []
-
-      # -- Resource requests and limits for the results-cache
-      # By default a safe memory limit will be requested based on allocatedMemory value (floor (* 1.2 allocatedMemory)).
-      resources: null
-
-      # -- Service annotations and labels
-      service:
-        annotations: {}
-        labels: {}
+      enabled: true
+      replicas: 2
 
     # -- Setting for the Grafana Rollout Operator https://github.com/grafana/helm-charts/tree/main/charts/rollout-operator
     rollout_operator:
-      enabled: true
+      enabled: false
 
     minio:
       enabled: false
@@ -2157,7 +779,7 @@ spec:
         enabled: true
         # -- Annotations to add to the Grafana dashboard ConfigMap
         annotations:
-          k8s-sidecar-target-directory: /tmp/dashboards/Mimir Dashboards
+          k8s-sidecar-target-directory: /tmp/dashboards/MimirDashboards
         # -- Labels to add to the Grafana dashboard ConfigMap
         labels:
           grafana_dashboard: "1"
