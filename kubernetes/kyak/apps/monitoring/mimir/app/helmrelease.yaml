@@ -99,6 +99,7 @@ spec:
         max_series: 2500000
         max_tenants: 1000
         max_inflight_push_requests: 30000
+        max_global_series_per_user: 2000000
       distributor_limits: # limits that each distributor replica enforces
         max_ingestion_rate: 20000
         max_inflight_push_requests: 30000
