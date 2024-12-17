@@ -125,9 +125,9 @@ spec:
       resources:
         limits:
           memory: 1.4Gi
-        requests:
-          cpu: 500m
-          memory: 500Mi
+        # requests:
+        #   cpu: 500m
+        #   memory: 500Mi
       statefulSet:
         enabled: true
       persistentVolume:
@@ -141,9 +141,9 @@ spec:
       resources:
         limits:
           memory: 5.7Gi
-        requests:
-          cpu: 2
-          memory: 2Gi
+        # requests:
+        #   cpu: 2
+        #   memory: 2Gi
 
     ingester:
       persistentVolume:
@@ -153,9 +153,9 @@ spec:
       resources:
         limits:
           memory: 12Gi
-        requests:
-          cpu: 1
-          memory: 1Gi
+        # requests:
+        #   cpu: 1
+        #   memory: 1Gi
       topologySpreadConstraints: {}
       affinity:
         podAntiAffinity:
@@ -185,27 +185,27 @@ spec:
       resources:
         limits:
           memory: 2.8Gi
-        requests:
-          cpu: 500m
-          memory: 500m
+        # requests:
+        #   cpu: 500m
+        #   memory: 500m
 
     querier:
       replicas: 1
       resources:
         limits:
           memory: 5.6Gi
-        requests:
-          cpu: 2
-          memory: 2Gi
+        # requests:
+        #   cpu: 2
+        #   memory: 2Gi
 
     query_frontend:
       replicas: 1
       resources:
         limits:
           memory: 2.8Gi
-        requests:
-          cpu: 2
-          memory: 1Gi
+        # requests:
+        #   cpu: 2
+        #   memory: 1Gi
 
 
 
@@ -217,9 +217,9 @@ spec:
       resources:
         limits:
           memory: 2.1Gi
-        requests:
-          cpu: 500m
-          memory: 750Mi
+        # requests:
+        #   cpu: 500m
+        #   memory: 750Mi
       topologySpreadConstraints: {}
       affinity:
         podAntiAffinity:
@@ -245,9 +245,9 @@ spec:
       resources:
         limits:
           memory: 2.1Gi
-        requests:
-          cpu: 1
-          memory: 1Gi
+        # requests:
+        #   cpu: 1
+        #   memory: 1Gi
       persistentVolume:
         enabled: true
         size: 20Gi
@@ -294,9 +294,9 @@ spec:
       resources:
         limits:
           memory: 731Mi
-        requests:
-          cpu: 500m
-          memory: 256Mi
+        # requests:
+        #   cpu: 500m
+        #   memory: 256Mi
 
       ingress:
         enabled: false
