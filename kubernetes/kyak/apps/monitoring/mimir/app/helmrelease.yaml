@@ -69,6 +69,14 @@ spec:
 
     mimir:
       structuredConfig:
+        memberlist:
+          cluster_label: "kyak"
+          cluster_label_verification_disabled: false
+        server:
+          log_level: info
+          grpc_server_max_recv_msg_size: 104857600
+          grpc_server_max_send_msg_size: 104857600
+          grpc_server_max_concurrent_streams: 1000
         common:
           storage:
             backend: s3
@@ -91,7 +99,11 @@ spec:
         limits:
           # Delete from storage metrics data older than 90 days.
           compactor_blocks_retention_period: 90d
-          max_global_series_per_user: 2000000
+          max_label_names_per_series: 120
+          max_global_series_per_user: 12000000
+          ingestion_burst_size: 200000
+          ingestion_rate: 150000
+          max_global_series_per_metric: 200000000
     # -- runtimeConfig provides a reloadable runtime configuration. Changing the runtimeConfig doesn't require a restart of all components.
     # For more infromation see https://grafana.com/docs/mimir/latest/configure/about-runtime-configuration/
     runtimeConfig:
