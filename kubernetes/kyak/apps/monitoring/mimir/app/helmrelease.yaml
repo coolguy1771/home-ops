@@ -126,8 +126,8 @@ spec:
         limits:
           memory: 1.4Gi
         requests:
-          cpu: 1
-          memory: 1Gi
+          cpu: 500m
+          memory: 500Mi
       statefulSet:
         enabled: true
       persistentVolume:
@@ -186,8 +186,8 @@ spec:
         limits:
           memory: 2.8Gi
         requests:
-          cpu: 1
-          memory: 1Gi
+          cpu: 500m
+          memory: 500m
 
     querier:
       replicas: 1
@@ -247,7 +247,7 @@ spec:
           memory: 2.1Gi
         requests:
           cpu: 1
-          memory: 1.5Gi
+          memory: 1Gi
       persistentVolume:
         enabled: true
         size: 20Gi
