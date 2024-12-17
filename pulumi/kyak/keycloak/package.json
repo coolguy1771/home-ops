@@ -7,7 +7,7 @@
   },
   "author": "",
   "dependencies": {
-    "@pulumi/keycloak": "5.3.5",
+    "@pulumi/keycloak": "5.4.0",
     "@pulumi/kubernetes": "^4.17.1",
     "@pulumi/pulumi": "*"
   }
