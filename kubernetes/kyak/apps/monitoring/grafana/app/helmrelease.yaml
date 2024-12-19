@@ -306,7 +306,7 @@ spec:
         istio-cp:
           # renovate: depName="Istio Control Plane Dashboard"
           gnetId: 7645
-          revision: 239
+          revision: 240
           datasource: Prometheus
         istio-mesh:
           # renovate: depName="Istio Mesh Dashboard"
