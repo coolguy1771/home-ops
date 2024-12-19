@@ -326,7 +326,7 @@ spec:
         istio-perf:
           # renovate: depName="Istio Performance Dashboard"
           gnetId: 11829
-          revision: 237
+          revision: 240
           datasource: Prometheus
         istio-workload:
           # renovate: depName="Istio Workload Dashboard"
