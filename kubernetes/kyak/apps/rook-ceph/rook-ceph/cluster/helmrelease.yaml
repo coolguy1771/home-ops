@@ -64,8 +64,8 @@ spec:
         connections:
           requireMsgr2: true
       storage:
-        useAllNodes: true
-        useAllDevices: true
+        useAllNodes: false
+        useAllDevices: false
         nodes:
           - name: k8s-3
             devices:
