@@ -25,7 +25,7 @@ spec:
   dependsOn:
     # - name: authelia
     #   namespace: auth
-    - name: mimir
+    - name: kube-prometheus-stack
       namespace: monitoring
     - name: loki
       namespace: monitoring
@@ -45,7 +45,7 @@ spec:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
-      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel,yesoreyeram-infinity-datasource
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_PUBLIC_DOMAIN}
@@ -164,14 +164,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/kepler-folder
-          - name: Mimir
-            orgId: 1
-            folder: mimir
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/mimir-folder
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -184,9 +176,9 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://mimir-gateway.monitoring.svc:80/prometheus
+            url: http://thanos-query-frontend.monitoring.svc.cluster.local:10902
             jsonData:
-              prometheusType: Mimir
+              prometheusType: Thanos
               timeInterval: 1m
             isDefault: true
           - name: Loki
