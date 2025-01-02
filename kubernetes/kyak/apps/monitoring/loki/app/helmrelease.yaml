@@ -30,7 +30,7 @@ spec:
       namespace: openebs-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: grafana-k8s-monitoring
+    - name: vector-aggregator
       namespace: monitoring
   valuesFrom:
     - targetPath: loki.storage.bucketNames.chunks

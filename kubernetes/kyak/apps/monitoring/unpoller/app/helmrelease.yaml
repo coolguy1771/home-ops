@@ -23,7 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: grafana-k8s-monitoring
+    - name: kube-prometheus-stack
       namespace: monitoring
   values:
     controllers:
