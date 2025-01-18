@@ -64,7 +64,6 @@ spec:
         enabled: true
         name: Authelia
         icon: signin
-        client_secret: insecure_secret
         scopes: openid profile email groups
         empty_scopes: false
         login_attribute_path: preferred_username
