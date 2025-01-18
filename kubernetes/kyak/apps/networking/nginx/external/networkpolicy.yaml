@@ -3,7 +3,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy
 metadata:
-  name: allow-ingress-nginx-external
+  name: allow-ingress-external-ingress-nginx
 spec:
   description: "Allow pods that require ingress to allow traffic from ingress-nginx, no port restrictions"
   endpointSelector:
@@ -13,5 +13,5 @@ spec:
     - fromEndpoints:
         - matchLabels:
             app.kubernetes.io/name: ingress-nginx
-            app.kubernetes.io/instance: nginx-external
+            app.kubernetes.io/instance: external-ingress-nginx
             io.kubernetes.pod.namespace: networking

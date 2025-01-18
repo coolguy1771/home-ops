@@ -21,7 +21,7 @@ spec:
     - toEndpoints:
         - matchLabels:
             app.kubernetes.io/name: ingress-nginx
-            app.kubernetes.io/instance: nginx-external
+            app.kubernetes.io/instance: external-ingress-nginx
       toPorts:
         - ports:
             - port: "443"
