@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: nginx-external
+  name: &app external-ingress-nginx
 spec:
   interval: 30m
   chart:
@@ -22,13 +22,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  valuesFrom:
-    - targetPath: controller.maxmindLicenseKey
-      kind: Secret
-      name: nginx-external-maxmind-secret
-      valuesKey: MAXMIND_LICENSE_KEY
   values:
-    fullnameOverride: nginx-external
+    fullnameOverride: *app
     controller:
       replicaCount: 2
       service:
@@ -46,15 +41,14 @@ spec:
             - key: ingress-class
               operator: In
               values: ["external"]
-      allowSnippetAnnotations: true
       config:
-        block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
+        allow-snippet-annotations: true
+        annotations-risk-level: Critical
+        block-user-agents: "AdsBot-Google,Amazonbot,anthropic-ai,Applebot-Extended,Bytespider,CCBot,ChatGPT-User,ClaudeBot,Claude-Web,cohere-ai,Diffbot,FacebookBot,FriendlyCrawler,Google-Extended,GoogleOther,GPTBot,img2dataset,omgili,omgilibot,peer39_crawler,peer39_crawler/1.0,PerplexityBot,YouBot," # taken from https://github.com/ai-robots-txt/ai.robots.txt
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
         enable-brotli: "true"
-        #custom-http-errors: 400,403,404,405,409,410,411,412,413,414,415,416,417,418,421,425,431,451,500,501,502,503,504,505,506,510
-        hsts-preload: "true"
         enable-ocsp: "true"
         enable-real-ip: "true"
         force-ssl-redirect: "true"
@@ -64,15 +58,16 @@ spec:
         keep-alive: 120
         log-format-escape-json: "true"
         log-format-upstream: >
-          {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x_forwarded_for": "$proxy_add_x_forwarded_for",
-          "request_id": "$req_id", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
-          "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args",
-          "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer",
-          "http_user_agent": "$http_user_agent", "country_code": "$geoip2_city_country_code", "country_name": "$geoip2_city_country_name"}
+          {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
+          "x_forwarded_for": "$proxy_add_x_forwarded_for", "request_id": "$req_id",
+          "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
+          "status": $status, "vhost": "$host", "request_proto": "$server_protocol",
+          "path": "$uri", "request_query": "$args", "request_length": $request_length,
+          "duration": $request_time,"method": "$request_method", "http_referrer": "$http_referer",
+          "http_user_agent": "$http_user_agent"}
         proxy-body-size: 0
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
-        use-geoip2: true
         use-forwarded-headers: "true"
       metrics:
         enabled: true
@@ -82,27 +77,14 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: networking/${SECRET_PUBLIC_DOMAIN/./-}-tls
-        # default-backend-service: networking/nginx-external-defaultbackend
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: ingress-nginx
-              app.kubernetes.io/instance: nginx-external
-              app.kubernetes.io/component: controller
+        publish-status-address: *hostname
+      terminationGracePeriodSeconds: 120
+      publishService:
+        enabled: false
       resources:
         requests:
           cpu: 100m
-          memory: 1Gi
         limits:
-          memory: 1Gi
+          memory: 500Mi
     defaultBackend:
       enabled: false
-      image:
-        repository: ghcr.io/tarampampam/error-pages
-        tag: 3.3.1
-      extraEnvs:
-        - { name: TEMPLATE_NAME, value: "orient" }
-        - { name: SHOW_DETAILS, value: "false" }
