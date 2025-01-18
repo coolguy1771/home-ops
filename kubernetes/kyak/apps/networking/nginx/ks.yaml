@@ -26,7 +26,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app nginx-external
+  name: &app external-ingress-nginx
   namespace: flux-system
 spec:
   targetNamespace: networking
@@ -34,23 +34,21 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
     - name: nginx-certificates
   path: ./kubernetes/kyak/apps/networking/nginx/external
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
-  wait: true
+    name: flux-system
+  wait: false
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app nginx-internal
+  name: &app internal-ingress-nginx
   namespace: flux-system
 spec:
   targetNamespace: networking
@@ -60,11 +58,10 @@ spec:
   dependsOn:
     - name: nginx-certificates
   path: ./kubernetes/kyak/apps/networking/nginx/internal
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
-  wait: true
+    name: flux-system
+  wait: false
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
