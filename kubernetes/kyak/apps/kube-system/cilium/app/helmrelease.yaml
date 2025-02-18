@@ -74,7 +74,7 @@ spec:
         backend:
           image:
             repository: "quay.io/cilium/hubble-ui-backend"
-            tag: v0.13.1
+            tag: v0.13.2
         frontend:
           image:
             repository: "quay.io/cilium/hubble-ui"
