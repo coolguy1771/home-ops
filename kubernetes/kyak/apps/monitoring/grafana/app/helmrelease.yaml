@@ -328,7 +328,7 @@ spec:
         istio-wasm:
           # renovate: depName="Istio Wasm Extension Dashboard"
           gnetId: 13277
-          revision: 201
+          revision: 202
           datasource: Prometheus
       flux:
         flux-cluster:
