@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: volsync-unlock-{{ ENV.APP') }}
+  name: volsync-unlock-{{ ENV.APP }}
   namespace: {{ ENV.NS }}
 spec:
   ttlSecondsAfterFinished: 3600

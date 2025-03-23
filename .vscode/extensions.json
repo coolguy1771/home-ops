@@ -11,6 +11,8 @@
     "will-stone.in-any-case",
     "hashicorp.terraform",
     "pkief.material-icon-theme",
-    "weaveworks.vscode-gitops-tools"
+    "weaveworks.vscode-gitops-tools",
+    "blueglassblock.better-json5",
+    "irongeek.vscode-env",
   ]
 }
