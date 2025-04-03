@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: k8s-monitoring
-      version: 1.6.30
+      version: 1.6.32
       sourceRef:
         kind: HelmRepository
         name: grafana
