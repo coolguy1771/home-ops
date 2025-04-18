@@ -5,15 +5,13 @@ kind: OCIRepository
 metadata:
   name: unifi-dns
 spec:
-  interval: 1h
+  interval: 5m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
     tag: 1.16.1
   url: oci://ghcr.io/home-operations/charts-mirror/external-dns
-  verify:
-    provider: cosign
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -26,18 +24,14 @@ spec:
     kind: OCIRepository
     name: unifi-dns
   install:
-    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
-    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
-      strategy: rollback
       retries: 3
   values:
     fullnameOverride: *app
-    # logLevel: debug
     provider:
       name: webhook
       webhook:
@@ -47,18 +41,11 @@ spec:
         env:
           - name: UNIFI_HOST
             value: https://10.1.0.1
-          - name: UNIFI_USER
+          - name: UNIFI_API_KEY
             valueFrom:
               secretKeyRef:
-                name: &secret external-dns-unifi-secret
-                key: EXTERNAL_DNS_UNIFI_USER
-          - name: UNIFI_PASS
-            valueFrom:
-              secretKeyRef:
-                name: *secret
-                key: EXTERNAL_DNS_UNIFI_PASS
-          # - name: LOG_LEVEL
-          #   value: "debug"
+                name: &secret unifi-dns-secret
+                key: UNIFI_API_KEY
         livenessProbe:
           httpGet:
             path: /healthz
@@ -71,8 +58,7 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    extraArgs:
-      - --ignore-ingress-tls-spec
+    triggerLoopOnEvent: true
     policy: sync
     sources: ["ingress", "service"]
     txtOwnerId: kyak

@@ -5,4 +5,4 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./kepler/ks.yaml
+  #- ./kepler/ks.yaml

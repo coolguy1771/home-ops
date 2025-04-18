@@ -17,9 +17,6 @@ const icbDomainZone = new awsNative.route53.HostedZone(
     },
     name: "icbplays.net.",
   },
-  {
-    protect: true,
-  }
 );
 
 // KMS Key
@@ -181,93 +178,7 @@ const cdnTLSCertificate = new aws.acm.Certificate("cdnTLSCertificate", {
   validationMethod: "DNS",
 });
 
-// const staticContentCachePolicy = new aws.cloudfront.CachePolicy(
-//   "staticContentCachePolicy",
-//   {
-//     comment: "Amplify cache policy for static content",
-//     defaultTtl: 0,
-//     maxTtl: 31536000,
-//     minTtl: 0,
-//     parametersInCacheKeyAndForwardedToOrigin: {
-//       enableAcceptEncodingBrotli: true,
-//       enableAcceptEncodingGzip: true,
-//       headersConfig: {
-//         headerBehavior: "whitelist",
-//         headers: {
-//           items: ["Authorization", "Host"],
-//         },
-//       },
-//       cookiesConfig: {
-//         cookieBehavior: "none",
-//       },
-//       queryStringsConfig: {
-//         queryStringBehavior: "none",
-//       },
-//     },
-//     name: "Managed-Amplify-StaticContent",
-//   }
-// );
 
-// // CloudFront Cache Policy for Default Amplify Settings
-// const defaultAmplifyCachePolicy = new aws.cloudfront.CachePolicy(
-//   "defaultAmplifyCachePolicy",
-//   {
-//     defaultTtl: 0,
-//     maxTtl: 31536000,
-//     minTtl: 0,
-//     parametersInCacheKeyAndForwardedToOrigin: {
-//       enableAcceptEncodingBrotli: true,
-//       enableAcceptEncodingGzip: true,
-//       headersConfig: {
-//         headerBehavior: "whitelist",
-//         headers: {
-//           items: [
-//             "Authorization",
-//             "Accept",
-//             "CloudFront-Viewer-Country",
-//             "Host",
-//           ],
-//         },
-//       },
-//       cookiesConfig: {
-//         cookieBehavior: "all",
-//       },
-//       queryStringsConfig: {
-//         queryStringBehavior: "all",
-//       },
-//     },
-//     name: "Managed-Amplify-Default",
-//   }
-// );
-
-// // CloudFront Cache Policy for Image Optimization
-// const imageOptimizationCachePolicy = new aws.cloudfront.CachePolicy(
-//   "imageOptimizationCachePolicy",
-//   {
-//     comment: "Amplify cache policy for image optimization",
-//     defaultTtl: 0,
-//     maxTtl: 31536000,
-//     minTtl: 0,
-//     parametersInCacheKeyAndForwardedToOrigin: {
-//       enableAcceptEncodingBrotli: true,
-//       enableAcceptEncodingGzip: true,
-//       headersConfig: {
-//         headerBehavior: "whitelist",
-//         headers: {
-//           items:
-//           ["Authorization", "Accept", "Host"]
-//         },
-//       },
-//       cookiesConfig: {
-//         cookieBehavior: "none",
-//       },
-//       queryStringsConfig: {
-//         queryStringBehavior: "all",
-//       },
-//     },
-//     name: "Managed-Amplify-ImageOptimization",
-//   }
-// );
 
 const cloudFrontWebACL = new awsNative.wafv2.WebAcl("icb-cdn-web-acl-cloudfront", {
   description: "Web ACL for CloudFront",
@@ -381,3 +292,8 @@ const icbCDN = new awsNative.cloudfront.Distribution("icb-cdn", {
     webAclId: cloudFrontWebACL.awsId,
   },
 });
+
+
+// Export the hosted zone ID and KMS Key ARN
+export const hostedZoneId = icbDomainZone.id;
+export const kmsKeyArn = icbCDNCMKKey.arn;

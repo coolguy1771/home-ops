@@ -33,8 +33,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-1
@@ -51,8 +54,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-2
@@ -69,8 +75,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-3
@@ -87,8 +96,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-4
@@ -105,8 +117,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-5
@@ -123,8 +138,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-6
@@ -141,8 +159,11 @@ nodes:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
-            - siderolabs/i915-ucode
+            - siderolabs/glibc
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/util-linux-tools
 
   - hostname: k8s-7
@@ -156,12 +177,13 @@ nodes:
     schematic:
       customization:
         systemExtensions:
-            officialExtensions:
-                - siderolabs/amd-ucode
-                - siderolabs/amdgpu-firmware
-                - siderolabs/binfmt-misc
-                - siderolabs/fuse3
-                - siderolabs/util-linux-tools
+          officialExtensions:
+              - siderolabs/amd-ucode
+              - siderolabs/amdgpu
+              - siderolabs/binfmt-misc
+              - siderolabs/fuse3
+              - siderolabs/glibc
+
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
@@ -175,11 +197,12 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/amd-ucode
-            - siderolabs/amdgpu-firmware
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/util-linux-tools
+              - siderolabs/amd-ucode
+              - siderolabs/amdgpu
+              - siderolabs/binfmt-misc
+              - siderolabs/fuse3
+              - siderolabs/glibc
+
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
@@ -202,12 +225,14 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/intel-ucode
-            # - siderolabs/nonfree-kmod-nvidia-production
-            # - siderolabs/nvidia-container-toolkit-production
-            - siderolabs/util-linux-tools
+              - siderolabs/binfmt-misc
+              - siderolabs/fuse3
+              - siderolabs/glibc
+              - siderolabs/intel-ucode
+
+              - siderolabs/nonfree-kmod-nvidia-production
+              - siderolabs/nvidia-container-toolkit-production
+              - siderolabs/nvidia-fabricmanager-production
         # extraKernelArgs:
         #   - bond=bond1:eth3,eth4:mode=802.3ad,xmit_hash_policy=layer2+3:1500
     patches:

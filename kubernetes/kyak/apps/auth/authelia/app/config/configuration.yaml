@@ -101,15 +101,6 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ["https://grafana.witl.xyz/login/generic_oauth"]
         userinfo_signed_response_alg: none
-      - id: miniflux
-        description: Miniflux
-        secret: "${MINIFLUX_OAUTH_CLIENT_SECRET}"
-        public: false
-        authorization_policy: two_factor
-        pre_configured_consent_duration: 1y
-        scopes: ["openid", "profile", "groups", "email"]
-        redirect_uris: ["https://miniflux.witl.xyz/oauth2/oidc/callback"]
-        userinfo_signed_response_alg: none
       - id: jellyfin
         description: jellyfin
         client_secret: "${JELLYFIN_OAUTH_CLIENT_SECRET}"

@@ -50,13 +50,14 @@
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.kubeconfig": "./kubernentes/kyak/kubeconfig",
     "vs-kubernetes.knownKubeconfigs": [
-      "./kubeconfig"
+      "./kubernentes/kyak/kubeconfig"
     ]
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
-  }
+  },
+  "asciidoc.antora.enableAntoraSupport": true,
 }

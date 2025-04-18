@@ -47,6 +47,7 @@ spec:
               UP_UNIFI_DEFAULT_SAVE_IDS: true
               UP_UNIFI_DEFAULT_SAVE_SITES: true
               UP_INFLUXDB_DISABLE: true
+              UP_UNIFI_DYNAMIC: true
             envFrom:
               - secretRef:
                   name: unpoller-secret
