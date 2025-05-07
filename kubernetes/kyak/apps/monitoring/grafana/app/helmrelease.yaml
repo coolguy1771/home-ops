@@ -313,7 +313,7 @@ spec:
         istio-service:
           # renovate: depName="Istio Service Dashboard"
           gnetId: 7636
-          revision: 250
+          revision: 255
           datasource: Prometheus
         istio-perf:
           # renovate: depName="Istio Performance Dashboard"
