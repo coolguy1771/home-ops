@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: tempo
-      version: 1.21.0
+      version: 1.21.1
       sourceRef:
         kind: HelmRepository
         name: grafana
