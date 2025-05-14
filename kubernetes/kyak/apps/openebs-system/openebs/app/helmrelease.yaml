@@ -1,35 +1,51 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: openebs
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.2.0
+  url: oci://ghcr.io/home-operations/charts-mirror/openebs
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: openebs
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: openebs
-      version: 4.2.0
-      sourceRef:
-        kind: HelmRepository
-        name: openebs
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: openebs
   install:
+    disableHooks: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
+    disableHooks: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     localpv-provisioner:
       localpv:
         image:
           registry: quay.io/
-          repository: openebs/provisioner-localpv
+        basePath: &hostPath /var/mnt/extra/openebs/local
       hostpathClass:
+        enabled: true
         name: openebs-hostpath
+        isDefaultClass: false
+        basePath: *hostPath
+      helperPod:
+        image:
+          registry: quay.io/
     openebs-crds:
       csi:
         volumeSnapshots:
