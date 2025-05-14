@@ -4,7 +4,7 @@ instance:
     # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
     version: 2.5.1
   cluster:
-    networkPolicy: true
+    networkPolicy: false
   components:
     - source-controller
     - kustomize-controller
