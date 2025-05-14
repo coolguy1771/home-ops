@@ -63,7 +63,7 @@ spec:
     sources: ["ingress", "service"]
     txtOwnerId: kyak
     txtPrefix: k8s.kyak.
-    domainFilters: ["${SECRET_PUBLIC_DOMAIN}"]
+    domainFilters: ["witl.xyz"]
     serviceMonitor:
       enabled: true
     podAnnotations:
