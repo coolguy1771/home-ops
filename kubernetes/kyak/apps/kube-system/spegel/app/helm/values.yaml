@@ -1,12 +1,11 @@
 ---
-image:
-  repository: ghcr.io/deedee-ops/spegel
-  tag: 0.0.25
-  digest: ""
 spegel:
-  appendMirrors: true
   containerdSock: /run/containerd/containerd.sock
   containerdRegistryConfigPath: /etc/cri/conf.d/hosts
 service:
   registry:
     hostPort: 29999
+serviceMonitor:
+  enabled: true
+grafanaDashboard:
+  enabled: true

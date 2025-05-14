@@ -3,14 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app spegel
+  name: &app snapshot-controller
   namespace: &namespace kube-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: snapshot-controller
+      namespace: *namespace
   interval: 1h
-  path: ./kubernetes/kyak/apps/kube-system/spegel/app
+  path: ./kubernetes/kyak/apps/kube-system/snapshot-controller/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -19,4 +24,3 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
