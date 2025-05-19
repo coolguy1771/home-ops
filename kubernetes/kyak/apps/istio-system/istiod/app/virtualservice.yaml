@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: istiod
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - gateway-istiod
+  tls:
+    - match:
+        - port: 15012
+          sniHosts:
+            - "*"
+      route:
+        - destination:
+            host: istiod.istio-system.svc.cluster.local
+            port:
+              number: 15012
+          weight: 100
+    - match:
+        - port: 15017
+          sniHosts:
+            - "*"
+      route:
+        - destination:
+            host: istiod.istio-system.svc.cluster.local
+            port:
+              number: 443
+          weight: 100
