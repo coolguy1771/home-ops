@@ -4,7 +4,7 @@ originRequest:
 
 ingress:
   - hostname: witl.xyz
-    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+    service: &svc https://external-ingress-nginx-controller
   - hostname: "*.witl.xyz"
     service: *svc
   - service: http_status:404
