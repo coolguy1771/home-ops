@@ -19,22 +19,17 @@ kind: HelmRelease
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: cloudnative-pg
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
-  dependsOn: []
-    # - name: openebs
-    #   namespace: openebs-system
   values:
     crds:
       create: true
