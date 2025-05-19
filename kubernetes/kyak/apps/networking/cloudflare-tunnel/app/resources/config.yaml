@@ -1,0 +1,10 @@
+---
+originRequest:
+  originServerName: external.witl.xyz
+
+ingress:
+  - hostname: witl.xyz
+    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+  - hostname: "*.witl.xyz"
+    service: *svc
+  - service: http_status:404

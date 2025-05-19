@@ -1,7 +1,0 @@
----
-ingress:
-  - hostname: "*.${SECRET_PUBLIC_DOMAIN}"
-    service: https://external-ingress-nginx-controller:443
-    originRequest:
-      originServerName: external.${SECRET_PUBLIC_DOMAIN}
-  - service: http_status:404
