@@ -5,12 +5,9 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/volsync
 configMapGenerator:
   - name: recyclarr-configmap
     files:
       - recyclarr.yml=./resources/recyclarr.yml
 generatorOptions:
   disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled

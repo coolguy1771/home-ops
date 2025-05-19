@@ -1,55 +1,37 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: bazarr
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       bazarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: bazarr-secret
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/bazarr
-              tag: 1.5.1@sha256:b8fa3c3c2a5b7fe045e8f8eb95feac3c50b37837478ecc11d49db8fa8ddff683
+              repository: ghcr.io/home-operations/bazarr
+              tag: 1.5.2@sha256:e569e3dd344a9a83e948f12eb7fd2c58ab051d0af5507ba69cacfdb5119a8362
             env:
               TZ: America/New_York
               POSTGRES_ENABLED: "true"
             envFrom:
               - secretRef:
                   name: bazarr-secret
-
             probes:
               liveness: &probes
                 enabled: true
@@ -63,7 +45,7 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -72,61 +54,38 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-          # subcleaner:
-          #   image:
-          #     repository: registry.k8s.io/git-sync/git-sync
-          #     tag: v4.3.0@sha256:5813a7da0ccd58f6dfb9d5e48480e2877355e6bb3d7d81c8908eb1adc3a23b6e
-          #   env:
-          #     GITSYNC_REPO: https://github.com/KBlixt/subcleaner
-          #     GITSYNC_REF: master
-          #     GITSYNC_PERIOD: 24h
-          #     GITSYNC_ROOT: /add-ons
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
-          #   securityContext: *securityContext
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: bazarr
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_PUBLIC_DOMAIN}
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        className: internal
-        hosts:
-          - host: &host bazarr.${SECRET_PUBLIC_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts: [*host]
-            secretName: "{{ .Release.Name }}-tls"
+        hostnames: ["{{ .Release.Name }}.witl.xyz"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
-      add-ons:
-        type: emptyDir
-      cache:
+      config:
+        existingClaim: bazarr
+      config-cache:
         type: emptyDir
         globalMounts:
           - path: /config/cache
-      config:
-        existingClaim: bazarr
-      log:
+      config-log:
         type: emptyDir
         globalMounts:
           - path: /config/log
@@ -136,11 +95,5 @@ spec:
         path: /pluto/media
         globalMounts:
           - path: /media
-      scripts:
-        type: configMap
-        name: bazarr-scripts
-        defaultMode: 0775
-        globalMounts:
-          - readOnly: true
       tmp:
         type: emptyDir
