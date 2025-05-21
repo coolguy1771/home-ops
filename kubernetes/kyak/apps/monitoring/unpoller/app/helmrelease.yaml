@@ -39,7 +39,7 @@ spec:
               UP_UNIFI_DEFAULT_URL: https://10.1.237.1
               UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_LOKI_DISABLE: false
-              UP_LOKI_URL: http://loki-gateway.monitoring.svc.cluster.local
+              UP_LOKI_URL: https://logs-prod-006.grafana.net
               UP_UNIFI_DEFAULT_SAVE_ALARMS: true
               UP_UNIFI_DEFAULT_SAVE_ANOMALIES: true
               UP_UNIFI_DEFAULT_SAVE_DPI: true
