@@ -10,8 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets-stores
+
   path: ./kubernetes/kyak/apps/media/jellyfin/app
   prune: true
   sourceRef:

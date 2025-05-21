@@ -97,7 +97,7 @@ spec:
         globalMounts:
           - path: /app/config
       cache:
-        existingClaim: overseerr-cache
+        existingClaim: jellyseerr-cache
         globalMounts:
           - path: /app/config/cache
       config-logs:
