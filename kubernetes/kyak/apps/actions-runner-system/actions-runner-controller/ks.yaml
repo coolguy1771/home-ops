@@ -41,7 +41,7 @@ spec:
     - name: openebs
       namespace: openebs-system
   interval: 1h
-  path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/runners
+  path: ./kubernetes/kyak/apps/actions-runner-system/actions-runner-controller/runners
   prune: true
   retryInterval: 2m
   sourceRef:
