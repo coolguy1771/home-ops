@@ -7,16 +7,16 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./gatus/ks.yaml
-  - ./grafana/ks.yaml
+  # - ./grafana/ks.yaml
 #  - ./grafana-k8s-monitoring/ks.yaml
   - ./kromgo/ks.yaml
-  - ./kube-prometheus-stack/ks.yaml
-  - ./loki/ks.yaml
+  # - ./kube-prometheus-stack/ks.yaml
+  # - ./loki/ks.yaml
 #  - ./mimir/ks.yaml
   - ./nut-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./snmp-exporter/ks.yaml
-  - ./tempo/ks.yaml
-  - ./thanos/ks.yaml
+  # - ./tempo/ks.yaml
+  # - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
-  - ./vector/ks.yaml
+  # - ./vector/ks.yaml
