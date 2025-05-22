@@ -13,7 +13,7 @@ spec:
     - ../../../../../components/gatus/guarded
   dependsOn:
     - name: cloudnative-pg-cluster
-      namespace: flux-system
+      namespace: database
   interval: 1h
   path: ./kubernetes/kyak/apps/auth/lldap/app
   postBuild:

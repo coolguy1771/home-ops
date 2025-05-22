@@ -20,7 +20,7 @@ spec:
   path: ./kubernetes/kyak/apps/auth/authelia/app
   postBuild:
     substitute:
-      APP: *app
+      APP: auth
   prune: true
   retryInterval: 2m
   sourceRef:
