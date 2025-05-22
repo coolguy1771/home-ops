@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPClusterConfig
 metadata:
-  name: bgp-cluster-config
+  name: l3-bgp-cluster-config
 spec:
   nodeSelector:
     matchLabels:
@@ -15,7 +15,7 @@ spec:
         peerASN: 64512
         peerAddress: 10.1.237.4
         peerConfigRef:
-          name: "cilium-peer-coresw"
+          name: "l3-bgp-peer-config"
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeerConfig
@@ -33,12 +33,13 @@ spec:
       safi: unicast
       advertisements:
         matchLabels:
-          advertise: "bgp"
+          advertise: bgp
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPAdvertisement
 metadata:
-  name: bgp-advertisements
+  name: l3-bgp-advertisement
   labels:
     advertise: bgp
 spec:
@@ -51,27 +52,14 @@ spec:
           - LoadBalancerIP
       selector:
         matchExpressions:
-          - {
-              key: thisFakeSelector,
-              operator: NotIn,
-              values: ["will-match-and-announce-all-services"],
-            }
-      attributes:
-        communities:
-          standard: [ "64512:100" ]
+          - { key: somekey, operator: NotIn, values: ["never-used-value"] }
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2alpha1.json
-apiVersion: "cilium.io/v2alpha1"
+apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: main-pool
+  name: pool
 spec:
+  allowFirstLastIPs: "No"
   blocks:
-    - cidr: 10.0.42.1/24
-  serviceSelector:
-    matchExpressions:
-      - {
-          key: thisFakeSelector,
-          operator: NotIn,
-          values: ["will-match-and-announce-all-services"],
-        }
+    - cidr: 10.0.42.0/24

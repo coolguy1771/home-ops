@@ -4,20 +4,31 @@ bandwidthManager:
   enabled: true
   bbr: true
 bpf:
+  datapathMode: netkit
   masquerade: true
-  tproxy: true
+  preallocateMaps: true
+  # tproxy: true
+bpfClockProbe: true
+bgpControlPlane:
+  enabled: true
 cgroup:
   automount:
     enabled: false
   hostRoot: /sys/fs/cgroup
-cluster:
-  id: 1
-  name: kyak
+cni:
+  exclusive: false
+dashboards:
+  enabled: true
 devices: en+
-enableRuntimeDeviceDetection: true
+enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
 envoy:
+  rollOutPods: true
+  prometheus:
+    serviceMonitor:
+      enabled: true
+gatewayAPI:
   enabled: false
 hubble:
   enabled: false
@@ -30,14 +41,24 @@ kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: false
-bgpControlPlane:
-  enabled: true
 loadBalancer:
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
 operator:
+  dashboards:
+    enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  replicas: 2
   rollOutPods: true
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
@@ -50,6 +71,8 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+      - PERFMON
+      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
