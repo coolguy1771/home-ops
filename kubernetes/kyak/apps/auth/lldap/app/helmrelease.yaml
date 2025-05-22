@@ -45,7 +45,7 @@ spec:
             env:
               TZ: America/New_York
               LLDAP_HTTP_PORT: &port 80
-              LLDAP_HTTP_URL: https://lldap.${SECRET_PUBLIC_DOMAIN}
+              LLDAP_HTTP_URL: https://lldap.witl.xyz
               LLDAP_LDAP_PORT: &ldapPort 389
               LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
               LLDAP_SMTP_OPTIONS__ENABLE_PASSOWRD_RESET: false
@@ -102,9 +102,9 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.witl.xyz
         hosts:
-          - host: &host lldap.${SECRET_PUBLIC_DOMAIN}
+          - host: &host lldap.witl.xyz
             paths:
               - path: /
                 service:

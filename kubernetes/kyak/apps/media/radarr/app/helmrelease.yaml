@@ -95,7 +95,7 @@ spec:
       app:
         className: tailscale
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.witl.xyz"
             paths:
               - path: /
                 service:

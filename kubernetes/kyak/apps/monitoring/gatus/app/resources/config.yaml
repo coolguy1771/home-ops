@@ -29,7 +29,7 @@ connectivity:
 endpoints:
   - name: status
     group: external
-    url: https://status.${SECRET_PUBLIC_DOMAIN}
+    url: https://status.witl.xyz
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
@@ -39,7 +39,7 @@ endpoints:
       - type: pushover
   - name: flux-webhook
     group: external
-    url: https://flux-webhook.${SECRET_PUBLIC_DOMAIN}
+    url: https://flux-webhook.witl.xyz
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53

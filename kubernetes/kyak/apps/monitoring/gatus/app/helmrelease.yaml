@@ -111,11 +111,11 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.witl.xyz
           cert-manager.io/cluster-issuer: letsencrypt-production
         className: external
         hosts:
-          - host: &host status.${SECRET_PUBLIC_DOMAIN}
+          - host: &host status.witl.xyz
             paths:
               - path: /
                 service:

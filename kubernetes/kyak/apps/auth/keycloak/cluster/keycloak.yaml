@@ -27,7 +27,7 @@ spec:
     httpsPort: 8543
     tlsSecret: keycloak-tls
   hostname:
-    hostname: https://keycloak.${SECRET_PUBLIC_DOMAIN}
+    hostname: https://keycloak.witl.xyz
     strict: false
     backchannelDynamic: false
   features:
@@ -79,7 +79,7 @@ spec:
   ingress:
     className: external
     annotations:
-      external-dns.alpha.kubernetes.io/target: external.${SECRET_PUBLIC_DOMAIN}
+      external-dns.alpha.kubernetes.io/target: external.witl.xyz
       cert-manager.io/cluster-issuer: letsencrypt-production
 
 # https://github.com/wadahiro/keycloak-discord/releases/download/v0.5.0/keycloak-discord-0.5.0.jar

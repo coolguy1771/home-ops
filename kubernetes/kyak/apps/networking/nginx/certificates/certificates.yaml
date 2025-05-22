@@ -10,7 +10,7 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "${SECRET_PUBLIC_DOMAIN}"
+  commonName: "witl.xyz"
   dnsNames:
-    - "${SECRET_PUBLIC_DOMAIN}"
-    - "*.${SECRET_PUBLIC_DOMAIN}"
+    - "witl.xyz"
+    - "*.witl.xyz"
