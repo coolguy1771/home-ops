@@ -10,7 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: external-secrets
+      namespace: external-secrets
   path: ./kubernetes/kyak/apps/database/dragonfly/app
   prune: true
   retryInterval: 2m
