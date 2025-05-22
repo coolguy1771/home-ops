@@ -4,7 +4,7 @@ clusterName: kyak
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: v1.10.0
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.33.0
+kubernetesVersion: v1.33.1
 additionalApiServerCertSans: &san
   - 10.10.10.201
   - k8s-lb.286k.co
