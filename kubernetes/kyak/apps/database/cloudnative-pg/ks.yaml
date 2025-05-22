@@ -4,30 +4,30 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cloudnative-pg
-  namespace: flux-system
+  namespace: &namespace database
 spec:
-  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/kyak/apps/database/cloudnative-pg/app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
+  wait: false
+  interval: 1h
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cloudnative-pg-cluster
-  namespace: flux-system
+  namespace: &namespace database
 spec:
-  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -35,10 +35,12 @@ spec:
     - name: cloudnative-pg
   path: ./kubernetes/kyak/apps/database/cloudnative-pg/cluster
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
+  wait: false
+  interval: 1h
