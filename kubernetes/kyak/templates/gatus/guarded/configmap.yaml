@@ -16,7 +16,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: "${GATUS_SUBDOMAIN:-${APP}}.${SECRET_PUBLIC_DOMAIN}"
+          query-name: "${GATUS_SUBDOMAIN:-${APP}}.witl.xyz"
           query-type: A
         conditions:
           - "len([BODY]) == 0"
