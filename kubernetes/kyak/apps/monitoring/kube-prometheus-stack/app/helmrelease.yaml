@@ -40,7 +40,7 @@ spec:
         pathType: Prefix
         ingressClassName: internal
         hosts:
-          - &host alertmanager.${SECRET_PUBLIC_DOMAIN}
+          - &host alertmanager.witl.xyz
         tls:
           - hosts: [*host]
       alertmanagerSpec:
@@ -97,7 +97,7 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.${SECRET_PUBLIC_DOMAIN}
+          - &host prometheus.witl.xyz
         tls:
           - hosts: [*host]
       thanosService:
