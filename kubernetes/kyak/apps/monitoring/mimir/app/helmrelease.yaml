@@ -347,7 +347,7 @@ spec:
           # -- The nginx image repository
           repository: nginxinc/nginx-unprivileged
           # -- The nginx image tag
-          tag: 1.28-alpine
+          tag: 1.29-alpine
 
         # -- Basic auth configuration
         basicAuth:
