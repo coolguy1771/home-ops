@@ -17,4 +17,4 @@ roles:
   - name: xanmanning.k3s
     version: v3.5.0
   - src: ansible-lockdown.ubuntu24_cis
-    version: 1.0.2
+    version: 1.0.3
