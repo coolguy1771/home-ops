@@ -1,4 +1,4 @@
-ansible==11.8.0
+ansible==11.9.0
 ansible-lint==25.6.1
 bcrypt==4.3.0
 jmespath==1.0.1
