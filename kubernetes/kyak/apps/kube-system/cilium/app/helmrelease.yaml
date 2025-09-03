@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.17.6
+    tag: 1.18.1
   url: oci://ghcr.io/home-operations/charts-mirror/cilium
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -75,11 +75,11 @@ spec:
         backend:
           image:
             repository: "quay.io/cilium/hubble-ui-backend"
-            tag: v0.13.2
+            tag: v0.13.3
         frontend:
           image:
             repository: "quay.io/cilium/hubble-ui"
-            tag: "v0.13.2"
+            tag: "v0.13.3"
         ingress:
           enabled: true
           annotations:
