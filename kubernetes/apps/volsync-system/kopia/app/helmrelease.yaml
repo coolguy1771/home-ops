@@ -102,8 +102,8 @@ spec:
             subPath: repository.config
       repository:
         type: nfs
-        server: expanse.internal
-        path: /mnt/eros/VolsyncKopia
+        server: osiris.286k.co
+        path: /mnt/eros/kopia
         globalMounts:
           - path: /repository
       tmpfs:
