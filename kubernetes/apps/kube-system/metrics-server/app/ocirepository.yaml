@@ -12,4 +12,3 @@ spec:
   ref:
     tag: 3.13.0
   url: oci://ghcr.io/home-operations/charts-mirror/metrics-server
-
