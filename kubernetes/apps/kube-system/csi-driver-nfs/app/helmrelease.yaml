@@ -22,7 +22,7 @@ spec:
       name: nfs-slow
       parameters:
         server: osiris.286k.co
-        share: /mnt/pluto/kubernetes
+        share: /pluto/kubernetes
       mountOptions:
         - nfsvers=4.2
         - nconnect=16

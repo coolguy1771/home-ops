@@ -103,7 +103,7 @@ spec:
       repository:
         type: nfs
         server: osiris.286k.co
-        path: /mnt/pluto/kopia
+        path: /pluto/kopia
         globalMounts:
           - path: /repository
       tmpfs:

@@ -117,7 +117,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "osiris.286k.co",
-                  path: "/mnt/pluto/kopia"
+                  path: "/pluto/kopia"
                 }
               }
             }
