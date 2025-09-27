@@ -1,40 +1,27 @@
 ---
 area/bootstrap:
   - changed-files:
-      - any-glob-to-any-file: "bootstrap/**/*"
-area/docs:
-  - changed-files:
       - any-glob-to-any-file:
-          - "README.md"
+          - bootstrap/**/*
+
 area/github:
   - changed-files:
-      - any-glob-to-any-file: ".github/**/*"
+      - any-glob-to-any-file:
+          - .github/**/*
+
 area/kubernetes:
   - changed-files:
-      - any-glob-to-any-file: "kubernetes/**/*"
+      - any-glob-to-any-file:
+          - kubernetes/**/*
+
 area/renovate:
   - changed-files:
       - any-glob-to-any-file:
-          - ".renovate/**/*"
-          - ".renovaterc.json5"
-area/scripts:
-  - changed-files:
-      - any-glob-to-any-file: "scripts/**/*"
+          - .renovate/**/*
+          - .renovaterc.json5
+
 area/talos:
   - changed-files:
-      - any-glob-to-any-file: "talos/**/*"
-area/taskfile:
-  - changed-files:
       - any-glob-to-any-file:
-          - ".taskfiles/**/*"
-          - "Taskfile.yaml"
-cluster/kyak:
-  - changed-files:
-      - any-glob-to-any-file: talos/kyak/**/*
-      - any-glob-to-any-file: kubernetes/kyak/**/*
-      - any-glob-to-any-file: pulimi/kyak/**/*
-cluster/sol:
-  - changed-files:
-      - any-glob-to-any-file: ansible/sol/**/*
-      - any-glob-to-any-file: kubernetes/sol/**/*
-      - any-glob-to-any-file: pulumi/sol/**/*
+          - talos/**/*
+
