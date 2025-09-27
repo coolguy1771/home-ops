@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: core
-      version: 2.7.8
+      version: 2.8.8
       sourceRef:
         kind: HelmRepository
         name: neuvector
