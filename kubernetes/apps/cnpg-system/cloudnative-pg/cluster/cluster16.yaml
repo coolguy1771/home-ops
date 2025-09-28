@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres16
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.8-3
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: cloudnative-pg-secret
+  enableSuperuserAccess: true
+  # Note: Bootstrap is needed when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster postgres16-v7
+      # Optional: Point-in-Time Recovery configuration
+      # recoveryTarget:
+      #   targetTime: "2023-08-11 11:14:21.00000+02"
+      #   # or use targetName, targetXID, targetLSN, targetImmediate
+      #   exclusive: false
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "500m"
+    limits:
+      memory: "4Gi"
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: &destinationPath s3://cnpg-dc1986ff/
+      endpointURL: &endpointUrl https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      serverName: &currentCluster postgres16-v8
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: aws-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: aws-secret-access-key
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        data:
+          compression: bzip2
+        destinationPath: *destinationPath
+        endpointURL: *endpointUrl
+        serverName: *previousCluster
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret
+            key: aws-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret
+            key: aws-secret-access-key
