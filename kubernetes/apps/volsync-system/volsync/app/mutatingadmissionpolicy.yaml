@@ -103,7 +103,16 @@ spec:
       jsonPatch:
         expression: >-
           [
-
+            JSONPatch{
+              op: has(object.spec.template.spec.containers[0].volumeMounts) ? "test" : "add",
+              path: "/spec/template/spec/containers/0/volumeMounts",
+              value: has(object.spec.template.spec.containers[0].volumeMounts) ? null : []
+            },
+            JSONPatch{
+              op: has(object.spec.template.spec.volumes) ? "test" : "add",
+              path: "/spec/template/spec/volumes",
+              value: has(object.spec.template.spec.volumes) ? null : []
+            },
             JSONPatch{
               op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
               value: Object.spec.template.spec.containers.volumeMounts{
