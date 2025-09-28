@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/kyak/apps/cnpg-system/cloudnative-pg/app
+  path: ./kubernetes/apps/cnpg-system/cloudnative-pg/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -33,7 +33,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg
-  path: ./kubernetes/kyak/apps/cnpg-system/cloudnative-pg/cluster
+  path: ./kubernetes/apps/cnpg-system/cloudnative-pg/cluster
   prune: true
   retryInterval: 2m
   sourceRef:
