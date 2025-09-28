@@ -104,27 +104,29 @@ spec:
         expression: >-
           (
             !has(object.spec.template.spec.containers[0].volumeMounts) ?
-            [JSONPatch{op: "add", path: "/spec/template/spec/containers/0/volumeMounts", value: []}] : []
+            [{"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value": []}] : []
           ) +
           (
             !has(object.spec.template.spec.volumes) ?
-            [JSONPatch{op: "add", path: "/spec/template/spec/volumes", value: []}] : []
+            [{"op": "add", "path": "/spec/template/spec/volumes", "value": []}] : []
           ) +
           [
-            JSONPatch{
-              op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: {
-                name: "repository",
-                mountPath: "/repository"
+            {
+              "op": "add",
+              "path": "/spec/template/spec/containers/0/volumeMounts/-",
+              "value": {
+                "name": "repository",
+                "mountPath": "/repository"
               }
             },
-            JSONPatch{
-              op: "add", path: "/spec/template/spec/volumes/-",
-              value: {
-                name: "repository",
-                nfs: {
-                  server: "osiris.286k.co",
-                  path: "/pluto/kopia"
+            {
+              "op": "add",
+              "path": "/spec/template/spec/volumes/-",
+              "value": {
+                "name": "repository",
+                "nfs": {
+                  "server": "osiris.286k.co",
+                  "path": "/pluto/kopia"
                 }
               }
             }
