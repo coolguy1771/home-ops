@@ -10,13 +10,15 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../components/gatus/guarded
-    - ../../../../../components/volsync-r2
+    - ../../../../components/defaults
+    - ../../../../components/gatus/guarded
+    - ../../../../components/keda/nfs-scaler
+    - ../../../../components/volsync-r2
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/kyak/apps/media/bazarr/app
+  path: ./kubernetes/media/default/bazarr/app
   postBuild:
     substitute:
       APP: *app
