@@ -17,7 +17,7 @@ spec:
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
-      source: &previousCluster postgres16-v7
+      source: &previousCluster postgres16-v9
       # Optional: Point-in-Time Recovery configuration
       # recoveryTarget:
       #   targetTime: "2023-08-11 11:14:21.00000+02"
@@ -45,7 +45,7 @@ spec:
         maxParallel: 8
       destinationPath: &destinationPath s3://cnpg-dc1986ff/
       endpointURL: &endpointUrl https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster postgres16-v8
+      serverName: &currentCluster postgres16-v10
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
