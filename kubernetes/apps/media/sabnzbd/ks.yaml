@@ -15,7 +15,7 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/keda/nfs-scaler
     - ../../../../components/volsync-r2
-  path: ./kubernetes/kyak/apps/media/sabnzbd/app
+  path: ./kubernetes/apps/media/sabnzbd/app
   prune: true
   sourceRef:
     kind: GitRepository
