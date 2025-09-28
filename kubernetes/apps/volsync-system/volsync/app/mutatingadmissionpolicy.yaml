@@ -102,29 +102,27 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
+          (
+            !has(object.spec.template.spec.containers[0].volumeMounts) ?
+            [JSONPatch{op: "add", path: "/spec/template/spec/containers/0/volumeMounts", value: []}] : []
+          ) +
+          (
+            !has(object.spec.template.spec.volumes) ?
+            [JSONPatch{op: "add", path: "/spec/template/spec/volumes", value: []}] : []
+          ) +
           [
             JSONPatch{
-              op: has(object.spec.template.spec.containers[0].volumeMounts) ? "test" : "add",
-              path: "/spec/template/spec/containers/0/volumeMounts",
-              value: has(object.spec.template.spec.containers[0].volumeMounts) ? null : []
-            },
-            JSONPatch{
-              op: has(object.spec.template.spec.volumes) ? "test" : "add",
-              path: "/spec/template/spec/volumes",
-              value: has(object.spec.template.spec.volumes) ? null : []
-            },
-            JSONPatch{
               op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: Object.spec.template.spec.containers.volumeMounts{
+              value: {
                 name: "repository",
                 mountPath: "/repository"
               }
             },
             JSONPatch{
               op: "add", path: "/spec/template/spec/volumes/-",
-              value: Object.spec.template.spec.volumes{
+              value: {
                 name: "repository",
-                nfs: Object.spec.template.spec.volumes.nfs{
+                nfs: {
                   server: "osiris.286k.co",
                   path: "/pluto/kopia"
                 }
