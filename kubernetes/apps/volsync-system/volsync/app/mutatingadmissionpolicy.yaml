@@ -102,15 +102,17 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
-          (
-            !has(object.spec.template.spec.containers[0].volumeMounts) ?
-            [{"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value": []}] : []
-          ) +
-          (
-            !has(object.spec.template.spec.volumes) ?
-            [{"op": "add", "path": "/spec/template/spec/volumes", "value": []}] : []
-          ) +
           [
+            {
+              "op": has(object.spec.template.spec.containers[0].volumeMounts) ? "test" : "add",
+              "path": "/spec/template/spec/containers/0/volumeMounts",
+              "value": []
+            },
+            {
+              "op": has(object.spec.template.spec.volumes) ? "test" : "add",
+              "path": "/spec/template/spec/volumes",
+              "value": []
+            },
             {
               "op": "add",
               "path": "/spec/template/spec/containers/0/volumeMounts/-",
