@@ -19,7 +19,7 @@ spec:
     # - name: rook-ceph-cluster
     #   namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/media/plex/app
+  path: ./kubernetes/apps/media/jellyfin/app
   postBuild:
     substitute:
       APP: *app
