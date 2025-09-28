@@ -12,8 +12,7 @@ spec:
   components:
     - ../../../../components/gatus/external
     - ../../../../components/keda/nfs-scaler
-    # - ../../../../components/volsync
-    - ../../../../templates/volsync
+    - ../../../../components/volsync-r2
   dependsOn:
     - name: intel-device-plugin-gpu
       namespace: kube-system
