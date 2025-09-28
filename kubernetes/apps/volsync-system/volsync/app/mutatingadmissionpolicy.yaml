@@ -114,20 +114,11 @@ spec:
             JSONPatch{
               op: "add",
               path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: {
-                "name": "repository",
-                "mountPath": "/repository"
-              }
+              value: {"name": "repository", "mountPath": "/repository"}
             },
             JSONPatch{
               op: "add",
               path: "/spec/template/spec/volumes/-",
-              value: {
-                "name": "repository",
-                "nfs": {
-                  "server": "osiris.286k.co",
-                  "path": "/pluto/kopia"
-                }
-              }
+              value: {"name": "repository", "nfs": {"server": "osiris.286k.co", "path": "/pluto/kopia"}}
             }
           ]
