@@ -26,7 +26,7 @@ spec:
     route:
       dashboard:
         host:
-          name: rook.turbo.ac
+          name: rook.witl.xyz
           path: /
           pathType: PathPrefix
         parentRefs:
