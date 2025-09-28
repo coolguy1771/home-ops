@@ -96,6 +96,14 @@ spec:
       expression: >-
         !object.spec.template.spec.volumes.exists(item, item.name == "repository")
 
+    - name: has-volumes-array
+      expression: >-
+        has(object.spec.template.spec.volumes)
+
+    - name: has-volumemounts-array
+      expression: >-
+        has(object.spec.template.spec.containers[0].volumeMounts)
+
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
@@ -103,28 +111,18 @@ spec:
       jsonPatch:
         expression: >-
           [
-            {
-              "op": has(object.spec.template.spec.containers[0].volumeMounts) ? "test" : "add",
-              "path": "/spec/template/spec/containers/0/volumeMounts",
-              "value": []
-            },
-            {
-              "op": has(object.spec.template.spec.volumes) ? "test" : "add",
-              "path": "/spec/template/spec/volumes",
-              "value": []
-            },
-            {
-              "op": "add",
-              "path": "/spec/template/spec/containers/0/volumeMounts/-",
-              "value": {
+            JSONPatch{
+              op: "add",
+              path: "/spec/template/spec/containers/0/volumeMounts/-",
+              value: {
                 "name": "repository",
                 "mountPath": "/repository"
               }
             },
-            {
-              "op": "add",
-              "path": "/spec/template/spec/volumes/-",
-              "value": {
+            JSONPatch{
+              op: "add",
+              path: "/spec/template/spec/volumes/-",
+              value: {
                 "name": "repository",
                 "nfs": {
                   "server": "osiris.286k.co",
