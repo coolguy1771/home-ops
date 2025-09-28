@@ -112,13 +112,20 @@ spec:
         expression: >-
           [
             JSONPatch{
-              op: "add",
-              path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: {"name": "repository", "mountPath": "/repository"}
+              op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
+              value: Object.spec.template.spec.containers.volumeMounts{
+                name: "repository",
+                mountPath: "/repository"
+              }
             },
             JSONPatch{
-              op: "add",
-              path: "/spec/template/spec/volumes/-",
-              value: {"name": "repository", "nfs": {"server": "osiris.286k.co", "path": "/pluto/kopia"}}
+              op: "add", path: "/spec/template/spec/volumes/-",
+              value: Object.spec.template.spec.volumes{
+                name: "repository",
+                nfs: Object.spec.template.spec.volumes.nfs{
+                  server: "osiris.286k.co",
+                  path: "/pluto/kopia"
+                }
+              }
             }
           ]
