@@ -96,14 +96,6 @@ spec:
       expression: >-
         !object.spec.template.spec.volumes.exists(item, item.name == "repository")
 
-    - name: has-volumes-array
-      expression: >-
-        has(object.spec.template.spec.volumes)
-
-    - name: has-volumemounts-array
-      expression: >-
-        has(object.spec.template.spec.containers[0].volumeMounts)
-
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
