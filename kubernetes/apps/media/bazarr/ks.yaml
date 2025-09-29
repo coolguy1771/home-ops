@@ -13,12 +13,12 @@ spec:
     - ../../../../components/defaults
     - ../../../../components/gatus/guarded
     - ../../../../components/keda/nfs-scaler
-    - ../../../../components/volsync-r2
+    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/media/bazarr/app
+  path: ./kubernetes/apps/media/bazarr/app
   postBuild:
     substitute:
       APP: *app

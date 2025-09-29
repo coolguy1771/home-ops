@@ -70,7 +70,7 @@ spec:
       media:
         type: nfs
         server: osiris.286k.co
-        path: /pluto/emdia
+        path: /pluto/media
         globalMounts:
           - path: /media
       tmpfs:
