@@ -77,7 +77,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.witl.xdyz"
+          - "{{ .Release.Name }}.witl.xyz"
         parentRefs:
           - name: envoy-internal
             namespace: network
