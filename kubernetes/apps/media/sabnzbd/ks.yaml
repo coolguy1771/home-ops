@@ -14,7 +14,7 @@ spec:
     - ../../../../components/defaults
     - ../../../../components/gatus/guarded
     - ../../../../components/keda/nfs-scaler
-    - ../../../../components/volsync-r2
+    - ../../../../components/volsync
   path: ./kubernetes/apps/media/sabnzbd/app
   prune: true
   sourceRef:
