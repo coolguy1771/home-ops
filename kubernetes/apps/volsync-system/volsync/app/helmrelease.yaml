@@ -9,13 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: volsync
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     fullnameOverride: volsync # Required for volsync-perfectra1n fork
     image: &image
@@ -34,4 +27,3 @@ spec:
       runAsNonRoot: true
       runAsUser: 1000
       runAsGroup: 1000
-
