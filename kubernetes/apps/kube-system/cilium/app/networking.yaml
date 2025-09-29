@@ -1,30 +1,34 @@
 ---
-apiVersion: cilium.io/v2alpha1
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpclusterconfig_v2.json
+apiVersion: cilium.io/v2
 kind: CiliumBGPClusterConfig
 metadata:
   name: l3-bgp-cluster-config
 spec:
   nodeSelector:
     matchLabels:
-      kubernetes.io/os: "linux" # match all Linux nodes, change this to match more granularly if more than 1 PeeringPolicy is to be used throughout cluster
+      kubernetes.io/os: linux
   bgpInstances:
     - name: "instance-64512"
       localASN: 64512
       peers:
-      - name: "peer-64512-coresw"
-        peerASN: 64512
-        peerAddress: 10.1.237.4
+      # - name: "peer-64512-coresw"
+      #   peerASN: 64512
+      #   peerAddress: 10.1.237.4
+      #   peerConfigRef:
+      #     name: "l3-bgp-peer-config"
+      - name: "peer-64513-gateway"
+        peerASN: 64513
+        peerAddress: 10.1.237.1
         peerConfigRef:
           name: "l3-bgp-peer-config"
 ---
-apiVersion: cilium.io/v2alpha1
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgppeerconfig_v2.json
+apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
 metadata:
-  name: cilium-peer-coresw
+  name: l3-bgp-peer-config
 spec:
-  timers:
-    holdTimeSeconds: 9
-    keepAliveTimeSeconds: 3
   gracefulRestart:
     enabled: true
     restartTimeSeconds: 15
@@ -35,8 +39,8 @@ spec:
         matchLabels:
           advertise: bgp
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2alpha1.json
-apiVersion: cilium.io/v2alpha1
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
+apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
 metadata:
   name: l3-bgp-advertisement
@@ -44,15 +48,13 @@ metadata:
     advertise: bgp
 spec:
   advertisements:
-    - advertisementType: "Service"
+    - advertisementType: Service
       service:
         addresses:
-          - ClusterIP
-          - ExternalIP
           - LoadBalancerIP
       selector:
         matchExpressions:
-          - { key: somekey, operator: NotIn, values: ["never-used-value"] }
+          - {key: somekey, operator: NotIn, values: ["never-used-value"]}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
