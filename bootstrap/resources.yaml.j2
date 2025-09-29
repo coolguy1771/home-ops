@@ -20,7 +20,15 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: cloudflare-tunnel-id-secret
-  namespace: networking
+  namespace: network
 stringData:
   CLOUDFLARE_TUNNEL_ID: op://kubernetes/cloudflare/CLOUDFLARE_TUNNEL_ID
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-account-id-secret
+  namespace: cnpg-system
+stringData:
+  CLOUDFLARE_ACCOUNT_ID: op://kubernetes/cloudflare/CLOUDFLARE_ACCOUNT_TAG
 

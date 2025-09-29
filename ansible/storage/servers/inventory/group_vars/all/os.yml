@@ -1,5 +1,0 @@
----
-timezone: "America/New_York"
-ssh_authorized_keys:
-  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDmwSsUsukmFh36KAwzsRLwNA+3FXDqIPNVtK31NtIV8wOHaE/+UIdUHuI36ZJVl0zQ0G32mhC8Sty2qWcniUvyy/SvT6NefKVl23z/Li6n/QLEhmqcy5Zb6kFqR2qgVbWNJtMbdXMrsLQez36b0tZbm/mU8J9Fnjj1teY5cWMqYCMJhYzhLklo3CPuwOhLLQ+E0WIZSHi4Hp6DbB9RWBkMr2yKgXZuP25bfY+3D7fRUE8jDRPY+Mj83wi6o0eWdOlVFOfovFiEJTE6GT6swRwAKglIiGN/cqzOvdg+0mO11TxgOg/PKXrJ1CxCqOtFL2gKed8amAxznn5NxeVk2S7TdC0m1v8PmgiByBSZsthWuYGVSKJlR8bpwpesT3wxeZph5HU3ILdgeCGKIWd+s+QlclHLz+cJrnPTzliSdX2OLHc6nS8+ztkqoWsOmX8WhZRkuZbmb8Jy7b8aMEEXpKWl80tK+Txdma60C23u4LNXDankauSWU4eixerWKCO7Z/8= twitlin@janet.286k.co"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnKXgEGczcu8lGs+DEvRWgI4cSYHkAyTAU6/SMAHjL4 twitlin@mbp16inch2021.3520.dhcp.asu.edu"

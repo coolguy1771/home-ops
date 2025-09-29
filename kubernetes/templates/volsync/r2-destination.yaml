@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: "${APP}-volsync-r2"
+  name: "${APP}-volsync-r2-dst"
 spec:
   secretStoreRef:
     kind: ClusterSecretStore

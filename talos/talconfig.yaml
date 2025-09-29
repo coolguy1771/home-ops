@@ -27,6 +27,8 @@ nodes:
       - interface: enp1s0
         mtu: 1500
         dhcp: true
+        vip:
+          ip: 10.10.10.201
     schematic:
       customization:
         systemExtensions:
@@ -34,10 +36,10 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-1
@@ -48,6 +50,8 @@ nodes:
       - interface: enp1s0
         mtu: 1500
         dhcp: true
+        vip:
+          ip: 10.10.10.201
     schematic:
       customization:
         systemExtensions:
@@ -55,10 +59,11 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
             - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-2
@@ -69,6 +74,8 @@ nodes:
       - interface: enp1s0
         mtu: 1500
         dhcp: true
+        vip:
+          ip: 10.10.10.201
     schematic:
       customization:
         systemExtensions:
@@ -76,10 +83,10 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-3
@@ -97,10 +104,10 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-4
@@ -118,10 +125,10 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-5
@@ -139,10 +146,10 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-6
@@ -160,10 +167,10 @@ nodes:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
+            - siderolabs/i915 # Intel iGPU
+            - siderolabs/intel-ucode # Intel iGPU
+            - siderolabs/mei # Intel iGPU
+            - siderolabs/nfsrahead # NFS Performance
             - siderolabs/util-linux-tools
 
   - hostname: k8s-7
@@ -230,60 +237,6 @@ nodes:
               - siderolabs/glibc
               - siderolabs/intel-ucode
 
-              - siderolabs/nonfree-kmod-nvidia-production
-              - siderolabs/nvidia-container-toolkit-production
-              - siderolabs/nvidia-fabricmanager-production
-        # extraKernelArgs:
-        #   - bond=bond1:eth3,eth4:mode=802.3ad,xmit_hash_policy=layer2+3:1500
-    patches:
-      - |-
-        - op: add
-          path: /machine/files
-          value:
-            - content: |
-                [plugins."io.containerd.grpc.v1.cri"]
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
-                [plugins."io.containerd.grpc.v1.cri".containerd]
-                  discard_unpacked_layers = false
-                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                  discard_unpacked_layers = false
-                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
-                  privileged_without_host_devices = false
-                  runtime_engine = ""
-                  runtime_root = ""
-                  runtime_type = "io.containerd.runc.v2"
-                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
-                  BinaryName = "/usr/bin/nvidia-container-runtime"
-              path: /etc/cri/conf.d/20-customization.part
-              op: create
-            - content: |
-                [ NFSMount_Global_Options ]
-                nfsvers=4.2
-                hard=True
-                noatime=True
-                nodiratime=True
-                rsize=131072
-                wsize=131072
-                nconnect=8
-              permissions: 420
-              path: /etc/nfsmount.conf
-              op: overwrite
-      # - |-
-      #   - op: add
-      #     path: /machine/kernel
-      #     value:
-      #       modules:
-      #         - name: nvidia
-      #         - name: nvidia_uvm
-      #         - name: nvidia_drm
-      #         - name: nvidia_modeset
-      # - |-
-      #   - op: add
-      #     path: /machine/sysctls
-      #     value:
-      #       net.core.bpf_jit_harden: 1
-
 controlPlane:
   patches:
     - |-
@@ -315,14 +268,17 @@ controlPlane:
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: GracefulNodeShutdown=true,KubeletTracing=true
+          feature-gates: GracefulNodeShutdown=true,KubeletTracing=true,MutatingAdmissionPolicy=true
           rotate-server-certificates: "true"
     - |-
       - op: add
         path: /cluster/apiServer/extraArgs
         value:
-          feature-gates: ServerSideApply=true
           tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          runtime-config: admissionregistration.k8s.io/v1beta1=true
+          enable-aggregator-routing: "true"
+          enable-admission-plugins: NodeRestriction,ValidatingAdmissionPolicy
+          feature-gates: MutatingAdmissionPolicy=true
     - |-
       - op: add
         path: /cluster/controllerManager/extraArgs
@@ -335,20 +291,23 @@ controlPlane:
           bind-address: 0.0.0.0
     - |-
       - op: add
-        path: /cluster/discovery/registries/service
-        value:
-          disabled: false
+        path: /cluster/discovery/registries/service/disabled
+        value: false
     - |-
       - op: add
-        path: /cluster/proxy
-        value:
-          disabled: true
+        path: /cluster/proxy/disabled
+        value: true
     - |-
       - op: add
         path: /cluster/etcd/extraArgs
         value:
           listen-metrics-urls: http://0.0.0.0:2381
           metrics: extensive
+    - |-
+      - op: add
+        path: /cluster/etcd/advertisedSubnets
+        value:
+          - 10.10.10.0/24
     - |-
       - op: add
         path: /machine/features
@@ -363,41 +322,28 @@ controlPlane:
       - op: add
         path: /machine/files
         value:
-          - content: |
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-              [plugins."io.containerd.grpc.v1.cri".containerd]
-                discard_unpacked_layers = false
-              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                discard_unpacked_layers = false
-            permissions: 0
+          - op: create
             path: /etc/cri/conf.d/20-customization.part
-            op: create
-          - content: |
+            content: |
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                device_ownership_from_security_context = true
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
               [ NFSMount_Global_Options ]
               nfsvers=4.2
               hard=True
+              nconnect=16
               noatime=True
-              nodiratime=True
-              rsize=131072
-              wsize=131072
-              nconnect=8
-            permissions: 420
-            path: /etc/nfsmount.conf
-            op: overwrite
     - |-
       - op: add
         path: /machine/features
         value:
           rbac: true
           stableHostname: true
-          kubernetesTalosAPIAccess:
-              enabled: true
-              allowedRoles:
-                  - os:admin
-              allowedKubernetesNamespaces:
-                  - system-upgrade
           apidCheckExtKeyUsage: true
           diskQuotaSupport: true
           kubePrism:
@@ -407,11 +353,18 @@ controlPlane:
               enabled: true
               resolveMemberNames: true
               forwardKubeDNSToHost: false
+          kubernetesTalosAPIAccess:
+            allowedKubernetesNamespaces:
+              - actions-runner-system
+              - system-upgrade
+            allowedRoles:
+              - os:admin
+            enabled: true
     - |-
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: KubeletTracing=true
+          feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
           rotate-server-certificates: "true"
     - |-
       - op: add
@@ -454,8 +407,7 @@ worker:
       - op: add
         path: /machine/kubelet/extraArgs
         value:
-          feature-gates: GracefulNodeShutdown=true,StatefulSetStartOrdinal=true,StatefulSetAutoDeletePVC=true,KubeletTracing=true
-          rotate-server-certificates: "true"
+          feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
     - |-
       - op: add
         path: /machine/kubelet/extraMounts
@@ -472,51 +424,59 @@ worker:
       - op: add
         path: /machine/features
         value:
-          stableHostname: true
+          apidCheckExtKeyUsage: true
           diskQuotaSupport: true
-          rbac: true
+          hostDNS:
+            enabled: true
+            forwardKubeDNSToHost: false
+            resolveMemberNames: true
           kubePrism:
             enabled: true
             port: 7445
+          rbac: true
+          stableHostname: true
     - |-
       - op: add
         path: /machine/files
         value:
-          - content: |
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                device_ownership_from_security_context = true
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
               [ NFSMount_Global_Options ]
               nfsvers=4.2
               hard=True
+              nconnect=16
               noatime=True
-              nodiratime=True
-              rsize=131072
-              wsize=131072
-              nconnect=8
-            permissions: 420
-            path: /etc/nfsmount.conf
-            op: overwrite
-          - content: |
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-              [plugins."io.containerd.grpc.v1.cri".containerd]
-                discard_unpacked_layers = false
-              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                discard_unpacked_layers = false
-            permissions: 0
-            path: /etc/cri/conf.d/20-customization.part
-            op: create
     - |-
       - op: add
         path: /machine/sysctls
         value:
-          fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
-          vm.panic_on_oom: "0"
-          vm.overcommit_memory: "1"
-          kernel.panic: "10"
-          kernel.panic_on_oops: "1"
-          net.core.rmem_max: "7500000"
-          net.core.wmem_max: "7500000"
+          fs.inotify.max_user_watches: "1048576"
+          net.core.default_qdisc: fq
+          net.core.rmem_max: "67108864"
+          net.core.wmem_max: "67108864"
+          net.ipv4.neigh.default.gc_thresh1: "4096"
+          net.ipv4.neigh.default.gc_thresh2: "8192"
+          net.ipv4.neigh.default.gc_thresh3: "16384"
+          net.ipv4.tcp_congestion_control: bbr
+          net.ipv4.tcp_fastopen: "3"
+          net.ipv4.tcp_mtu_probing: "1"
+          net.ipv4.tcp_rmem: 4096 87380 33554432
+          net.ipv4.tcp_window_scaling: "1"
+          net.ipv4.tcp_wmem: 4096 65536 33554432
+          sunrpc.tcp_max_slot_table_entries: "128"
+          sunrpc.tcp_slot_table_entries: "128"
+          user.max_user_namespaces: "11255"
+          vm.nr_hugepages: "1024"
     - *time
     - |-
       - op: add

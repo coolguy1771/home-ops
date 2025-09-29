@@ -22,6 +22,7 @@ spec:
         key: cloudflare
     - extract:
         key: volsync-r2-template
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
