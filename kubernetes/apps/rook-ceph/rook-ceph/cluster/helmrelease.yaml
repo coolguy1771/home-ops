@@ -70,9 +70,6 @@ spec:
         useAllNodes: false
         useAllDevices: false
         nodes:
-          - name: k8s-3
-            devices:
-              - name: "/dev/disk/by-id/ata-Samsung_SSD_870_EVO_500GB_S6PXNZ0T762854V"
           - name: k8s-4
             devices:
               - name: "/dev/disk/by-id/ata-INTEL_SSDSC2KB019T8_PHYF219300RK1P9DGN"
