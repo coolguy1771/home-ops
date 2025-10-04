@@ -1,0 +1,154 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mimir
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: mimir
+  interval: 1h
+  values:
+    alertmanager:
+      persistentVolume:
+        enabled: true
+      replicas: 2
+      resources:
+        limits:
+          memory: 1.4Gi
+        requests:
+          cpu: 1
+          memory: 1Gi
+      statefulSet:
+        enabled: true
+    compactor:
+      persistentVolume:
+        size: 20Gi
+      resources:
+        limits:
+          memory: 2.1Gi
+        requests:
+          cpu: 1
+          memory: 1.5Gi
+    distributor:
+      replicas: 2
+      resources:
+        limits:
+          memory: 5.7Gi
+        requests:
+          cpu: 2
+          memory: 4Gi
+    ingester:
+      persistentVolume:
+        size: 50Gi
+      replicas: 3
+      resources:
+        limits:
+          memory: 12Gi
+        requests:
+          cpu: 3.5
+          memory: 8Gi
+      topologySpreadConstraints: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: target
+                    operator: In
+                    values:
+                      - ingester
+              topologyKey: "kubernetes.io/hostname"
+
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - ingester
+              topologyKey: "kubernetes.io/hostname"
+      zoneAwareReplication:
+        topologyKey: "kubernetes.io/hostname"
+    admin-cache:
+      enabled: false
+    chunks-cache:
+      enabled: false
+    index-cache:
+      enabled: false
+    metadata-cache:
+      enabled: false
+    results-cache:
+      enabled: false
+    minio:
+      enabled: false
+    overrides_exporter:
+      replicas: 1
+      resources:
+        limits:
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    querier:
+      replicas: 1
+      resources:
+        limits:
+          memory: 5.6Gi
+        requests:
+          cpu: 2
+          memory: 4Gi
+    query_frontend:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2.8Gi
+        requests:
+          cpu: 2
+          memory: 2Gi
+    ruler:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2.8Gi
+        requests:
+          cpu: 1
+          memory: 2Gi
+    store_gateway:
+      persistentVolume:
+        size: 10Gi
+      replicas: 3
+      resources:
+        limits:
+          memory: 2.1Gi
+        requests:
+          cpu: 1
+          memory: 1.5Gi
+      topologySpreadConstraints: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: target # support for enterprise.legacyLabels
+                    operator: In
+                    values:
+                      - store-gateway
+              topologyKey: "kubernetes.io/hostname"
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - store-gateway
+              topologyKey: "kubernetes.io/hostname"
+      zoneAwareReplication:
+        topologyKey: "kubernetes.io/hostname"
+    nginx:
+      replicas: 1
+      resources:
+        limits:
+          memory: 731Mi
+        requests:
+          cpu: 1
+          memory: 512Mi

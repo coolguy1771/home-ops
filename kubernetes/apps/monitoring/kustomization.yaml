@@ -14,6 +14,7 @@ resources:
   - ./keda/ks.yaml
   # - ./kromgo/ks.yaml
   - ./loki/ks.yaml
+  - ./mimir/ks.yaml
   # - ./silence-operator/ks.yaml
   # - ./smartctl-exporter/ks.yaml
   # - ./spoodermon/ks.yaml
