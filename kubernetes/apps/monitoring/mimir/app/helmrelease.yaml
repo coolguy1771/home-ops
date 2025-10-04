@@ -32,6 +32,8 @@ spec:
               ring:
                 kvstore:
                   store: memberlist
+              ingestion_rate_limit: 100000
+              ingestion_burst_size: 1000000
             ingester_client:
               grpc_client_config:
                 # Configure the client to allow messages up to 100MB.
@@ -45,6 +47,9 @@ spec:
                 kvstore:
                   store: memberlist
                 replication_factor: 1
+              instance_limits:
+                max_series: 1000000
+                max_tenants: 1000
             memberlist:
               join_members:
                 - localhost:7946
