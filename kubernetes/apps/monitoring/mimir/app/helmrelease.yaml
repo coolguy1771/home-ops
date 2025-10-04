@@ -1,154 +1,178 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: mimir
 spec:
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: mimir
-  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
-    alertmanager:
-      persistentVolume:
+    configMaps:
+      config:
         enabled: true
-      replicas: 2
-      resources:
-        limits:
-          memory: 1.4Gi
-        requests:
-          cpu: 1
-          memory: 1Gi
-      statefulSet:
-        enabled: true
-    compactor:
-      persistentVolume:
-        size: 20Gi
-      resources:
-        limits:
-          memory: 2.1Gi
-        requests:
-          cpu: 1
-          memory: 1.5Gi
-    distributor:
-      replicas: 2
-      resources:
-        limits:
-          memory: 5.7Gi
-        requests:
-          cpu: 2
-          memory: 4Gi
-    ingester:
-      persistentVolume:
-        size: 50Gi
-      replicas: 3
-      resources:
-        limits:
-          memory: 12Gi
-        requests:
-          cpu: 3.5
-          memory: 8Gi
-      topologySpreadConstraints: {}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: target
-                    operator: In
-                    values:
-                      - ingester
-              topologyKey: "kubernetes.io/hostname"
+        data:
+          config.yaml: |
+            multitenancy_enabled: false
+            distributor:
+              ring:
+                kvstore:
+                  store: memberlist
+            ingester_client:
+              grpc_client_config:
+                # Configure the client to allow messages up to 100MB.
+                max_recv_msg_size: 104857600
+                max_send_msg_size: 104857600
+                grpc_compression: gzip
+            ingester:
+              ring:
+                final_sleep: 0s
+                num_tokens: 512
+                kvstore:
+                  store: memberlist
+                replication_factor: 1
+            memberlist:
+              join_members:
+                - localhost:7946
+            store_gateway:
+              sharding_ring:
+                replication_factor: 1
+                kvstore:
+                  store: memberlist
+            blocks_storage:
+              backend: filesystem
+              tsdb:
+                dir: /data/tsdb
+                block_ranges_period: [2h]
+              bucket_store:
+                sync_dir: /data/tsdb-sync
+              filesystem:
+                dir: /data/blocks
+            compactor:
+              data_dir: /data/compactor
+              sharding_ring:
+                kvstore:
+                  store: memberlist
+            ruler:
+              rule_path: /data/rules
+              ring:
+                kvstore:
+                  store: memberlist
+            ruler_storage:
+              backend: filesystem
+              filesystem:
+                dir: /data/ruler
+            limits:
+              native_histograms_ingestion_enabled: true
+              max_global_exemplars_per_user: 100000
+              otel_metric_suffixes_enabled: true
+            runtime_config:
+              file: /etc/mimir/runtime.yaml
 
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values:
-                      - ingester
-              topologyKey: "kubernetes.io/hostname"
-      zoneAwareReplication:
-        topologyKey: "kubernetes.io/hostname"
-    admin-cache:
-      enabled: false
-    chunks-cache:
-      enabled: false
-    index-cache:
-      enabled: false
-    metadata-cache:
-      enabled: false
-    results-cache:
-      enabled: false
-    minio:
-      enabled: false
-    overrides_exporter:
-      replicas: 1
-      resources:
-        limits:
-          memory: 128Mi
-        requests:
-          cpu: 100m
-          memory: 128Mi
-    querier:
-      replicas: 1
-      resources:
-        limits:
-          memory: 5.6Gi
-        requests:
-          cpu: 2
-          memory: 4Gi
-    query_frontend:
-      replicas: 1
-      resources:
-        limits:
-          memory: 2.8Gi
-        requests:
-          cpu: 2
-          memory: 2Gi
-    ruler:
-      replicas: 1
-      resources:
-        limits:
-          memory: 2.8Gi
-        requests:
-          cpu: 1
-          memory: 2Gi
-    store_gateway:
-      persistentVolume:
-        size: 10Gi
-      replicas: 3
-      resources:
-        limits:
-          memory: 2.1Gi
-        requests:
-          cpu: 1
-          memory: 1.5Gi
-      topologySpreadConstraints: {}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: target # support for enterprise.legacyLabels
-                    operator: In
-                    values:
-                      - store-gateway
-              topologyKey: "kubernetes.io/hostname"
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values:
-                      - store-gateway
-              topologyKey: "kubernetes.io/hostname"
-      zoneAwareReplication:
-        topologyKey: "kubernetes.io/hostname"
-    nginx:
-      replicas: 1
-      resources:
-        limits:
-          memory: 731Mi
-        requests:
-          cpu: 1
-          memory: 512Mi
+          runtime.yaml: |
+            # This file can be used to set overrides or other runtime config.
+            overrides:
+              anonymous:
+                otel_keep_identifying_resource_attributes: true
+
+    controllers:
+      mimir:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/grafana/mimi
+              tag: 2.17.1
+              pullPolicy: IfNotPresent
+            args:
+              - -config.file=/etc/mimir/config.yaml
+              - -config.expand-env=true
+              - -target=all
+              - -server.http-listen-port=80
+              - -server.grpc-listen-port=9009
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: &port 80
+                  initialDelaySeconds: 45
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 60
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+            protocol: HTTP
+            primary: true
+          grpc:
+            port: 9009
+            protocol: TCP
+          memberlist:
+            port: 7946
+            protocol: TCP
+    serviceMonitor:
+      app:
+        serviceName: mimir
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.witl.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+      config:
+        type: configMap
+        name: mimir-config
+        globalMounts:
+          - path: /etc/mimir
