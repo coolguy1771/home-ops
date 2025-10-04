@@ -75,7 +75,7 @@ spec:
               ring:
                 kvstore:
                   store: memberlist
-              alertmanager_url: http://localhost/alertmanager
+              alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
             ruler_storage:
               backend: filesystem
               filesystem:
