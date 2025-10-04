@@ -8,9 +8,9 @@ components:
 replacements:
   - path: ../../components/replacements/ks.yaml
 resources:
-  # - ./blackbox-exporter/ks.yaml
+  - ./blackbox-exporter/ks.yaml
   - ./gatus/ks.yaml
-  # - ./grafana/ks.yaml
+  - ./grafana/ks.yaml
   - ./k8s-monitoring/ks.yaml
   - ./keda/ks.yaml
   # - ./kromgo/ks.yaml
