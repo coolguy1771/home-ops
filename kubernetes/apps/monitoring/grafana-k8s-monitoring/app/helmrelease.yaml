@@ -112,7 +112,7 @@ spec:
               name: alloy-wal
             spec:
               accessModes: ["ReadWriteOnce"]
-              storageClassName: "standard"
+              storageClassName: "ceph-block"
               resources:
                 requests:
                   storage: 5Gi
@@ -135,5 +135,5 @@ spec:
                 type: DirectoryOrCreate
     alloy-profiles:
       enabled: true
-    alloy-receivers:
+    alloy-receiver:
       enabled: true
