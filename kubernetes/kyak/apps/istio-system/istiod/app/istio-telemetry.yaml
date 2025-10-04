@@ -1,8 +1,0 @@
-apiVersion: telemetry.istio.io/v1alpha1
-kind: Telemetry
-metadata:
-  name: global-default
-spec:
-  accessLogging:
-    - providers:
-        - name: envoy

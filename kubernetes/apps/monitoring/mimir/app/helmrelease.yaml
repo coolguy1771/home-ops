@@ -1,0 +1,212 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mimir
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: mimir
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    configMaps:
+      config:
+        enabled: true
+        data:
+          config.yaml: |
+            multitenancy_enabled: false
+
+            server:
+              http_listen_port: 80
+              grpc_listen_port: 9009
+
+            distributor:
+              ring:
+                kvstore:
+                  store: memberlist
+            ingester_client:
+              grpc_client_config:
+                # Configure the client to allow messages up to 100MB.
+                max_recv_msg_size: 104857600
+                max_send_msg_size: 104857600
+                grpc_compression: gzip
+            ingester:
+              ring:
+                final_sleep: 0s
+                num_tokens: 512
+                kvstore:
+                  store: memberlist
+                replication_factor: 1
+              instance_limits:
+                max_series: 1000000
+                max_tenants: 1000
+            memberlist:
+              join_members:
+                - localhost:7946
+            store_gateway:
+              sharding_ring:
+                replication_factor: 1
+                kvstore:
+                  store: memberlist
+            blocks_storage:
+              backend: filesystem
+              tsdb:
+                dir: /data/tsdb
+                block_ranges_period: [2h]
+              bucket_store:
+                sync_dir: /data/tsdb-sync
+              filesystem:
+                dir: /data/blocks
+            compactor:
+              data_dir: /data/compactor
+              sharding_ring:
+                kvstore:
+                  store: memberlist
+            ruler:
+              rule_path: /data/rules
+              ring:
+                kvstore:
+                  store: memberlist
+              alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            ruler_storage:
+              backend: filesystem
+              filesystem:
+                dir: /data/ruler
+            limits:
+              native_histograms_ingestion_enabled: true
+              max_global_exemplars_per_user: 100000
+              otel_metric_suffixes_enabled: true
+              max_global_series_per_user: 0
+              max_global_series_per_metric: 0
+              ingestion_rate: 100000
+              ingestion_burst_size: 1000000
+            runtime_config:
+              file: /etc/mimir/runtime.yaml
+
+          runtime.yaml: |
+            # This file can be used to set overrides or other runtime config.
+            overrides:
+              anonymous:
+                otel_keep_identifying_resource_attributes: true
+
+    controllers:
+      mimir:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/grafana/mimir
+              tag: 2.17.1
+              pullPolicy: IfNotPresent
+            args:
+              - -config.file=/etc/mimir/config.yaml
+              - -config.expand-env=true
+              - -target=all
+              - -activity-tracker.filepath=/tmp/metrics-activity.log
+            envFrom:
+              - secretRef:
+                  name: alertmanager-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: &port 80
+                  initialDelaySeconds: 45
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 60
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+            protocol: HTTP
+            primary: true
+          grpc:
+            port: 9009
+            protocol: TCP
+          memberlist:
+            port: 7946
+            protocol: TCP
+    serviceMonitor:
+      app:
+        serviceName: mimir
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["len([BODY]) == 0"]
+            dns:
+              query-name: {{ .Release.Name }}.witl.xyz
+              query-type: A
+            url: 1.1.1.1
+        hostnames:
+          - "{{ .Release.Name }}.witl.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: 80
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+      config:
+        type: configMap
+        name: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /etc/mimir
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

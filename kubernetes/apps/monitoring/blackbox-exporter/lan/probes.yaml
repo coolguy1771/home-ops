@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-icmp
+spec:
+  module: icmp
+  prober:
+    url: blackbox-exporter-lan.monitoring.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - osiris.286k.co
+        - unifi.286k.co
+        - hp-ilo-0.286k.co
+        - hp-ilo-1.286k.co
+        - pikvm.286k.co
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-tcp
+spec:
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter-lan.monitoring.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - osiris.286k.co:2049

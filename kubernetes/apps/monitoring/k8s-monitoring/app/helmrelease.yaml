@@ -1,0 +1,165 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: k8s-monitoring
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: k8s-monitoring
+  interval: 1h
+  values:
+    cluster:
+      name: "kyak"
+    destinations:
+      - name: mimir
+        type: otlp
+        url: http://mimir.monitoring.svc.cluster.local/otlp
+        protocol: http
+        metrics: { enabled: true }
+        logs:    { enabled: true }
+        traces:  { enabled: true }
+    #
+    # Features
+    #
+    clusterMetrics:
+      enabled: true
+      nodeLabels:
+        nodePool: true
+        region: true
+        availabilityZone: true
+        nodeRole: true
+        os: true
+        architecture: true
+        instanceType: true
+      kepler:
+        enabled: true
+    clusterEvents:
+      enabled: true
+    nodeLogs:
+      enabled: false
+    podLogsViaKubernetesApi:
+      enabled: true
+      nodeLabels:
+        nodepool: true
+        region: true
+        availability_zone: true
+        node_role: true
+        os: true
+        architecture: true
+        instance_type: true
+      structuredMetadata:
+        node_pool: nodepool
+        region:
+        availability_zone:
+        node_role:
+        node_os: os
+        node_arch: architecture
+        node_type: instance_type
+    applicationObservability:
+      enabled: true
+      receivers:
+        otlp:
+          grpc:
+            enabled: true
+            port: 4317
+          http:
+            enabled: true
+            port: 4318
+        zipkin:
+          enabled: true
+          port: 9411
+    autoInstrumentation:
+      enabled: true
+    annotationAutodiscovery:
+      nodeLabels:
+        nodePool: true
+        region: true
+        availabilityZone: true
+        nodeRole: true
+        os: true
+        architecture: true
+        instanceType: true
+      enabled: true
+    prometheusOperatorObjects:
+      enabled: true
+    profiling:
+      enabled: false
+    integrations:
+      cert-manager:
+        instances:
+          - name: cert-manager
+            namespace: cert-manager
+            labelSelectors:
+              app.kubernetes.io/name: cert-manager
+      alloy:
+        instances:
+          - name: alloy
+            labelSelectors:
+              app.kubernetes.io/name:
+                - alloy-metrics
+                - alloy-singleton
+                - alloy-logs
+                - alloy-receiver
+                - alloy-profiles
+    selfReporting:
+      enabled: false
+      destinations: []
+      scrapeInterval: ""
+    alloy-metrics:
+      enabled: true
+      alloy:
+        storagePath: /var/lib/alloy
+        mounts:
+          extra:
+            - name: alloy-wal
+              mountPath: /var/lib/alloy
+      controller:
+        enableStatefulSetAutoDeletePVC: true
+        volumeClaimTemplates:
+          - metadata:
+              name: alloy-wal
+            spec:
+              accessModes: ["ReadWriteOnce"]
+              storageClassName: "ceph-block"
+              resources:
+                requests:
+                  storage: 5Gi
+    alloy-singleton:
+      enabled: true
+    alloy-logs:
+      enabled: true
+      alloy:
+        clustering:
+          enabled: true
+        storagePath: /var/lib/alloy
+        mounts:
+          extra:
+            - name: alloy-log-positions
+              mountPath: /var/lib/alloy
+      controller:
+        volumes:
+          extra:
+            - name: alloy-log-positions
+              hostPath:
+                path: /var/alloy-log-storage
+                type: DirectoryOrCreate
+    alloy-receiver:
+      enabled: true
+      alloy:
+        extraPorts:
+          - name: otlp-grpc
+            port: 4317
+            targetPort: 4317
+            protocol: TCP
+          - name: otlp-http
+            port: 4318
+            targetPort: 4318
+            protocol: TCP
+          - name: zipkin
+            port: 9411
+            targetPort: 9411
+            protocol: TCP
+    alloy-profiles:
+      enabled: false
