@@ -172,6 +172,10 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: 80
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
