@@ -11,7 +11,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/foundry-system/foundryvtt/app
+  path: ./kubernetes/apps/foundryvtt/foundryvtt/app
   postBuild:
     substitute:
       APP: *app
