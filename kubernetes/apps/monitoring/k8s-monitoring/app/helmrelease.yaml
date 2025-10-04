@@ -15,7 +15,7 @@ spec:
     destinations:
       - name: mimir
         type: otlp
-        url: http://mimir.monitoring.svc.cluster.local/otlp/v1/metrics
+        url: http://mimir.monitoring.svc.cluster.local/otlp
         protocol: http
         metrics: { enabled: true }
         logs:    { enabled: true }
