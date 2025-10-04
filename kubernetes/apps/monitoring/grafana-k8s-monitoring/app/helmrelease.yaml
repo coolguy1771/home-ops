@@ -58,7 +58,7 @@ spec:
         node_arch: architecture
         node_type: instance_type
     applicationObservability:
-      enabled: true
+      enabled: false
     autoInstrumentation:
       enabled: true
     annotationAutodiscovery:
