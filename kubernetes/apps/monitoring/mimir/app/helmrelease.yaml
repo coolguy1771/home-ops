@@ -173,6 +173,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       config:
         type: configMap
-        name: mimir-config
+        name: "{{ .Release.Name }}"
         globalMounts:
           - path: /etc/mimir
