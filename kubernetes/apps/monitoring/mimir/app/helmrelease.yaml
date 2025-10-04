@@ -72,14 +72,31 @@ spec:
               ring:
                 kvstore:
                   store: memberlist
+              alertmanager_url: http://localhost/alertmanager
             ruler_storage:
               backend: filesystem
               filesystem:
                 dir: /data/ruler
+
+            alertmanager:
+              data_dir: /data/alertmanager
+              external_url: https://mimir.witl.xyz/alertmanager
+              fallback_config_file: /etc/alertmanager/alertmanager.yaml
+              sharding_ring:
+                replication_factor: 1
+                kvstore:
+                  store: memberlist
+
+            alertmanager_storage:
+              backend: filesystem
+              filesystem:
+                dir: /data/alertmanager
             limits:
               native_histograms_ingestion_enabled: true
               max_global_exemplars_per_user: 100000
               otel_metric_suffixes_enabled: true
+              max_global_series_per_user: 0
+              max_global_series_per_metric: 0
             runtime_config:
               file: /etc/mimir/runtime.yaml
 
@@ -104,6 +121,9 @@ spec:
               - -config.expand-env=true
               - -target=all
               - -activity-tracker.filepath=/tmp/metrics-activity.log
+            envFrom:
+              - secretRef:
+                  name: alertmanager-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -187,6 +207,17 @@ spec:
         name: "{{ .Release.Name }}"
         globalMounts:
           - path: /etc/mimir
+      alertmanager-config:
+        type: configMap
+        name: mimir-alertmanager-config
+        globalMounts:
+          - path: /etc/alertmanager
+      alertmanager-secret:
+        type: secret
+        name: alertmanager-secret
+        globalMounts:
+          - path: /secrets/alertmanager-secret
+            readOnly: true
       tmp:
         type: emptyDir
         globalMounts:

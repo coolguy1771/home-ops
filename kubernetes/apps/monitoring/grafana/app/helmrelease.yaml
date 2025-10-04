@@ -140,13 +140,13 @@ spec:
             url: http://loki-gateway.monitoring.svc.cluster.local
             jsonData:
               maxLines: 250
-          - name: Alertmanager
+          - name: Mimir Alertmanager
             type: alertmanager
-            uid: alertmanager
+            uid: mimir-alertmanager
             access: proxy
-            url: http://alertmanager-operated.monitoring.svc.cluster.local:9095
+            url: http://mimir.monitoring.svc.cluster.local/alertmanager
             jsonData:
-              implementation: prometheus
+              implementation: mimir
     dashboards:
       ceph:
         ceph-cluster:
