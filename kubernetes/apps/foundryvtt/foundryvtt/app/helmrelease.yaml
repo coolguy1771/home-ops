@@ -24,8 +24,6 @@ spec:
               tag: 13.348.0@sha256:5972fd26c7bb387df9939eb5a6d531e6250ce7855046aa41b82fc8a16f64574a
             env:
               CONTAINER_CACHE: /data/container_cache
-              CONTAINER_PATCHES: /data/container_patches
-              CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
               CONTAINER_VERBOSE: "true"
               FOUNDRY_COMPRESS_WEBSOCKET: "true"
               FOUNDRY_CSS_THEME: scifi
