@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: foundryvtt
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: foundryvtt
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      foundryvtt:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/felddy/foundryvtt
+              tag: 13.348.0@sha256:5972fd26c7bb387df9939eb5a6d531e6250ce7855046aa41b82fc8a16f64574a
+            env:
+              CONTAINER_CACHE: /data/container_cache
+              CONTAINER_PATCHES: /data/container_patches
+              CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
+              CONTAINER_VERBOSE: "true"
+              FOUNDRY_COMPRESS_WEBSOCKET: "true"
+              FOUNDRY_CSS_THEME: scifi
+              FOUNDRY_HOSTNAME: "{{ .Release.Name }}.witl.xyz"
+              FOUNDRY_IP_DISCOVERY: "false"
+              FOUNDRY_LOCAL_HOSTNAME: "{{ .Release.Name }}.witl.xyz"
+              FOUNDRY_MINIFY_STATIC_FILES: "true"
+              FOUNDRY_PROTOCOL: "4"
+              FOUNDRY_PROXY_PORT: "443"
+              FOUNDRY_PROXY_SSL: "true"
+              FOUNDRY_TELEMETRY: "false"
+              FOUNDRY_UPNP: "false"
+              TZ: America/New_York
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &port 30000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["len([BODY]) == 0"]
+            dns:
+              query-name: {{ .Release.Name }}.witl.xyz
+              query-type: A
+            url: 1.1.1.1
+        hostnames:
+          - "{{ .Release.Name }}.witl.xyz"
+          - foundry.witl.xyz
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
