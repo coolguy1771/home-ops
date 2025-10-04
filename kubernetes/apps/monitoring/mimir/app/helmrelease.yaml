@@ -122,7 +122,7 @@ spec:
             args:
               - -config.file=/etc/mimir/config.yaml
               - -config.expand-env=true
-              - -target=all
+              - -target=all,alertmanager
               - -activity-tracker.filepath=/tmp/metrics-activity.log
             envFrom:
               - secretRef:
