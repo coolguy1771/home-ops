@@ -82,7 +82,7 @@ spec:
                 dir: /data/ruler
 
             alertmanager:
-              data_dir: /data/alertmanager
+              data_dir: /data/alertmanager-data
               external_url: https://mimir.witl.xyz/alertmanager
               fallback_config_file: /etc/alertmanager/alertmanager.yaml
               sharding_ring:
@@ -93,13 +93,15 @@ spec:
             alertmanager_storage:
               backend: filesystem
               filesystem:
-                dir: /data/alertmanager
+                dir: /data/alertmanager-storage
             limits:
               native_histograms_ingestion_enabled: true
               max_global_exemplars_per_user: 100000
               otel_metric_suffixes_enabled: true
               max_global_series_per_user: 0
               max_global_series_per_metric: 0
+              ingestion_rate: 100000
+              ingestion_burst_size: 1000000
             runtime_config:
               file: /etc/mimir/runtime.yaml
 
