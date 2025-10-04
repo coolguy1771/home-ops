@@ -100,6 +100,7 @@ spec:
               - -target=all
               - -server.http-listen-port=80
               - -server.grpc-listen-port=9009
+              - -activity-tracker.filepath=/tmp/metrics-activity.log
             probes:
               liveness: &probes
                 enabled: true
@@ -179,3 +180,7 @@ spec:
         name: "{{ .Release.Name }}"
         globalMounts:
           - path: /etc/mimir
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
