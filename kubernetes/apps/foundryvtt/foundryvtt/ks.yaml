@@ -10,8 +10,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: external-secrets-stores
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/foundry-system/foundryvtt/app
   postBuild:
