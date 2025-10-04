@@ -135,3 +135,5 @@ spec:
                 type: DirectoryOrCreate
     alloy-profiles:
       enabled: true
+    alloy-receivers:
+      enabled: true
