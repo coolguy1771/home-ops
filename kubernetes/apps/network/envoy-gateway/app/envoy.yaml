@@ -148,6 +148,13 @@ metadata:
   name: https-redirect
   annotations:
     external-dns.alpha.kubernetes.io/controller: none
+    gatus.home-operations.com/enabled: "true"
+    gatus.home-operations.com/endpoint: |-
+      conditions: ["len([BODY]) == 0"]
+      dns:
+        query-name: {{ .Release.Name }}.witl.xyz
+        query-type: A
+      url: 1.1.1.1
 spec:
   parentRefs:
     - name: envoy-external

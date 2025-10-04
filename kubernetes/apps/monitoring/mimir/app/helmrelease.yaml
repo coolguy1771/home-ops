@@ -80,20 +80,6 @@ spec:
               backend: filesystem
               filesystem:
                 dir: /data/ruler
-
-            alertmanager:
-              data_dir: /data/alertmanager-data
-              external_url: https://mimir.witl.xyz/alertmanager
-              fallback_config_file: /etc/alertmanager/alertmanager.yaml
-              sharding_ring:
-                replication_factor: 1
-                kvstore:
-                  store: memberlist
-
-            alertmanager_storage:
-              backend: filesystem
-              filesystem:
-                dir: /data/alertmanager-storage
             limits:
               native_histograms_ingestion_enabled: true
               max_global_exemplars_per_user: 100000
@@ -124,7 +110,7 @@ spec:
             args:
               - -config.file=/etc/mimir/config.yaml
               - -config.expand-env=true
-              - -target=all,alertmanager
+              - -target=all
               - -activity-tracker.filepath=/tmp/metrics-activity.log
             envFrom:
               - secretRef:
@@ -194,6 +180,14 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["len([BODY]) == 0"]
+            dns:
+              query-name: {{ .Release.Name }}.witl.xyz
+              query-type: A
+            url: 1.1.1.1
         hostnames:
           - "{{ .Release.Name }}.witl.xyz"
         parentRefs:
@@ -212,17 +206,6 @@ spec:
         name: "{{ .Release.Name }}"
         globalMounts:
           - path: /etc/mimir
-      alertmanager-config:
-        type: configMap
-        name: mimir-alertmanager-config
-        globalMounts:
-          - path: /etc/alertmanager
-      alertmanager-secret:
-        type: secret
-        name: alertmanager-secret
-        globalMounts:
-          - path: /secrets/alertmanager-secret
-            readOnly: true
       tmp:
         type: emptyDir
         globalMounts:
