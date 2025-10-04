@@ -13,10 +13,10 @@ resources:
   - ./grafana/ks.yaml
   - ./k8s-monitoring/ks.yaml
   - ./keda/ks.yaml
-  # - ./kromgo/ks.yaml
+  - ./kromgo/ks.yaml
   - ./loki/ks.yaml
   - ./mimir/ks.yaml
   # - ./silence-operator/ks.yaml
-  # - ./smartctl-exporter/ks.yaml
+  - ./smartctl-exporter/ks.yaml
   # - ./spoodermon/ks.yaml
-  # - ./unpoller/ks.yaml
+  - ./unpoller/ks.yaml
