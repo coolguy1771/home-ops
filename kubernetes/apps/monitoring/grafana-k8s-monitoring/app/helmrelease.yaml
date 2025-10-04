@@ -58,7 +58,18 @@ spec:
         node_arch: architecture
         node_type: instance_type
     applicationObservability:
-      enabled: false
+      enabled: true
+      receivers:
+        otlp:
+          grpc:
+            enabled: true
+            port: 4317
+          http:
+            enabled: true
+            port: 4318
+        zipkin:
+          enabled: true
+          port: 9411
     autoInstrumentation:
       enabled: true
     annotationAutodiscovery:
@@ -74,9 +85,7 @@ spec:
     prometheusOperatorObjects:
       enabled: true
     profiling:
-      enabled: true
-      destinations: []
-      collector: alloy-profiles
+      enabled: false
     integrations:
       cert-manager:
         instances:
@@ -86,12 +95,14 @@ spec:
               app.kubernetes.io/name: cert-manager
       alloy:
         instances:
-          - name: alloy-metrics
+          - name: alloy
             labelSelectors:
-              app.kubernetes.io/name: alloy-metrics
-          - name: alloy-receivers
-            labelSelectors:
-              app.kubernetes.io/name: alloy-receivers
+              app.kubernetes.io/name:
+                - alloy-metrics
+                - alloy-singleton
+                - alloy-logs
+                - alloy-receiver
+                - alloy-profiles
     selfReporting:
       enabled: false
       destinations: []
@@ -104,7 +115,6 @@ spec:
           extra:
             - name: alloy-wal
               mountPath: /var/lib/alloy
-
       controller:
         enableStatefulSetAutoDeletePVC: true
         volumeClaimTemplates:
@@ -121,6 +131,8 @@ spec:
     alloy-logs:
       enabled: true
       alloy:
+        clustering:
+          enabled: true
         storagePath: /var/lib/alloy
         mounts:
           extra:
@@ -133,7 +145,21 @@ spec:
               hostPath:
                 path: /var/alloy-log-storage
                 type: DirectoryOrCreate
-    alloy-profiles:
-      enabled: true
     alloy-receiver:
       enabled: true
+      alloy:
+        extraPorts:
+          - name: otlp-grpc
+            port: 4317
+            targetPort: 4317
+            protocol: TCP
+          - name: otlp-http
+            port: 4318
+            targetPort: 4318
+            protocol: TCP
+          - name: zipkin
+            port: 9411
+            targetPort: 9411
+            protocol: TCP
+    alloy-profiles:
+      enabled: false
