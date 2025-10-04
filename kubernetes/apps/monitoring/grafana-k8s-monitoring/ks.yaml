@@ -6,8 +6,8 @@ metadata:
   name: grafana-k8s-monitoring
 spec:
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: mimir
+      namespace: monitoring
   interval: 1h
   path: ./kubernetes/apps/monitoring/grafana-k8s-monitoring/app
   prune: true
