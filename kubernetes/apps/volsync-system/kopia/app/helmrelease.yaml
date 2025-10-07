@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: kopia
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: kopia
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       kopia:
@@ -71,14 +64,6 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["len([BODY]) == 0"]
-            dns:
-              query-name: {{ .Release.Name }}.witl.xyz
-              query-type: A
-            url: 1.1.1.1
         hostnames:
           - "{{ .Release.Name }}.witl.xyz"
         parentRefs:
