@@ -6,7 +6,7 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.6
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.8-3
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -15,17 +15,14 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
-  # Using initdb with import for major version upgrade (PG16 -> PG17)
   bootstrap:
-    initdb:
-      database: postgres
-      owner: postgres
-      import:
-        type: monolith
-        databases:
-          - "*"
-        source:
-          externalCluster: &previousCluster postgres16-v10
+    recovery:
+      source: &previousCluster postgres16-v10
+      # Optional: Point-in-Time Recovery configuration
+      # recoveryTarget:
+      #   targetTime: "2023-08-11 11:14:21.00000+02"
+      #   # or use targetName, targetXID, targetLSN, targetImmediate
+      #   exclusive: false
   postgresql:
     parameters:
       max_connections: "600"
@@ -48,7 +45,7 @@ spec:
         maxParallel: 8
       destinationPath: &destinationPath s3://cnpg-dc1986ff/
       endpointURL: &endpointUrl https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster postgres17-v1
+      serverName: &currentCluster postgres16-v11
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
