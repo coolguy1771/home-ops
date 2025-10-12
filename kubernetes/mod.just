@@ -8,17 +8,16 @@ default:
     just -l kube
 
 [doc('Apply local Flux Kustomization')]
-apply-ks dir ks="*":
-    just kube render-local-ks "{{ dir }}" "{{ ks }}" \
-        | kubectl apply --server-side --field-manager=kustomize-controller -f /dev/stdin
+apply-ks ns ks:
+    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl apply --server-side --field-manager=kustomize-controller -f /dev/stdin
 
 [doc('Browse a PVC')]
 browse-pvc namespace claim:
     kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
 
 [doc('Delete local Flux Kustomization')]
-delete-ks dir ks="*":
-    just kube render-local-ks "{{ dir }}" "{{ ks }}" | kubectl delete -f /dev/stdin
+delete-ks ns ks:
+    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl delete -f /dev/stdin
 
 [doc('Open a shell on a node')]
 node-shell node:
@@ -35,6 +34,12 @@ prune-pods:
 snapshot:
     kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
         kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
+    done
+
+[doc('Suspend or resume Keda ScaledObjects')]
+keda state:
+    kubectl get scaledobjects --no-headers -A | while read -r ns name _; do \
+        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" autoscaling.keda.sh/paused{{ if state != "suspend" { "-" } else { "=true" } }}; \
     done
 
 [doc('Suspend or resume VolSync')]
@@ -78,5 +83,5 @@ view-secret namespace secret:
     kubectl view-secret -n {{ namespace }} {{ secret }}
 
 [private]
-render-local-ks dir ks="*":
-    flux-local build ks --all-namespaces --path "{{ kubernetes_dir }}/apps/{{ dir }}" {{ if ks != "*" { ks } else { "" } }}
+render-local-ks ns ks:
+    flux-local build ks --namespace "{{ ns }}" --path "{{ kubernetes_dir }}/flux/cluster" "{{ ks }}"
