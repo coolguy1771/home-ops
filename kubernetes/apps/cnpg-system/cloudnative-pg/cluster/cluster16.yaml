@@ -15,14 +15,17 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
+  # Using initdb with import for major version upgrade (PG16 -> PG17)
   bootstrap:
-    recovery:
-      source: &previousCluster postgres16-v10
-      # Optional: Point-in-Time Recovery configuration
-      # recoveryTarget:
-      #   targetTime: "2023-08-11 11:14:21.00000+02"
-      #   # or use targetName, targetXID, targetLSN, targetImmediate
-      #   exclusive: false
+    initdb:
+      database: postgres
+      owner: postgres
+      import:
+        type: monolith
+        databases:
+          - "*"
+        source:
+          externalCluster: &previousCluster postgres16-v10
   postgresql:
     parameters:
       max_connections: "600"
