@@ -1,6 +1,0 @@
-config:
-  vault:address: https://vault.286k.co
-  aws:profile: AdministratorAccess-782070670678
-  aws:region: us-east-1
-  vault:token:
-    secure: AAABAM4//J3SlaFgXTcnrqKtBHJcjt8F3Z9mc27d11aTbp4uGF8=

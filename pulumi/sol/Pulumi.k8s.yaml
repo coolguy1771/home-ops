@@ -1,7 +1,0 @@
-config:
-  sol:minioPassword:
-    secure: AAABAJrwKpc7LZnRuypxOydyy2Fa+PkAJ4NYl+VcsXTHFraf62woMxxsY4p0ou3Kl9H+GEPy7ZvRUTs=
-  sol:talos-backupPassword:
-    secure: AAABAGn3Tt+nEInr2DlnNmYBkABgt0+qF68gZoh+ICYsu3mdkMcLOUluSYvsD/79
-  sol:volsyncPassword:
-    secure: AAABAESMM6JuMMvSw+Yr/DbjSSmhB+juM4Mq3wX0RIdZCtXkEVPIcmvsCRkee6GjINnMOBD2FRY9brdRdwhd5ncvFiuaoN5R

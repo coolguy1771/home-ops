@@ -1,6 +1,0 @@
-name: keycloak
-runtime:
-  name: nodejs
-  options:
-    packagemanager: npm
-description: IaC bindings for keyclolak

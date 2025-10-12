@@ -1,3 +1,0 @@
-name: sol
-runtime: nodejs
-description: A minimal TypeScript Pulumi program
