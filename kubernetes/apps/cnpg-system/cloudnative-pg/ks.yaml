@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: actions-runner-controller
+  name: cloudnative-pg-cluster
 spec:
   interval: 1h
   path: ./kubernetes/apps/cnpg-system/cloudnative-pg/app
@@ -19,7 +19,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: actions-runner-controller
+  name: cloudnative-pg-cluster
 spec:
   interval: 1h
   path: ./kubernetes/apps/cnpg-system/cloudnative-pg/cluster
