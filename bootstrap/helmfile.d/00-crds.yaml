@@ -22,20 +22,24 @@ releases:
   - name: external-secrets
     namespace: external-secrets
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.20.2
+    version: 0.20.3
 
   - name: envoy-gateway
     namespace: network
     chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
     version: 1.5.3
 
+  - name: grafana-operator
+    namespace: monitoring
+    chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
+    version: v5.19.4
+
   - name: keda
-    namespace: observability
+    namespace: monitoring
     chart: oci://ghcr.io/home-operations/charts-mirror/keda
     version: 2.18.0
 
   - name: kube-prometheus-stack
-    namespace: observability
+    namespace: monitoring
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: 78.3.1
-
