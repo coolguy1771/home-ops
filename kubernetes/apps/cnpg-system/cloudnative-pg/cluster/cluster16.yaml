@@ -35,40 +35,19 @@ spec:
       memory: "4Gi"
   monitoring:
     enablePodMonitor: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
   backup:
     retentionPolicy: 30d
-    barmanObjectStore:
-      data:
-        compression: bzip2
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: &destinationPath s3://cnpg-dc1986ff/
-      endpointURL: &endpointUrl https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster postgres16-v11
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: aws-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: aws-secret-access-key
+    target: plugin
+    pluginConfiguration:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        objectStoreName: postgres16-v11
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
-      barmanObjectStore:
-        wal:
-          compression: bzip2
-          maxParallel: 8
-        data:
-          compression: bzip2
-        destinationPath: *destinationPath
-        endpointURL: *endpointUrl
-        serverName: *previousCluster
-        s3Credentials:
-          accessKeyId:
-            name: cloudnative-pg-secret
-            key: aws-access-key-id
-          secretAccessKey:
-            name: cloudnative-pg-secret
-            key: aws-secret-access-key
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          objectStoreName: postgres16-v10
