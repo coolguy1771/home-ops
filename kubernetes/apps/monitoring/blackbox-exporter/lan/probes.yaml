@@ -16,6 +16,10 @@ spec:
         - hp-ilo-0.286k.co
         - hp-ilo-1.286k.co
         - pikvm.286k.co
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
@@ -30,3 +34,7 @@ spec:
     staticConfig:
       static:
         - osiris.286k.co:2049
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace

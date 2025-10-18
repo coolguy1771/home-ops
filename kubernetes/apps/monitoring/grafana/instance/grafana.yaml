@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafana_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    grafana.internal/instance: grafana
+spec:
+  config:
+    analytics:
+      check_for_updates: "false"
+      check_for_plugin_updates: "false"
+      feedback_links_enabled: "false"
+      reporting_enabled: "false"
+    auth:
+      disable_login_form: "false"
+      oauth_auto_login: "true"
+      oauth_allow_insecure_email_lookup: "true"
+    auth.generic_oauth:
+      enabled: "true"
+      name: Duo
+      icon: signin
+      allow_sign_up: "true"
+      scopes: openid profile email groups
+      email_attribute_name: email
+      email_attribute_path: email
+      login_attribute_path: email
+      name_attribute_path: name
+      groups_attribute_path: groups
+      role_attribute_path: |
+        contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || contains(groups[*], 'grafana-viewer') && 'Viewer'
+      role_attribute_strict: "false"
+      empty_scopes: "false"
+      use_pkce: "true"
+      use_refresh_token: "true"
+      allow_assign_grafana_admin: "true"
+      skip_org_role_sync: "false"
+      client_id: DI1VLH2G8D3CBNTQFNZP
+      auth_url: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/authorize
+      token_url: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/token
+      api_url: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/userinfo
+    log:
+      mode: console
+    metrics:
+      enabled: "true"
+    news:
+      news_feed_enabled: "false"
+    plugins:
+      plugin_admin_enabled: "false"
+    security:
+      angular_support_enabled: "true"
+    server:
+      enable_gzip: "true"
+      root_url: https://grafana.witl.xyz
+  deployment:
+    spec:
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: grafana
+              env:
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin-password-secret
+                      key: GF_SECURITY_ADMIN_PASSWORD
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-secret
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: {drop: ["ALL"]}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: grafana-pvc
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: ceph-block
+  disableDefaultSecurityContext: All
