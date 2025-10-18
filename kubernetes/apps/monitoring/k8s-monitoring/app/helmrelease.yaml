@@ -13,12 +13,18 @@ spec:
     cluster:
       name: "kyak"
     destinations:
+      - name: prometheus
+        type: prometheus
+        url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+      - name: loki
+        type: loki
+        url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
       - name: mimir
         type: otlp
         url: http://mimir.monitoring.svc.cluster.local/otlp
         protocol: http
-        metrics: { enabled: true }
-        logs:    { enabled: true }
+        metrics: { enabled: false }
+        logs:    { enabled: false }
         traces:  { enabled: true }
     #
     # Features
