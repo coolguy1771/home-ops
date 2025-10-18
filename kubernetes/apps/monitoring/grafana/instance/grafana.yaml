@@ -21,17 +21,25 @@ spec:
       enabled: "true"
       name: Duo
       icon: signin
-      scopes: openid profile email groups offline_access
+      allow_sign_up: "true"
+      scopes: openid profile email groups
+      email_attribute_name: email
       email_attribute_path: email
-      empty_scopes: "false"
-      login_attribute_path: preferred_username
-      groups_attribute_path: groups
+      login_attribute_path: email
       name_attribute_path: name
-      use_pkce: "true"
-    auth.generic_oauth.group_mapping:
+      groups_attribute_path: groups
       role_attribute_path: |
-        contains(groups[*], 'Grafana Admin') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
-      org_id: "1"
+        contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || contains(groups[*], 'grafana-viewer') && 'Viewer'
+      role_attribute_strict: "false"
+      empty_scopes: "false"
+      use_pkce: "true"
+      use_refresh_token: "true"
+      allow_assign_grafana_admin: "true"
+      skip_org_role_sync: "false"
+      client_id: DI1VLH2G8D3CBNTQFNZP
+      auth_url: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/authorize
+      token_url: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/token
+      api_url: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/userinfo
     log:
       mode: console
     metrics:
@@ -64,14 +72,6 @@ spec:
                     secretKeyRef:
                       name: grafana-secret
                       key: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
-                - name: GF_AUTH_GENERIC_OAUTH_API_URL
-                  value: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/userinfo
-                - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
-                  value : https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/authorize
-                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
-                  value: I1VLH2G8D3CBNTQFNZP
-                - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
-                  value: https://sso-3da0e7d4.sso.duosecurity.com/oidc/DI1VLH2G8D3CBNTQFNZP/token
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
