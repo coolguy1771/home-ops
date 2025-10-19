@@ -6,7 +6,7 @@ metadata:
   name: k8s-monitoring
 spec:
   dependsOn:
-    - name: mimir
+    - name: kube-prometheus-stack
       namespace: monitoring
   interval: 1h
   path: ./kubernetes/apps/monitoring/k8s-monitoring/app
