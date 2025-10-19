@@ -43,9 +43,7 @@ spec:
         serverName: postgres16-v11
   backup:
     retentionPolicy: 30d
-    target: plugin
-    pluginConfiguration:
-      name: barman-cloud.cloudnative-pg.io
+    target: prefer-standby
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
