@@ -10,6 +10,19 @@ spec:
     name: intel-gpu-resource-driver
   interval: 1h
   values:
+    kubeletPlugin:
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: node.kubernetes.io/gpu
+          operator: Exists
+          effect: NoSchedule
     cdi:
       staticPath: /var/cdi/static
       dynamicPath: /var/cdi/dynamic
