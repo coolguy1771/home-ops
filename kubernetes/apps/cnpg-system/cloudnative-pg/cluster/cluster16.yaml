@@ -37,17 +37,20 @@ spec:
     enablePodMonitor: true
   plugins:
     - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: postgres16-v11
+        serverName: postgres16-v11
   backup:
     retentionPolicy: 30d
     target: plugin
     pluginConfiguration:
       name: barman-cloud.cloudnative-pg.io
-      parameters:
-        objectStoreName: postgres16-v11
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          objectStoreName: postgres16-v10
+          barmanObjectName: postgres16-v10
+          serverName: postgres16-v10
