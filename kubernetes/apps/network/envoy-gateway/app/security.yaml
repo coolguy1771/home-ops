@@ -3,7 +3,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: envoy-security
+  name: envoy-cors
 spec:
   cors:
     allowOrigins:
@@ -23,27 +23,10 @@ spec:
       - X-Request-ID
     maxAge: 24h
     allowCredentials: true
-  headers:
-    request:
-      remove:
-        - X-Powered-By
-    response:
-      add:
-        - name: Strict-Transport-Security
-          value: max-age=31536000; includeSubDomains; preload
-        - name: X-Frame-Options
-          value: SAMEORIGIN
-        - name: X-Content-Type-Options
-          value: nosniff
-        - name: Referrer-Policy
-          value: strict-origin-when-cross-origin
-        - name: Permissions-Policy
-          value: "geolocation=(), microphone=(), camera=()"
-        - name: Content-Security-Policy
-          value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'"
-      remove:
-        - Server
-        - X-Powered-By
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
+      name: envoy-external
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-internal
