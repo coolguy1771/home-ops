@@ -9,3 +9,4 @@ resources:
   - ./observability.yaml
   - ./ocirepository.yaml
   - ./ratelimit.yaml
+  - ./security.yaml
