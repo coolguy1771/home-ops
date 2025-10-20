@@ -196,7 +196,6 @@ spec:
     http:
       requestReceivedTimeout: 60s
       idleTimeout: 300s
-      maxConnectionDuration: 3600s
   http1:
     enableTrailers: true
     preserveHeaderCase: false
