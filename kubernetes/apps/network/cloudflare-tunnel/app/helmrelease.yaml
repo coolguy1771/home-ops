@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: cloudflare-tunnel
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: cloudflare-tunnel
+  interval: 1h
   values:
     controllers:
       cloudflare-tunnel:
@@ -19,12 +19,11 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/cloudflare/cloudflared
-              tag: 2025.9.1@sha256:4604b477520dc8322af5427da68b44f0bf814938e9d2e4814f2249ee4b03ffdf
+              repository: mirror.gcr.io/cloudflare/cloudflared
+              tag: 2025.10.0@sha256:396cd2e6f021275ad09969a1b4f1a7e62ca5349fde62781ce082bb2c18105c70
             env:
               NO_AUTOUPDATE: true
               TUNNEL_METRICS: 0.0.0.0:8080
-              TUNNEL_ORIGIN_ENABLE_HTTP2: true
               TUNNEL_POST_QUANTUM: true # disable when using http2
               TUNNEL_TRANSPORT_PROTOCOL: quic # http2
             envFrom:
@@ -74,12 +73,9 @@ spec:
         data:
           config.yaml: |-
             ingress:
-              - hostname: witl.xyz
-                originRequest:
-                  originServerName: witl.xyz
-                service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
               - hostname: "*.witl.xyz"
                 originRequest:
+                  http2Origin: true
                   originServerName: external.witl.xyz
                 service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
               - service: http_status:404
@@ -90,3 +86,4 @@ spec:
         globalMounts:
           - path: /etc/cloudflared/config.yaml
             subPath: config.yaml
+

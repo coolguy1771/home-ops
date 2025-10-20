@@ -138,6 +138,7 @@ spec:
   tls:
     minVersion: "1.2"
     alpnProtocols:
+      - h3
       - h2
       - http/1.1
 ---
