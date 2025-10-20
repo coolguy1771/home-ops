@@ -8,3 +8,4 @@ resources:
   - ./helmrelease.yaml
   - ./observability.yaml
   - ./ocirepository.yaml
+  - ./ratelimit.yaml

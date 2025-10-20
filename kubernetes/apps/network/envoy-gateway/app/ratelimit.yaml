@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_backendtrafficpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: envoy-ratelimit-global
+spec:
+  rateLimit:
+    type: Global
+    global:
+      rules:
+        # Rate limit by client IP - 100 requests per minute
+        - clientSelectors:
+            - headers:
+                - name: x-forwarded-for
+                  type: Distinct
+          limit:
+            requests: 100
+            unit: Minute
+        # Rate limit by path - 1000 requests per minute for all paths
+        - clientSelectors:
+            - headers:
+                - name: :path
+                  type: Distinct
+          limit:
+            requests: 1000
+            unit: Minute
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_clienttrafficpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: envoy-ratelimit-local
+spec:
+  rateLimit:
+    type: Local
+    local:
+      rules:
+        # Global burst protection - max 1000 requests per second per IP
+        - clientSelectors:
+            - headers:
+                - name: x-forwarded-for
+                  type: Distinct
+          limit:
+            requests: 1000
+            unit: Second
+        # Protection against request floods - 10000 requests per minute per IP
+        - clientSelectors:
+            - headers:
+                - name: x-forwarded-for
+                  type: Distinct
+          limit:
+            requests: 10000
+            unit: Minute
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
