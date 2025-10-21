@@ -11,6 +11,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./jellyfin/ks.yaml
+  - ./nzbget/ks.yaml
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml

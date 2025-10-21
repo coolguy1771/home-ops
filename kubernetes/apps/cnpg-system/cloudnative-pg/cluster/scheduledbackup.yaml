@@ -8,5 +8,8 @@ spec:
   schedule: "@daily"
   immediate: true
   backupOwnerReference: self
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
   cluster:
     name: postgres16

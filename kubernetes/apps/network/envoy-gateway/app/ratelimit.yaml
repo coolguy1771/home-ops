@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_backendtrafficpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: envoy-ratelimit-local
+spec:
+  rateLimit:
+    type: Local
+    local:
+      rules:
+        # Burst protection - max 1000 requests per second
+        - limit:
+            requests: 1000
+            unit: Second
+        # Sustained rate limit - 10000 requests per minute
+        - limit:
+            requests: 10000
+            unit: Minute
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-external
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-internal

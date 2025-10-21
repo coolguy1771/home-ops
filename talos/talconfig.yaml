@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: kyak
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.11.2
+talosVersion: v1.11.3
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 kubernetesVersion: v1.34.1
 additionalApiServerCertSans: &san
@@ -328,6 +328,7 @@ controlPlane:
               [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
               [plugins."io.containerd.cri.v1.runtime"]
+                cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
                 device_ownership_from_security_context = true
           - op: overwrite
             path: /etc/nfsmount.conf
@@ -445,6 +446,7 @@ worker:
               [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
               [plugins."io.containerd.cri.v1.runtime"]
+                cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
                 device_ownership_from_security_context = true
           - op: overwrite
             path: /etc/nfsmount.conf

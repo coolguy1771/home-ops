@@ -16,7 +16,7 @@ resources:
   - ./kromgo/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
-  - ./mimir/ks.yaml
+  # - ./mimir/ks.yaml
   # - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   # - ./spoodermon/ks.yaml
