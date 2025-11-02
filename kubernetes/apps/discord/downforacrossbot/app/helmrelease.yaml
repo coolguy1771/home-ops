@@ -67,3 +67,12 @@ spec:
         ports:
           http:
             port: *port
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /home/appuser/.cache
