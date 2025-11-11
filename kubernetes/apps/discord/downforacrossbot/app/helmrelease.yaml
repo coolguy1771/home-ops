@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/theincandescentanteater/downforacrossbot
-              tag: sha-fc8e1a0
+              tag: sha-ec8bb2b
             env:
               TZ: America/New_York
             envFrom:
