@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/twin/gatus
-              tag: v5.27.1@sha256:f7cc027fe09ddddcb1204225200872f6d7eedbbaaccdee318e6501e3e82866fd
+              tag: v5.33.0@sha256:bf249f4d7cf69e825457ade2ebc3d11168d73527ef1657a653119a0d9da97a4a
             env:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
