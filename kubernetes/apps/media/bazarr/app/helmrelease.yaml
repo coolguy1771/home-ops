@@ -77,8 +77,8 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       media:
         type: nfs
-        server: nas.286k.co
-        path: /var/nfs/shared/media
+        server: osiris.286k.co
+        path: /pluto/media
         globalMounts:
           - path: /media
       tmpfs:
