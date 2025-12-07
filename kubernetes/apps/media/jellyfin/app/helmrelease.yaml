@@ -114,7 +114,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: osiris.286k.co
+        server: nas.286k.co
         path: /var/nfs/shared/media
         globalMounts:
           - path: /media
