@@ -19,3 +19,12 @@ spec:
     nodeStageSecretRef:
       name: smb-credentials
       namespace: kube-system
+  mountOptions:
+    - dir_mode=0755
+    - file_mode=0755
+    - uid=1000
+    - gid=1000
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino  # required to prevent data corruption
