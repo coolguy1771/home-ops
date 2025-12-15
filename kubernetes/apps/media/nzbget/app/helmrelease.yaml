@@ -68,9 +68,7 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
       media:
-        type: nfs
-        server: osiris.286k.co
-        path: /pluto/media
+        existingClaim: smb-media
         globalMounts:
           - path: /media/downloads/nzbget
             subPath: downloads/nzbget

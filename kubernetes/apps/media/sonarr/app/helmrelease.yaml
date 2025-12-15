@@ -98,9 +98,7 @@ spec:
         globalMounts:
           - path: /config/MediaCover
       media:
-        type: nfs
-        server: osiris.286k.co
-        path: /pluto/media
+        existingClaim: smb-media
         globalMounts:
           - path: /media
       tmp:

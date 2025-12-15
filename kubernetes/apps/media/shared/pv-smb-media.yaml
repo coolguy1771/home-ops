@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: smb-media
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb-csi
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: nas.286k.co/media##
+    volumeAttributes:
+      source: //nas.286k.co/media
+    nodeStageSecretRef:
+      name: smb-credentials
+      namespace: kube-system
