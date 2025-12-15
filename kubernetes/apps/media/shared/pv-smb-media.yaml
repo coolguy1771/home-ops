@@ -20,11 +20,13 @@ spec:
       name: smb-credentials
       namespace: kube-system
   mountOptions:
-    - dir_mode=0755
-    - file_mode=0755
+    - dir_mode=0777
+    - file_mode=0777
     - uid=1000
     - gid=1000
-    - noperm
+    - forceuid
+    - forcegid
     - mfsymlinks
     - cache=strict
     - noserverino  # required to prevent data corruption
+    - noperm
