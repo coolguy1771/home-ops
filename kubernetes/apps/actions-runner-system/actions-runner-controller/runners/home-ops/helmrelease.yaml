@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: &name home-ops-runner
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: gha-runner-scale-set
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     githubConfigUrl: https://github.com/coolguy1771/home-ops
     githubConfigSecret: home-ops-runner-secret
@@ -24,7 +17,8 @@ spec:
     containerMode:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
         storageClassName: openebs-hostpath
         resources:
           requests:
@@ -37,7 +31,8 @@ spec:
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.330.0@sha256:92a45e47f4b349f4da2307ebaaea5443cc86d1ce625d37acf2c61b3b09192e47
-            command: ["/home/runner/run.sh"]
+            command:
+              - /home/runner/run.sh
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
