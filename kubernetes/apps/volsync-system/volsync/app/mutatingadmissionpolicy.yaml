@@ -28,11 +28,11 @@ spec:
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >-
-        object.metadata.name.startsWith("volsync-src-")
+        has(object.metadata.name) && object.metadata.name.startsWith("volsync-src-")
 
     - name: has-volsync-created-by-labels
       expression: >-
-        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+        has(object.metadata.labels) && "app.kubernetes.io/created-by" in object.metadata.labels && object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
 
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
@@ -86,11 +86,11 @@ spec:
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >-
-        object.metadata.name.startsWith("volsync-")
+        has(object.metadata.name) && object.metadata.name.startsWith("volsync-")
 
     - name: has-volsync-created-by-labels
       expression: >-
-        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+        has(object.metadata.labels) && "app.kubernetes.io/created-by" in object.metadata.labels && object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
 
     - name: repository-volume-does-not-exist
       expression: >-
