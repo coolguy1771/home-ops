@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   job-1:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 1
         run: |
@@ -28,7 +28,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-2:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 2
         run: |
@@ -48,7 +48,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-3:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 3
         run: |
@@ -68,7 +68,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-4:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 4
         run: |
@@ -88,7 +88,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-5:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 5
         run: |
@@ -108,7 +108,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-6:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 6
         run: |
@@ -128,7 +128,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-7:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 7
         run: |
@@ -148,7 +148,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-8:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 8
         run: |
@@ -168,7 +168,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-9:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 9
         run: |
@@ -188,7 +188,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-10:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 10
         run: |
@@ -208,7 +208,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-11:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 11
         run: |
@@ -228,7 +228,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-12:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 12
         run: |
@@ -248,7 +248,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-13:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 13
         run: |
@@ -268,7 +268,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-14:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 14
         run: |
@@ -288,7 +288,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-15:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 15
         run: |
@@ -308,7 +308,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-16:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 16
         run: |
@@ -328,7 +328,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-17:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 17
         run: |
@@ -348,7 +348,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-18:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 18
         run: |
@@ -368,7 +368,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-19:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 19
         run: |
@@ -388,7 +388,7 @@ jobs:
           wc -l combined.txt
           rm -rf "$WORKDIR"
   job-20:
-    runs-on: self-hosted
+    runs-on: github-scale-set
     steps:
       - name: Run I/O intensive job 20
         run: |
