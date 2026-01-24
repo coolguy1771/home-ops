@@ -152,7 +152,7 @@ spec:
                 path: /var/alloy-log-storage
                 type: DirectoryOrCreate
     alloy-receiver:
-      enabled: true
+      enabled: false
       alloy:
         extraPorts:
           - name: otlp-grpc
