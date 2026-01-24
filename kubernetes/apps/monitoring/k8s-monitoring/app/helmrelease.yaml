@@ -64,7 +64,7 @@ spec:
         node_arch: architecture
         node_type: instance_type
     applicationObservability:
-      enabled: true
+      enabled: false
       receivers:
         otlp:
           grpc:
@@ -77,7 +77,7 @@ spec:
           enabled: true
           port: 9411
     autoInstrumentation:
-      enabled: true
+      enabled: false
     annotationAutodiscovery:
       nodeLabels:
         nodePool: true
