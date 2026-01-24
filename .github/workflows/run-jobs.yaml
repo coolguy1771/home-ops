@@ -1,0 +1,409 @@
+name: Concurrent Jobs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  job-1:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 1
+        run: |
+          WORKDIR="/tmp/job-1-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 1 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-2:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 2
+        run: |
+          WORKDIR="/tmp/job-2-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 2 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-3:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 3
+        run: |
+          WORKDIR="/tmp/job-3-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 3 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-4:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 4
+        run: |
+          WORKDIR="/tmp/job-4-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 4 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-5:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 5
+        run: |
+          WORKDIR="/tmp/job-5-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 5 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-6:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 6
+        run: |
+          WORKDIR="/tmp/job-6-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 6 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-7:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 7
+        run: |
+          WORKDIR="/tmp/job-7-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 7 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-8:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 8
+        run: |
+          WORKDIR="/tmp/job-8-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 8 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-9:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 9
+        run: |
+          WORKDIR="/tmp/job-9-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 9 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-10:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 10
+        run: |
+          WORKDIR="/tmp/job-10-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 10 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-11:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 11
+        run: |
+          WORKDIR="/tmp/job-11-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 11 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-12:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 12
+        run: |
+          WORKDIR="/tmp/job-12-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 12 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-13:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 13
+        run: |
+          WORKDIR="/tmp/job-13-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 13 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-14:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 14
+        run: |
+          WORKDIR="/tmp/job-14-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 14 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-15:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 15
+        run: |
+          WORKDIR="/tmp/job-15-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 15 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-16:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 16
+        run: |
+          WORKDIR="/tmp/job-16-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 16 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-17:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 17
+        run: |
+          WORKDIR="/tmp/job-17-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 17 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-18:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 18
+        run: |
+          WORKDIR="/tmp/job-18-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 18 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-19:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 19
+        run: |
+          WORKDIR="/tmp/job-19-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 19 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
+  job-20:
+    runs-on: self-hosted
+    steps:
+      - name: Run I/O intensive job 20
+        run: |
+          WORKDIR="/tmp/job-20-$$"
+          mkdir -p "$WORKDIR"
+          cd "$WORKDIR"
+          for i in {1..100}; do
+            echo "Job 20 iteration $i: $(date)" > "file-$i.txt"
+            cat "file-$i.txt" > "copy-$i.txt"
+            md5sum "file-$i.txt" >> checksums.txt
+          done
+          for i in {1..50}; do
+            mv "file-$i.txt" "moved-$i.txt"
+            cp "copy-$i.txt" "backup-$i.txt"
+          done
+          find . -type f -exec cat {} \; > combined.txt
+          wc -l combined.txt
+          rm -rf "$WORKDIR"
