@@ -34,6 +34,9 @@ spec:
             clientSecretFile: /var/run/secrets/mimir-oauth/client_secret
             scopes:
               - mimir:write
+            endpointParams:
+              grant_type: ["client_credentials"]
+              client_assertion_type: ["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
     #
     # Features
     #
