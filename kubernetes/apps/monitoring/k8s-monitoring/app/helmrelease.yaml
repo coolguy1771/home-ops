@@ -31,7 +31,7 @@ spec:
           oauth2:
             tokenURL: "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
             clientId: 93694c3692004c909b5e2a43e1086a47
-            clientSecretFrom: mimir-write-oauth
+            clinetSecretPath: /var/run/secrets/mimir-oauth/clientSecret
             scopes:
               - mimir:write
             endpointParams:
@@ -153,7 +153,7 @@ spec:
           extra:
             - name: mimir-oauth
               secret:
-                secretName: mimir-write-oauth
+                secretName: mimirwriteoauth
     alloy-singleton:
       enabled: true
     alloy-logs:
