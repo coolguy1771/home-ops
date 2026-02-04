@@ -19,13 +19,21 @@ spec:
       - name: loki
         type: loki
         url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
-      # - name: mimir
-      #   type: otlp
-      #   url: http://mimir.monitoring.svc.cluster.local/otlp
-      #   protocol: http
-      #   metrics: { enabled: false }
-      #   logs:    { enabled: false }
-      #   traces:  { enabled: true }
+      - name: mimir
+        type: otlp
+        url: https://mimir.cloud.witl.xyz/otlp
+        protocol: http
+        metrics: { enabled: true }
+        logs:    { enabled: false }
+        traces:  { enabled: true }
+        auth:
+          type: oauth2
+          oauth2:
+            tokenURL: "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
+            clientIdFile: /var/run/secrets/mimir-oauth/client_id
+            clientSecretFile: /var/run/secrets/mimir-oauth/client_secret
+            scopes:
+              - mimir:write
     #
     # Features
     #
@@ -121,6 +129,9 @@ spec:
           extra:
             - name: alloy-wal
               mountPath: /var/lib/alloy
+            - name: mimir-oauth
+              mountPath: /var/run/secrets/mimir-oauth
+              readOnly: true
       controller:
         enableStatefulSetAutoDeletePVC: true
         volumeClaimTemplates:
@@ -132,6 +143,11 @@ spec:
               resources:
                 requests:
                   storage: 5Gi
+        volumes:
+          extra:
+            - name: mimir-oauth
+              secret:
+                secretName: mimir-write-oauth
     alloy-singleton:
       enabled: true
     alloy-logs:
