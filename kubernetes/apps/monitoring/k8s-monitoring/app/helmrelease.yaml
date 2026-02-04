@@ -13,9 +13,9 @@ spec:
     cluster:
       name: "kyak"
     destinations:
-      - name: prometheus
-        type: prometheus
-        url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+      # - name: prometheus
+      #   type: prometheus
+      #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
       - name: loki
         type: loki
         url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
