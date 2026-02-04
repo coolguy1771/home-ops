@@ -24,19 +24,22 @@ spec:
         url: https://mimir.cloud.witl.xyz/otlp
         protocol: http
         metrics: { enabled: true }
-        logs:    { enabled: false }
+        logs:    { enabled: true }
         traces:  { enabled: true }
         auth:
           type: oauth2
           oauth2:
             tokenURL: "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
-            clientIdFile: /var/run/secrets/mimir-oauth/client_id
-            clientSecretFile: /var/run/secrets/mimir-oauth/client_secret
+            clientId: 93694c3692004c909b5e2a43e1086a47
+            clientSecretFrom: mimir-write-oauth
             scopes:
               - mimir:write
             endpointParams:
               grant_type: ["client_credentials"]
-              client_assertion_type: ["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        secret:
+          create: false
+          name: mimir-write-oauth
+          namespace: monitoring
     #
     # Features
     #
