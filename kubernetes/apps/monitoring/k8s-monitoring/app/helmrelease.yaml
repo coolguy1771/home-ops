@@ -38,7 +38,7 @@ spec:
               grant_type: ["client_credentials"]
         secret:
           create: false
-          name: mimir-write-oauth
+          name: mimirwriteoauth
           namespace: monitoring
     #
     # Features
