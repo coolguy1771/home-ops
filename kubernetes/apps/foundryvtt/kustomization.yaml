@@ -8,4 +8,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./foundryvtt/ks.yaml
+#  - ./foundryvtt/ks.yaml
