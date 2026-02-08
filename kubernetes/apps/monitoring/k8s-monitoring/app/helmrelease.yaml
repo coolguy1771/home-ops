@@ -167,7 +167,7 @@ spec:
             token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
             client_id           = string.trim_space(local.file.mimir_client_id.content)
             client_secret_file  = "/var/run/secrets/mimir-oauth/clientSecret"
-            scopes              = ["mimir:write"]
+            scopes              = ["mimir:write", "mimir:read"]
             endpoint_params     = { "grant_type" = "client_credentials" }
           }
         }
