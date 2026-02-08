@@ -160,6 +160,9 @@ spec:
         local.file "mimir_client_id" {
           filename = "/var/run/secrets/mimir-oauth/clientId"
         }
+        local.file "alertmanager_global" {
+          filename = "/etc/alloy/alertmanager-global/config"
+        }
         mimir.rules.kubernetes "mimir" {
           address       = "https://mimir.cloud.witl.xyz"
           sync_interval = "2m"
@@ -173,7 +176,7 @@ spec:
         }
         mimir.alerts.kubernetes "mimir" {
           address       = "https://mimir.cloud.witl.xyz"
-          global_config = "global:\n  resolve_timeout: 5m\nroute:\n  receiver: \"null\"\nreceivers:\n- name: \"null\"\n"
+          global_config = local.file.alertmanager_global.content
           sync_interval = "2m"
           oauth2 {
             token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
@@ -191,12 +194,18 @@ spec:
             - name: mimir-oauth
               mountPath: /var/run/secrets/mimir-oauth
               readOnly: true
+            - name: alertmanager-global
+              mountPath: /etc/alloy/alertmanager-global
+              readOnly: true
       controller:
         volumes:
           extra:
             - name: mimir-oauth
               secret:
                 secretName: mimirwriteoauth
+            - name: alertmanager-global
+              configMap:
+                name: alertmanager-global-config
     alloy-logs:
       enabled: true
       alloy:
