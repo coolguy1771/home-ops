@@ -1,6 +1,7 @@
 ---
 # RBAC for mimir.rules.kubernetes and mimir.alerts.kubernetes: Alloy must
-# list/watch Namespaces, PrometheusRules, and AlertmanagerConfigs.
+# list/watch Namespaces, PrometheusRules, AlertmanagerConfigs, and Secrets
+# (to resolve token/userKey etc. in receiver configs).
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -8,6 +9,9 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["namespaces"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["monitoring.coreos.com"]
     resources: ["prometheusrules"]
