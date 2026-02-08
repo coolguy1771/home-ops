@@ -14,7 +14,7 @@ resources:
   - ./k8s-monitoring/ks.yaml
   - ./keda/ks.yaml
   - ./kromgo/ks.yaml
-#  - ./kube-prometheus-stack/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
