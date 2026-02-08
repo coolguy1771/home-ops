@@ -204,8 +204,8 @@ spec:
               secret:
                 secretName: mimirwriteoauth
             - name: alertmanager-global
-              configMap:
-                name: alertmanager-global-config
+              secret:
+                secretName: alertmanager-global-config
     alloy-logs:
       enabled: true
       alloy:
