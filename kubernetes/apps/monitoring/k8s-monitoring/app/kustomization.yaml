@@ -6,3 +6,4 @@ resources:
   - ./externalsecret-mimir-oauth.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./rbac-mimir-rules.yaml

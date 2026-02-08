@@ -156,6 +156,34 @@ spec:
                 secretName: mimirwriteoauth
     alloy-singleton:
       enabled: true
+      alloy:
+        mounts:
+          extra:
+            - name: mimir-oauth
+              mountPath: /var/run/secrets/mimir-oauth
+              readOnly: true
+        extraConfig: |
+          // Sync PrometheusRule CRDs from the cluster into Mimir ruler
+          local.file "mimir_client_id" {
+            filename = "/var/run/secrets/mimir-oauth/clientId"
+          }
+          mimir.rules.kubernetes "mimir" {
+            address = "https://mimir.cloud.witl.xyz"
+            sync_interval = "2m"
+            oauth2 {
+              token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
+              client_id           = string.trim_space(local.file.mimir_client_id.content)
+              client_secret_file  = "/var/run/secrets/mimir-oauth/clientSecret"
+              scopes              = ["mimir:write"]
+              endpoint_params     = { "grant_type" = "client_credentials" }
+            }
+          }
+      controller:
+        volumes:
+          extra:
+            - name: mimir-oauth
+              secret:
+                secretName: mimirwriteoauth
     alloy-logs:
       enabled: true
       alloy:

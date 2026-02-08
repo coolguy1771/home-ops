@@ -1,0 +1,29 @@
+---
+# RBAC for mimir.rules.kubernetes: Alloy must be able to list/watch
+# Namespaces and PrometheusRules. If the k8s-monitoring chart already
+# grants these to the singleton SA, this is redundant but harmless.
+# Adjust the subject name if your release uses a different ServiceAccount.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-monitoring-mimir-rules
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["monitoring.coreos.com"]
+    resources: ["prometheusrules"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k8s-monitoring-mimir-rules
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: k8s-monitoring-mimir-rules
+subjects:
+  - kind: ServiceAccount
+    name: k8s-monitoring-alloy-singleton
+    namespace: monitoring
