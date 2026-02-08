@@ -173,6 +173,7 @@ spec:
         }
         mimir.alerts.kubernetes "mimir" {
           address       = "https://mimir.cloud.witl.xyz"
+          global_config = "global:\n  resolve_timeout: 5m\nroute:\n  receiver: \"null\"\nreceivers:\n- name: \"null\"\n"
           sync_interval = "2m"
           oauth2 {
             token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
@@ -184,6 +185,7 @@ spec:
         }
       alloy:
         stabilityLevel: experimental
+
         mounts:
           extra:
             - name: mimir-oauth
