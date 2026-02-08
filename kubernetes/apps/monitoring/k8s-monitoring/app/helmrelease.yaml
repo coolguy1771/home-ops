@@ -156,8 +156,7 @@ spec:
                 secretName: mimirwriteoauth
     alloy-singleton:
       enabled: true
-      extraConfig: |
-        // Sync PrometheusRule CRDs from the cluster into Mimir ruler
+      extraConfig: |-
         local.file "mimir_client_id" {
           filename = "/var/run/secrets/mimir-oauth/clientId"
         }
