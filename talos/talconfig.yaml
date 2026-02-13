@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: kyak
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.12.2
+talosVersion: v1.12.3
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 kubernetesVersion: v1.35.1
 additionalApiServerCertSans: &san
