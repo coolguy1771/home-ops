@@ -2,7 +2,7 @@
     "name": "arpa-home-cloudflare",
     "main": "index.ts",
     "devDependencies": {
-        "@types/node": "^22.0.0"
+        "@types/node": "^24.0.0"
     },
     "dependencies": {
         "@pulumi/cloudflare": "^6.0.0",
