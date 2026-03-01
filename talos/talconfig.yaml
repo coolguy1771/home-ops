@@ -23,36 +23,31 @@ nodes:
     ipAddress: 10.10.10.20
     controlPlane: true
     installDisk: /dev/disk/by-id/ata-CT240BX500SSD1_2206E60A4A88
-    networkInterfaces:
+    networkInterfaces: &controlPlaneNet
       - interface: enp1s0
         mtu: 1500
         dhcp: true
         vip:
           ip: 10.10.10.201
-    schematic:
+    schematic: &intelSchematic
       customization:
         systemExtensions:
           officialExtensions:
             - siderolabs/binfmt-misc
             - siderolabs/fuse3
             - siderolabs/glibc
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/mei
+            - siderolabs/nfsrahead
             - siderolabs/util-linux-tools
 
   - hostname: k8s-1
     ipAddress: 10.10.10.21
     controlPlane: true
     installDisk: /dev/disk/by-id/ata-CT240BX500SSD1_2148E5EA7AA5
-    networkInterfaces:
-      - interface: enp1s0
-        mtu: 1500
-        dhcp: true
-        vip:
-          ip: 10.10.10.201
-    schematic:
+    networkInterfaces: *controlPlaneNet
+    schematic: &intelSchematicIce
       customization:
         systemExtensions:
           officialExtensions:
@@ -60,156 +55,74 @@ nodes:
             - siderolabs/fuse3
             - siderolabs/glibc
             - siderolabs/intel-ice-firmware
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/mei
+            - siderolabs/nfsrahead
             - siderolabs/util-linux-tools
 
   - hostname: k8s-2
     ipAddress: 10.10.10.22
     controlPlane: true
     installDisk: /dev/disk/by-id/ata-WD_easystore_240GB_20215C802161
-    networkInterfaces:
-      - interface: enp1s0
-        mtu: 1500
-        dhcp: true
-        vip:
-          ip: 10.10.10.201
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/glibc
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
-            - siderolabs/util-linux-tools
+    networkInterfaces: *controlPlaneNet
+    schematic: *intelSchematic
 
   - hostname: k8s-3
     ipAddress: 10.10.10.23
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-WD_Blue_SN570_250GB_223960805185
-    networkInterfaces:
+    networkInterfaces: &workerEno1
       - interface: eno1
         mtu: 1500
         dhcp: true
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/glibc
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
-            - siderolabs/util-linux-tools
+    schematic: *intelSchematic
 
   - hostname: k8s-4
     ipAddress: 10.10.10.24
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-WD_Blue_SN570_250GB_223960805195
-    networkInterfaces:
-      - interface: eno1
-        mtu: 1500
-        dhcp: true
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/glibc
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
-            - siderolabs/util-linux-tools
+    networkInterfaces: *workerEno1
+    schematic: *intelSchematic
 
   - hostname: k8s-5
     ipAddress: 10.10.10.25
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB512HAJQ-000L7_S3TNNE0JC71391
-    networkInterfaces:
+    networkInterfaces: &workerEnp0s31f6
       - interface: enp0s31f6
         mtu: 1500
         dhcp: true
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/glibc
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
-            - siderolabs/util-linux-tools
+    schematic: *intelSchematic
 
   - hostname: k8s-6
     ipAddress: 10.10.10.26
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB512HAJQ-000L7_S3TNNE0JC70877
-    networkInterfaces:
-      - interface: enp0s31f6
-        mtu: 1500
-        dhcp: true
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/binfmt-misc
-            - siderolabs/fuse3
-            - siderolabs/glibc
-            - siderolabs/i915 # Intel iGPU
-            - siderolabs/intel-ucode # Intel iGPU
-            - siderolabs/mei # Intel iGPU
-            - siderolabs/nfsrahead # NFS Performance
-            - siderolabs/util-linux-tools
+    networkInterfaces: *workerEnp0s31f6
+    schematic: *intelSchematic
 
   - hostname: k8s-7
     ipAddress: 10.10.10.27
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-WDC_PC_SN730_SDBQNTY-256G-1001_2017B6801388
-    networkInterfaces:
-      - interface: enp0s31f6
-        mtu: 1500
-        dhcp: true
-    schematic:
+    networkInterfaces: *workerEnp0s31f6
+    schematic: &amdSchematic
       customization:
         systemExtensions:
           officialExtensions:
-              - siderolabs/amd-ucode
-              - siderolabs/amdgpu
-              - siderolabs/binfmt-misc
-              - siderolabs/fuse3
-              - siderolabs/glibc
-
+            - siderolabs/amd-ucode
+            - siderolabs/amdgpu
+            - siderolabs/binfmt-misc
+            - siderolabs/fuse3
+            - siderolabs/glibc
 
   - hostname: k8s-8
     ipAddress: 10.10.10.28
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB256HBHQ-000L7_S4ELNX4N714860
-    networkInterfaces:
-      - interface: enp0s31f6
-        mtu: 1500
-        dhcp: true
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-              - siderolabs/amd-ucode
-              - siderolabs/amdgpu
-              - siderolabs/binfmt-misc
-              - siderolabs/fuse3
-              - siderolabs/glibc
-
+    networkInterfaces: *workerEnp0s31f6
+    schematic: *amdSchematic
 
   - hostname: k8s-9
     ipAddress: 10.10.10.29
@@ -236,24 +149,36 @@ nodes:
               - siderolabs/fuse3
               - siderolabs/glibc
               - siderolabs/intel-ucode
-
+  - hostname: k8s-10
+    ipAddress: 10.10.10.30
+    controlPlane: false
+    installDisk: /dev/disk/by-id/ata-Micron_1300_MTFDDAK512TDL_20482C32A385
+    networkInterfaces: *workerEnp0s31f6
+    schematic: *intelSchematic
+  - hostname: k8s-11
+    ipAddress: 10.10.10.31
+    controlPlane: false
+    installDisk: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W218517V
+    networkInterfaces:
+      - interface: enp88s0
+        mtu: 1500
+        dhcp: true
+    schematic: *intelSchematic
 controlPlane:
   patches:
     - |-
-      - op: add
-        path: /cluster/coreDNS
-        value:
+      cluster:
+        coreDNS:
           disabled: true
     - |-
-      - op: add
-        path: /machine/kubelet/nodeIP
-        value:
-          validSubnets:
-            - 10.10.10.0/24
+      machine:
+        kubelet:
+          nodeIP:
+            validSubnets:
+              - 10.10.10.0/24
     - &diskEncryption |-
-      - op: add
-        path: /machine/systemDiskEncryption
-        value:
+      machine:
+        systemDiskEncryption:
           ephemeral:
             provider: luks2
             keys:
@@ -265,63 +190,71 @@ controlPlane:
               - nodeID: {}
                 slot: 0
     - |-
-      - op: add
-        path: /machine/kubelet/extraArgs
-        value:
-          feature-gates: GracefulNodeShutdown=true,KubeletTracing=true,MutatingAdmissionPolicy=true
-          rotate-server-certificates: "true"
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+            rotate-server-certificates: "true"
     - |-
-      - op: add
-        path: /cluster/apiServer/extraArgs
-        value:
-          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-          runtime-config: admissionregistration.k8s.io/v1beta1=true
-          enable-aggregator-routing: "true"
-          enable-admission-plugins: NodeRestriction,ValidatingAdmissionPolicy
-          feature-gates: MutatingAdmissionPolicy=true
+      cluster:
+        apiServer:
+          extraArgs:
+            tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+            runtime-config: admissionregistration.k8s.io/v1beta1=true
+            enable-aggregator-routing: "true"
+            enable-admission-plugins: NodeRestriction,ValidatingAdmissionPolicy
+            feature-gates: MutatingAdmissionPolicy=true
     - |-
-      - op: add
-        path: /cluster/controllerManager/extraArgs
-        value:
-          bind-address: 0.0.0.0
+      cluster:
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
     - |-
-      - op: add
-        path: /cluster/scheduler/extraArgs
-        value:
-          bind-address: 0.0.0.0
+      cluster:
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
     - |-
-      - op: add
-        path: /cluster/discovery/registries/service/disabled
-        value: false
+      cluster:
+        discovery:
+          registries:
+            service:
+              disabled: false
     - |-
-      - op: add
-        path: /cluster/proxy/disabled
-        value: true
+      cluster:
+        proxy:
+          disabled: true
     - |-
-      - op: add
-        path: /cluster/etcd/extraArgs
-        value:
-          listen-metrics-urls: http://0.0.0.0:2381
-          metrics: extensive
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+            metrics: extensive
+          advertisedSubnets:
+            - 10.10.10.0/24
     - |-
-      - op: add
-        path: /cluster/etcd/advertisedSubnets
-        value:
-          - 10.10.10.0/24
-    - |-
-      - op: add
-        path: /machine/features
-        value:
-          stableHostname: true
-          diskQuotaSupport: true
+      machine:
+        features:
           rbac: true
+          apidCheckExtKeyUsage: true
+          diskQuotaSupport: true
           kubePrism:
             enabled: true
             port: 7445
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+          kubernetesTalosAPIAccess:
+            allowedKubernetesNamespaces:
+              - actions-runner-system
+              - system-upgrade
+            allowedRoles:
+              - os:admin
+            enabled: true
     - |-
-      - op: add
-        path: /machine/files
-        value:
+      machine:
+        files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
             content: |
@@ -335,42 +268,12 @@ controlPlane:
             permissions: 0o644
             content: |
               [ NFSMount_Global_Options ]
-              nfsvers=4.2
               hard=True
               nconnect=16
               noatime=True
     - |-
-      - op: add
-        path: /machine/features
-        value:
-          rbac: true
-          stableHostname: true
-          apidCheckExtKeyUsage: true
-          diskQuotaSupport: true
-          kubePrism:
-              enabled: true
-              port: 7445
-          hostDNS:
-              enabled: true
-              resolveMemberNames: true
-              forwardKubeDNSToHost: false
-          kubernetesTalosAPIAccess:
-            allowedKubernetesNamespaces:
-              - actions-runner-system
-              - system-upgrade
-            allowedRoles:
-              - os:admin
-            enabled: true
-    - |-
-      - op: add
-        path: /machine/kubelet/extraArgs
-        value:
-          feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
-          rotate-server-certificates: "true"
-    - |-
-      - op: add
-        path: /machine/sysctls
-        value:
+      machine:
+        sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
           vm.panic_on_oom: "0"
@@ -380,51 +283,40 @@ controlPlane:
           net.core.rmem_max: "7500000"
           net.core.wmem_max: "7500000"
     - &time |-
-      - op: add
-        path: /machine/time
-        value:
+      machine:
+        time:
           disabled: false
           servers:
             - time.cloudflare.com
-    - |-
-      - op: add
-        path: /machine/udev
-        value:
-          rules:
-            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
-    - |-
-      - op: remove
-        path: /cluster/apiServer/admissionControl
 
 worker:
   patches:
     - |-
-      - op: add
-        path: /machine/kubelet/nodeIP
-        value:
-          validSubnets:
-            - 10.10.10.0/24
+      machine:
+        kubelet:
+          nodeIP:
+            validSubnets:
+              - 10.10.10.0/24
     - |-
-      - op: add
-        path: /machine/kubelet/extraArgs
-        value:
-          feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
     - |-
-      - op: add
-        path: /machine/kubelet/extraMounts
-        value:
-          - destination: /var/openebs/local
-            type: bind
-            source: /var/openebs/local
-            options:
-              - bind
-              - rshared
-              - rw
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/openebs/local
+              type: bind
+              source: /var/openebs/local
+              options:
+                - bind
+                - rshared
+                - rw
     - *diskEncryption
     - |-
-      - op: add
-        path: /machine/features
-        value:
+      machine:
+        features:
           apidCheckExtKeyUsage: true
           diskQuotaSupport: true
           hostDNS:
@@ -435,11 +327,9 @@ worker:
             enabled: true
             port: 7445
           rbac: true
-          stableHostname: true
     - |-
-      - op: add
-        path: /machine/files
-        value:
+      machine:
+        files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
             content: |
@@ -453,14 +343,13 @@ worker:
             permissions: 0o644
             content: |
               [ NFSMount_Global_Options ]
-              nfsvers=4.2
               hard=True
               nconnect=16
               noatime=True
+              nolock=True
     - |-
-      - op: add
-        path: /machine/sysctls
-        value:
+      machine:
+        sysctls:
           fs.inotify.max_user_instances: "8192"
           fs.inotify.max_user_watches: "1048576"
           net.core.default_qdisc: fq
@@ -481,8 +370,8 @@ worker:
           vm.nr_hugepages: "1024"
     - *time
     - |-
-      - op: add
-        path: /machine/udev
-        value:
+      machine:
+        udev:
           rules:
+            - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
