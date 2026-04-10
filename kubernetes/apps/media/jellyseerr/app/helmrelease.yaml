@@ -17,7 +17,7 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/fallenbagel/jellyseerr
+              repository: ghcr.io/seerr-team/seerr
               tag: preview-new-oidc
             env:
               TZ: America/New_York
