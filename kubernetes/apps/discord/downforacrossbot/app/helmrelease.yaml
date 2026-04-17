@@ -29,9 +29,6 @@ spec:
               tag: 0.2.0
             env:
               TZ: America/New_York
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: false
@@ -68,6 +65,12 @@ spec:
           http:
             port: *port
     persistence:
+      config-file:
+        type: secret
+        name: "{{ .Release.Name }}-secret"
+        globalMounts:
+          - path: /usr/src/app/config.json
+            subPath: config.json
       tmp:
         type: emptyDir
         globalMounts:
