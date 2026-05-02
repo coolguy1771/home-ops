@@ -9,6 +9,9 @@ components:
 resources:
   - ./namespace.yaml
   - ./shared
+  - ./autobrr/ks.yaml
+  - ./qbittorrent/ks.yaml
+  - ./qui/ks.yaml
   - ./bazarr/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./jellyfin/ks.yaml
