@@ -3,25 +3,33 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: bazarr
+  name: autobrr
 spec:
   chartRef:
     kind: OCIRepository
-    name: bazarr
+    name: autobrr
   interval: 1h
   values:
     controllers:
-      bazarr:
+      autobrr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/bazarr
-              tag: 1.5.6@sha256:79fc37491f55c7e24427bcd669bce3df2d7415ca432a47ce9d53cc5988af8411
+              repository: ghcr.io/autobrr/autobrr
+              tag: v1.77.0@sha256:7274b735b23ff4d048e7706145ce5759020e4ee6d85bb1fb8cca523784d35f88
             env:
-              BAZARR__PORT: &port 80
-              TZ: America/New_York
+              AUTOBRR__HOST: 0.0.0.0
+              AUTOBRR__PORT: &port 80
+              AUTOBRR__METRICS_ENABLED: true
+              AUTOBRR__METRICS_HOST: 0.0.0.0
+              AUTOBRR__METRICS_PORT: &metricsPort 9094
+              AUTOBRR__CHECK_FOR_UPDATES: false
+              AUTOBRR__LOG_LEVEL: INFO
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true
@@ -34,7 +42,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/system/ping
+                    path: /api/healthz/readiness
                     port: *port
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -52,7 +60,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 256Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -65,6 +73,12 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: metrics
     route:
       app:
         hostnames:
@@ -81,3 +95,4 @@ spec:
           - path: /media
       tmp:
         type: emptyDir
+

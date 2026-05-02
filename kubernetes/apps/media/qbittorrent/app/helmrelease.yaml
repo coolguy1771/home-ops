@@ -3,25 +3,24 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: bazarr
+  name: qbittorrent
 spec:
   chartRef:
     kind: OCIRepository
-    name: bazarr
+    name: qbittorrent
   interval: 1h
   values:
     controllers:
-      bazarr:
-        annotations:
-          reloader.stakater.com/auto: "true"
+      qbittorrent:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/bazarr
-              tag: 1.5.6@sha256:79fc37491f55c7e24427bcd669bce3df2d7415ca432a47ce9d53cc5988af8411
+              repository: ghcr.io/home-operations/qbittorrent-libtorrentv1
+              tag: 5.1.4@sha256:f8ded91789511af07db8e47bcfde9440f3c2d235e85b7eee13c9d03a7a4107c9
             env:
-              BAZARR__PORT: &port 80
               TZ: America/New_York
+              QBT_WEBUI_PORT: &port 80
+              QBT_TORRENTING_PORT: &torrentPort 31288
             probes:
               liveness:
                 enabled: true
@@ -34,7 +33,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/system/ping
+                    path: /api/v2/app/version
                     port: *port
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -50,10 +49,11 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
-                memory: 1Gi
+                memory: 32Gi
     defaultPodOptions:
+      terminationGracePeriodSeconds: 300
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -62,9 +62,18 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        forceRename: "{{ .Release.Name }}"
+        primary: true
         ports:
           http:
             port: *port
+      bittorrent:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        ports:
+          bittorrent-tcp:
+            port: *torrentPort
+            protocol: TCP
     route:
       app:
         hostnames:
@@ -72,6 +81,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
