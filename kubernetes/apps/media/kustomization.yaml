@@ -9,7 +9,6 @@ components:
 resources:
   - ./namespace.yaml
   - ./shared
-  - ./agregarr/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./brrpolice/ks.yaml
