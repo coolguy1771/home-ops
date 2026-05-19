@@ -8,7 +8,7 @@ spec:
   components:
     - ../../../../components/zeroscaler
   interval: 1h
-  path: ./kubernetes/apps/default/seasonpackerr/app
+  path: ./kubernetes/apps/media/seasonpackerr/app
   postBuild:
     substitute:
       APP: seasonpackerr
@@ -17,5 +17,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: media
   wait: false
