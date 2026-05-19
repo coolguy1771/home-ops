@@ -167,6 +167,19 @@ nodes:
 controlPlane:
   patches:
     - |-
+      machine:
+        install:
+          extraKernelArgs:
+            - slab_nomerge
+            - init_on_alloc=1
+            - init_on_free=1
+            - pti=on
+            - vsyscall=none
+            - debugfs=off
+            - oops=panic
+            - randomize_kstack_offset=on
+            - mitigations=auto,nosmt
+    - |-
       cluster:
         coreDNS:
           disabled: true
@@ -252,7 +265,7 @@ controlPlane:
       cluster:
         etcd:
           extraArgs:
-            listen-metrics-urls: http://0.0.0.0:2381
+            listen-metrics-urls: http://127.0.0.1:2381
             metrics: extensive
           advertisedSubnets:
             - 10.10.10.0/24
@@ -318,6 +331,19 @@ controlPlane:
 
 worker:
   patches:
+    - |-
+      machine:
+        install:
+          extraKernelArgs:
+            - slab_nomerge
+            - init_on_alloc=1
+            - init_on_free=1
+            - pti=on
+            - vsyscall=none
+            - debugfs=off
+            - oops=panic
+            - randomize_kstack_offset=on
+            - mitigations=auto,nosmt
     - |-
       machine:
         kubelet:
