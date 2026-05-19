@@ -178,7 +178,7 @@ controlPlane:
             - debugfs=off
             - oops=panic
             - randomize_kstack_offset=on
-            - mitigations=auto,nosmt
+
     - |-
       cluster:
         coreDNS:
@@ -343,7 +343,7 @@ worker:
             - debugfs=off
             - oops=panic
             - randomize_kstack_offset=on
-            - mitigations=auto,nosmt
+
     - |-
       machine:
         kubelet:
