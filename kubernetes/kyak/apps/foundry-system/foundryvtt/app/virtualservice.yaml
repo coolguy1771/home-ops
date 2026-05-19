@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: foundryvtt
+spec:
+  hosts:
+    - "foundry.witl.xyz"
+  gateways:
+    - app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+      - destination:
+          host: foundry.foundry-system.svc.cluster.local
+          port:
+            number: 30000

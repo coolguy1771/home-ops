@@ -192,26 +192,50 @@ controlPlane:
     - |-
       machine:
         kubelet:
+          defaultRuntimeSeccompProfileEnabled: true
+          disableManifestsDirectory: true
           extraArgs:
             feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
             rotate-server-certificates: "true"
+          extraConfig:
+            serializeImagePulls: false
     - |-
       cluster:
         apiServer:
+          auditPolicy:
+            apiVersion: audit.k8s.io/v1
+            kind: Policy
+            rules:
+              - level: Metadata
           extraArgs:
-            tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-            runtime-config: admissionregistration.k8s.io/v1beta1=true
             enable-aggregator-routing: "true"
-            enable-admission-plugins: NodeRestriction,ValidatingAdmissionPolicy
-            feature-gates: MutatingAdmissionPolicy=true
+            feature-gates: MutatingAdmissionPolicy=true,HPAScaleToZero=true
     - |-
       cluster:
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
+            feature-gates: HPAScaleToZero=true
     - |-
       cluster:
         scheduler:
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                plugins:
+                  score:
+                    disabled:
+                      - name: ImageLocality
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
           extraArgs:
             bind-address: 0.0.0.0
     - |-
@@ -261,16 +285,19 @@ controlPlane:
               [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
               [plugins."io.containerd.cri.v1.runtime"]
-                cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+                cdi_spec_dirs = ["/run/cdi"]
                 device_ownership_from_security_context = true
           - op: overwrite
             path: /etc/nfsmount.conf
             permissions: 0o644
             content: |
               [ NFSMount_Global_Options ]
+              nfsvers=4.2
               hard=True
               nconnect=16
               noatime=True
+              rsize=1048576
+              wsize=1048576
     - |-
       machine:
         sysctls:
@@ -300,8 +327,12 @@ worker:
     - |-
       machine:
         kubelet:
+          defaultRuntimeSeccompProfileEnabled: true
+          disableManifestsDirectory: true
           extraArgs:
             feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+          extraConfig:
+            serializeImagePulls: false
     - |-
       machine:
         kubelet:
@@ -336,17 +367,20 @@ worker:
               [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
               [plugins."io.containerd.cri.v1.runtime"]
-                cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+                cdi_spec_dirs = ["/run/cdi"]
                 device_ownership_from_security_context = true
           - op: overwrite
             path: /etc/nfsmount.conf
             permissions: 0o644
             content: |
               [ NFSMount_Global_Options ]
+              nfsvers=4.2
               hard=True
               nconnect=16
               noatime=True
               nolock=True
+              rsize=1048576
+              wsize=1048576
     - |-
       machine:
         sysctls:
@@ -361,7 +395,10 @@ worker:
           net.ipv4.tcp_congestion_control: bbr
           net.ipv4.tcp_fastopen: "3"
           net.ipv4.tcp_mtu_probing: "1"
+          net.ipv4.ping_group_range: 0 2147483647
+          net.ipv4.tcp_notsent_lowat: "131072"
           net.ipv4.tcp_rmem: 4096 87380 33554432
+          net.ipv4.tcp_slow_start_after_idle: "0"
           net.ipv4.tcp_window_scaling: "1"
           net.ipv4.tcp_wmem: 4096 65536 33554432
           sunrpc.tcp_max_slot_table_entries: "128"

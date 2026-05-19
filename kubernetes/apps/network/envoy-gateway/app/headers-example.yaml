@@ -1,0 +1,40 @@
+---
+# This is an EXAMPLE showing how to add security headers to HTTPRoutes
+# You need to add the responseHeaderModifier filter to each HTTPRoute that requires security headers
+# Envoy Gateway does not currently support gateway-wide response headers except through EnvoyPatchPolicy
+#
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: HTTPRoute
+# metadata:
+#   name: your-route
+# spec:
+#   parentRefs:
+#     - name: envoy-external
+#       namespace: network
+#   rules:
+#     - matches:
+#         - path:
+#             type: PathPrefix
+#             value: /
+#       filters:
+#         - type: ResponseHeaderModifier
+#           responseHeaderModifier:
+#             add:
+#               - name: Strict-Transport-Security
+#                 value: max-age=31536000; includeSubDomains; preload
+#               - name: X-Frame-Options
+#                 value: SAMEORIGIN
+#               - name: X-Content-Type-Options
+#                 value: nosniff
+#               - name: Referrer-Policy
+#                 value: strict-origin-when-cross-origin
+#               - name: Permissions-Policy
+#                 value: "geolocation=(), microphone=(), camera=()"
+#               - name: Content-Security-Policy
+#                 value: "default-src 'self'"
+#             remove:
+#               - Server
+#               - X-Powered-By
+#       backendRefs:
+#         - name: your-backend
+#           port: 80

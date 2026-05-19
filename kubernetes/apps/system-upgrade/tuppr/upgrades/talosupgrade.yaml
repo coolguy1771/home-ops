@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/tuppr.home-operations.com/talosupgrade_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/tuppr.home-operations.com/talosupgrade_v1alpha1.json
 apiVersion: tuppr.home-operations.com/v1alpha1
 kind: TalosUpgrade
 metadata:
@@ -11,11 +11,13 @@ spec:
   policy:
     rebootMode: powercycle
   healthChecks:
-    - apiVersion: volsync.backube/v1alpha1
+    - description: "All ReplicationSources idle (not synchronizing)"
+      apiVersion: volsync.backube/v1alpha1
       kind: ReplicationSource
       expr: |-
         status.conditions.filter(c, c.type == "Synchronizing").all(c, c.status == "False")
-    - apiVersion: ceph.rook.io/v1
+    - description: "CephCluster HEALTH_OK"
+      apiVersion: ceph.rook.io/v1
       kind: CephCluster
       expr: |-
         status.ceph.health in ['HEALTH_OK']

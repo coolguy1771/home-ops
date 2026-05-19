@@ -23,6 +23,12 @@ spec:
               UP_UNIFI_DEFAULT_URL: https://10.1.237.1
               UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_INFLUXDB_DISABLE: true
+              UP_UNIFI_DEFAULT_SAVE_ALARMS: "true"
+              UP_UNIFI_DEFAULT_SAVE_ANOMALIES: "true"
+              UP_UNIFI_DEFAULT_SAVE_DPI: "true"
+              UP_UNIFI_DEFAULT_SAVE_EVENTS: "true"
+              UP_UNIFI_DEFAULT_SAVE_IDS: "true"
+              UP_UNIFI_DEFAULT_SAVE_SITES: "true"
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"

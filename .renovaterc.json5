@@ -7,6 +7,7 @@
     "github>coolguy1771/home-ops//.renovate/autoMerge.json5",
     "github>coolguy1771/home-ops//.renovate/changelogs.json5",
     "github>coolguy1771/home-ops//.renovate/customManagers.json5",
+    "github>coolguy1771/home-ops//.renovate/talosFactory.json5",
     "github>coolguy1771/home-ops//.renovate/grafanaDashboards.json5",
     "github>coolguy1771/home-ops//.renovate/groups.json5",
     "github>coolguy1771/home-ops//.renovate/labels.json5",

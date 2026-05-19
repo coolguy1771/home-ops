@@ -6,4 +6,5 @@ resources:
   - ./externalsecret.yaml
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
+  - ./mutatingadmissionpolicy.yaml
   - ./ocirepository.yaml
