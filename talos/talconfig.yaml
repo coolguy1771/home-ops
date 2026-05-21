@@ -31,6 +31,15 @@ nodes:
           ip: 10.10.10.201
     schematic: &intelSchematic
       customization:
+        extraKernelArgs: &hardeningKernelArgs
+          - slab_nomerge
+          - init_on_alloc=1
+          - init_on_free=1
+          - pti=on
+          - vsyscall=none
+          - debugfs=off
+          - oops=panic
+          - randomize_kstack_offset=on
         systemExtensions:
           officialExtensions:
             - siderolabs/binfmt-misc
@@ -49,6 +58,7 @@ nodes:
     networkInterfaces: *controlPlaneNet
     schematic: &intelSchematicIce
       customization:
+        extraKernelArgs: *hardeningKernelArgs
         systemExtensions:
           officialExtensions:
             - siderolabs/binfmt-misc
@@ -106,9 +116,13 @@ nodes:
     ipAddress: 10.10.10.27
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-WDC_PC_SN730_SDBQNTY-256G-1001_2017B6801388
-    networkInterfaces: *workerEnp0s31f6
+    networkInterfaces: &workerEnp3s0f0
+      - interface: enp3s0f0
+        mtu: 1500
+        dhcp: true
     schematic: &amdSchematic
       customization:
+        extraKernelArgs: *hardeningKernelArgs
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
@@ -121,7 +135,7 @@ nodes:
     ipAddress: 10.10.10.28
     controlPlane: false
     installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB256HBHQ-000L7_S4ELNX4N714860
-    networkInterfaces: *workerEnp0s31f6
+    networkInterfaces: *workerEnp3s0f0
     schematic: *amdSchematic
 
   - hostname: k8s-9
@@ -143,6 +157,7 @@ nodes:
         dhcp: false
     schematic:
       customization:
+        extraKernelArgs: *hardeningKernelArgs
         systemExtensions:
           officialExtensions:
               - siderolabs/binfmt-misc
@@ -169,15 +184,7 @@ controlPlane:
     - |-
       machine:
         install:
-          extraKernelArgs:
-            - slab_nomerge
-            - init_on_alloc=1
-            - init_on_free=1
-            - pti=on
-            - vsyscall=none
-            - debugfs=off
-            - oops=panic
-            - randomize_kstack_offset=on
+          grubUseUKICmdline: true
 
     - |-
       cluster:
@@ -334,15 +341,7 @@ worker:
     - |-
       machine:
         install:
-          extraKernelArgs:
-            - slab_nomerge
-            - init_on_alloc=1
-            - init_on_free=1
-            - pti=on
-            - vsyscall=none
-            - debugfs=off
-            - oops=panic
-            - randomize_kstack_offset=on
+          grubUseUKICmdline: true
 
     - |-
       machine:
