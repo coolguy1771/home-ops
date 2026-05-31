@@ -35,19 +35,21 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          INPUT_LABELS: "${{ github.event.inputs.labels }}"
+          INPUT_DRY_RUN: "${{ github.event.inputs.dryRun }}"
         run: |
           args=()
           args+=(--state open)
           args+=(--search "-label:hold")
           args+=(--search "-label:type/major")
-          if [ "${{ github.event.inputs.labels }}" != "any" ]; then
-              IFS=',' read -ra labels <<< "${{ github.event.inputs.labels }}"
+          if [ "$INPUT_LABELS" != "any" ]; then
+              IFS=',' read -ra labels <<< "$INPUT_LABELS"
               for label in "${labels[@]}"; do
                   args+=(--label "${label}")
               done
           fi
           for id in $(gh pr list "${args[@]}" --jq '.[].number' --json number); do
-              if [ "${{ github.event.inputs.dryRun }}" = "true" ]; then
+              if [ "$INPUT_DRY_RUN" = "true" ]; then
                   echo "Dry run: gh pr merge $id --squash"
                   continue
               fi
