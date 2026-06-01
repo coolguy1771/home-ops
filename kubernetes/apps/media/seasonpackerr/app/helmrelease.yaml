@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/nuxencs/seasonpackarr
-              tag: v0.14.0@sha256:b8e759b3fb3c9587aafbb5ebcf4a5527245afd35b5893439fd21aea0283c8144
+              tag: v0.15.0@sha256:2344936efb3fc62d16ab2ceded2f6cb5bc0b19054573065de764ee87378540e4
             env:
               TZ: America/New_York
               SEASONPACKARR__DISABLE_CONFIG_FILE: true
