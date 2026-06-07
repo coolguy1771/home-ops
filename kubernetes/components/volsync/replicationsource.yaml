@@ -14,13 +14,19 @@ spec:
     cacheAccessModes:
       - ${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}
     cacheCapacity: ${VOLSYNC_CAPACITY:=5Gi}
-    cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=openebs-hostpath}
+    cacheStorageClassName: ${VOLSYNC_CACHE_STORAGECLASS:=openebs-hostpath}
     compression: zstd-fastest
     copyMethod: Snapshot
     moverSecurityContext:
       runAsUser: ${VOLSYNC_PUID:=1000}
       runAsGroup: ${VOLSYNC_PGID:=1000}
       fsGroup: ${VOLSYNC_PGID:=1000}
+    moverVolumes:
+      - mountPath: repository
+        volumeSource:
+          nfs:
+            path: /pluto/kopia
+            server: osiris.286k.co
     parallelism: 2
     repository: ${APP}-volsync-secret
     retain:
@@ -28,4 +34,3 @@ spec:
       daily: 7
     storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}
-  
