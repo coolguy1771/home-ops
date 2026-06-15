@@ -12,3 +12,12 @@ spec:
   ref:
     tag: v1.20.0
   url: oci://ghcr.io/rook/rook-ceph
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: ceph-csi-operator
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://ceph.github.io/ceph-csi-operator

@@ -24,3 +24,62 @@ spec:
         memory: 128Mi # unchangable
         cpu: 100m # unchangable
       limits: {}
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ceph-csi-drivers
+  namespace: rook-ceph
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: ceph-csi-drivers
+      version: 1.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: ceph-csi-operator
+        namespace: flux-system
+  dependsOn:
+    - name: rook-ceph
+      namespace: rook-ceph
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    operatorConfig:
+      namespace: rook-ceph
+      driverSpecDefaults:
+        cephFsClientType: kernel
+        clusterName: rook-ceph
+        deployCsiAddons: false
+        enableMetadata: false
+        fsGroupPolicy: File
+        generateOMapInfo: false
+        imageSet:
+          name: rook-csi-operator-image-set-configmap
+        controllerPlugin:
+          deploymentStrategy:
+            type: Recreate
+          hostNetwork: true
+          priorityClassName: system-cluster-critical
+          replicas: 2
+        nodePlugin:
+          enableSeLinuxHostMount: false
+          kubeletDirPath: /var/lib/kubelet
+          priorityClassName: system-node-critical
+    drivers:
+      rbd:
+        enabled: true
+        name: rook-ceph.rbd.csi.ceph.com
+      cephfs:
+        enabled: true
+        name: rook-ceph.cephfs.csi.ceph.com
+      nfs:
+        enabled: false
+      nvmeof:
+        enabled: false
