@@ -26,7 +26,7 @@ spec:
           tag: v0.9.0@sha256:22f4106f44a0b9ac3c97cf29bbfef93026c1164492152dc797a1d6dc86ddfbb5
         env:
           - name: UNIFI_HOST
-            value: https://10.1.0.1
+            value: https://10.2.0.1
           - name: UNIFI_API_KEY
             valueFrom:
               secretKeyRef:
