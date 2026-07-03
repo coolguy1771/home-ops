@@ -19,7 +19,7 @@ spec:
       #     name: "l3-bgp-peer-config"
       - name: "peer-64513-gateway"
         peerASN: 64517
-        peerAddress: 10.1.237.1
+        peerAddress: 10.2.237.1
         peerConfigRef:
           name: "l3-bgp-peer-config"
 ---
