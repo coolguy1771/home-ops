@@ -7,7 +7,7 @@
   },
   "author": "",
   "dependencies": {
-    "@pulumi/aws": "^7.0.0",
+    "@pulumi/aws": "^6.13.3",
     "@pulumi/aws-native": "^1.0.0",
     "@pulumi/pulumi": "^3.130.0"
   }
