@@ -1,0 +1,33 @@
+filters:
+  - header:
+      comment: Example outbound
+      targets:
+        nftables: inet output
+        aruba: outbound
+        cisconx: filter mixed enable_dsmo
+    terms:
+      - name: allow-dns
+        comment: Allow outbound DNS queries.
+        destination-address: DNS_SERVERS
+        destination-port: [DNS]
+        protocol: udp
+        action: accept
+      - name: allow-ssh
+        comment: Allow outbound SSH traffic.
+        destination-port: [SSH]
+        protocol: tcp
+        action: accept
+      - name: allow-ntp
+        comment: Allow outbound NTP traffic.
+        destination-port: [NTP]
+        protocol: udp
+        action: accept
+      - name: allow-web-traffic
+        comment: Allow outbound web traffic.
+        destination-port: [HTTP, HTTPS]
+        destination-address: [K8S_BGP]
+        protocol: tcp
+        action: accept
+      - name: default-deny
+        comment: Deny any other outbound traffic.
+        action: deny

@@ -1,0 +1,135 @@
+networks:
+  RFC1918:
+    values:
+      - address: 10.0.0.0/8
+      - address: 172.16.0.0/12
+      - address: 192.168.0.0/16
+  LAN:
+    values:
+      - address: 10.1.0.0/24
+  LAB:
+    values:
+      - address: 10.10.10.0/24
+  WIRELESS:
+    values:
+      - address: 10.1.20.0/24
+  MGMT:
+    values:
+      - address: 10.1.237.0/24
+  K8S_NODE:
+    values:
+      - address: 10.10.10.20/32
+      - address: 10.10.10.21/32
+      - address: 10.10.10.22/32
+      - address: 10.10.10.23/32
+      - address: 10.10.10.24/32
+      - address: 10.10.10.25/32
+      - address: 10.10.10.26/32
+      - address: 10.10.10.27/32
+      - address: 10.10.10.28/32
+      - address: 10.10.10.29/32
+  K8S_BGP:
+    values:
+      - address: 10.0.42.0/24
+  K8S_SVC:
+    values:
+      - address: 10.96.0.0/12
+  K8S_POD:
+    values:
+      - address: 10.244.0.0/16
+  DNS_SERVERS:
+    values:
+      - address: 10.1.0.1/32
+      - address: 10.10.10.1/32
+      - address: 10.1.20.1/32
+      - address: 10.1.237.1/32
+  ALL_SERVERS:
+    values:
+      - DNS_SERVERS
+services:
+  FTP:
+    - port: 20
+      protocol: tcp
+  FTPD:
+    - port: 21
+      protocol: tcp
+  SSH:
+    - port: 22
+      protocol: tcp
+  TELNET:
+    - port: 23
+      protocol: tcp
+  SMTP:
+    - port: 25
+      protocol: tcp
+  TACACS:
+    - port: 49
+      protocol: tcp
+  DNS:
+    - port: 53
+      protocol: tcp
+    - port: 53
+      protocol: udp
+  BOOTP:
+    - port: 67
+      protocol: tcp
+    - port: 67
+      protocol: udp
+  DHCP:
+    - port: 68
+      protocol: tcp
+    - port: 68
+      protocol: udp
+  TFTP:
+    - port: 69
+      protocol: tcp
+    - port: 69
+      protocol: udp
+  HTTP:
+    - port: 80
+      protocol: tcp
+    - port: 80
+      protocol: udp
+  KERBOS:
+    - port: 88
+      protocol: tcp
+  NPP:
+    - port: 92
+      protocol: tcp
+  POP2:
+    - port: 109
+      protocol: tcp
+  POP3:
+    - port: 110
+      protocol: tcp
+  NTP:
+    - port: 123
+      protocol: tcp
+    - port: 123
+      protocol: udp
+  IMAP:
+    - port: 143
+      protocol: tcp
+  SNMP:
+    - port: 161
+      protocol: tcp
+    - port: 161
+      protocol: udp
+  SNMPTRAP:
+    - port: 162
+      protocol: tcp
+    - port: 162
+      protocol: udp
+  BGP:
+    - port: 179
+      protocol: tcp
+  HTTPS:
+    - port: 443
+      protocol: tcp
+    - port: 443
+      protocol: udp
+  HIGH_PORTS:
+    - port: 1024-65535
+      protocol: tcp
+    - port: 1024-65535
+      protocol: udp

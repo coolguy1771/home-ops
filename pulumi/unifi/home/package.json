@@ -1,0 +1,12 @@
+{
+    "name": "unifi",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^18",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.130.0",
+        "@pulumiverse/unifi": "^0.0.3"
+    }
+}

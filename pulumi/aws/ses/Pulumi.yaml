@@ -1,0 +1,17 @@
+name: ses
+runtime:
+  name: nodejs
+  options:
+    packagemanager: npm
+description: IaC for SES
+config:
+  aws-native:region:
+    value: us-east-1
+  aws:region:
+    value: us-east-1
+  oidc:escEnv:
+    value: coolguy1771/cdn-prod
+  ses:domainName:
+    value: icbplays.net.
+  ses:configSetName:
+    value: exampleConfigSet
