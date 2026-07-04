@@ -1,7 +1,7 @@
 # VPC and Subnets
 module "cs-vpc-prod-shared" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 9.0"
+  version = "~> 18.0"
 
   project_id   = module.cs-project-vpc-host-prod.project_id
   network_name = "vpc-prod-shared"
@@ -107,7 +107,7 @@ module "cs-vpc-prod-shared" {
 # VPC and Subnets
 module "cs-vpc-nonprod-shared" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 9.0"
+  version = "~> 18.0"
 
   project_id   = module.cs-project-vpc-host-nonprod.project_id
   network_name = "vpc-nonprod-shared"
