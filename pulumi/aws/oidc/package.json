@@ -4,7 +4,7 @@
     "devDependencies": {
         "@types/js-yaml": "^4.0.9",
         "@types/node": "^18",
-        "typescript": "^5.0.0"
+        "typescript": "^6.0.0"
     },
     "dependencies": {
         "@pulumi/aws-native": "^1.0.0",
