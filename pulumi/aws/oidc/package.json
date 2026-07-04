@@ -9,7 +9,7 @@
     "dependencies": {
         "@pulumi/aws-native": "^1.0.0",
         "@pulumi/pulumi": "^3.130.0",
-        "@pulumi/pulumiservice": "^0.24.1",
+        "@pulumi/pulumiservice": "^0.41.0",
         "@pulumi/tls": "^5.0.4",
         "js-yaml": "^4.1.0"
     }
