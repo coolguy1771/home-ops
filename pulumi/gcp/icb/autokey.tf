@@ -45,7 +45,7 @@ resource "google_project_iam_member" "autokey_project_admin" {
 
 module "cs-autokey" {
   source  = "terraform-google-modules/kms/google//modules/autokey"
-  version = "~> 3.1"
+  version = "~> 4.0"
   for_each = {
     for v in var.cmek_autokey_folders :
     v.folder_path => v
