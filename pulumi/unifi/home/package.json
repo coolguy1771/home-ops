@@ -7,6 +7,6 @@
     },
     "dependencies": {
         "@pulumi/pulumi": "^3.130.0",
-        "@pulumiverse/unifi": "^0.0.3"
+        "@pulumiverse/unifi": "^0.2.0"
     }
 }
