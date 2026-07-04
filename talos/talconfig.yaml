@@ -10,7 +10,7 @@ additionalApiServerCertSans: &san
   - k8s-lb.286k.co
   - 127.0.0.1
 additionalMachineCertSans: *san
-endpoint: https://10.10.10.201:6443
+endpoint: https://k8s-lb.286k.co:6443
 domain: cluster.local
 clusterPodNets:
   - 10.244.0.0/16
@@ -229,13 +229,6 @@ controlPlane:
           extraArgs:
             enable-aggregator-routing: "true"
             feature-gates: MutatingAdmissionPolicy=true,HPAScaleToZero=true
-            # Talos CIS hardening disables anonymous auth by default; without it,
-            # unauthenticated requests get 401 before RBAC (issuer discovery never runs).
-            anonymous-auth: "true"
-            # Public OIDC issuer for service account token discovery (Artifactory, etc.).
-            # Must match `iss`/`aud` in projected SA tokens and stay reachable without kube creds.
-            service-account-issuer: https://k8s-lb.286k.co:6443
-            service-account-jwks-uri: https://k8s-lb.286k.co:6443/openid/v1/jwks
     - |-
       cluster:
         controllerManager:

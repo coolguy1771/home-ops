@@ -72,7 +72,6 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
-      automountServiceAccountToken: true
       hostUsers: false
     service:
       app:

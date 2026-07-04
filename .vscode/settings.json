@@ -1,6 +1,13 @@
 {
+  "ansible.ansible.path": ".venv/bin/ansible",
+  "ansible.python.activationScript": ".venv/bin/activate",
+  "ansible.python.interpreterPath": ".venv/bin/python3",
+  "ansible.validation.enabled": true,
+  "ansible.validation.lint.arguments": "-c ansible/.ansible-lint",
+  "ansible.validation.lint.enabled": true,
+  "ansible.validation.lint.path": ".venv/bin/ansible-lint",
   "editor.bracketPairColorization.enabled": true,
-  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontFamily": "FiraCode NFM, 'FiraCode Nerd Font Mono'",
   "editor.fontLigatures": true,
   "editor.guides.bracketPairs": true,
   "editor.guides.bracketPairsHorizontal": true,
@@ -8,13 +15,12 @@
   "editor.hover.delay": 1500,
   "editor.rulers": [100],
   "editor.stickyScroll.enabled": false,
-  "explorer.autoReveal": true,
+  "explorer.autoReveal": false,
   "files.associations": {
-    "**/*.json5": "json5",
+    "**/*.json5": "json5"
   },
   "files.trimTrailingWhitespace": true,
   "material-icon-theme.files.associations": {
-    "*.gotmpl": "smarty",
     "*.sops.yaml": "lock",
     "helmfile.yaml": "helm",
     "kubeconfig": "kubernetes",
@@ -26,7 +32,6 @@
     ".private": "archive",
     ".renovate": "robot",
     "bootstrap": "seeders",
-    "bootstrap/helmfile.d": "helm",
     "flux": "pipe",
     "talos": "linux",
     // namespaces
@@ -44,19 +49,15 @@
     "volsync-system": "aws"
   },
   "sops.defaults.ageKeyFile": "age.key",
-  "terminal.integrated.fontSize": 14,
   "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.kubeconfig": "./kubernentes/kyak/kubeconfig",
     "vs-kubernetes.knownKubeconfigs": [
-      "./kubeconfig"
+      "./kubernentes/kyak/kubeconfig"
     ]
   },
-  "window.zoomLevel": 0,
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
   },
-  "[yaml]": {
-    "editor.defaultFormatter": "bluebrown.yamlfmt"
-  }
+  "asciidoc.antora.enableAntoraSupport": true,
 }

@@ -20,7 +20,7 @@ spec:
             env:
               TZ: America/New_York
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://10.2.237.1
+              UP_UNIFI_DEFAULT_URL: https://10.1.237.1
               UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_INFLUXDB_DISABLE: true
               UP_UNIFI_DEFAULT_SAVE_ALARMS: "true"
