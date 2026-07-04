@@ -56,7 +56,7 @@ module "cs-autokey" {
 
 module "autokey-org-policy-gcp-restrict-on-cmek-services" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~>5.2"
+  version = "~> 7.0"
   for_each = {
     for v in var.cmek_autokey_folders :
     v.folder_path => v
@@ -117,7 +117,7 @@ module "autokey-org-policy-gcp-restrict-on-cmek-services" {
 
 module "autokey-org-policy-gcp-restrict-cmek-crypto-key-projects" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~>5.2"
+  version = "~> 7.0"
   for_each = {
     for v in var.cmek_autokey_folders :
     v.folder_path => v

@@ -1,6 +1,6 @@
 module "cs-org-policy-storage_publicAccessPrevention" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -20,7 +20,7 @@ module "cs-org-policy-storage_publicAccessPrevention" {
 
 module "cs-org-policy-compute_requireOsLogin" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -40,7 +40,7 @@ module "cs-org-policy-compute_requireOsLogin" {
 
 module "cs-org-policy-compute_vmExternalIpAccess" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -60,7 +60,7 @@ module "cs-org-policy-compute_vmExternalIpAccess" {
 
 module "cs-org-policy-compute_disableNestedVirtualization" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -80,7 +80,7 @@ module "cs-org-policy-compute_disableNestedVirtualization" {
 
 module "cs-org-policy-compute_disableSerialPortAccess" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -100,7 +100,7 @@ module "cs-org-policy-compute_disableSerialPortAccess" {
 
 module "cs-org-policy-sql_restrictAuthorizedNetworks" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -120,7 +120,7 @@ module "cs-org-policy-sql_restrictAuthorizedNetworks" {
 
 module "cs-org-policy-sql_restrictPublicIp" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -140,7 +140,7 @@ module "cs-org-policy-sql_restrictPublicIp" {
 
 module "cs-org-policy-compute_restrictXpnProjectLienRemoval" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -160,7 +160,7 @@ module "cs-org-policy-compute_restrictXpnProjectLienRemoval" {
 
 module "cs-org-policy-compute_skipDefaultNetworkCreation" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
@@ -180,7 +180,7 @@ module "cs-org-policy-compute_skipDefaultNetworkCreation" {
 
 module "cs-org-policy-compute_disableVpcExternalIpv6" {
   source  = "terraform-google-modules/org-policy/google//modules/org_policy_v2"
-  version = "~> 5.2"
+  version = "~> 7.0"
 
   policy_root      = "organization"
   policy_root_id   = var.org_id
