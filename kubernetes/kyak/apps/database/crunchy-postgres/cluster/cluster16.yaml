@@ -34,7 +34,7 @@ spec:
           app.kubernetes.io/name: crunchy-postgres
           ingress.home.arpa/lan: allow
           egress.home.arpa/apiserver: allow
-          egress.home.arpa/minio: allow
+          egress.home.arpa/internet: allow
           egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       replicas: &replica 3
       dataVolumeClaimSpec:
@@ -120,14 +120,14 @@ spec:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
           egress.home.arpa/apiserver: allow
-          egress.home.arpa/minio: allow
+          egress.home.arpa/internet: allow
           egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       repos:
-        - name: repo1 # Minio
-          s3: &minio
+        - name: repo1 # Cloudflare R2
+          s3: &r2
             bucket: "crunchy-postgres"
-            endpoint: "s3.286k.co"
-            region: "us-east-1"
+            endpoint: "d78593257a77725d26d210d4d91ca58a.r2.cloudflarestorage.com"
+            region: "auto"
           schedules:
             full: "0 1 * * 0" # Sunday at 01:00
             differential: "0 1 * * 1-6" # Mon-Sat at 01:00
@@ -140,7 +140,7 @@ spec:
       global: *backupFlag
       repo:
         name: "repo1"
-        s3: *minio
+        s3: *r2
 
   proxy:
     pgBouncer:

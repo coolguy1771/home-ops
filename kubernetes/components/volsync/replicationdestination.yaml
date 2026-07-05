@@ -9,7 +9,7 @@ metadata:
 spec:
   trigger:
     manual: restore-once
-  kopia:
+  restic:
     accessModes:
       - ${VOLSYNC_ACCESSMODES:=ReadWriteOnce}
     cacheAccessModes:
@@ -25,14 +25,6 @@ spec:
       runAsUser: ${VOLSYNC_PUID:=1000}
       runAsGroup: ${VOLSYNC_PGID:=1000}
       fsGroup: ${VOLSYNC_PGID:=1000}
-    moverVolumes:
-      - mountPath: repository
-        volumeSource:
-          nfs:
-            path: /pluto/kopia
-            server: osiris.286k.co
     repository: ${APP}-volsync-secret
-    sourceIdentity:
-      sourceName: ${APP}
     storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}

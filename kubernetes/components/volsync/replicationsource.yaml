@@ -8,26 +8,20 @@ spec:
   sourcePVC: ${APP}
   trigger:
     schedule: 0 * * * *
-  kopia:
+  restic:
     accessModes:
       - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}
     cacheAccessModes:
       - ${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}
     cacheCapacity: ${VOLSYNC_CAPACITY:=5Gi}
     cacheStorageClassName: ${VOLSYNC_CACHE_STORAGECLASS:=openebs-hostpath}
-    compression: zstd-fastest
+    cleanupCachePVC: true
     copyMethod: Snapshot
     moverSecurityContext:
       runAsUser: ${VOLSYNC_PUID:=1000}
       runAsGroup: ${VOLSYNC_PGID:=1000}
       fsGroup: ${VOLSYNC_PGID:=1000}
-    moverVolumes:
-      - mountPath: repository
-        volumeSource:
-          nfs:
-            path: /pluto/kopia
-            server: osiris.286k.co
-    parallelism: 2
+    pruneIntervalDays: 14
     repository: ${APP}-volsync-secret
     retain:
       hourly: 24
