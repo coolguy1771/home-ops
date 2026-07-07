@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_envoyextensionpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyExtensionPolicy
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: jellyfin
+  lua:
+    - type: Inline
+      inline: |
+        function envoy_on_request(handle)
+          local cf_ip = handle:headers():get("cf-connecting-ip")
+          if cf_ip ~= nil and cf_ip ~= "" then
+            handle:headers():replace("x-forwarded-for", cf_ip)
+          end
+        end

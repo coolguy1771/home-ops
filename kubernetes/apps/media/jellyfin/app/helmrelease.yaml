@@ -21,6 +21,24 @@ spec:
       jellyfin:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          known-proxies:
+            image:
+              repository: mirror.gcr.io/library/busybox
+              tag: "1.37"
+            command:
+              - sh
+              - -ec
+              - |
+                f=/config/config/network.xml
+                grep -q '<string>10.244.0.0/16</string>' "$f" && exit 0
+                sed -i \
+                  -e 's|<KnownProxies />|<KnownProxies><string>10.244.0.0/16</string></KnownProxies>|' \
+                  -e 's|<KnownProxies></KnownProxies>|<KnownProxies><string>10.244.0.0/16</string></KnownProxies>|' \
+                  "$f"
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
         containers:
           app:
             image:
