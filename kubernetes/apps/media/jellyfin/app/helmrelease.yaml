@@ -31,10 +31,15 @@ spec:
               - -ec
               - |
                 f=/config/config/network.xml
-                grep -q '<string>10.244.0.0/16</string>' "$f" && exit 0
+                changed=0
+                grep -q '<string>10.0.0.0/8</string>' "$f" || changed=1
+                grep -q '<EnableIPv6>true</EnableIPv6>' "$f" || changed=1
+                test "$changed" -eq 0 && exit 0
                 sed -i \
-                  -e 's|<KnownProxies />|<KnownProxies><string>10.244.0.0/16</string></KnownProxies>|' \
-                  -e 's|<KnownProxies></KnownProxies>|<KnownProxies><string>10.244.0.0/16</string></KnownProxies>|' \
+                  -e 's|<string>10.244.0.0/16</string>|<string>10.0.0.0/8</string>|' \
+                  -e 's|<KnownProxies />|<KnownProxies><string>10.0.0.0/8</string></KnownProxies>|' \
+                  -e 's|<KnownProxies></KnownProxies>|<KnownProxies><string>10.0.0.0/8</string></KnownProxies>|' \
+                  -e 's|<EnableIPv6>false</EnableIPv6>|<EnableIPv6>true</EnableIPv6>|' \
                   "$f"
             securityContext:
               runAsUser: 1000

@@ -17,5 +17,6 @@ spec:
           local cf_ip = handle:headers():get("cf-connecting-ip")
           if cf_ip ~= nil and cf_ip ~= "" then
             handle:headers():replace("x-forwarded-for", cf_ip)
+            handle:headers():replace("x-real-ip", cf_ip)
           end
         end
