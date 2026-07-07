@@ -25,7 +25,7 @@ spec:
           known-proxies:
             image:
               repository: mirror.gcr.io/library/busybox
-              tag: "1.37"
+              tag: "1.38"
             command:
               - sh
               - -ec
