@@ -23,6 +23,18 @@ spec:
       enabled: false
     kubeStateMetrics:
       enabled: false
+    # Talos does not expose classic control-plane scrape jobs; these absent()
+    # rules always fire and are noise on this cluster.
+    defaultRules:
+      disabled:
+        KubeAPIDown: true
+        KubeAPIInstanceUnreachable: true
+        KubeControllerManagerDown: true
+        KubeControllerManagerInstanceUnreachable: true
+        KubeProxyDown: true
+        KubeProxyInstanceUnreachable: true
+        KubeSchedulerDown: true
+        KubeSchedulerInstanceUnreachable: true
     grafana:
       enabled: false
       forceDeployDashboards: true

@@ -10,10 +10,16 @@ spec:
       rules:
         - alert: ExternalDNSStale
           expr: |-
-            time() - external_dns_controller_last_sync_timestamp_seconds > 60
-          for: 5m
+            (
+              time() - external_dns_controller_last_sync_timestamp_seconds > 300
+            )
+            and on (job)
+            (
+              up{job=~"cloudflare-dns|unifi-dns|external-dns"} == 1
+            )
+          for: 15m
           annotations:
             summary: >-
-              ExternalDNS ({{ $labels.job }}) has not synced successfully in the last five minutes
+              ExternalDNS ({{ $labels.job }}) has not synced successfully in the last 15 minutes
           labels:
             severity: critical
