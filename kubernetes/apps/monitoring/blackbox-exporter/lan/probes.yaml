@@ -11,10 +11,8 @@ spec:
   targets:
     staticConfig:
       static:
-        - osiris.286k.co
+        - nas.286k.co
         - unifi.286k.co
-        - hp-ilo-0.286k.co
-        - hp-ilo-1.286k.co
         - pikvm.286k.co
   metricRelabelings:
     - targetLabel: service
@@ -34,7 +32,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - osiris.286k.co:2049
+        - nas.286k.co:2049
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
