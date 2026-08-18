@@ -25,7 +25,7 @@ spec:
             scopes:
               - loki:write
             endpointParams:
-              grant_type: ["client_credentials"]
+              grant_type: client_credentials
       mimir:
         type: otlp
         url: https://mimir.cloud.witl.xyz/otlp
