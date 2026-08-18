@@ -13,13 +13,20 @@ spec:
     cluster:
       name: "kyak"
     destinations:
-      # - name: prometheus
-      #   type: prometheus
-      #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-      - name: loki
+      loki:
         type: loki
-        url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
-      - name: mimir
+        url: https://loki.cloud.witl.xyz/loki/api/v1/push
+        auth:
+          type: oauth2
+          oauth2:
+            tokenURL: "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
+            clientIdFrom: string.trim_space(local.file.loki_client_id.content)
+            clientSecretFile: /var/run/secrets/loki-oauth/clientSecret
+            scopes:
+              - loki:write
+            endpointParams:
+              grant_type: ["client_credentials"]
+      mimir:
         type: otlp
         url: https://mimir.cloud.witl.xyz/otlp
         protocol: http
@@ -30,50 +37,54 @@ spec:
           type: oauth2
           oauth2:
             tokenURL: "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
-            clientId: 93694c3692004c909b5e2a43e1086a47
-            clinetSecretPath: /var/run/secrets/mimir-oauth/clientSecret
+            clientIdFrom: string.trim_space(local.file.mimir_client_id.content)
+            clientSecretFile: /var/run/secrets/mimir-oauth/clientSecret
             scopes:
               - mimir:write
             endpointParams:
               grant_type: ["client_credentials"]
-        secret:
-          create: false
-          name: mimirwriteoauth
-          namespace: monitoring
     #
     # Features
     #
     clusterMetrics:
       enabled: true
+      collector: alloy-metrics
+    hostMetrics:
+      enabled: true
+      collector: alloy-metrics
       nodeLabels:
         nodePool: true
         region: true
         availabilityZone: true
         nodeRole: true
-        os: true
-        architecture: true
+        nodeOS: true
+        nodeArchitecture: true
         instanceType: true
-      kepler:
+      linuxHosts:
+        enabled: true
+      energyMetrics:
         enabled: true
     clusterEvents:
       enabled: true
+      collector: alloy-singleton
     nodeLogs:
       enabled: false
     podLogsViaKubernetesApi:
       enabled: true
+      collector: alloy-logs
       nodeLabels:
-        nodepool: true
+        nodePool: true
         region: true
-        availability_zone: true
-        node_role: true
-        os: true
-        architecture: true
-        instance_type: true
+        availabilityZone: true
+        nodeRole: true
+        nodeOS: true
+        nodeArchitecture: true
+        instanceType: true
       structuredMetadata:
         node_pool: nodepool
-        region:
-        availability_zone:
-        node_role:
+        region: region
+        availability_zone: availability_zone
+        node_role: node_role
         node_os: os
         node_arch: architecture
         node_type: instance_type
@@ -93,20 +104,23 @@ spec:
     autoInstrumentation:
       enabled: false
     annotationAutodiscovery:
+      enabled: true
+      collector: alloy-metrics
       nodeLabels:
         nodePool: true
         region: true
         availabilityZone: true
         nodeRole: true
-        os: true
-        architecture: true
+        nodeOS: true
+        nodeArchitecture: true
         instanceType: true
-      enabled: true
     prometheusOperatorObjects:
       enabled: true
+      collector: alloy-metrics
     profiling:
       enabled: false
     integrations:
+      collector: alloy-metrics
       cert-manager:
         instances:
           - name: cert-manager
@@ -127,117 +141,127 @@ spec:
       enabled: false
       destinations: []
       scrapeInterval: ""
-    alloy-metrics:
-      enabled: true
-      alloy:
-        storagePath: /var/lib/alloy
-        mounts:
-          extra:
-            - name: alloy-wal
-              mountPath: /var/lib/alloy
-            - name: mimir-oauth
-              mountPath: /var/run/secrets/mimir-oauth
-              readOnly: true
-      controller:
-        enableStatefulSetAutoDeletePVC: true
-        volumeClaimTemplates:
-          - metadata:
-              name: alloy-wal
-            spec:
-              accessModes: ["ReadWriteOnce"]
-              storageClassName: "ceph-block"
-              resources:
-                requests:
-                  storage: 5Gi
-        volumes:
-          extra:
-            - name: mimir-oauth
-              secret:
-                secretName: mimirwriteoauth
-    alloy-singleton:
-      enabled: true
-      extraConfig: |-
-        local.file "mimir_client_id" {
-          filename = "/var/run/secrets/mimir-oauth/clientId"
-        }
-        local.file "alertmanager_global" {
-          filename = "/etc/alloy/alertmanager-global/config"
-        }
-        mimir.rules.kubernetes "mimir" {
-          address       = "https://mimir.cloud.witl.xyz"
-          sync_interval = "2m"
-          oauth2 {
-            token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
-            client_id           = string.trim_space(local.file.mimir_client_id.content)
-            client_secret_file  = "/var/run/secrets/mimir-oauth/clientSecret"
-            scopes              = ["mimir:write", "mimir:read"]
-            endpoint_params     = { "grant_type" = "client_credentials" }
+    collectors:
+      alloy-metrics:
+        presets: [clustered, statefulset]
+        extraConfig: |-
+          local.file "mimir_client_id" {
+            filename = "/var/run/secrets/mimir-oauth/clientId"
           }
-        }
-        mimir.alerts.kubernetes "mimir" {
-          address       = "https://mimir.cloud.witl.xyz"
-          global_config = local.file.alertmanager_global.content
-          sync_interval = "2m"
-          oauth2 {
-            token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
-            client_id           = string.trim_space(local.file.mimir_client_id.content)
-            client_secret_file  = "/var/run/secrets/mimir-oauth/clientSecret"
-            scopes              = ["mimir:write", "mimir:read"]
-            endpoint_params     = { "grant_type" = "client_credentials" }
+        alloy:
+          storagePath: /var/lib/alloy
+          mounts:
+            extra:
+              - name: alloy-wal
+                mountPath: /var/lib/alloy
+              - name: mimir-oauth
+                mountPath: /var/run/secrets/mimir-oauth
+                readOnly: true
+        controller:
+          enableStatefulSetAutoDeletePVC: true
+          volumeClaimTemplates:
+            - metadata:
+                name: alloy-wal
+              spec:
+                accessModes: ["ReadWriteOnce"]
+                storageClassName: "ceph-block"
+                resources:
+                  requests:
+                    storage: 5Gi
+          volumes:
+            extra:
+              - name: mimir-oauth
+                secret:
+                  secretName: mimirwriteoauth
+      alloy-singleton:
+        presets: [singleton]
+        extraConfig: |-
+          local.file "mimir_client_id" {
+            filename = "/var/run/secrets/mimir-oauth/clientId"
           }
-        }
-      alloy:
-        stabilityLevel: experimental
-
-        mounts:
-          extra:
-            - name: mimir-oauth
-              mountPath: /var/run/secrets/mimir-oauth
-              readOnly: true
-            - name: alertmanager-global
-              mountPath: /etc/alloy/alertmanager-global
-              readOnly: true
-      controller:
-        volumes:
-          extra:
-            - name: mimir-oauth
-              secret:
-                secretName: mimirwriteoauth
-            - name: alertmanager-global
-              secret:
-                secretName: alertmanager-global-config
-    alloy-logs:
-      enabled: true
-      alloy:
-        clustering:
-          enabled: true
-        storagePath: /var/lib/alloy
-        mounts:
-          extra:
-            - name: alloy-log-positions
-              mountPath: /var/lib/alloy
-      controller:
-        volumes:
-          extra:
-            - name: alloy-log-positions
-              hostPath:
-                path: /var/alloy-log-storage
-                type: DirectoryOrCreate
-    alloy-receiver:
-      enabled: false
-      alloy:
-        extraPorts:
-          - name: otlp-grpc
-            port: 4317
-            targetPort: 4317
-            protocol: TCP
-          - name: otlp-http
-            port: 4318
-            targetPort: 4318
-            protocol: TCP
-          - name: zipkin
-            port: 9411
-            targetPort: 9411
-            protocol: TCP
-    alloy-profiles:
-      enabled: false
+          local.file "loki_client_id" {
+            filename = "/var/run/secrets/loki-oauth/clientId"
+          }
+          local.file "alertmanager_global" {
+            filename = "/etc/alloy/alertmanager-global/config"
+          }
+          mimir.rules.kubernetes "mimir" {
+            address       = "https://mimir.cloud.witl.xyz"
+            sync_interval = "2m"
+            oauth2 {
+              token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
+              client_id           = string.trim_space(local.file.mimir_client_id.content)
+              client_secret_file  = "/var/run/secrets/mimir-oauth/clientSecret"
+              scopes              = ["mimir:write", "mimir:read"]
+              endpoint_params     = { "grant_type" = "client_credentials" }
+            }
+          }
+          mimir.alerts.kubernetes "mimir" {
+            address       = "https://mimir.cloud.witl.xyz"
+            global_config = local.file.alertmanager_global.content
+            sync_interval = "2m"
+            oauth2 {
+              token_url           = "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
+              client_id           = string.trim_space(local.file.mimir_client_id.content)
+              client_secret_file  = "/var/run/secrets/mimir-oauth/clientSecret"
+              scopes              = ["mimir:write", "mimir:read"]
+              endpoint_params     = { "grant_type" = "client_credentials" }
+            }
+          }
+        alloy:
+          stabilityLevel: experimental
+          mounts:
+            extra:
+              - name: mimir-oauth
+                mountPath: /var/run/secrets/mimir-oauth
+                readOnly: true
+              - name: loki-oauth
+                mountPath: /var/run/secrets/loki-oauth
+                readOnly: true
+              - name: alertmanager-global
+                mountPath: /etc/alloy/alertmanager-global
+                readOnly: true
+        controller:
+          volumes:
+            extra:
+              - name: mimir-oauth
+                secret:
+                  secretName: mimirwriteoauth
+              - name: loki-oauth
+                secret:
+                  secretName: lokiwriteoauth
+              - name: alertmanager-global
+                secret:
+                  secretName: alertmanager-global-config
+      alloy-logs:
+        presets: [clustered, daemonset]
+        extraConfig: |-
+          local.file "loki_client_id" {
+            filename = "/var/run/secrets/loki-oauth/clientId"
+          }
+        alloy:
+          storagePath: /var/lib/alloy
+          mounts:
+            extra:
+              - name: alloy-log-positions
+                mountPath: /var/lib/alloy
+              - name: loki-oauth
+                mountPath: /var/run/secrets/loki-oauth
+                readOnly: true
+        controller:
+          volumes:
+            extra:
+              - name: alloy-log-positions
+                hostPath:
+                  path: /var/alloy-log-storage
+                  type: DirectoryOrCreate
+              - name: loki-oauth
+                secret:
+                  secretName: lokiwriteoauth
+    telemetryServices:
+      kube-state-metrics:
+        deploy: true
+      node-exporter:
+        deploy: true
+      kepler:
+        deploy: true
