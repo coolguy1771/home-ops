@@ -15,7 +15,17 @@ spec:
     destinations:
       loki:
         type: loki
-        url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+        url: https://loki.cloud.witl.xyz/loki/api/v1/push
+        auth:
+          type: oauth2
+          oauth2:
+            tokenURL: "https://sso-3da0e7d4.sso.duosecurity.com/oauth/DIV21P82KMG9NOTNQW6J/token"
+            clientIdFrom: string.trim_space(local.file.loki_client_id.content)
+            clientSecretFile: /var/run/secrets/loki-oauth/clientSecret
+            scopes:
+              - loki:write
+            endpointParams:
+              grant_type: ["client_credentials"]
       mimir:
         type: otlp
         url: https://mimir.cloud.witl.xyz/otlp
@@ -169,6 +179,9 @@ spec:
           local.file "mimir_client_id" {
             filename = "/var/run/secrets/mimir-oauth/clientId"
           }
+          local.file "loki_client_id" {
+            filename = "/var/run/secrets/loki-oauth/clientId"
+          }
           local.file "alertmanager_global" {
             filename = "/etc/alloy/alertmanager-global/config"
           }
@@ -202,6 +215,9 @@ spec:
               - name: mimir-oauth
                 mountPath: /var/run/secrets/mimir-oauth
                 readOnly: true
+              - name: loki-oauth
+                mountPath: /var/run/secrets/loki-oauth
+                readOnly: true
               - name: alertmanager-global
                 mountPath: /etc/alloy/alertmanager-global
                 readOnly: true
@@ -211,17 +227,27 @@ spec:
               - name: mimir-oauth
                 secret:
                   secretName: mimirwriteoauth
+              - name: loki-oauth
+                secret:
+                  secretName: lokiwriteoauth
               - name: alertmanager-global
                 secret:
                   secretName: alertmanager-global-config
       alloy-logs:
         presets: [clustered, daemonset]
+        extraConfig: |-
+          local.file "loki_client_id" {
+            filename = "/var/run/secrets/loki-oauth/clientId"
+          }
         alloy:
           storagePath: /var/lib/alloy
           mounts:
             extra:
               - name: alloy-log-positions
                 mountPath: /var/lib/alloy
+              - name: loki-oauth
+                mountPath: /var/run/secrets/loki-oauth
+                readOnly: true
         controller:
           volumes:
             extra:
@@ -229,6 +255,9 @@ spec:
                 hostPath:
                   path: /var/alloy-log-storage
                   type: DirectoryOrCreate
+              - name: loki-oauth
+                secret:
+                  secretName: lokiwriteoauth
     telemetryServices:
       kube-state-metrics:
         deploy: true
