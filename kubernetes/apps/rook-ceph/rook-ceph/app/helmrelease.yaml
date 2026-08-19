@@ -15,6 +15,9 @@ spec:
       enableLiveness: true
       serviceMonitor:
         enabled: true
+        # Chart default 5s interval is shorter than Alloy's 10s scrape timeout,
+        # which prevents csi-metrics from being scraped at all.
+        interval: 30s
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
@@ -66,7 +69,6 @@ spec:
         controllerPlugin:
           deploymentStrategy:
             type: Recreate
-          hostNetwork: true
           priorityClassName: system-cluster-critical
           replicas: 2
         nodePlugin:

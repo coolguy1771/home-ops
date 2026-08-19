@@ -21,6 +21,13 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
+      # Alloy ships metrics to Mimir via OTLP; the synthetic up{job=...} series
+      # Rook's meta-alerts expect is not queryable with Prometheus job labels.
+      prometheusRuleOverrides:
+        PrometheusJobMissing:
+          disabled: true
+        PrometheusJobExporterMissing:
+          disabled: true
     toolbox:
       enabled: true
     route:
