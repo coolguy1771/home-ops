@@ -49,7 +49,31 @@ spec:
             namespace: network
             sectionName: https
     cephClusterSpec:
+      security:
+        cephx:
+          # CVE-2025-30156: rotate core daemon keys to aes256k (Ceph v20.2.4+).
+          # CSI keys stay on aes until nodes run Linux kernel 7.0+ (currently 6.18).
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+          csi:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+            keepPriorKeyCountMax: 1
+            keyType: aes
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
       cephConfig:
+        mon:
+          mon_cluster_log_level: info
         global:
           bdev_enable_discard: "true" # quote
           bdev_async_discard_threads: "1" # quote

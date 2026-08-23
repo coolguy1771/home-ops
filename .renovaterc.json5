@@ -1,25 +1,13 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "config:recommended",
-    "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
-    "github>coolguy1771/home-ops//.renovate/autoMerge.json5",
-    "github>coolguy1771/home-ops//.renovate/changelogs.json5",
-    "github>coolguy1771/home-ops//.renovate/customManagers.json5",
-    "github>coolguy1771/home-ops//.renovate/talosFactory.json5",
-    "github>coolguy1771/home-ops//.renovate/grafanaDashboards.json5",
-    "github>coolguy1771/home-ops//.renovate/groups.json5",
-    "github>coolguy1771/home-ops//.renovate/labels.json5",
-    "github>coolguy1771/home-ops//.renovate/overrides.json5",
-    "github>coolguy1771/home-ops//.renovate/semanticCommits.json5",
-    ":automergeBranch",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
+    "github>home-operations/renovate-presets#8.1.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#8.1.0",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0",
+    "github>coolguy1771/home-ops//.renovate/local.json5",
     ":semanticCommits",
     ":timezone(America/New_York)",
   ],
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
   suppressNotifications: [
     "prEditedNotification",
     "prIgnoreNotification",
@@ -28,13 +16,4 @@
     "**/*.sops.*",
     "**/resources/**",
   ],
-  flux: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  },
-  "helm-values": {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  },
-  kubernetes: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  },
 }

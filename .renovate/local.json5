@@ -1,0 +1,52 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      description: "Override Helmfile Dependency Name",
+      matchDatasources: ["docker"],
+      matchManagers: ["helmfile"],
+      overrideDepName: "{{packageName}}",
+    },
+    {
+      description: "Override Talos Installer Package Name",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/factory\\.talos\\.dev/"],
+      overridePackageName: "ghcr.io/siderolabs/installer",
+    },
+    {
+      description: "Auto-merge GitHub Releases",
+      matchDatasources: ["github-releases"],
+      automerge: true,
+      automergeType: "branch",
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "/external-dns/",
+        "/gateway-api/",
+        "/prometheus-operator/",
+      ],
+      ignoreTests: true,
+    },
+    {
+      description: "Intel Device Plugins Group",
+      groupName: "intel-device-plugins",
+      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "/intel-device-plugins-operator/",
+        "/intel-device-plugins-gpu/",
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Auto-merge OCI Charts",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: ["/grafana/"],
+      ignoreTests: false,
+    },
+  ],
+}

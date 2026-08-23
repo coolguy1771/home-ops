@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: loki
 spec:
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/monitoring/loki/app
   prune: true

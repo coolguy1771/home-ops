@@ -43,3 +43,8 @@ releases:
     namespace: monitoring
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: 88.5.4
+
+  - name: snapshot-controller
+    namespace: kube-system
+    chart: oci://ghcr.io/piraeusdatastore/helm-charts/snapshot-controller
+    version: 5.2.0

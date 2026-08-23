@@ -218,6 +218,12 @@ controlPlane:
             rotate-server-certificates: "true"
           extraConfig:
             serializeImagePulls: false
+            maxParallelImagePulls: 3
+            imageMaximumGCAge: 168h
+            shutdownGracePeriod: 90s
+            shutdownGracePeriodCriticalPods: 60s
+            crashLoopBackOff:
+              maxContainerRestartPeriod: 60s
     - |-
       cluster:
         apiServer:
@@ -357,6 +363,12 @@ worker:
             feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
           extraConfig:
             serializeImagePulls: false
+            maxParallelImagePulls: 3
+            imageMaximumGCAge: 168h
+            shutdownGracePeriod: 90s
+            shutdownGracePeriodCriticalPods: 60s
+            crashLoopBackOff:
+              maxContainerRestartPeriod: 60s
     - |-
       machine:
         kubelet:

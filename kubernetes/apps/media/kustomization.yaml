@@ -12,7 +12,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./brrpolice/ks.yaml
-  - ./deduparr/ks.yaml
+  - ./cleanrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./notifier/ks.yaml
