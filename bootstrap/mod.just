@@ -65,31 +65,20 @@ namespaces:
 [doc('Apply Kubernetes resources')]
 resources:
     just log info "Running stage..." "stage" "$0"
-    if ! just template "{{ bootstrap_dir }}/resources.yaml.j2" | python3 -c 'import sys,yaml,base64
-for doc in yaml.safe_load_all(sys.stdin):
-    if not doc:
-        continue
-    name = doc.get("metadata", {}).get("name")
-    if name == "onepassword-connect-credentials-secret":
-        key = "1password-credentials.json"
-        val = doc["stringData"][key]
-        if not val.lstrip().startswith("{"):
-            doc["stringData"][key] = base64.b64decode(val).decode()
-    print("---")
-    print(yaml.dump(doc, default_flow_style=False))' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then \
+    if ! just template "{{ bootstrap_dir }}/resources.yaml.j2" | python3 "{{ bootstrap_dir }}/decode-op-credentials.py" | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then \
         just log fatal "Failed to apply resources" "stage" "$0"; \
-    fi;
+    fi
 
 [doc('Apply Helmfile CRDs')]
 crds:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.d/00-crds.yaml" template -q | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then \
+    if ! helmfile -f "{{ bootstrap_dir }}/helmfile/crds.yaml" template -q | yq ea -r -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then \
         just log fatal "Failed to apply crds" "stage" "$0"; \
-    fi;
+    fi
 
 [doc('Apply Helmfile Apps')]
 apps:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.d/01-apps.yaml" sync --hide-notes; then \
+    if ! helmfile -f "{{ bootstrap_dir }}/helmfile/apps.yaml" sync --hide-notes; then \
         just log fatal "Failed to sync helmfile" "stage" "$0"; \
     fi

@@ -13,9 +13,6 @@ spec:
     - ../../../../components/defaults
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
-  dependsOn:
-    - name: multus-networks
-      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/media/nzbget/app
   postBuild:

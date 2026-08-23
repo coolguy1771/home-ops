@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/helmfile
+
+# Bootstraps core applications that provide a minimal runtime base for the
+# cluster. These releases are installed first so the cluster has the resources
+# Flux needs before its own reconciliation begins.
+
+helmDefaults:
+  cleanupOnFail: true
+  forceConflicts: true
+  wait: true
+  waitForJobs: true
+
+bases:
+  - default.yaml
+
+defaultInherit: default
+
+releases:
+  - name: cilium
+    namespace: kube-system
+    hooks:
+      - command: kubectl
+        args:
+          - wait
+          - --for=create
+          - crd/ciliumbgpadvertisements.cilium.io
+          - crd/ciliumbgpclusterconfigs.cilium.io
+          - crd/ciliumbgppeerconfigs.cilium.io
+          - crd/ciliumloadbalancerippools.cilium.io
+          - --timeout=2m
+        events:
+          - postsync
+        showlogs: true
+      - command: kubectl
+        args:
+          - apply
+          - --namespace={{ .Release.Namespace }}
+          - --server-side
+          - --force-conflicts
+          - --filename=../../kubernetes/apps/{{ .Release.Namespace }}/{{ .Release.Name }}/app/networking.yaml
+        events:
+          - postsync
+        showlogs: true
+
+  - name: coredns
+    namespace: kube-system
+    needs:
+      - kube-system/cilium
+
+  - name: spegel
+    namespace: kube-system
+    needs:
+      - kube-system/coredns
+
+  - name: cert-manager
+    namespace: cert-manager
+    needs:
+      - kube-system/spegel
+
+  - name: external-secrets
+    namespace: external-secrets
+    needs:
+      - cert-manager/cert-manager
+
+  - name: onepassword-connect
+    namespace: external-secrets
+    hooks:
+      - command: kubectl
+        args:
+          - wait
+          - --for=create
+          - crd/clustersecretstores.external-secrets.io
+          - --timeout=2m
+        events:
+          - postsync
+        showlogs: true
+      - command: kubectl
+        args:
+          - apply
+          - --server-side
+          - --force-conflicts
+          - --filename=../../kubernetes/apps/{{ .Release.Namespace }}/{{ .Release.Name }}/app/clustersecretstore.yaml
+        events:
+          - postsync
+        showlogs: true
+    needs:
+      - external-secrets/external-secrets
+
+  - name: flux-operator
+    namespace: flux-system
+    needs:
+      - external-secrets/onepassword-connect
+
+  - name: flux-instance
+    namespace: flux-system
+    needs:
+      - flux-system/flux-operator

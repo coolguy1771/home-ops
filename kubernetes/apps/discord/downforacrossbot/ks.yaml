@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/discord/downforacrossbot/app
   prune: true
