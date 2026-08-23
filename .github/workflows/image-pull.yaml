@@ -119,9 +119,29 @@ jobs:
       fail-fast: false
     env:
       MATRIX_IMAGE: ${{ matrix.image }}
+      TALOS_VERSION: v1.13.8
     steps:
       - name: Install talosctl
-        run: curl -fsSL https://talos.dev/install | sh
+        env:
+          INSTALL_DIR: ${{ runner.temp }}/bin
+        run: |
+          set -euo pipefail
+          mkdir -p "${INSTALL_DIR}"
+          case "$(uname -m)" in
+            x86_64) asset=talosctl-linux-amd64 ;;
+            aarch64) asset=talosctl-linux-arm64 ;;
+            *) echo "unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+          esac
+          base="https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}"
+          workdir=$(mktemp -d)
+          trap 'rm -rf "${workdir}"' EXIT
+          curl -fsSL "${base}/sha256sum.txt" -o "${workdir}/sha256sum.txt"
+          curl -fsSL "${base}/${asset}" -o "${workdir}/${asset}"
+          grep -F " ${asset}" "${workdir}/sha256sum.txt" | (
+            cd "${workdir}" && sha256sum -c -
+          )
+          install -m 0755 "${workdir}/${asset}" "${INSTALL_DIR}/talosctl"
+          echo "${INSTALL_DIR}" >> "${GITHUB_PATH}"
 
       - name: Pull Image
         run: talosctl --nodes $NODE image pull "${MATRIX_IMAGE}"
