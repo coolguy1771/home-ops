@@ -27,7 +27,7 @@ spec:
               - tenant
               - loki:write
             endpointParams:
-              grant_type: ["client_credentials"]
+              grant_type: client_credentials
         secret:
           create: false
           name: observability-m2m
@@ -45,7 +45,7 @@ spec:
               - tenant
               - mimir:write
             endpointParams:
-              grant_type: ["client_credentials"]
+              grant_type: client_credentials
         secret:
           create: false
           name: observability-m2m
@@ -64,7 +64,7 @@ spec:
               - tenant
               - tempo:write
             endpointParams:
-              grant_type: ["client_credentials"]
+              grant_type: client_credentials
         secret:
           create: false
           name: observability-m2m
