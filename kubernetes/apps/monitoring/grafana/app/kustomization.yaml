@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./grafanadashboard.yaml
+  - ./grafana-external.yaml
   - ./helmrelease.yaml
-  - ./mutatingadmissionpolicy.yaml
   - ./ocirepository.yaml
