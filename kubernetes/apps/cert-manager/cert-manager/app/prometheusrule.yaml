@@ -21,8 +21,11 @@ spec:
     - name: certificates
       rules:
         - alert: CertManagerCertExpirySoon
+          # cluster filter required: this rule group is synced into the same shared Mimir
+          # tenant (witl-xyz) as cloud-ops, whose certs intentionally use a short-lived
+          # (160h) duration and would otherwise always match this 21-day threshold.
           expr: |-
-            avg by (exported_namespace, namespace, name) (certmanager_certificate_expiration_timestamp_seconds - time()) < (21 * 24 * 3600)
+            avg by (exported_namespace, namespace, name) (certmanager_certificate_expiration_timestamp_seconds{cluster="kyak"} - time()) < (21 * 24 * 3600)
           for: 5m
           annotations:
             summary: >-
