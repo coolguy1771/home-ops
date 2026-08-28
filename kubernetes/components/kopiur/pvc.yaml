@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${APP}
+spec:
+  accessModes:
+    - ${KOPIUR_ACCESSMODES:=ReadWriteOnce}
+  # dataSourceRef is immutable once the PVC is Bound, and every one of these
+  # PVCs was already provisioned through VolSync's ReplicationDestination
+  # populator. Kubernetes never re-reads dataSourceRef after binding, so this
+  # stays pointed at the (now-deleted) VolSync object on purpose: changing or
+  # dropping it would either 422 on apply or, since these Kustomizations run
+  # prune: true, get the live PVC deleted for no longer appearing in the
+  # rendered output. Restores go through `kubectl kopiur restore --to-pvc`
+  # instead of a GitOps-wired populator.
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: ${APP}-dst
+  resources:
+    requests:
+      storage: ${KOPIUR_CAPACITY:=5Gi}
+  storageClassName: ${KOPIUR_STORAGECLASS:=ceph-block}

@@ -6,13 +6,13 @@ metadata:
   name: jellyfin
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/media/jellyfin/app
   postBuild:
     substitute:
       APP: jellyfin
-      VOLSYNC_CAPACITY: 75Gi
+      KOPIUR_CAPACITY: 75Gi
   prune: true
   sourceRef:
     kind: GitRepository

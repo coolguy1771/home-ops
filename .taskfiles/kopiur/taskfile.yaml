@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+# Taskfile wrapping `kubectl kopiur` for day-2 Kopiur operations. Assumes
+# Fluxtomization, HelmRelease, PVC, and SnapshotPolicy all share the app's
+# name (e.g. plex), and each application backs up exactly one PVC. The
+# kubectl-kopiur plugin replaces what used to be hand-rolled Job/template
+# files under .taskfiles/volsync/resources.
+
+tasks:
+  state-*:
+    desc: Suspend or resume the shared r2 ClusterRepository (pauses every app's backups)
+    cmds:
+      - kubectl kopiur {{.STATE}} cluster-repository r2
+    vars:
+      STATE: "{{index .MATCH 0}}"
+    preconditions:
+      - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
+      - which kubectl kubectl-kopiur
+
+  snapshot:
+    desc: Snapshot an app now [NS=default] [APP=required]
+    cmds:
+      - kubectl kopiur snapshot now --policy {{.APP}} -n {{.NS}} --wait
+    vars:
+      NS: '{{.NS | default "default"}}'
+    requires:
+      vars: [APP]
+    preconditions:
+      - kubectl --namespace {{.NS}} get snapshotpolicy {{.APP}}
+      - which kubectl kubectl-kopiur
+
+  restore:
+    desc: Restore an app to its latest (or [AS_OF]) snapshot, in place [NS=default] [APP=required]
+    cmds:
+      # Suspend
+      - flux --namespace {{.NS}} suspend kustomization {{.APP}}
+      - flux --namespace {{.NS}} suspend helmrelease {{.APP}}
+      - kubectl --namespace {{.NS}} scale {{.CONTROLLER}}/{{.APP}} --replicas 0
+      - kubectl --namespace {{.NS}} wait pod --for=delete --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+      # Restore, in place, into the existing PVC (no PVC recreation needed)
+      - >-
+        kubectl kopiur restore --from-policy {{.APP}}
+        {{if .AS_OF}}--as-of {{.AS_OF}}{{end}}
+        --to-pvc {{.APP}} -n {{.NS}} --wait
+      # Resume
+      - flux --namespace {{.NS}} resume kustomization {{.APP}}
+      - flux --namespace {{.NS}} resume helmrelease {{.APP}}
+      - flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
+      - kubectl --namespace {{.NS}} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+    vars:
+      NS: '{{.NS | default "default"}}'
+      CONTROLLER:
+        sh: kubectl --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
+    requires:
+      vars: [APP]
+    preconditions:
+      - which flux kubectl kubectl-kopiur
+
+  doctor:
+    desc: Diagnose the Kopiur install [NS=default]
+    cmds:
+      - kubectl kopiur doctor -n {{.NS}}
+    vars:
+      NS: '{{.NS | default "default"}}'
+    preconditions:
+      - which kubectl kubectl-kopiur
+
+  status:
+    desc: One-screen Kopiur health overview [NS=default]
+    cmds:
+      - kubectl kopiur status -n {{.NS}}
+    vars:
+      NS: '{{.NS | default "default"}}'
+    preconditions:
+      - which kubectl kubectl-kopiur

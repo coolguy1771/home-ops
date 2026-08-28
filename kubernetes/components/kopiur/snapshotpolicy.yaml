@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${APP}
+spec:
+  repository:
+    kind: ClusterRepository
+    name: r2
+  sources:
+    - pvc:
+        name: ${APP}
+  copyMethod: Snapshot
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
+  retention:
+    keepHourly: 24
+    keepDaily: 7
+  mover:
+    securityContext:
+      runAsUser: ${KOPIUR_PUID:=1000}
+      runAsGroup: ${KOPIUR_PGID:=1000}
+    podSecurityContext:
+      fsGroup: ${KOPIUR_PGID:=1000}
+    cache:
+      capacity: ${KOPIUR_CACHE_CAPACITY:=5Gi}
+      storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=openebs-hostpath}
+      mode: Ephemeral
+  # The mover runs in this app's namespace but the repository credentials
+  # live in kopiur-system; project the Secret here so envFrom can find it.
+  credentialProjection:
+    enabled: true

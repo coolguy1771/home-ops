@@ -2,10 +2,11 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: volsync-system
+namespace: kopiur-system
 components:
   - ../../components/alerts
 
 resources:
+  - ./cluster-repository/ks.yaml
+  - ./kopiur/ks.yaml
   - ./namespace.yaml
-  - ./volsync/ks.yaml

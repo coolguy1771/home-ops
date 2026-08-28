@@ -3,12 +3,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: volsync
+  name: kopiur
 spec:
   interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.18.5
-  url: oci://ghcr.io/home-operations/charts-mirror/volsync-perfectra1n
+    tag: 0.10.4
+  url: oci://ghcr.io/home-operations/charts/kopiur
