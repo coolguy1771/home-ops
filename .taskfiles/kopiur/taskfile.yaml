@@ -43,6 +43,7 @@ tasks:
       - >-
         kubectl kopiur restore --from-policy {{.APP}}
         {{if .AS_OF}}--as-of {{.AS_OF}}{{end}}
+        --on-missing-snapshot fail
         --to-pvc {{.APP}} -n {{.NS}} --wait
       # Resume
       - flux --namespace {{.NS}} resume kustomization {{.APP}}

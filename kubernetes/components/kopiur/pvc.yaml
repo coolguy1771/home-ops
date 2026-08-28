@@ -13,7 +13,8 @@ spec:
   # dropping it would either 422 on apply or, since these Kustomizations run
   # prune: true, get the live PVC deleted for no longer appearing in the
   # rendered output. Restores go through `kubectl kopiur restore --to-pvc`
-  # instead of a GitOps-wired populator.
+  # instead of a GitOps-wired populator. If this PVC is ever genuinely lost,
+  # see restore.yaml's standby Restore populator for recreating it.
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube

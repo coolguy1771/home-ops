@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/restore_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Restore
+metadata:
+  name: ${APP}
+spec:
+  # Standby populator: NOT referenced by pvc.yaml today (dataSourceRef is
+  # immutable on the already-bound PVC, so wiring this in now would 422 on
+  # every app). If this app's PVC is ever genuinely lost and recreated,
+  # repoint that one PVC's dataSourceRef at this Restore during recreation -
+  # see pvc.yaml.
+  source:
+    fromPolicy:
+      name: ${APP}
+  target:
+    populator: {}
+  policy:
+    onMissingSnapshot: Continue
+  mover:
+    securityContext:
+      runAsUser: ${KOPIUR_PUID:=1000}
+      runAsGroup: ${KOPIUR_PGID:=1000}
+    podSecurityContext:
+      fsGroup: ${KOPIUR_PGID:=1000}
+  credentialProjection:
+    enabled: true

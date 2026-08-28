@@ -5,6 +5,10 @@ kind: ClusterRepository
 metadata:
   name: r2
 spec:
+  allowedNamespaces:
+    # Shared platform repository - opt every namespace in rather than
+    # maintaining an explicit list as more apps adopt Kopiur backups.
+    all: true
   backend:
     s3:
       bucket: ${R2_BUCKET}
