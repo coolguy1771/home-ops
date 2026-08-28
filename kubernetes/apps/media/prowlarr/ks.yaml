@@ -11,6 +11,9 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/kopiur
+  dependsOn:
+    - name: kopiur-cluster-repository
+      namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/media/prowlarr/app
   postBuild:

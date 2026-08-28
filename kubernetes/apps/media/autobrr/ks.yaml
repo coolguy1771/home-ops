@@ -8,6 +8,9 @@ spec:
   components:
     - ../../../../components/kopiur
     # - ../../../../components/zeroscaler
+  dependsOn:
+    - name: kopiur-cluster-repository
+      namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/media/autobrr/app
   postBuild:
