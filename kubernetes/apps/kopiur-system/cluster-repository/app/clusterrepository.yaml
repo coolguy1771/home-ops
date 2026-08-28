@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/clusterrepository_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: r2
+spec:
+  allowedNamespaces:
+    # Shared platform repository - opt every namespace in rather than
+    # maintaining an explicit list as more apps adopt Kopiur backups.
+    all: true
+  backend:
+    s3:
+      bucket: ${R2_BUCKET}
+      endpoint: ${R2_ENDPOINT}
+      region: auto
+      auth:
+        secretRef:
+          name: kopiur-r2-config
+          namespace: kopiur-system
+  encryption:
+    passwordSecretRef:
+      name: kopiur-r2-config
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  create:
+    enabled: true
+  credentialProjection:
+    # Lets tenant-namespace SnapshotPolicy/Restore resources opt into copying
+    # this Secret into their own namespace (movers load creds via a
+    # namespace-local envFrom).
+    allowed: true
+  maintenance:
+    enabled: true

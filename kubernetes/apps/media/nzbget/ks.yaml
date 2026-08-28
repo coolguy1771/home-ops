@@ -6,13 +6,13 @@ metadata:
   name: nzbget
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/media/nzbget/app
   postBuild:
     substitute:
       APP: nzbget
-      VOLSYNC_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 1Gi
   prune: true
   sourceRef:
     kind: GitRepository

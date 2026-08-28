@@ -42,7 +42,7 @@ spec:
           priorityClassName: system-node-critical
     drivers:
       # Chart default for rbd is snapshotPolicy: none, which drops the
-      # csi-snapshotter sidecar. VolSync copyMethod: Snapshot needs this.
+      # csi-snapshotter sidecar. Kopiur copyMethod: Snapshot needs this.
       rbd:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com

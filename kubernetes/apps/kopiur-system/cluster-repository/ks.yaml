@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kopiur-cluster-repository
+spec:
+  dependsOn:
+    - name: kopiur
+  healthChecks:
+    - apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: ClusterRepository
+      name: r2
+  interval: 1h
+  path: ./kubernetes/apps/kopiur-system/cluster-repository/app
+  postBuild:
+    # Sourced from the kopiur-r2-config Secret (kopiur/app/externalsecret.yaml)
+    # rather than postBuild.substitute, so the R2 account ID and bucket name
+    # never land in git.
+    substituteFrom:
+      - kind: Secret
+        name: kopiur-r2-config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: kopiur-system
+  wait: true

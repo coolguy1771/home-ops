@@ -11,11 +11,11 @@ spec:
   policy:
     rebootMode: powercycle
   healthChecks:
-    - description: "All ReplicationSources idle (not synchronizing)"
-      apiVersion: volsync.backube/v1alpha1
-      kind: ReplicationSource
+    - description: "All Snapshots idle (no mover Job reconciling)"
+      apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: Snapshot
       expr: |-
-        status.conditions.filter(c, c.type == "Synchronizing").all(c, c.status == "False")
+        status.conditions.filter(c, c.type == "Reconciling").all(c, c.status == "False")
     - description: "CephCluster HEALTH_OK"
       apiVersion: ceph.rook.io/v1
       kind: CephCluster
