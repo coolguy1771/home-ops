@@ -7,4 +7,5 @@ resources:
   - ./grafanadashboard.yaml
   - ./grafana-external.yaml
   - ./helmrelease.yaml
+  - ./host-grafanadashboard.yaml
   - ./ocirepository.yaml
