@@ -77,6 +77,12 @@ spec:
     clusterMetrics:
       enabled: true
       collector: alloy-metrics
+      kube-state-metrics:
+        metricsTuning:
+          includeMetrics:
+            - kube_pod_container_status_ready
+            - kube_pod_container_status_waiting_reason
+            - kube_pod_status_ready
     hostMetrics:
       enabled: true
       collector: alloy-metrics
