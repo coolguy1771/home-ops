@@ -1,0 +1,53 @@
+---
+name: Platform Upgrade Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/scripts/test_upgrade_guard.py
+      - .github/scripts/upgrade_guard.py
+      - .github/workflows/upgrade-guard.yaml
+      - .renovate/**
+      - .renovaterc.json5
+      - kubernetes/apps/system-upgrade/tuppr/upgrades/**
+      - talos/**
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    name: Validate Platform Versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pull Request
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: pull
+          persist-credentials: false
+
+      - name: Checkout Base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: base
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: Test Upgrade Guard
+        run: python3 pull/.github/scripts/test_upgrade_guard.py
+
+      - name: Validate Platform Versions
+        env:
+          COMPATIBILITY_APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'platform-upgrade-approved') }}
+        run: |
+          args=(
+            --current-root pull
+            --base-root base
+          )
+          if [[ "${COMPATIBILITY_APPROVED}" == "true" ]]; then
+            args+=(--compatibility-approved)
+          fi
+          python3 pull/.github/scripts/upgrade_guard.py "${args[@]}"
