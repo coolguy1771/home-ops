@@ -48,5 +48,31 @@
       matchPackageNames: ["/grafana/"],
       ignoreTests: false,
     },
+    {
+      description: "Coordinate Kubernetes Version Pins",
+      groupName: "kubernetes-platform",
+      matchPackageNames: [
+        "ghcr.io/siderolabs/kubelet",
+        "kubernetes/kubernetes",
+      ],
+      automerge: false,
+    },
+    {
+      description: "Coordinate Talos Version Pins",
+      groupName: "talos-platform",
+      matchPackageNames: ["siderolabs/talos"],
+      automerge: false,
+    },
+    {
+      description: "Require Approval For Platform Minor Updates",
+      matchPackageNames: [
+        "ghcr.io/siderolabs/kubelet",
+        "kubernetes/kubernetes",
+        "siderolabs/talos",
+      ],
+      matchUpdateTypes: ["major", "minor"],
+      dependencyDashboardApproval: true,
+      automerge: false,
+    },
   ],
 }

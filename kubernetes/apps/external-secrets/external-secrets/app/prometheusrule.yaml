@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: external-secrets-rules
+spec:
+  groups:
+    - name: external-secrets.rules
+      rules:
+        - alert: ExternalSecretNotReady
+          annotations:
+            description: ExternalSecret {{ $labels.exported_namespace }}/{{ $labels.name }} has not been Ready for 15 minutes.
+            summary: An ExternalSecret is not ready.
+          expr: |-
+            externalsecret_status_condition{
+              k8s_cluster_name="kyak",
+              condition="Ready",
+              status="False"
+            } == 1
+          for: 15m
+          labels:
+            severity: warning
+        - alert: ExternalSecretNotReady
+          annotations:
+            description: ExternalSecret {{ $labels.exported_namespace }}/{{ $labels.name }} has not been Ready for one hour.
+            summary: An ExternalSecret is critically unavailable.
+          expr: |-
+            externalsecret_status_condition{
+              k8s_cluster_name="kyak",
+              condition="Ready",
+              status="False"
+            } == 1
+          for: 1h
+          labels:
+            severity: critical
+        - alert: SecretStoreNotReady
+          annotations:
+            description: SecretStore {{ $labels.exported_namespace }}/{{ $labels.name }} is not Ready.
+            summary: A SecretStore is unavailable.
+          expr: |-
+            secretstore_status_condition{
+              k8s_cluster_name="kyak",
+              condition="Ready",
+              status="False"
+            } == 1
+          for: 15m
+          labels:
+            severity: critical
+        - alert: ClusterSecretStoreNotReady
+          annotations:
+            description: ClusterSecretStore {{ $labels.name }} is not Ready.
+            summary: A ClusterSecretStore is unavailable.
+          expr: |-
+            clustersecretstore_status_condition{
+              k8s_cluster_name="kyak",
+              condition="Ready",
+              status="False"
+            } == 1
+          for: 15m
+          labels:
+            severity: critical
+        - alert: ExternalSecretStale
+          annotations:
+            description: ExternalSecret {{ $labels.exported_namespace }}/{{ $labels.name }} has had no sync attempt for three hours.
+            summary: An ExternalSecret is stale.
+          expr: |-
+            changes(
+              externalsecret_sync_calls_total{k8s_cluster_name="kyak"}[3h]
+            ) == 0
+            and on (exported_namespace, name)
+            externalsecret_status_condition{
+              k8s_cluster_name="kyak",
+              condition="Ready",
+              status="True"
+            } == 1
+          for: 15m
+          labels:
+            severity: warning

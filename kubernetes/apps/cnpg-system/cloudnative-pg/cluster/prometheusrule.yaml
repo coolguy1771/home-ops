@@ -65,3 +65,107 @@ spec:
           for: 1m
           labels:
             severity: warning
+        - alert: CNPGClusterNotReady
+          annotations:
+            description: PostgreSQL container {{ $labels.pod }} has not been ready for 10 minutes.
+            summary: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.pod }} is not ready.
+          expr: |-
+            kube_pod_container_status_ready{
+              k8s_cluster_name="kyak",
+              namespace="cnpg-system",
+              container="postgres"
+            } == 0
+          for: 10m
+          labels:
+            severity: warning
+        - alert: CNPGNoWritablePrimary
+          annotations:
+            description: No CloudNativePG instance reports itself as a writable primary.
+            summary: CloudNativePG has no writable primary.
+          expr: |-
+            absent(
+              cnpg_pg_replication_in_recovery{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system"
+              } == 0
+            )
+          for: 5m
+          labels:
+            severity: critical
+        - alert: CNPGInsufficientDiskSpace
+          annotations:
+            description: PostgreSQL volume {{ $labels.persistentvolumeclaim }} has less than 20 percent free space.
+            summary: CloudNativePG storage is running low.
+          expr: |-
+            (
+              kubelet_volume_stats_available_bytes{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system",
+                persistentvolumeclaim=~"postgres16-.*"
+              }
+              /
+              kubelet_volume_stats_capacity_bytes{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system",
+                persistentvolumeclaim=~"postgres16-.*"
+              }
+            ) < 0.20
+          for: 15m
+          labels:
+            severity: warning
+        - alert: CNPGInsufficientDiskSpace
+          annotations:
+            description: PostgreSQL volume {{ $labels.persistentvolumeclaim }} has less than 10 percent free space.
+            summary: CloudNativePG storage is critically low.
+          expr: |-
+            (
+              kubelet_volume_stats_available_bytes{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system",
+                persistentvolumeclaim=~"postgres16-.*"
+              }
+              /
+              kubelet_volume_stats_capacity_bytes{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system",
+                persistentvolumeclaim=~"postgres16-.*"
+              }
+            ) < 0.10
+          for: 5m
+          labels:
+            severity: critical
+        - alert: CNPGBackupStale
+          annotations:
+            description: CloudNativePG has no successful backup newer than 36 hours.
+            summary: CloudNativePG backup is stale.
+          expr: |-
+            time() - max by (k8s_cluster_name, namespace, job) (
+              cnpg_collector_last_available_backup_timestamp{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system"
+              }
+            ) > 129600
+          for: 15m
+          labels:
+            severity: critical
+        - alert: CNPGLastBackupFailed
+          annotations:
+            description: CloudNativePG's latest backup event is a failure.
+            summary: The latest CloudNativePG backup failed.
+          expr: |-
+            max by (k8s_cluster_name, namespace, job) (
+              cnpg_collector_last_failed_backup_timestamp{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system"
+              }
+            )
+            >
+            max by (k8s_cluster_name, namespace, job) (
+              cnpg_collector_last_available_backup_timestamp{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system"
+              }
+            )
+          for: 15m
+          labels:
+            severity: critical

@@ -7,4 +7,5 @@ resources:
   - ./externalsecret-observability-m2m.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./prometheusrule.yaml
   - ./rbac-mimir-rules.yaml

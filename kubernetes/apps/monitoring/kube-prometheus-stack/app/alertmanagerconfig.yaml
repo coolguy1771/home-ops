@@ -8,10 +8,11 @@ spec:
   route:
     groupBy:
       - alertname
-      - job
+      - cluster
+      - namespace
     groupInterval: 10m
-    groupWait: 1m
-    receiver: pushover
+    groupWait: 5m
+    receiver: pushover-warning
     repeatInterval: 12h
     routes:
       - receiver: "null"
@@ -24,14 +25,21 @@ spec:
           - name: alertname
             value: Watchdog
             matchType: =
-      - receiver: pushover
+      - receiver: pushover-critical
+        groupWait: 30s
         matchers:
           - name: severity
             value: critical
             matchType: =
+      - receiver: pushover-warning
+        matchers:
+          - name: severity
+            value: warning
+            matchType: =
   inhibitRules:
     - equal:
         - alertname
+        - cluster
         - namespace
       sourceMatch:
         - name: severity
@@ -43,7 +51,5 @@ spec:
           matchType: =
   receivers:
     - name: "null"
-    # pushover receiver is defined in global_config (mounted from Secret in
-    # k8s-monitoring) so we avoid Alloy's nil StoreBuilder when converting
-    # secret refs from AlertmanagerConfig.
-
+    # Pushover receivers are defined in global_config to avoid Alloy's nil
+    # StoreBuilder when converting AlertmanagerConfig secret references.
