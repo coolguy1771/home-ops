@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: observability-pipeline-rules
+spec:
+  groups:
+    - name: observability-pipeline.rules
+      rules:
+        - alert: AlloyComponentUnhealthy
+          annotations:
+            description: Alloy {{ $labels.app }} has {{ $value }} unhealthy components.
+            summary: Alloy has unhealthy components.
+          expr: |-
+            alloy_component_controller_running_components{
+              k8s_cluster_name="kyak",
+              health_type="unhealthy"
+            } > 0
+          for: 15m
+          labels:
+            severity: critical
+        - alert: MimirRuleReloadFailed
+          annotations:
+            description: A Mimir ruler replica failed to reload rule configuration for tenant {{ $labels.user }}.
+            summary: Mimir failed to load alert rules.
+          expr: |-
+            cortex_ruler_config_last_reload_successful{user="witl-xyz"} == 0
+          for: 10m
+          labels:
+            severity: critical
+        - alert: AlertDeliveryCanary
+          annotations:
+            description: Weekly alert-delivery canary; receipt confirms the Mimir and Pushover path.
+            summary: Weekly alert delivery canary.
+          expr: |-
+            (day_of_week(vector(time())) == 1)
+            and (hour(vector(time())) == 15)
+            and (minute(vector(time())) < 5)
+          for: 1m
+          labels:
+            severity: warning
+        - alert: BackupRestoreTestStale
+          annotations:
+            description: No successful {{ $labels.backup_system }} restore test for {{ $labels.workload }} in eight days.
+            summary: Backup restore validation is stale.
+          expr: |-
+            time()
+            - cluster_restore_test_last_success_timestamp_seconds{
+                cluster="kyak"
+              }
+            > 691200
+          for: 15m
+          labels:
+            severity: warning
+        - alert: BackupRestoreTestStale
+          annotations:
+            description: No successful {{ $labels.backup_system }} restore test for {{ $labels.workload }} in fifteen days.
+            summary: Backup restore validation is critically stale.
+          expr: |-
+            time()
+            - cluster_restore_test_last_success_timestamp_seconds{
+                cluster="kyak"
+              }
+            > 1296000
+          for: 15m
+          labels:
+            severity: critical
