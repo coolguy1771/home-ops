@@ -96,6 +96,12 @@ spec:
         instanceType: true
       linuxHosts:
         enabled: true
+        metricsTuning:
+          # Beyond the chart's minimal allow-list: kromgo badges need OS release
+          # info (Talos version) and node boot time (cluster uptime).
+          includeMetrics:
+            - node_boot_time_seconds
+            - node_os_info
       energyMetrics:
         enabled: true
     clusterEvents:
