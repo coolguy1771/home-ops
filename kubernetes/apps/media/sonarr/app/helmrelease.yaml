@@ -41,18 +41,35 @@ spec:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /ping
                     port: *port
-                  initialDelaySeconds: 0
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
                   periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  periodSeconds: 10
+                  failureThreshold: 30
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -62,6 +79,48 @@ spec:
                 cpu: 100m
               limits:
                 memory: 4Gi
+          metrics:
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.3.0@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
+            args: ["sonarr"]
+            env:
+              PORT: &metricsPort 9707
+              URL: http://localhost
+              ENABLE_UNKNOWN_QUEUE_ITEMS: "true"
+              API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-secret"
+                    key: SONARR__AUTH__APIKEY
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *metricsPort
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: *metricsPort
+                  periodSeconds: 30
+                  failureThreshold: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,6 +133,17 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      app:
+        serviceName: "{{ .Release.Name }}"
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     route:
       app:
         annotations:

@@ -36,6 +36,13 @@ sonarr:
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
         assign_scores_to:
           - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+      - # Repack/Proper (paired with propers_and_repacks: do_not_prefer)
+        trash_ids:
+          - ec8fa7296b64e8cd390a1600981f3923 # Repack/Proper
+          - eb3d5cc0a2be0db205fb823640db6a3c # Repack2
+          - 44e7c4de10ae50265753082e5dc76047 # Repack3
+        assign_scores_to:
+          - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
 
 radarr:
   movies:
@@ -65,5 +72,12 @@ radarr:
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
           - f537cf427b64c38c8e36298f657e4828 # Scene
+        assign_scores_to:
+          - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
+      - # Repack/Proper (paired with propers_and_repacks: do_not_prefer)
+        trash_ids:
+          - e7718d7a3ce595f289bfee26adc178f5 # Repack/Proper
+          - ae43b294509409a6a13919dedd4764c4 # Repack2
+          - 5caaaa1c08c1742aa4342d8c4cc463f2 # Repack3
         assign_scores_to:
           - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
