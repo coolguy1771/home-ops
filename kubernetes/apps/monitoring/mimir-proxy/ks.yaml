@@ -3,12 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kromgo
+  name: mimir-proxy
 spec:
   interval: 1h
-  dependsOn:
-    - name: mimir-proxy
-  path: ./kubernetes/apps/monitoring/kromgo/app
+  path: ./kubernetes/apps/monitoring/mimir-proxy/app
   prune: true
   sourceRef:
     kind: GitRepository
