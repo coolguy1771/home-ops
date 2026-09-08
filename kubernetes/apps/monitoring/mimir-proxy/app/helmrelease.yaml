@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mimir-proxy
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: mimir-proxy
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      mimir-proxy:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: mirror.gcr.io/envoyproxy/envoy
+              tag: v1.39.1
+              pullPolicy: IfNotPresent
+            args:
+              - -c
+              - /etc/envoy/bootstrap.yaml
+              - --service-cluster
+              - mimir-proxy
+              - --service-node
+              - mimir-proxy
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 9902
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 9902
+                  initialDelaySeconds: 2
+                  periodSeconds: 3
+                  failureThreshold: 30
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 48Mi
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 8080
+            primary: true
+    persistence:
+      bootstrap:
+        type: secret
+        name: mimir-proxy-secret
+        globalMounts:
+          - path: /etc/envoy
+            readOnly: true
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

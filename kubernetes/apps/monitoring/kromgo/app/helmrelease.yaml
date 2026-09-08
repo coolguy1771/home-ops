@@ -11,7 +11,10 @@ spec:
   interval: 1h
   values:
     config:
-      prometheus: http://prometheus-operated.monitoring.svc.cluster.local:9090
+      # Mimir's Prometheus-compatible query API, via the mimir-proxy sidecar
+      # Deployment which injects the OAuth2 (client_credentials) bearer token for
+      # mimir.cloud.witl.xyz. kromgo's Prometheus client cannot do OAuth2 itself.
+      prometheus: http://mimir-proxy.monitoring.svc.cluster.local:8080/prometheus
       badges:
         - title: Talos
           id: talos_version
