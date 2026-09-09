@@ -12,3 +12,5 @@ Brewfile.lock.json
 Thumbs.db
 kubeconfig
 talosconfig
+talos/output/
+**/node_modules/

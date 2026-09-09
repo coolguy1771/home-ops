@@ -13,9 +13,13 @@ spec:
         name: ${APP}
   copyMethod: Snapshot
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
+  compression:
+    compressor: zstd
   retention:
+    keepLatest: 3
     keepHourly: 24
     keepDaily: 7
+    keepWeekly: 4
   mover:
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
