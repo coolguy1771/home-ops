@@ -6,4 +6,4 @@ metadata:
   name: alertmanager
 spec:
   type: alertmanager
-  address: http://alertmanager-operated.monitoring.svc.cluster.local:9093/api/v2/alerts/
+  address: http://mimir-proxy.monitoring.svc.cluster.local:8080/alertmanager/api/v2/alerts
