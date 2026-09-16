@@ -82,7 +82,7 @@ spec:
         frontend:
           image:
             repository: "quay.io/cilium/hubble-ui"
-            tag: "v0.13.5"
+            tag: "v0.13.6"
         ingress:
           enabled: true
           annotations:
