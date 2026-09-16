@@ -13,6 +13,7 @@ resources:
   - ./csi-driver-smb/ks.yaml
   - ./descheduler/ks.yaml
   - ./intel-gpu-resource-driver/ks.yaml
+  - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./reloader/ks.yaml
