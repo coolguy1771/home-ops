@@ -23,6 +23,13 @@ spec:
       name: kopiur-r2-config
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  bootstrap:
+    failurePolicy:
+      # Default 120s bootstrap deadline isn't enough for this repository's
+      # cold-cache connect time (~6-7m with 100k+ objects); raise it so
+      # kopiur-controller's health-check job can actually complete instead
+      # of dying to DeadlineExceeded on every attempt.
+      activeDeadlineSeconds: 1800
   create:
     enabled: true
   credentialProjection:
