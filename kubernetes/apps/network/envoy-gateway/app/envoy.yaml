@@ -49,7 +49,7 @@ kind: Gateway
 metadata:
   name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.witl.xyz
+    external-dns.kubernetes.io/target: &hostname external.witl.xyz
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -80,7 +80,7 @@ kind: Gateway
 metadata:
   name: envoy-internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.witl.xyz
+    external-dns.kubernetes.io/target: &hostname internal.witl.xyz
 spec:
   gatewayClassName: envoy
   infrastructure:
