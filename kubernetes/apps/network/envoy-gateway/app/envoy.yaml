@@ -54,7 +54,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 10.0.42.200
   listeners:
     - name: http
@@ -85,7 +85,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 10.0.42.2
   listeners:
     - name: http
@@ -300,7 +300,7 @@ kind: HTTPRoute
 metadata:
   name: https-redirect
   annotations:
-    external-dns.alpha.kubernetes.io/controller: none
+    external-dns.kubernetes.io/controller: none
     gatus.home-operations.com/enabled: "true"
     gatus.home-operations.com/endpoint: |-
       conditions: ["len([BODY]) == 0"]

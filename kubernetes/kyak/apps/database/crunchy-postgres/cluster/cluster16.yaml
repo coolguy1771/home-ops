@@ -15,7 +15,7 @@ spec:
     type: LoadBalancer
     metadata:
       annotations:
-        external-dns.alpha.kubernetes.io/hostname: postgres.witl.xyz
+        external-dns.kubernetes.io/hostname: postgres.witl.xyz
         lbipam.cilium.io/ips: 10.0.42.4
 
   patroni: # turn on sync writes to at least 1 other replica
