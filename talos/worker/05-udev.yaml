@@ -1,0 +1,5 @@
+machine:
+  udev:
+    rules:
+      - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
+      - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"

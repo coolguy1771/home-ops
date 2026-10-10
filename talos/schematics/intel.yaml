@@ -1,0 +1,18 @@
+customization:
+  extraKernelArgs:
+    - slab_nomerge
+    - init_on_alloc=1
+    - init_on_free=1
+    - pti=on
+    - vsyscall=none
+    - oops=panic
+    - randomize_kstack_offset=on
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/binfmt-misc
+      - siderolabs/fuse3
+      - siderolabs/glibc
+      - siderolabs/i915
+      - siderolabs/intel-ucode
+      - siderolabs/mei
+      - siderolabs/util-linux-tools

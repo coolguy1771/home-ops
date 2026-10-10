@@ -1,0 +1,96 @@
+---
+clusterName: kyak
+clusterEndpoint: https://k8s-lb.286k.co:6443
+# renovate: datasource=github-releases depName=siderolabs/talos
+talosVersion: v1.13.9
+# renovate: datasource=github-releases depName=kubernetes/kubernetes
+kubernetesVersion: v1.36.4
+
+# SecureBoot (systemd-boot + signed UKI) via the public factory / Microsoft-CA
+# signing chain. The -secureboot image boots fine with SecureBoot still disabled
+# in firmware, so nodes can be upgraded first and BIOS SecureBoot enabled after.
+secureboot: true
+
+nodes:
+  - host: k8s-0
+    ip: 10.10.10.20
+    role: control-plane
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/ata-CT240BX500SSD1_2206E60A4A88
+  - host: k8s-1
+    ip: 10.10.10.21
+    role: control-plane
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/ata-CT240BX500SSD1_2148E5EA7AA5
+  - host: k8s-2
+    ip: 10.10.10.22
+    role: control-plane
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/ata-WD_easystore_240GB_20215C802161
+  - host: k8s-3
+    ip: 10.10.10.23
+    role: worker
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-WD_Blue_SN570_250GB_223960805185
+      iface: eno1
+  - host: k8s-4
+    ip: 10.10.10.24
+    role: worker
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-WD_Blue_SN570_250GB_223960805195
+      iface: eno1
+  - host: k8s-5
+    ip: 10.10.10.25
+    role: worker
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB512HAJQ-000L7_S3TNNE0JC71391
+      iface: enp0s31f6
+  - host: k8s-6
+    ip: 10.10.10.26
+    role: worker
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB512HAJQ-000L7_S3TNNE0JC70877
+      iface: enp0s31f6
+  - host: k8s-7
+    ip: 10.10.10.27
+    role: worker
+    schematicId: "@schematics/amd.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-WDC_PC_SN730_SDBQNTY-256G-1001_2017B6801388
+      iface: enp3s0f0
+  - host: k8s-8
+    ip: 10.10.10.28
+    role: worker
+    schematicId: "@schematics/amd.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-SAMSUNG_MZVLB256HBHQ-000L7_S4ELNX4N714860
+      iface: enp3s0f0
+  - host: k8s-9
+    ip: 10.10.10.29
+    role: worker
+    schematicId: "@schematics/k8s9.yaml"
+    data:
+      installDisk: /dev/disk/by-id/ata-HRAA2S0512ZILM2_6G000SJA
+      iface: ""
+      noTPM: true # HPE Xeon box has no TPM device — nodeID-only disk encryption
+  #- host: k8s-10
+  #  ip: 10.10.10.30
+  #  role: worker
+  #  schematicId: "@schematics/intel.yaml"
+  #  data:
+  #    installDisk: /dev/disk/by-id/ata-Micron_1300_MTFDDAK512TDL_20482C32A385
+  #    iface: enp0s31f6
+  - host: k8s-11
+    ip: 10.10.10.31
+    role: worker
+    schematicId: "@schematics/intel.yaml"
+    data:
+      installDisk: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W218517V
+      iface: enp88s0

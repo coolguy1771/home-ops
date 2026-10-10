@@ -1,0 +1,10 @@
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://127.0.0.1:2381
+      metrics: extensive
+      quota-backend-bytes: "8589934592" # 8 GiB (default 2 GiB)
+      auto-compaction-mode: periodic
+      auto-compaction-retention: 5m
+    advertisedSubnets:
+      - 10.10.10.0/24

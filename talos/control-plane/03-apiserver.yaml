@@ -1,0 +1,10 @@
+cluster:
+  apiServer:
+    auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+        - level: Metadata
+    extraArgs:
+      enable-aggregator-routing: "true"
+      feature-gates: HPAScaleToZero=true
