@@ -33,9 +33,12 @@ jobs:
     name: Flate - Test
     runs-on: ubuntu-latest
     steps:
+      # Full history: the flate action sets FLATE_BASE to the default branch,
+      # which flate must resolve locally.
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup Flate
