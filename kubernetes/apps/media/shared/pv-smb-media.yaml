@@ -26,7 +26,9 @@ spec:
     - gid=1000
     - forceuid
     - forcegid
+    - hard  # block and retry on NAS outages instead of returning EIO
+    - actimeo=30  # cache attributes/dirents to speed up library scans
     - mfsymlinks
     - cache=strict
-    - noserverino  # required to prevent data corruption
+    - noserverino  # avoid inode collisions across ZFS datasets; breaks inode-based hardlink detection
     - noperm

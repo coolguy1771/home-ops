@@ -10,6 +10,11 @@ spec:
   cooldownPeriod: 0
   minReplicaCount: 0
   maxReplicaCount: 1
+  # Keep the app running if Mimir/mimir-proxy is unreachable; only a
+  # successful query reporting the share down should scale to zero.
+  fallback:
+    failureThreshold: 3
+    replicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -19,6 +24,7 @@ spec:
       metadata:
         # Cloud Mimir's query API via the mimir-proxy sidecar (handles OAuth2).
         serverAddress: http://mimir-proxy.monitoring.svc.cluster.local:8080/prometheus
-        query: probe_success{cluster="kyak", instance=~".+:2049"}
+        # SMB share backing the smb-media PV (blackbox-exporter-lan lan-tcp probe).
+        query: probe_success{cluster="kyak", instance="nas.286k.co:445"}
         threshold: "1"
         ignoreNullValues: "0"

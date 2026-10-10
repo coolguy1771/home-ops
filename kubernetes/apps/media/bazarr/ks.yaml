@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/kopiur
+    - ../../../../components/smb-scaler
   dependsOn:
     - name: kopiur-cluster-repository
       namespace: kopiur-system
