@@ -17,6 +17,6 @@
 - `rook-ceph` and `openebs-system` require Pod Security Admission `privileged` labels; `openebs-hostpath` provisioner init pods run in `openebs-system`, not the PVC namespace
 - `MutatingAdmissionPolicy` and `MutatingAdmissionPolicyBinding` manifests use `admissionregistration.k8s.io/v1` on this cluster (not `v1beta1`)
 - Workers k8s-7 and k8s-8 use network interface `enp3s0f0` (other workers may use `eno1`, `enp0s31f6`, etc.)
-- Rook deploys via split Flux kustomizations: `rook-ceph` operator, `ceph-csi-drivers` (Helm chart from ceph-csi-operator repo), then `rook-ceph-cluster`; chart tags track `v1.20.6`
+- Rook deploys via split Flux kustomizations: `rook-ceph` operator, `ceph-csi-drivers` (Helm chart from ceph-csi-operator repo), then `rook-ceph-cluster`; chart tags track `1.21.0` (no `v` prefix from 1.21)
 - Bootstrap installs core charts via `bootstrap/helmfile/{crds,apps}.yaml`; chart versions are read from Flux `OCIRepository` manifests (no duplicate pins)
 - Talos 1.14 upgrade prep: kubelet uses `maxParallelImagePulls: 3`, `imageMaximumGCAge: 168h`, and crash-loop backoff tuning; on 1.14 migrate `machine.features.kubernetesTalosAPIAccess` to `KubeTalosAPIAccessConfig` and add `FilesystemScrubConfig` (168h interval)

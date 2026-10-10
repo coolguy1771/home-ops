@@ -1,0 +1,101 @@
+---
+# CSI sidecar metrics from the controller plugin pods; ports are enabled via
+# controllerPlugin.containerExtraArgs (--http-endpoint) in helmrelease.yaml.
+# https://github.com/ceph/ceph-csi-operator/blob/v1.1.0/docs/features/podmonitor.md
+#
+# The sidecars declare no containerPorts, and port/portNumber/targetPort all
+# keep only declared ports, so each endpoint instead selects its container by
+# name and points __address__ at <podIP>:<port>.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: rbd-controller
+spec:
+  selector:
+    matchLabels:
+      app: rook-ceph.rbd.csi.ceph.com-ctrlplugin
+  podMetricsEndpoints:
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-provisioner
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8080
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-attacher
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8081
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-resizer
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8082
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-snapshotter
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8083
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: cephfs-controller
+spec:
+  selector:
+    matchLabels:
+      app: rook-ceph.cephfs.csi.ceph.com-ctrlplugin
+  podMetricsEndpoints:
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-provisioner
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8090
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-attacher
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8091
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-resizer
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8092
+    - path: /metrics
+      interval: 30s
+      relabelings:
+        - action: keep
+          sourceLabels: [__meta_kubernetes_pod_container_name]
+          regex: csi-snapshotter
+        - sourceLabels: [__meta_kubernetes_pod_ip]
+          targetLabel: __address__
+          replacement: $1:8093
