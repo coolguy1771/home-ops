@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: mirror.gcr.io/envoyproxy/envoy
-              tag: v1.39.1
+              tag: v1.39.3
               pullPolicy: IfNotPresent
             args:
               - -c
