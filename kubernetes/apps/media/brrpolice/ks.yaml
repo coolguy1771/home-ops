@@ -7,7 +7,6 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur
-    # - ../../../../components/zeroscaler
   dependsOn:
     - name: kopiur-cluster-repository
       namespace: kopiur-system

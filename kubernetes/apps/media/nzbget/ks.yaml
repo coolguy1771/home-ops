@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur
+    - ../../../../components/smb-scaler
   dependsOn:
     - name: kopiur-cluster-repository
       namespace: kopiur-system
