@@ -1,0 +1,13 @@
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: enp1s0
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 10.10.10.201
+link: enp1s0
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: enp1s0
+mtu: 1500

@@ -1,0 +1,15 @@
+cluster:
+  discovery:
+    enabled: true
+    registries:
+      # The Kubernetes registry needs the node identity to list/watch ALL Node
+      # objects, which the Node authorizer + NodeRestriction deny — it logs
+      # "cannot list nodes" and never populates. Use the external service
+      # registry (Talos default); it only relays an affiliate blob encrypted
+      # with the cluster secret, so SideroLabs can't read the contents.
+      kubernetes:
+        disabled: true
+      service:
+        disabled: false
+  proxy:
+    disabled: true

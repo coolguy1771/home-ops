@@ -1,0 +1,6 @@
+machine:
+  time:
+    disabled: false
+    servers:
+      - time.cloudflare.com
+      - time.nist.gov

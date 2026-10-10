@@ -3,8 +3,14 @@ creation_rules:
   - # IMPORTANT: Keep this rule first
     path_regex: talos/.+\.secret(\.sops)?\.ya?ml
     input_type: yaml
-    encrypted_regex: ^(token|crt|key|id|secret|secretboxEncryptionSecret|ca)$
+    encrypted_regex: ^(token|crt|key|id|secret|aescbcEncryptionSecret|secretboxEncryptionSecret|ca)$
     mac_only_encrypted: true
+    key_groups:
+      - age:
+          - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
+  - # topf secrets bundle: every value is sensitive, so encrypt all of them
+    path_regex: talos/secrets\.ya?ml
+    input_type: yaml
     key_groups:
       - age:
           - age1986cspgjd7xhdwfwmyplc5jsjk43gewedu7s3sr7gwwhrdp7rgzq6t4ax9
