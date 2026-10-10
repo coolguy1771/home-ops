@@ -8,14 +8,14 @@ spec:
   chart:
     spec:
       chart: ceph-csi-drivers
-      version: 1.0.5
+      version: 1.1.0
       sourceRef:
         kind: HelmRepository
         name: ceph-csi-operator
   interval: 1h
   values:
     # Rook-compatible values, see
-    # https://github.com/rook/rook/blob/v1.20.6/deploy/charts/ceph-csi-drivers/values.yaml
+    # https://github.com/rook/rook/blob/v1.21.0/deploy/charts/ceph-csi-drivers/values.yaml
     operatorConfig:
       namespace: rook-ceph
       driverSpecDefaults:
@@ -43,6 +43,9 @@ spec:
     drivers:
       # Chart default for rbd is snapshotPolicy: none, which drops the
       # csi-snapshotter sidecar. Kopiur copyMethod: Snapshot needs this.
+      # Per-driver chart defaults (controllerPlugin.replicas: 1) override
+      # driverSpecDefaults, so replicas must be set here to take effect.
+      # --http-endpoint enables the CSI sidecar metrics scraped by podmonitor.yaml.
       rbd:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com
@@ -50,13 +53,31 @@ spec:
         log:
           rotation:
             enabled: false
+        controllerPlugin:
+          replicas: 2
+          containerExtraArgs:
+            csi-provisioner: ["--http-endpoint=:8080"]
+            csi-attacher: ["--http-endpoint=:8081"]
+            csi-resizer: ["--http-endpoint=:8082"]
+            csi-snapshotter: ["--http-endpoint=:8083"]
       cephfs:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
         snapshotPolicy: volumeSnapshot
+        # Was csi.cephFSKernelMountOptions on the rook-ceph chart, which
+        # stopped applying when CSI moved to ceph-csi-operator.
+        kernelMountOptions:
+          ms_mode: secure
         log:
           rotation:
             enabled: false
+        controllerPlugin:
+          replicas: 2
+          containerExtraArgs:
+            csi-provisioner: ["--http-endpoint=:8090"]
+            csi-attacher: ["--http-endpoint=:8091"]
+            csi-resizer: ["--http-endpoint=:8092"]
+            csi-snapshotter: ["--http-endpoint=:8093"]
       nfs:
         enabled: false
       nvmeof:
