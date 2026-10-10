@@ -14,4 +14,4 @@ _.file = [
 
 [tools]
 "uv" = "latest"
-"pipx:flux-local" = "latest"
+"github:home-operations/flate" = "v0.6.5"
