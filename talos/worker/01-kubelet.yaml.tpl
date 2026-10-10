@@ -1,5 +1,11 @@
+# Workers stay on v1alpha1 .machine.kubelet: KubeletConfig has no extraMounts
+# equivalent and openebs-hostpath needs /var/openebs/local mounted rshared.
+# The generated KubeletConfig (which carries the kubelet image) is deleted, so
+# the image is pinned here instead — otherwise kubelet would jump to Talos'
+# bundled Kubernetes version.
 machine:
   kubelet:
+    image: ghcr.io/siderolabs/kubelet:v{{ trimPrefix "v" .KubernetesVersion }}
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraArgs:
@@ -37,3 +43,7 @@ machine:
           - bind
           - rshared
           - rw
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+$patch: delete
