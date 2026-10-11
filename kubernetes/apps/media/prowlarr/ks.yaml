@@ -12,6 +12,8 @@ spec:
   components:
     - ../../../../components/kopiur
   dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: cnpg-system
     - name: kopiur-cluster-repository
       namespace: kopiur-system
   interval: 1h
