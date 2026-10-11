@@ -17,3 +17,21 @@ spec:
     - targetLabel: service
       replacement: blackbox-exporter-lan
       action: replace
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-tcp
+spec:
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter-lan.monitoring.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - nas.286k.co:445
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace

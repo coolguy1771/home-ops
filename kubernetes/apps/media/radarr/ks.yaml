@@ -11,7 +11,10 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/kopiur
+    - ../../../../components/smb-scaler
   dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: cnpg-system
     - name: kopiur-cluster-repository
       namespace: kopiur-system
   interval: 1h

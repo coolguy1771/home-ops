@@ -52,7 +52,7 @@ spec:
       tempo:
         type: otlp
         protocol: http
-        url: https://tempo.cloud.witl.xyz/v1/traces
+        url: https://tempo.cloud.witl.xyz
         auth:
           type: oauth2
           oauth2:
