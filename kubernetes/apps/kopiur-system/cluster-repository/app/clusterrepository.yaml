@@ -26,10 +26,10 @@ spec:
   bootstrap:
     failurePolicy:
       # Default 120s bootstrap deadline isn't enough for this repository's
-      # cold-cache connect time (~6-7m with 100k+ objects); raise it so
-      # kopiur-controller's health-check job can actually complete instead
-      # of dying to DeadlineExceeded on every attempt.
-      activeDeadlineSeconds: 1800
+      # cold-cache connect time (30m+ with ~55k index blobs while maintenance
+      # was failing); raise it so kopiur-controller's health-check job can
+      # actually complete instead of dying to DeadlineExceeded on every attempt.
+      activeDeadlineSeconds: 3600
   create:
     enabled: true
   credentialProjection:
@@ -39,3 +39,15 @@ spec:
     allowed: true
   maintenance:
     enabled: true
+    mover:
+      cache:
+        # Keep the kopia cache between maintenance runs so each run doesn't
+        # re-download every index blob from R2 before it can start compacting.
+        mode: Persistent
+        capacity: 20Gi
+        storageClassName: ceph-block
+  parameters:
+    epoch:
+      # Let epochs advance (and index blobs compact) every 6h instead of
+      # kopia's 24h default.
+      minDuration: 6h
