@@ -14,15 +14,21 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  # Note: monolith import is a logical, point-in-time copy of every database and
-  # role in postgres16. Re-bootstrap (delete the Cluster) right before cutover so
-  # it picks up writes made since the first import.
+  # Note: monolith import is a logical, point-in-time copy of the listed
+  # databases and roles in postgres16. Re-bootstrap (delete the Cluster) right
+  # before cutover so it picks up writes made since the first import.
   bootstrap:
     initdb:
       import:
         type: monolith
-        databases: ["*"]
-        roles: ["*"]
+        databases:
+          - prowlarr_main
+          - radarr_main
+          - sonarr_main
+        roles:
+          - prowlarr
+          - radarr
+          - sonarr
         source:
           externalCluster: &sourceCluster postgres16
   postgresql:

@@ -26,6 +26,11 @@ spec:
         login: true
         passwordSecret:
           name: radarr-postgres-role
+      - name: sonarr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: sonarr-postgres-role
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
