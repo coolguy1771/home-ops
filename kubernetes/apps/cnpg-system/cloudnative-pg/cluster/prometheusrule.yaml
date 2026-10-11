@@ -110,13 +110,13 @@ spec:
               kubelet_volume_stats_available_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres(16|18)-.*"
+                persistentvolumeclaim=~"postgres18-.*"
               }
               /
               kubelet_volume_stats_capacity_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres(16|18)-.*"
+                persistentvolumeclaim=~"postgres18-.*"
               }
             ) < 0.20
           for: 15m
@@ -131,13 +131,13 @@ spec:
               kubelet_volume_stats_available_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres(16|18)-.*"
+                persistentvolumeclaim=~"postgres18-.*"
               }
               /
               kubelet_volume_stats_capacity_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres(16|18)-.*"
+                persistentvolumeclaim=~"postgres18-.*"
               }
             ) < 0.10
           for: 5m

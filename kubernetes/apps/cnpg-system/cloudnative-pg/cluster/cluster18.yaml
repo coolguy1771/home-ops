@@ -31,25 +31,6 @@ spec:
         login: true
         passwordSecret:
           name: sonarr-postgres-role
-  # Note: monolith import is a logical, point-in-time copy of the listed
-  # databases and roles in postgres16, so apps must be scaled down before this
-  # first bootstraps. To re-import, delete the Cluster AND bump the ObjectStore
-  # name/serverName below (e.g. postgres18-v2); barman refuses to archive WAL
-  # into a serverName path that already holds backups.
-  bootstrap:
-    initdb:
-      import:
-        type: monolith
-        databases:
-          - prowlarr_main
-          - radarr_main
-          - sonarr_main
-        roles:
-          - prowlarr
-          - radarr
-          - sonarr
-        source:
-          externalCluster: &sourceCluster postgres16
   postgresql:
     parameters:
       max_connections: "600"
@@ -70,13 +51,3 @@ spec:
         serverName: postgres18-v1
   backup:
     target: prefer-standby
-  externalClusters:
-    - name: *sourceCluster
-      connectionParameters:
-        host: postgres16-rw.cnpg-system.svc.cluster.local.
-        user: postgres
-        dbname: postgres
-        sslmode: require
-      password:
-        name: cloudnative-pg-secret
-        key: password
