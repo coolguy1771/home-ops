@@ -14,6 +14,23 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
+  managed:
+    roles:
+      - name: prowlarr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: prowlarr-postgres-role
+      - name: radarr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: radarr-postgres-role
+      - name: sonarr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: sonarr-postgres-role
   # Note: monolith import is a logical, point-in-time copy of the listed
   # databases and roles in postgres16, so apps must be scaled down before this
   # first bootstraps. To re-import, delete the Cluster AND bump the ObjectStore
