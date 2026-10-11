@@ -28,10 +28,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
   name: prowlarr-main
-  annotations:
-    # spec.cluster is immutable; let Flux recreate (reclaim policy is retain).
-    # Keep this annotation when pointing back at another cluster (incl. rollback).
-    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   cluster:
     name: postgres18
