@@ -15,8 +15,10 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   # Note: monolith import is a logical, point-in-time copy of the listed
-  # databases and roles in postgres16. Re-bootstrap (delete the Cluster) right
-  # before cutover so it picks up writes made since the first import.
+  # databases and roles in postgres16, so apps must be scaled down before this
+  # first bootstraps. To re-import, delete the Cluster AND bump the ObjectStore
+  # name/serverName below (e.g. postgres18-v2); barman refuses to archive WAL
+  # into a serverName path that already holds backups.
   bootstrap:
     initdb:
       import:

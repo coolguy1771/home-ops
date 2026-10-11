@@ -80,10 +80,19 @@ spec:
             severity: warning
         - alert: CNPGNoWritablePrimary
           annotations:
-            description: No CloudNativePG instance reports itself as a writable primary.
-            summary: CloudNativePG has no writable primary.
+            description: No instance of {{ $labels.job }} reports itself as a writable primary.
+            summary: CloudNativePG cluster {{ $labels.job }} has no writable primary.
+          # Evaluated per cluster (job = cnpg-system/<cluster>) so a healthy
+          # primary in one cluster can't mask a lost primary in another.
           expr: |-
-            absent(
+            count by (k8s_cluster_name, namespace, job) (
+              cnpg_pg_replication_in_recovery{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system"
+              }
+            )
+            unless
+            count by (k8s_cluster_name, namespace, job) (
               cnpg_pg_replication_in_recovery{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system"
