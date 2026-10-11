@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres18
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.6-standard-trixie
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 40Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: cloudnative-pg-secret
+  enableSuperuserAccess: true
+  # Note: monolith import is a logical, point-in-time copy of the listed
+  # databases and roles in postgres16. Re-bootstrap (delete the Cluster) right
+  # before cutover so it picks up writes made since the first import.
+  bootstrap:
+    initdb:
+      import:
+        type: monolith
+        databases:
+          - prowlarr_main
+          - radarr_main
+          - sonarr_main
+        roles:
+          - prowlarr
+          - radarr
+          - sonarr
+        source:
+          externalCluster: &sourceCluster postgres16
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "500m"
+    limits:
+      memory: "4Gi"
+  monitoring:
+    enablePodMonitor: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: postgres18-v1
+        serverName: postgres18-v1
+  backup:
+    target: prefer-standby
+  externalClusters:
+    - name: *sourceCluster
+      connectionParameters:
+        host: postgres16-rw.cnpg-system.svc.cluster.local.
+        user: postgres
+        dbname: postgres
+        sslmode: require
+      password:
+        name: cloudnative-pg-secret
+        key: password
