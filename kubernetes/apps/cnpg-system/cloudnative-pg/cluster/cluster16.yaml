@@ -14,6 +14,18 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
+  managed:
+    roles:
+      - name: prowlarr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: prowlarr-postgres-role
+      - name: radarr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: radarr-postgres-role
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   bootstrap:
     recovery:

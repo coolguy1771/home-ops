@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./objectstore.yaml
   - ./cluster16.yaml
+  - ./databases
 #  - ./cluster17.yaml
   - ./scheduledbackup.yaml
   - ./prometheusrule.yaml
