@@ -80,10 +80,19 @@ spec:
             severity: warning
         - alert: CNPGNoWritablePrimary
           annotations:
-            description: No CloudNativePG instance reports itself as a writable primary.
-            summary: CloudNativePG has no writable primary.
+            description: No instance of {{ $labels.job }} reports itself as a writable primary.
+            summary: CloudNativePG cluster {{ $labels.job }} has no writable primary.
+          # Evaluated per cluster (job = cnpg-system/<cluster>) so a healthy
+          # primary in one cluster can't mask a lost primary in another.
           expr: |-
-            absent(
+            count by (k8s_cluster_name, namespace, job) (
+              cnpg_pg_replication_in_recovery{
+                k8s_cluster_name="kyak",
+                namespace="cnpg-system"
+              }
+            )
+            unless
+            count by (k8s_cluster_name, namespace, job) (
               cnpg_pg_replication_in_recovery{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system"
@@ -101,13 +110,13 @@ spec:
               kubelet_volume_stats_available_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres16-.*"
+                persistentvolumeclaim=~"postgres(16|18)-.*"
               }
               /
               kubelet_volume_stats_capacity_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres16-.*"
+                persistentvolumeclaim=~"postgres(16|18)-.*"
               }
             ) < 0.20
           for: 15m
@@ -122,13 +131,13 @@ spec:
               kubelet_volume_stats_available_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres16-.*"
+                persistentvolumeclaim=~"postgres(16|18)-.*"
               }
               /
               kubelet_volume_stats_capacity_bytes{
                 k8s_cluster_name="kyak",
                 namespace="cnpg-system",
-                persistentvolumeclaim=~"postgres16-.*"
+                persistentvolumeclaim=~"postgres(16|18)-.*"
               }
             ) < 0.10
           for: 5m
