@@ -28,9 +28,12 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
   name: radarr-main
+  annotations:
+    # spec.cluster is immutable; let Flux recreate (reclaim policy is retain)
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   cluster:
-    name: postgres16
+    name: postgres18
   databaseReclaimPolicy: retain
   ensure: present
   name: radarr_main
