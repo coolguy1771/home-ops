@@ -24,7 +24,7 @@ spec:
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Database
-      current: has(status.applied) && status.applied == true
+      current: has(status.applied) && status.applied == true && has(status.observedGeneration) && status.observedGeneration == metadata.generation
   interval: 1h
   path: ./kubernetes/apps/cnpg-system/cloudnative-pg/cluster
   prune: true
