@@ -1,0 +1,9 @@
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: 20-home-ops
+content: |
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    cdi_spec_dirs = ["/run/cdi"]
+    device_ownership_from_security_context = true
