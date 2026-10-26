@@ -1,0 +1,22 @@
+machine:
+  features:
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    rbac: true
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: true
+  resolveMemberNames: true
+  forwardKubeDNSToHost: false # generated default is true
+# Drop the DHCP-provided 286k.co search domain: kubelet copies it into every pod's
+# resolv.conf, and with ndots:5 musl stops at Cloudflare's DNSSEC NODATA answer for
+# <name>.286k.co instead of trying the absolute name.
+searchDomains:
+  disableDefault: true
+  domains: []
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
