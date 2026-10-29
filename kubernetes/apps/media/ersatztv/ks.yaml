@@ -17,23 +17,15 @@ spec:
       namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/media/ersatztv/app
-  # New PVC: VolSync is gone, so populate from the component's standby kopiur
-  # Restore instead (onMissingSnapshot: Continue provisions an empty volume
-  # on first deploy, restores the latest snapshot thereafter).
-  patches:
-    - patch: |-
-        - op: replace
-          path: /spec/dataSourceRef
-          value:
-            apiGroup: kopiur.home-operations.com
-            kind: Restore
-            name: ersatztv
-      target:
-        kind: PersistentVolumeClaim
   postBuild:
     substitute:
       APP: *app
       KOPIUR_CAPACITY: 10Gi
+      # New PVC: populate from the kopiur Restore (onMissingSnapshot: Continue)
+      # rather than the defunct VolSync ReplicationDestination.
+      KOPIUR_DATASOURCE_APIGROUP: kopiur.home-operations.com
+      KOPIUR_DATASOURCE_KIND: Restore
+      KOPIUR_DATASOURCE_NAME: *app
   prune: true
   retryInterval: 2m
   sourceRef:
