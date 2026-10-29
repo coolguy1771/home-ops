@@ -15,10 +15,17 @@ spec:
   # rendered output. Restores go through `kubectl kopiur restore --to-pvc`
   # instead of a GitOps-wired populator. If this PVC is ever genuinely lost,
   # see restore.yaml's standby Restore populator for recreating it.
+  #
+  # New apps (no VolSync history) must point at that Restore instead, since
+  # nothing populates a ReplicationDestination any more:
+  #   KOPIUR_DATASOURCE_APIGROUP: kopiur.home-operations.com
+  #   KOPIUR_DATASOURCE_KIND: Restore
+  #   KOPIUR_DATASOURCE_NAME: ${APP}
+  # The defaults below render the existing VolSync reference unchanged.
   dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: ${APP}-dst
+    kind: ${KOPIUR_DATASOURCE_KIND:=ReplicationDestination}
+    apiGroup: ${KOPIUR_DATASOURCE_APIGROUP:=volsync.backube}
+    name: ${KOPIUR_DATASOURCE_NAME:=${APP}-dst}
   resources:
     requests:
       storage: ${KOPIUR_CAPACITY:=5Gi}
