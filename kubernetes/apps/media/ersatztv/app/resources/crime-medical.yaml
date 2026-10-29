@@ -6,7 +6,7 @@ content:
   - marathon:
     key: procedurals
     searches:
-      - 'type:episode AND (show_title:"Bones" OR show_title:"Castle (2009)" OR show_title:"Criminal Minds" OR show_title:"House" OR show_title:"High Potential")'
+      - 'type:episode AND (show_title:"Bones" OR show_title:"Castle (2009)" OR show_title:"Criminal Minds" OR show_title:"High Potential" OR (show_title:"House" AND NOT show_title:"House of the Dragon"))'
     group_by: show
     item_order: chronological
     play_all_items: false
