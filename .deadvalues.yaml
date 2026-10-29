@@ -6,3 +6,9 @@ apiVersions:
   - monitoring.coreos.com/v1/Probe
   - monitoring.coreos.com/v1/PrometheusRule
   - monitoring.coreos.com/v1/ServiceMonitor
+ignore:
+  # Guards a .Capabilities check for the monitoring.coreos.com CRDs; it matters
+  # when cilium is installed before them (bootstrap), not on a live cluster.
+  - app: cilium
+    keys:
+      - prometheus.serviceMonitor.trustCRDsExist
