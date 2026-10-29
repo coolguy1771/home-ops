@@ -63,8 +63,10 @@ spec:
               - openid
               - tenant
               - tempo:write
+            # otelcol.auth.oauth2 takes map(list(string)), unlike loki/prometheus.
             endpointParams:
-              grant_type: client_credentials
+              grant_type:
+                - client_credentials
         secret:
           create: false
           name: observability-m2m
