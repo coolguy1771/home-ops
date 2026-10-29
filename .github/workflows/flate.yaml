@@ -93,9 +93,33 @@ jobs:
             ${{ steps.diff.outputs.diff }}
             ```
 
+  deadvalues:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
+    name: Flate - Deadvalues
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      # Full history: deadvalues diffs against the PR base commit.
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Flate shows what the manifests become; deadvalues shows which values
+      # keys do nothing. Fails on a chart bump that stops reading a key we set.
+      - name: Run deadvalues
+        uses: guarnz/deadvalues@6ed0a88f1513ea7c3c93b3bb9a4b4fc71b951b25 # v0.1.9
+        with:
+          path: kubernetes/apps
+
   success:
     if: ${{ !cancelled() }}
     needs:
+      - deadvalues
       - test
       - diff
     name: Flate - Success
