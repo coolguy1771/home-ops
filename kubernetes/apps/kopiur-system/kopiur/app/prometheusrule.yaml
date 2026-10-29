@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: kopiur-rules
+spec:
+  groups:
+    - name: kopiur.rules
+      rules:
+        - alert: KopiurSnapshotFailing
+          annotations:
+            description: SnapshotPolicy {{ $labels.namespace }}/{{ $labels.name }} has {{ $value }} consecutive failed backups.
+            summary: Kopiur backups are failing.
+          expr: |-
+            max by (namespace, name) (
+              kopiur_snapshot_consecutive_failures{k8s_cluster_name="kyak"}
+            ) >= 2
+          for: 5m
+          labels:
+            severity: warning
+        - alert: KopiurSnapshotFailing
+          annotations:
+            description: SnapshotPolicy {{ $labels.namespace }}/{{ $labels.name }} has {{ $value }} consecutive failed backups (no good backup for ~6h).
+            summary: Kopiur backups are critically failing.
+          expr: |-
+            max by (namespace, name) (
+              kopiur_snapshot_consecutive_failures{k8s_cluster_name="kyak"}
+            ) >= 6
+          for: 5m
+          labels:
+            severity: critical
+        - alert: KopiurBackupStale
+          annotations:
+            description: SnapshotPolicy {{ $labels.namespace }}/{{ $labels.policy }} has not completed a successful backup in {{ $value | humanizeDuration }}.
+            summary: Kopiur backup is stale.
+          expr: |-
+            time() - max by (namespace, policy) (
+              kopiur_policy_last_backup_success_timestamp_seconds{k8s_cluster_name="kyak"}
+            ) > 3 * 3600
+          for: 15m
+          labels:
+            severity: warning
+        - alert: KopiurRepositoryUnreachable
+          annotations:
+            description: Kopiur {{ $labels.kind }} {{ $labels.name }} has {{ $value }} consecutive failed backend connects.
+            summary: Kopiur cannot reach its backup repository.
+          expr: |-
+            max by (kind, name) (
+              kopiur_repository_consecutive_backend_failures{k8s_cluster_name="kyak"}
+            ) >= 3
+          for: 10m
+          labels:
+            severity: critical
+        - alert: KopiurMetricsAbsent
+          annotations:
+            description: No kopiur snapshot metrics have been received for 1 hour; backup alerting is blind.
+            summary: Kopiur metrics are missing.
+          expr: |-
+            absent(kopiur_snapshot_consecutive_failures{k8s_cluster_name="kyak"})
+          for: 1h
+          labels:
+            severity: warning

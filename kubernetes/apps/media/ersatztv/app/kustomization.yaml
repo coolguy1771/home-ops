@@ -7,6 +7,12 @@ resources:
   - ./ocirepository.yaml
   - ./resourceclaimtemplate.yaml
 configMapGenerator:
+  - name: ersatztv-loki-rules
+    files:
+      - ersatztv.yaml=./lokirule.yaml
+    options:
+      labels:
+        loki_rule: "true"
   - name: ersatztv-schedules
     files:
       - anime.yaml=./resources/anime.yaml
