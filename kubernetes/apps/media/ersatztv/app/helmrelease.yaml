@@ -103,6 +103,12 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
+      schedules:
+        type: configMap
+        name: ersatztv-schedules
+        globalMounts:
+          - path: /schedules
+            readOnly: true
       tmp:
         type: emptyDir
       transcode:

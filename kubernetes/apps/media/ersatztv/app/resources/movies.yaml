@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 7 - Movies: alternate an action/sci-fi pick with anything from the
+# full library, both shuffled without repeats until each pool is exhausted.
+content:
+  - smart_collection: Action & Sci-Fi Movies
+    key: action-scifi
+    order: shuffle
+  - smart_collection: All Movies
+    key: all-movies
+    order: shuffle
+playout:
+  - count: 1
+    content: action-scifi
+  - count: 1
+    content: all-movies
+  - repeat: true

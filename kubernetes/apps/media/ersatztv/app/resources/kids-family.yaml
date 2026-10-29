@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 6 - Kids & Family: two kids episodes (alternating shows, in order)
+# then a random family/animated movie.
+content:
+  - marathon:
+    key: kids
+    searches:
+      - 'type:episode AND (show_title:"3Below: Tales of Arcadia" OR show_title:"Dragons")'
+    group_by: show
+    item_order: chronological
+    play_all_items: false
+    shuffle_groups: false
+  - smart_collection: Family Movies
+    key: family-movies
+    order: shuffle
+playout:
+  - count: 2
+    content: kids
+  - count: 1
+    content: family-movies
+  - repeat: true

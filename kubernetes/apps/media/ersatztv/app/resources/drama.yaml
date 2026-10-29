@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 4 - Drama: prestige drama rotation, each show in order; the show
+# order reshuffles every cycle. Searches mirror "Prestige Drama".
+content:
+  - marathon:
+    key: drama
+    searches:
+      - 'type:episode AND (show_title:"24" OR show_title:"Game of Thrones" OR show_title:"Bridgerton" OR show_title:"The Agency (2024)" OR show_title:"Chernobyl" OR show_title:"Chilling Adventures of Sabrina")'
+    group_by: show
+    item_order: chronological
+    play_all_items: false
+    shuffle_groups: true
+playout:
+  - count: 1
+    content: drama
+  - repeat: true

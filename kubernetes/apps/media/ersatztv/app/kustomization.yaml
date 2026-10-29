@@ -6,3 +6,17 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./resourceclaimtemplate.yaml
+configMapGenerator:
+  - name: ersatztv-schedules
+    files:
+      - anime.yaml=./resources/anime.yaml
+      - crime-medical.yaml=./resources/crime-medical.yaml
+      - drama.yaml=./resources/drama.yaml
+      - kids-family.yaml=./resources/kids-family.yaml
+      - laughs.yaml=./resources/laughs.yaml
+      - movies.yaml=./resources/movies.yaml
+      - sci-fi.yaml=./resources/sci-fi.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
