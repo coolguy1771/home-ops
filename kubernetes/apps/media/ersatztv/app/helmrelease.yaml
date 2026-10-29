@@ -37,8 +37,9 @@ spec:
                 enabled: true
                 custom: true
                 spec:
+                  # /api/* requires auth (401); IPTV paths are anonymous.
                   httpGet:
-                    path: /api/version
+                    path: /lineup_status.json
                     port: *port
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -71,7 +72,8 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44]
+        supplementalGroups:
+          - 44
     service:
       app:
         ports:
