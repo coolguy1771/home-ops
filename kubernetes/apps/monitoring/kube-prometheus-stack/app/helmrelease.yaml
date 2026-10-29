@@ -30,11 +30,8 @@ spec:
         KubeAPIDown: true
         KubeAPIInstanceUnreachable: true
         KubeControllerManagerDown: true
-        KubeControllerManagerInstanceUnreachable: true
         KubeProxyDown: true
-        KubeProxyInstanceUnreachable: true
         KubeSchedulerDown: true
-        KubeSchedulerInstanceUnreachable: true
     grafana:
       enabled: false
       forceDeployDashboards: true

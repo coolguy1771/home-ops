@@ -30,18 +30,10 @@ spec:
             env:
               TZ: America/New_York
             probes:
-              liveness: &probes
+              liveness:
                 enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &port 8080
-                  initialDelaySeconds: 5
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -63,7 +55,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 8080
     persistence:
       config-file:
         type: secret

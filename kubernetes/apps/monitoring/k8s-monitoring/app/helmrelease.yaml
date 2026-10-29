@@ -68,9 +68,9 @@ spec:
         secret:
           create: false
           name: observability-m2m
-        metrics: { enabled: false }
-        logs: { enabled: false }
-        traces: { enabled: true }
+        metrics: {enabled: false}
+        logs: {enabled: false}
+        traces: {enabled: true}
     #
     # Features
     #
@@ -129,7 +129,8 @@ spec:
         node_arch: architecture
         node_type: instance_type
     applicationObservability:
-      enabled: false
+      enabled: true
+      collector: alloy-receiver
       receivers:
         otlp:
           grpc:
@@ -183,7 +184,9 @@ spec:
       scrapeInterval: ""
     collectors:
       alloy-metrics:
-        presets: [clustered, statefulset]
+        presets:
+          - clustered
+          - statefulset
         alloy:
           storagePath: /var/lib/alloy
           mounts:
@@ -196,13 +199,15 @@ spec:
             - metadata:
                 name: alloy-wal
               spec:
-                accessModes: ["ReadWriteOnce"]
+                accessModes:
+                  - "ReadWriteOnce"
                 storageClassName: "ceph-block"
                 resources:
                   requests:
                     storage: 5Gi
       alloy-singleton:
-        presets: [singleton]
+        presets:
+          - singleton
         extraConfig: |-
           local.file "observability_m2m_client_id" {
             filename = "/var/run/secrets/observability-m2m/client_id"
@@ -253,7 +258,9 @@ spec:
                 secret:
                   secretName: alertmanager-global-config
       alloy-logs:
-        presets: [clustered, daemonset]
+        presets:
+          - clustered
+          - daemonset
         alloy:
           storagePath: /var/lib/alloy
           mounts:
@@ -267,6 +274,9 @@ spec:
                 hostPath:
                   path: /var/alloy-log-storage
                   type: DirectoryOrCreate
+      alloy-receiver:
+        presets:
+          - deployment
     telemetryServices:
       kube-state-metrics:
         deploy: true
