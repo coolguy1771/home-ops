@@ -14,4 +14,5 @@ _.file = [
 
 [tools]
 "uv" = "latest"
+"github:guarnz/deadvalues" = "v0.1.9"
 "github:home-operations/flate" = "v0.6.5"
