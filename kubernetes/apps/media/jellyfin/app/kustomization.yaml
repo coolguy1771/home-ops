@@ -7,3 +7,14 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./resourceclaimtemplate.yaml
+configMapGenerator:
+  - name: jellyfin-loki-rules
+    files:
+      - jellyfin.yaml=./lokirule.yaml
+    options:
+      labels:
+        loki_rule: "true"
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
