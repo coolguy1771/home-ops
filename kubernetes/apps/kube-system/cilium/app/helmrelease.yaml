@@ -30,7 +30,7 @@ spec:
     bgpControlPlane:
       enabled: true
     cgroup:
-      automount:
+      autoMount:
         enabled: false
       hostRoot: /sys/fs/cgroup
     cni:
@@ -67,10 +67,6 @@ spec:
         enabled: true
         rollOutPods: true
         replicas: 2
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: false
       ui:
         enabled: true
         rollOutPods: true

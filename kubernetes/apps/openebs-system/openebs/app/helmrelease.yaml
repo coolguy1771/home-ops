@@ -10,8 +10,6 @@ spec:
     name: openebs
   interval: 1h
   values:
-    preUpgradeHook:
-      enabled: false
     localpv-provisioner:
       analytics:
         enabled: false
@@ -32,12 +30,6 @@ spec:
         volumeSnapshots:
           enabled: false
           keep: false
-    zfs-localpv:
-      enabled: false
-    lvm-localpv:
-      enabled: false
-    mayastor:
-      enabled: false
     engines:
       local:
         lvm:
@@ -50,6 +42,4 @@ spec:
     loki:
       enabled: false
     alloy:
-      enabled: false
-    minio:
       enabled: false
