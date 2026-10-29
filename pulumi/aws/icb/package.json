@@ -2,7 +2,7 @@
     "name": "aws",
     "main": "index.ts",
     "devDependencies": {
-        "@types/node": "^24.0.0"
+        "@types/node": "^26.0.0"
     },
     "dependencies": {
         "@pulumi/pulumi": "^3.253.0",
