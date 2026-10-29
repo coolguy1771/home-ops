@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 3 - Sci-Fi: serialized sci-fi rotation, each show in order; the
+# show order reshuffles every cycle. Searches mirror "Sci-Fi Series".
+content:
+  - marathon:
+    key: scifi
+    searches:
+      - 'type:episode AND (show_title:"The Expanse" OR show_title:"Firefly" OR show_title:"For All Mankind" OR show_title:"Andor" OR show_title:"Ahsoka" OR show_title:"Black Mirror" OR show_title:"Fallout")'
+    group_by: show
+    item_order: chronological
+    play_all_items: false
+    shuffle_groups: true
+playout:
+  - count: 1
+    content: scifi
+  - repeat: true

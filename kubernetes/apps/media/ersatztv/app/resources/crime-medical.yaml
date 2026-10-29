@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 2 - Crime & Medical: procedural rotation, each show in order.
+# Searches mirror the "Crime & Medical" smart collection.
+content:
+  - marathon:
+    key: procedurals
+    searches:
+      - 'type:episode AND (show_title:"Bones" OR show_title:"Castle (2009)" OR show_title:"Criminal Minds" OR show_title:"House" OR show_title:"High Potential")'
+    group_by: show
+    item_order: chronological
+    play_all_items: false
+    shuffle_groups: false
+playout:
+  - count: 1
+    content: procedurals
+  - repeat: true

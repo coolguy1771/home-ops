@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 1 - Laughs: one episode per show in a fixed rotation, each show in
+# season/episode order. Searches mirror the "Sitcoms" smart collection.
+content:
+  - marathon:
+    key: sitcoms
+    searches:
+      - 'type:episode AND (show_title:"Brooklyn Nine-Nine" OR show_title:"Bob Hearts Abishola" OR show_title:"Derry Girls" OR show_title:"Harley Quinn" OR show_title:"The Boondocks")'
+    group_by: show
+    item_order: chronological
+    play_all_items: false
+    shuffle_groups: false
+playout:
+  - count: 1
+    content: sitcoms
+  - repeat: true

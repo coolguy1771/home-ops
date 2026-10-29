@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ErsatzTV/ErsatzTV/main/ErsatzTV/Resources/sequential-schedule.schema.json
+# Channel 5 - Anime: anything tagged anime, one episode per show in rotation,
+# each show in order. Search mirrors the "Anime" smart collection.
+content:
+  - marathon:
+    key: anime
+    searches:
+      - 'type:episode AND show_genre:anime'
+    group_by: show
+    item_order: chronological
+    play_all_items: false
+    shuffle_groups: false
+playout:
+  - count: 1
+    content: anime
+  - repeat: true
