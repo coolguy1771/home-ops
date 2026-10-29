@@ -1,0 +1,8 @@
+---
+# https://github.com/guarnz/deadvalues/blob/main/docs/configuration.md
+kubeVersion: "1.37"
+apiVersions:
+  - monitoring.coreos.com/v1/PodMonitor
+  - monitoring.coreos.com/v1/Probe
+  - monitoring.coreos.com/v1/PrometheusRule
+  - monitoring.coreos.com/v1/ServiceMonitor
