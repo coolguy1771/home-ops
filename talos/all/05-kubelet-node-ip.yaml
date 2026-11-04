@@ -1,5 +1,5 @@
-machine:
-  kubelet:
-    nodeIP:
-      validSubnets:
-        - 10.10.10.0/24
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+    - 10.10.10.0/24

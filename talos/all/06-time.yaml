@@ -1,6 +1,7 @@
-machine:
-  time:
-    disabled: false
-    servers:
-      - time.cloudflare.com
-      - time.nist.gov
+apiVersion: v1alpha1
+kind: TimeSyncConfig
+enabled: true
+ntp:
+  servers:
+    - time.cloudflare.com
+    - time.nist.gov

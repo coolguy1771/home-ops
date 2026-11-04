@@ -3,9 +3,3 @@ machine:
     - 10.10.10.201
     - k8s-lb.286k.co
     - 127.0.0.1
-cluster:
-  apiServer:
-    certSANs:
-      - 10.10.10.201
-      - k8s-lb.286k.co
-      - 127.0.0.1
