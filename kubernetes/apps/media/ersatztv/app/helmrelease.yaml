@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ersatztv/legacy
-              tag: v26.11.5@sha256:9d82593791d78d20b7d3673dd10dc4bc0a060ede27eada7e2487d5226e91abda
+              tag: v26.12.0@sha256:cfe78ee1148f90d96582dcc58196f4b2153f9e6f70c1bcf6baab3b375d675a47
             env:
               ETV_CONFIG_FOLDER: /config
               ETV_TRANSCODE_FOLDER: /transcode
