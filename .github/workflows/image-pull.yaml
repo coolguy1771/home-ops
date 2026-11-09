@@ -47,7 +47,7 @@ jobs:
 
       # Exports FLATE_BASE (the default branch), so only images new in this PR are listed.
       - name: Setup Flate
-        uses: home-operations/flate/action@631b76b69c4e58c6f4d1cb01e23616fa61aebafa # v0.6.5
+        uses: home-operations/flate/action@8e5612988989a8b3e0f93acf40c4ff8cc9a62d12 # v0.7.2
 
       # flate exits non-zero when the base branch fails to render but still
       # prints the images it found; only a missing/invalid JSON list is fatal.
