@@ -42,7 +42,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Flate
-        uses: home-operations/flate/action@8e5612988989a8b3e0f93acf40c4ff8cc9a62d12 # v0.7.2
+        uses: home-operations/flate/action@bbb6ebc344da051752dbdb1b413860ceffcfb63d # v0.7.3
 
       - name: Run flate test
         run: flate test all --path ./kubernetes/flux/cluster
@@ -68,7 +68,7 @@ jobs:
 
       # Exports FLATE_BASE (the default branch), so diffs run in changed-only mode.
       - name: Setup Flate
-        uses: home-operations/flate/action@8e5612988989a8b3e0f93acf40c4ff8cc9a62d12 # v0.7.2
+        uses: home-operations/flate/action@bbb6ebc344da051752dbdb1b413860ceffcfb63d # v0.7.3
 
       # Informational only: the test job gates the PR. flate exits non-zero when
       # either side fails to render, but still prints the diff it could compute.
