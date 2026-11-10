@@ -1,0 +1,11 @@
+# Run CRI, the kubelet and pods inside the sandboxd PID/mount namespace.
+# Takes effect on next reboot; the first reboot may fail to close
+# luks2-EPHEMERAL ("mapped device is still in use") — reboot again, or
+# `talosctl reset --system-labels-to-wipe=EPHEMERAL --reboot` if it sticks.
+apiVersion: v1alpha1
+kind: SecurityProfileConfig
+workloadIsolation: true
+---
+apiVersion: v1alpha1
+kind: FilesystemScrubConfig
+interval: 168h0m0s
