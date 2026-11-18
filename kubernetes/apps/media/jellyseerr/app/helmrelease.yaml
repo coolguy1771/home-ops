@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/seerr-team/seerr
-              tag: preview-new-oidc
+              tag: preview-new-oidc@sha256:2b714a6d17590b554d388d70adc6c4ea6507d9367c23eb42e4319693b55aa054
             env:
               TZ: America/New_York
               LOG_LEVEL: "info"
