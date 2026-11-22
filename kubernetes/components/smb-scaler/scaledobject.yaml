@@ -7,7 +7,8 @@ metadata:
 spec:
   advanced:
     restoreToOriginalReplicaCount: true
-  cooldownPeriod: 0
+  # Wait 5m after the share was last seen up before scaling to zero.
+  cooldownPeriod: 300
   minReplicaCount: 0
   maxReplicaCount: 1
   # Keep the app running if Mimir/mimir-proxy is unreachable; only a
@@ -25,6 +26,7 @@ spec:
         # Cloud Mimir's query API via the mimir-proxy sidecar (handles OAuth2).
         serverAddress: http://mimir-proxy.monitoring.svc.cluster.local:8080/prometheus
         # SMB share backing the smb-media PV (blackbox-exporter-lan lan-tcp probe).
-        query: probe_success{cluster="kyak", instance="nas.286k.co:445"}
+        # max_over_time: one failed probe must not scale the media stack down.
+        query: max_over_time(probe_success{cluster="kyak", instance="nas.286k.co:445"}[5m])
         threshold: "1"
         ignoreNullValues: "0"
