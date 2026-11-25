@@ -4,7 +4,7 @@ clusterEndpoint: https://k8s-lb.286k.co:6443
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: v1.14.6
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetesVersion: v1.37.2
+kubernetesVersion: v1.37.3
 
 # SecureBoot (systemd-boot + signed UKI) via the public factory / Microsoft-CA
 # signing chain. The -secureboot image boots fine with SecureBoot still disabled
