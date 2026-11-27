@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: dispatcharr-postgres-role
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: dispatcharr-postgres-role
+    template:
+      engineVersion: v2
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: dispatcharr
+        password: "{{ .DISPATCHARR_POSTGRES_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: dispatcharr
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: dispatcharr
+spec:
+  cluster:
+    name: postgres18
+  databaseReclaimPolicy: retain
+  encoding: UTF8
+  ensure: present
+  name: dispatcharr
+  owner: dispatcharr

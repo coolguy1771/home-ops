@@ -16,6 +16,11 @@ spec:
   enableSuperuserAccess: true
   managed:
     roles:
+      - name: dispatcharr
+        ensure: present
+        login: true
+        passwordSecret:
+          name: dispatcharr-postgres-role
       - name: prowlarr
         ensure: present
         login: true

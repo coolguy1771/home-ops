@@ -1,0 +1,203 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dispatcharr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: dispatcharr
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      # Modular mode: web (nginx/uwsgi/daphne) + celery share /data (secret key,
+      # logs, logo cache) so they run in one pod on the RWO PVC. Postgres is the
+      # shared CNPG cluster; Redis is the valkey controller below.
+      dispatcharr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image: &image
+              repository: ghcr.io/dispatcharr/dispatcharr
+              tag: 0.34.1@sha256:3716ebb0aba133fe8b3d311505dc49966b7fddff742d9ab710ccd19d04658195
+            env:
+              DISPATCHARR_ENV: modular
+              DISPATCHARR_LOG_LEVEL: info
+              DISPATCHARR_PORT: &port 9191
+              DISPATCHARR_TRUSTED_PROXIES: 10.0.0.0/8
+              PGID: "1000"
+              PUID: "1000"
+              REDIS_HOST: "{{ .Release.Name }}-valkey"
+              REDIS_PORT: &redisPort 6379
+              TZ: America/New_York
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *port
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *port
+                  periodSeconds: 10
+                  # first boot runs migrations + collectstatic before nginx listens
+                  failureThreshold: 60
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+          celery:
+            image: *image
+            command:
+              - "/app/docker/entrypoint.celery.sh"
+            env:
+              DISPATCHARR_ENV: modular
+              DISPATCHARR_LOG_LEVEL: info
+              DISPATCHARR_PORT: *port
+              # celery reaches the web container (DVR) over the pod network
+              DISPATCHARR_WEB_HOST: localhost
+              REDIS_HOST: "{{ .Release.Name }}-valkey"
+              REDIS_PORT: *redisPort
+              TZ: America/New_York
+              DJANGO_SETTINGS_MODULE: dispatcharr.settings
+              PYTHONUNBUFFERED: "1"
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+        pod:
+          # The image entrypoint runs as root (useradd, chown, nginx) and drops
+          # to PUID/PGID via su, so it cannot run with runAsNonRoot.
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+      valkey:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 9.0.8@sha256:80def298b278d20a574e6b68d34e244c785f4600c7902fccd5f22c55743d5420
+            # Ephemeral broker/cache: Dispatcharr flushes stale state on boot.
+            args:
+              - "--save"
+              - ""
+              - "--appendonly"
+              - "no"
+              - "--timeout"
+              - "300"
+            probes:
+              liveness: &valkeyProbe
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - "valkey-cli"
+                      - "ping"
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *valkeyProbe
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 512Mi
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 999
+            fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: dispatcharr
+        ports:
+          http:
+            port: *port
+      valkey:
+        controller: valkey
+        ports:
+          redis:
+            port: *redisPort
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["len([BODY]) == 0"]
+            dns:
+              query-name: {{ .Release.Name }}.witl.xyz
+              query-type: A
+            url: 1.1.1.1
+        hostnames:
+          - "{{ .Release.Name }}.witl.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          dispatcharr:
+            app:
+              - path: /data
+            celery:
+              - path: /data
+      media:
+        existingClaim: smb-media
+        advancedMounts:
+          dispatcharr:
+            app:
+              - path: /media
+            celery:
+              - path: /media
+      valkey-data:
+        type: emptyDir
+        advancedMounts:
+          valkey:
+            app:
+              - path: /data

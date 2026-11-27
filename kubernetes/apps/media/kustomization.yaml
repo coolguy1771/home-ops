@@ -13,6 +13,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./brrpolice/ks.yaml
   - ./cleanrr/ks.yaml
+  - ./dispatcharr/ks.yaml
   - ./ersatztv/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
